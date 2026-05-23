@@ -166,6 +166,60 @@
 
 ---
 
+## E15 — Nachtlauf: „Denken frei, Hand eng" (Paradigma der nächtlichen Autonomie)
+
+**Auslöser:** Bei der Umsetzung von BOOT-001 Bündel E stand die Frage, wie die nächtliche Routine sicher Tools nutzen kann. Erster Vorschlag (Plan A): kein LLM nachts, nur starre Bash-Skripte. Zweiter (Plan B): voller Claude Code mit allen Tools. Beide falsch.
+
+**Entscheidung:** Claude Code läuft nachts als beurteilendes LLM, ABER mit einem **hart begrenzten, eingefrorenen Tool-Set** (`~/.claude-nightly/settings.json`). Das LLM darf frei urteilen (Versionen prüfen, Changelogs lesen, Logs triagieren, Anomalien einschätzen), aber nur enge Operationen ausführen — die erlaubten Docker-/Inspektions-/Mail-Werkzeuge SIND selbst die „Routine" (E13), keine zusätzliche Indirektion über Bash-Wrapper.
+
+**Warum:** Container-Updates, App-Dependency-Reviews und Anomalie-Triage sind durchgehend beurteilende Tätigkeiten — Skripte, die nur `pull && restart && curl /health` machen, produzieren die Health-Check-Lüge, die Verfassung 04 verbietet. Reine Skripte fallen damit als Lösung weg. Andererseits: ein LLM mit freiem Tool-Set wäre über Prompt-Injection im Changelog kapern bar. Antwort: Denken nicht beschränken (sonst wertloser Lauf), Hand strukturell beschränken (eingefrorenes Tool-Set + OS-Rechtegrenze). Eine Injection kann nichts Destruktives auslösen, weil das Werkzeug nicht in der Hand liegt — nicht weil das LLM brav ist.
+
+**Verworfene Alternativen:** (a) Plan A „nur Skripte" — verfehlt die beurteilende Natur der Aufgabe. (b) Plan B „volles LLM" — Injection-Risiko ohne strukturelle Bremse.
+
+**Verhältnis zu E12/E13:** Setzt E12 (OS-Rechte) und E13 (Repo definiert AUSWAHL nicht FÄHIGKEIT) konkret in der Settings-Datei um. Tool-Allowlist IST die Allowlist-Definition; eine doppelte Indirektion über Bash-Wrapper-Skripte hätte tote Referenzen erzeugt.
+
+---
+
+## E16 — Sicherheitsgrenze über Write-Tool-Deny, nicht über Bash-Pattern-Matching
+
+**Auslöser:** Im Bündel-E-Verifikationstest griffen die Write-Allow-Patterns in `--print/default`-Modus nicht. Erste Reaktion-Option: Bash-Schreibvehikel wie `tee` als Workaround zulassen. Architekt hat das verworfen.
+
+**Entscheidung:** Mode `acceptEdits`, **Write-Tool** übernimmt das Schreiben strukturell, **Bash bleibt schreibfrei** (kein `tee/echo/cat/ls/touch` mehr in Allow). Sicherheitsgrenze ist eine umfassende Deny-Liste auf Pfade, dual gepflegt mit absoluten UND cwd-relativen Patterns (Claude Code matched Pfade unter cwd als relative, sonst greift's nicht). Filesystem-verifiziert: 9 sensitive Schreibversuche → alle blockiert.
+
+**Warum:** `Bash(tee ...)` durchbricht die saubere Trennung „Bash inspiziert, Write schreibt". Bash-Pattern-Matching ist eine schwächere Garantie als ein strukturell auf Pfade begrenztes Write-Tool — verkettbare Kommandos, Flag-Varianten, Pfad-Tricks, Shell-Redirects mit `>`. Bei einem nachts unbeaufsichtigten, injection-exponierten Lauf zählt die strukturelle Grenze, nicht Pattern-Match-Akrobatik.
+
+**Verworfene Alternative:** Option A `Bash(tee ...)` als enges Schreib-Vehikel. Eng, aber semantisch unsauber und über Shell-Redirect-Umwege angreifbar.
+
+**Caveat:** `acceptEdits`-Mode macht die Deny-Liste zur einzigen Grenze (kein „ask"-Netz). Folge: jede Deny-Erweiterung künftig sorgfältig pflegen — Lücke in der Deny = Schreibrecht. Initiale Verifikation hat alle definierten Schutzbereiche bestätigt.
+
+---
+
+## E17 — GitHub-Sync auf kuratierte Übersichten begrenzen, nicht voller Systemzustand
+
+**Auslöser:** In Bündel D stand der Plan, den gesamten `<Bereich>/Systemzustand/**` ins GitHub-Sync-Repo zu spiegeln. Architekt korrigierte vor der Anlage.
+
+**Entscheidung:** Nicht der ganze Systemzustand, sondern pro Bereich ein dedizierter `<Bereich>/Systemzustand/Uebersicht/`-Unterordner mit kuratierten MD- und SVG-Übersichten. Whitelist entsprechend umgestellt. Bereichs-Übersichten werden als eigener Folgezyklus aufgebaut (Backlog-Seed `seed-bereichs-uebersichten.md`).
+
+**Warum:** Voller Systemzustand wäre Datenvolumen, hohe Volatilität (jede Detail-Änderung triggert Sync-Drift), Mandantennähe-Risiken (in Architektur-/Workflow-Dokus stecken Container-Namen, Pfade, Tenant-IDs). Übersichten sind ABGELEITETE Sicht (vgl. Verfassung 03 SSOT) — verdichten, was im Systemzustand steht, und sind beim Aufschreiben bewusst über das, was geteilt wird. Doppelnutzen: dieselben Übersichten sind auch für den Menschen die schnelle Verdichtung des Bereichs.
+
+**Verworfene Alternative:** Voller Systemzustand. Verworfen wegen Volumen, Volatilität und unkontrollierter Sichtbarkeit.
+
+**Kontextbindung:** Falls die Übersichten in der Praxis als zu schmal empfunden werden (Architekt sieht im Chat zu wenig), kann gezielt zusätzliche Systemzustand-Pfade in die Whitelist aufgenommen werden. Strenge Erweiterung, nicht pauschales „alles wieder rein".
+
+---
+
+## E18 — Reaktive Notbremse bewusst ausgeschlossen (Mail ist Sackgasse)
+
+**Auslöser:** Beim cf-alarm-Setup in Bündel E die berechtigte Frage des Architekten: „Kann ich auf die Mail antworten und du würdest wirklich den Dienst abschalten?" — und die Folgefrage nach dem Risiko, wenn Claude per Mail Befehle entgegennehmen könnte.
+
+**Entscheidung:** Nein. Die Alarm-Mail ist strukturell eine Sackgasse — kein Mail-Inbox-Listener, kein Reply-Parser, kein Pfad von der Mailbox zum Tool-Set. Das „Maßnahmen-Angebot zur Bestätigung" im Mail-Body ist als Vorlage für die nächste Chat-Session formuliert, nicht als ausführbares Kommando. Autonomes Eingreifen bei Cloudflare-Anomalie ist explizit ausgeschlossen und in einen separaten späteren Zyklus (Backlog) ausgelagert.
+
+**Warum:** E-Mail-Adressen sind trivial spoofbar; SMTP authentifiziert den `From:`-Header praktisch nicht. Selbst mit DKIM/SPF/DMARC strikt + Body-Token wäre der Mail-Kanal als Trigger destruktiver Aktionen die schwächste Stelle eines sonst dreifach abgesicherten Setups (OS-Rechtegrenze + Tool-Freeze + Sig-Check des Webhooks). Verfassung 04 sagt zudem explizit: „autonomes Eingreifen ist bewusst in ein separates späteres Projekt ausgelagert — eine automatische Stopp-Befugnis ist selbst ein Risiko: ein provozierter Fehlalarm würde zum Denial-of-Service über die eigene Automatik".
+
+**Kontextbindung:** Sobald die Erkennungs-Pipeline (Bündel E) lang genug live ist, dass Fehlalarm-Raten und Reaktions-Muster bekannt sind, kann ein eigener Zyklus eine eng definierte Notbremse erwägen — aber nicht via Mail-Reply, sondern via klar autorisiertem Kanal.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.
