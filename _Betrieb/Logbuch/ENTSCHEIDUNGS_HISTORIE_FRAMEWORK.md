@@ -220,6 +220,66 @@
 
 ---
 
+## E19 — „Health-Check-Lüge" bei Container-Recreate (Verfassung-04-Anwendung auf Apply-Seiteneffekte)
+
+**Auslöser:** In PLAT-001 Bündel 3.1 (Docker-CE-Update) kollabierte beim Daemon-Restart ein latenter `db_authentik`-Netzwerk-Anker im laufenden `internal_postgres`-Container. Saubere Recovery via `docker compose up -d --force-recreate postgres-hub` — Postgres-Container war anschließend „healthy", aber die Stichprobe „Datenbestand vollständig?" hätte ohne expliziten Check gefehlt.
+
+**Entscheidung:** Bei DB-Containern (und allen Containern mit persistentem State) ist `docker ps` / Service-up-Status **kein** Beweis für Datenbestands-Integrität. Pflicht-Pattern: nach jedem Apply-Bündel mit DB-Seiteneffekt (auch ungeplant) eine Inhalts-Stichprobe (Anzahl Repos / Workflows / User / Datenvolumen) als Beweis, dass die Daten noch da sind. Health-Check-Definition ist domänenspezifisch, nicht generisch.
+
+**Warum:** Container-Lifecycle-Mechanismen können Daten technisch intakt lassen (Bind-Mount-Verifikation: 2.1 G unverändert) UND trotzdem über Schema-/Netzwerk-/Volume-Anker-Bruch funktional kompromittieren. Verfassung 04 sagt „bewiesen, nicht angenommen" — ein generischer `is-running`-Check ist eine Annahme über Daten, kein Beweis.
+
+**Verworfene Alternative:** „Container healthy reicht als Health-Check". Verworfen durch konkreten Vorfall: hätte den Postgres-Bruch erst beim ersten Workflow-Run sichtbar gemacht — Stunden nach Apply, mit unklarer Ursache-Wirkung-Kette.
+
+**Kontextbindung:** Gilt für alle Apply-Bündel mit DB-Container-Recreate, auch wenn das Recreate ein **ungeplanter Seiteneffekt** des eigentlichen Apply-Ziels ist. Ist als Pflicht-Block in `nacht-aufgaben.md` verankert.
+
+---
+
+## E20 — Docker bleibt blacklisted/manuell (Container-Lifecycle-Seiteneffekt als Begründung)
+
+**Auslöser:** PLAT-001 Spec v2 hat in Block 3 die Entscheidung „Docker dauerhaft im nightly-Pfad oder weiter manuell" offen gelassen, mit Entscheidung NACH dem Apply.
+
+**Entscheidung:** Docker bleibt manuell-getestet (Default), KEIN autonomer nightly-Pfad. Auch nicht in PLAT-002 mit Hook.
+
+**Warum:** Docker-Updates rebooten den Daemon und können beliebig komplexe Container-Lifecycle-Seiteneffekte auslösen, die je nach laufender Topologie unterschiedlich kollabieren (siehe E19 / Postgres-Recreate). Diese Seiteneffekte sind nicht durch ein generisches Health-Check-Pattern abdeckbar — sie erfordern Domänenwissen über die jeweilige Topologie zum Zeitpunkt des Updates. Ein autonomer Lauf hätte keinen sinnvollen Health-Beweis. Außerdem: Docker-Frequenz ist niedrig (Patches ~monatlich), Komfortgewinn durch Automatik gering, Risiko hoch.
+
+**Verworfene Alternative:** Docker als „normalen" 1b-Pfad behandeln nach Spec v2 Block 1. Verworfen durch konkreten Vorfall in 3.1: der Postgres-Recreate war kein Bug von Docker, sondern ein latenter Topologie-Zustand, der nur beim Daemon-Restart sichtbar wird. Nicht vorhersagbar, nicht generisch zu testen.
+
+**Kontextbindung:** Falls künftig mehrere Docker-Updates ohne Seiteneffekte durchlaufen (5+ Bündel beobachtet), kann das neu bewertet werden. Aktuell n=1 (PLAT-001), und das eine hatte einen Seiteneffekt — keine Datenbasis für Automatisierung.
+
+---
+
+## E21 — Tailscale bleibt manuell (Third-Party + eigener-Zugangsweg-Risiko)
+
+**Auslöser:** PLAT-001 Spec v2 Block 3 forderte Tailscale-Update + dokumentierte Pfad-Zuordnung danach.
+
+**Entscheidung:** Tailscale bleibt manuell-getestet, KEIN autonomer nightly-Pfad. Auch nicht in PLAT-002 mit Hook.
+
+**Warum:** Tailscale ist Third-Party-Repo (eigene apt-Quelle, eigenes Signing-Key-Lebenszyklus) UND **der primäre Fernzugriffsweg** auf den Server. Ein fehlgeschlagenes Tailscale-Update kann den eigenen Zugangsweg kappen — der nightly hätte dann keinen Rollback-Pfad mehr für sich selbst, weil der menschliche Rückfall-Zugang (SSH über Tailscale) gerade nicht verfügbar ist. Der Architekt muss bei Tailscale-Updates anwesend sein, um den Rückfall (Hetzner-Web-Konsole) zur Verfügung zu haben.
+
+**Verworfene Alternative:** Tailscale wie andere `-updates`-Pakete behandeln. Verworfen, weil das Risiko nicht im Update selbst liegt, sondern in der Kombination „Update-Fehler + kein Rückfall-Zugang ohne Menschen vor Ort".
+
+**Kontextbindung:** Falls ein zweiter unabhängiger Fern-Zugangsweg existiert (z. B. SSH über öffentliche IP mit Key + 2FA), kann das neu bewertet werden. Aktuell ist Tailscale der einzige Pfad.
+
+---
+
+## E22 — settings.json ist im `acceptEdits`-Modus eine Deny-Blacklist für Bash, keine Allowlist (E13 strukturell erst mit PreToolUse-Hook)
+
+**Auslöser:** PLAT-001 Q2: Beim Schärfen des nächtlichen Tool-Sets für den `-updates`-Auto-Pfad (Block 1b autonom) sollte `Bash(sudo apt-get install:*)` als spezifischer allow gegen `Bash(sudo:*)` deny gestellt werden. Vier Echttests (`claude --print --settings $NIGHTLY_SETTINGS --permission-mode acceptEdits`):
+1. Baseline mit `Bash(sudo:*)` deny + KEIN sudo-allow + Prompt „führe `sudo --version` aus" → blockiert.
+2. Konflikt mit `Bash(sudo:*)` deny + `Bash(sudo --version)` allow + selber Prompt → ebenfalls blockiert. **→ deny dominiert auch strikt spezifischeres allow.**
+3. Mit `Bash(sudo:*)` aus deny entfernt + zwei spezifische sudo-allows + Prompt „führe `sudo whoami` aus" (NICHT in allow) → ging durch. **→ Bash-Calls außerhalb der deny-Liste werden durchgelassen, allow-Liste hat keinen filternden Effekt.**
+4. Selber Prompt mit `whoami` (kein sudo, gar nicht in allow oder deny) → ging durch. Bestätigung.
+
+**Entscheidung:** `settings.json` im `acceptEdits`-Modus ist für Bash strukturell **eine Deny-Blacklist**, keine Allowlist. E13 („Repo definiert AUSWAHL aus OS-Allowlist, nie FÄHIGKEIT") ist auf der Bash-Tool-Ebene **erst mit einem PreToolUse-Hook** strukturell realisiert. Bis dahin: jede Bash-Tool-Erweiterung, die im nightly Allowlist-artige Garantien voraussetzt (z. B. „`sudo apt-get install`-Recht nur in genau dieser Form"), wird **NICHT scharf geschaltet** — die Mechanik wird gebaut, aber der autonome Lauf wartet auf den Hook.
+
+**Warum:** Eine Deny-Blacklist gegen `sudo`-Formen ist durch Shell-Form-Variation schlagbar (`sudo bash -c`, `sudo sh -c`, `sudo find -exec`, `sudo install`, lokales `.deb` mit Maintainer-Skript, neuer ungelisteter Aufruf) — exakt das E16-Antimuster, das für den nachts unbeaufsichtigten, injection-exponierten Lauf bewusst verworfen wurde. Bei E16 hatte die Lösung „Write-Tool als strukturelle Pfad-Grenze" die Schreib-Ebene gelöst; die Bash-Ausführungs-Ebene bleibt offen, bis ein analoger struktureller Mechanismus existiert.
+
+**Verworfene Alternative (Option C in PLAT-001 Q2):** Deny-Blacklist gefährlicher sudo-Subkommandos breit machen (`sudo rm:*`, `sudo dd:*`, `sudo systemctl stop:*` etc.) und produktiv scharf schalten, bevor der Hook gebaut ist. Verworfen, weil das exakt die Pattern-Akrobatik wäre, die E16 schon einmal bewusst verworfen hat — schwächere Garantie, durch eine vergessene Shell-Form kippbar, im injection-exponierten Nachtlauf scharf geschaltet. Komfortgewinn (autonomes `-updates`-Patchen ein paar Wochen früher) rechtfertigt das Risiko nicht: `-updates` sind aktuell alle eingespielt, `-security` läuft autonom über unattended weiter.
+
+**Kontextbindung:** Sobald PLAT-002 den PreToolUse-Hook gebaut und unter Aufsicht bewiesen hat, kann die Mechanik in `nacht-aufgaben.md` (1b autonom, Reboot autonom) scharf geschaltet werden. Bis dahin gilt: jede Erweiterung der Bash-allow-Liste in `~/.claude-nightly/settings.json` hat keinen filternden Effekt und sollte aus E13-Klarheits-Gründen **trotzdem** gepflegt werden (Dokumentations-Wert: „diese Tools sollten erlaubt sein, sobald die Allowlist-Mechanik existiert"). Wer in der Übergangszeit Bash-Tool-Set ändert, muss die Deny-Liste prüfen, weil DORT die echte Grenze sitzt.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.
