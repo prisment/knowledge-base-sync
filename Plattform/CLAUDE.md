@@ -16,5 +16,5 @@ Laufender Zyklus:
   (Morgen-Reports der nächtlichen Routine).
 
 Begründungen und Abgeschlossenes:
-- [Logbuch/](Logbuch/) — Plattform-spezifische Entscheidungs-Historie.
+- Logbuch: zentral unter [`_Betrieb/Logbuch/ENTSCHEIDUNGS_HISTORIE_FRAMEWORK.md`](../_Betrieb/Logbuch/ENTSCHEIDUNGS_HISTORIE_FRAMEWORK.md) — seit E24 ein gemeinsames Logbuch für alle Bereiche.
 - [Archiv/](Archiv/) — abgeschlossene Zyklen.

@@ -2,6 +2,8 @@
 **Zweck:** Hält fest, WARUM die zentralen Design-Entscheidungen des Frameworks so getroffen wurden. Damit künftige Iterationen nicht bereits geführte Diskussionen wiederholen. Dies ist der erste Logbuch-Eintrag und gleichzeitig ein Beispiel für das Logbuch-Format selbst.
 **Kontext der Entstehung:** Erarbeitet im selben Chat-Zyklus wie der Prisment-Security-Refactor (CVE-2025-55182-Incident → Cloudflare-Migration). Das Framework-Bedürfnis entstand AUS diesem Zyklus, weil er die Grenzen der bisherigen Arbeitsweise sichtbar machte.
 
+**Inhaltsumfang (Stand 2026-05-24, nach Framework-v2):** Diese Datei ist ab E24 das **zentrale** Logbuch für alle Geltungsbereiche — sie hält sowohl Framework-Design-Entscheidungen (überwiegend E1–E18, E23, E24) als auch betriebliche Entscheidungen pro Bereich (E19–E22 betreffen Plattform/PLAT-001) in einer einzigen chronologischen Liste. Bereichseigene `Logbuch/`-Ordner wurden mit E24 abgeschafft. Eine thematische Untergliederung (z. B. „Framework-Design" vs. „Betrieb") ist nicht eingezogen, weil sie die Chronologie zerreißt — ob sie sinnvoll wäre, ist offen (siehe Architekten-Frage im Framework-v2-Umbau).
+
 ---
 
 ## E1 — Warum vier Wissens-Kategorien statt der ursprünglich gedachten drei
@@ -277,6 +279,74 @@
 **Verworfene Alternative (Option C in PLAT-001 Q2):** Deny-Blacklist gefährlicher sudo-Subkommandos breit machen (`sudo rm:*`, `sudo dd:*`, `sudo systemctl stop:*` etc.) und produktiv scharf schalten, bevor der Hook gebaut ist. Verworfen, weil das exakt die Pattern-Akrobatik wäre, die E16 schon einmal bewusst verworfen hat — schwächere Garantie, durch eine vergessene Shell-Form kippbar, im injection-exponierten Nachtlauf scharf geschaltet. Komfortgewinn (autonomes `-updates`-Patchen ein paar Wochen früher) rechtfertigt das Risiko nicht: `-updates` sind aktuell alle eingespielt, `-security` läuft autonom über unattended weiter.
 
 **Kontextbindung:** Sobald PLAT-002 den PreToolUse-Hook gebaut und unter Aufsicht bewiesen hat, kann die Mechanik in `nacht-aufgaben.md` (1b autonom, Reboot autonom) scharf geschaltet werden. Bis dahin gilt: jede Erweiterung der Bash-allow-Liste in `~/.claude-nightly/settings.json` hat keinen filternden Effekt und sollte aus E13-Klarheits-Gründen **trotzdem** gepflegt werden (Dokumentations-Wert: „diese Tools sollten erlaubt sein, sobald die Allowlist-Mechanik existiert"). Wer in der Übergangszeit Bash-Tool-Set ändert, muss die Deny-Liste prüfen, weil DORT die echte Grenze sitzt.
+
+## E23 — Warum drei Prozess-Stufen (Spur / Sprung / Schritt) statt einer Einheitsgröße
+
+  
+
+**Auslöser:** Nach den ersten beiden Zyklen (BOOT-001, PLAT-001) fiel auf: Das Framework kennt nur EINEN Gang — den vollen Neun-Phasen-Zyklus mit Faktensammlung, Spec, Machbarkeit, Abschluss-Doku. Für große Vorhaben (Data-Integrity-Pipeline, Cloudflare-Härtung) richtig. Aber für kleine, konkrete Aufgaben (ein Bugfix wie der Whiptail-Dialog, ein Doku-Update) verbrennt dieselbe Zeremonie unverhältnismäßig viel Zeit. Geschwindigkeit ist das oberste Ziel des Solo-Gründers; die Einheitsgröße bremste sie bei kleinen Tasks strukturell.
+
+  
+
+**Entscheidung:** Drei Stufen, getrennt nach **Zeremonie-Bedarf** (nicht nach Thema):
+
+- **Spur** = voller Zyklus (alle 9 Phasen, alle Dokumente). Für Architektur-Gestaltendes, Kundendaten/Auth/Netz, oder Risikoklasse `kritisch`.
+
+- **Sprung** = verschlankt (kombinierte Spec mit inline-Fakten/Machbarkeit, kurze Abschluss-Notiz, ein Stopp). Für konkrete, abgegrenzte Aufgaben mit überschaubarem Risiko.
+
+- **Schritt** = prozessfrei (kein Dokument, nur eine automatische Zeile in `<Bereich>/Schritt-Log.md`). Für triviales, reversibles, isoliertes Zeug.
+
+  
+
+Harte Regeln: Risikoklasse `kritisch` erzwingt immer Spur (kein Klein-Fahren aus Bequemlichkeit). Einstufung ist **Beratung** (Chat-Architekt + Claude Code schlagen vor + begründen, was wirklich dranhängt), nicht Mensch-Alleinentscheidung — der Mensch revidiert. Eskalation während des Laufs (Sprung → Spur) wird beratend vorgeschlagen, bei Zustimmung Stopp + Vermerk + voll weiter.
+
+  
+
+**Warum:** Zwei Achsen wurden bewusst getrennt: **Größe/Zeremonie** (Spur/Sprung/Schritt — prozesssteuernd) und **Art** (feature/bugfix/recherche/… — nur Filter-Etikett `art:` im Front Matter, ohne Prozess-Wirkung). Profis trennen das ebenso (ITIL Standard/Normal/Emergency Change nach Risiko; Agile Epic/Story/Task nach Größe; SRE toil vs. Projektarbeit). Eine Bug-/Feature-Matrix hätte die Stufen vervierfacht — genau die Komplexität, die der Solo-Gründer nicht will. Drei Schubladen, in die jeder Task in Sekunden fällt. Die Einstufung als Beratungspflicht schützt davor, dass der Mensch Aufwand unterschätzt (PLAT-001 war als Patch gedacht und entpuppte sich zu Recht als Spur, weil Reboot-Autonomie + Allowlist-Frage aufkamen).
+
+  
+
+**Verworfene Alternative:** (a) Vier Stufen — verworfen, kein Beispiel fiel aus den drei heraus, Zusatzstufe wäre Komplexität ohne Anlass. (b) Achse „Art" prozesssteuernd machen — verworfen, weil ein Bugfix winzig (Typo) oder riesig (Next.js-CVE-Hack) sein kann; die Art sagt nichts über den Aufwand.
+
+  
+
+**Kontextbindung:** Skaliert mit der Praxis. Wenn sich nach mehreren Zyklen zeigt, dass eine Stufe systematisch fehlt oder überflüssig ist, neu bewerten (über Phase 9, nie nach unten).
+
+  
+
+---
+
+  
+
+## E24 — Warum das Logbuch zentral ist (revidiert E14-Teilaspekt)
+
+  
+
+**Auslöser:** Widerspruch zwischen Regel und gelebter Praxis aufgedeckt: E14 hielt fest „Logbuch bleibt bewusst **verteilt**" (pro Bereich), und die Bereichs-Wegweiser (`Plattform/CLAUDE.md` etc.) zeigen auf bereichseigene `Logbuch/`-Ordner. Tatsächlich wurden aber ALLE Einträge (E1–E22, inklusive reiner Plattform-Betriebsentscheidungen wie E19 Postgres, E20 Docker, E21 Tailscale) zentral in `_Betrieb/Logbuch/` geschrieben. Die Praxis hat zwei Zyklen lang intuitiv zentralisiert.
+
+  
+
+**Entscheidung:** Das Logbuch existiert genau EINMAL, zentral in `_Betrieb/Logbuch/`. Keine bereichseigenen Logbücher. Die leeren `<Bereich>/Logbuch/`-Ordner werden entfernt, die Wegweiser angepasst. Bereichszuordnung künftig über Gliederung/Feld innerhalb der einen Datei, nicht über getrennte Dateien.
+
+  
+
+**Warum:** (1) Die gelebte Praxis war klüger als die Theorie — sie hat sich am echten Gebrauch bewährt. (2) Ziele Geschwindigkeit + weniger Komplexität: ein Ort zum Nachschlagen, keine „in welches Logbuch?"-Entscheidung pro Eintrag, triviale Quervernetzung (E22 → E13/E16 in einer Datei statt über Dateigrenzen). (3) Die ursprüngliche E14-Sorge „Zumüllen des zentralen Logbuchs" ist bei aktuellem Volumen (24 Einträge in der gesamten Historie) irrelevant; falls je nötig, löst Gliederung nach Bereich das Auffinden ohne separate Dateien. (4) Konsistent mit E14s eigener Backlog-Logik (zentral, Bereichszuordnung über Feld) — und das übergreifende Logbuch wird ohnehin ins Chat-Briefing gespiegelt (E11), die Bereichs-Logbücher nicht.
+
+  
+
+**Verworfene Alternative:** Verteilt durchziehen (Verfassung-Treue über Praxis). Verworfen, weil das die intuitiv bewährte Praxis der Theorie geopfert hätte und beide Solo-Gründer-Ziele (Geschwindigkeit, weniger Komplexität) verschlechtert.
+
+  
+
+**Verhältnis zu E14:** Revidiert NUR den Logbuch-Teilaspekt von E14. Der Kern von E14 (zentraler Backlog) bleibt unangetastet und wird durch diese Entscheidung sogar bestätigt (gleiche Logik).
+
+  
+
+**Folge-Hinweis:** Die zentrale Datei heißt `ENTSCHEIDUNGS_HISTORIE_FRAMEWORK.md` — der Name verspricht *Framework*-Historie, enthält aber auch Plattform-Betriebsentscheidungen (E19–E21). Beim Umbau entweder umbenennen (allgemeiner) oder intern klar zwischen „Framework-Design" und „Betrieb pro Bereich" gliedern, damit keine stille Namens-Inkonsistenz bleibt.
+
+  
+
+**Kontextbindung:** Sobald ein Team existiert (mehrere Hände, unabhängig wachsende Bereichs-Historien), kann gesplittet werden. Für den Solo-Gründer mit allem in einer Hand gewinnt zentral.
 
 ---
 

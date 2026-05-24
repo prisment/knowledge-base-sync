@@ -14,5 +14,5 @@ Laufender Zyklus:
   aktiven Zyklus.
 
 Begründungen und Abgeschlossenes:
-- [Logbuch/](Logbuch/) — interne Entscheidungs-Historie.
+- Logbuch: zentral unter [`_Betrieb/Logbuch/ENTSCHEIDUNGS_HISTORIE_FRAMEWORK.md`](../_Betrieb/Logbuch/ENTSCHEIDUNGS_HISTORIE_FRAMEWORK.md) — seit E24 ein gemeinsames Logbuch für alle Bereiche.
 - [Archiv/](Archiv/) — abgeschlossene Zyklen.
