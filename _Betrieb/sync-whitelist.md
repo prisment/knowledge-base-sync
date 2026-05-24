@@ -48,7 +48,6 @@ Intern/Systemzustand/Uebersicht/**
 **/Archiv/**                     # abgeschlossen, nicht aktiv nötig
 **/Migration/**                  # zerstörungsfreier Migrations-Korridor, transient
 10_Kunden/**                     # personenbezogen/sensibel — NIE
-_AUSGESONDERT_CODE/**            # Code-Auslagerung, Configs können Secrets enthalten — NIE
 **/*.env, **/secrets/**, Tokens, Keys   # Secrets — NIE
 ```
 
