@@ -43,6 +43,10 @@ Die Stufe wird **nicht vom Menschen allein geraten**. Der Mensch kann den Aufwan
 - Das ist kein Scheitern, sondern das System, das funktioniert. Verwandt mit dem Pausieren+Einschieben unten, aber ohne neuen Zyklus — dasselbe Vorhaben läuft auf höherer Stufe weiter.
 - Herunterstufung gibt es nicht automatisch. Wer einmal als Spur erkannt wurde, bleibt Spur.
 
+### Schritt-Log-Pflege (übergreifend, nicht nur bei Stufe Schritt)
+
+Das `<Bereich>/Schritt-Log.md` ist nicht nur Artefakt der Stufe Schritt — es ist auch das laufende Mini-Journal des Bereichs. Claude Code pflegt es **ohne Nachfrage**, wenn ein Ereignis wertvoll genug ist, später nachschlagbar zu sein, aber zu klein/punktuell, um es in Spec/Abschluss-Doku/Logbuch sinnvoll abzubilden. Beispiele: ein Aufräum-Schritt am Rand eines Sprungs, ein bewusster Konfigurations-Tweak, eine Bereinigung obsoleter Reste. Urteilskriterium ist nicht die Stufe, sondern: „würde jemand in drei Monaten Wert daraus ziehen, eine Zeile zu finden — und keine umfangreichere Spur woanders?". Wenn ja: eintragen. Wenn der Eintrag auch im Schritt-Log keinen Mehrwert über den Commit selbst hinaus hätte, weglassen.
+
 ## Die neun Phasen
 
 1. **Auslöser** — Idee, Problem, Produktarbeit oder geplanter Prozess. **Hier wird die Stufe vorgeschlagen + festgelegt** (siehe oben).
