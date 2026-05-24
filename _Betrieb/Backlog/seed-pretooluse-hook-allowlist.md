@@ -11,6 +11,7 @@ abhaengig_von:
   - "[[Plattform/Arbeitsgedaechtnis/PLAT-001_SPEC_v2.md]]"
 ---
 
+
 ## Anlass — falsche Annahme aufgedeckt (PLAT-001 Q2)
 
 Beim Schärfen des nächtlichen Tool-Sets für den `-updates`-Auto-Pfad (PLAT-001
