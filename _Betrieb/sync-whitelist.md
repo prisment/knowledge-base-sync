@@ -1,7 +1,7 @@
 ---
 typ: manifest
 titel: "Sync-Whitelist (GitHub → Projekt-Wissen)"
-stand: 2026-05-23
+stand: 2026-05-24
 gepflegt_von: "Claude Code"
 ---
 
@@ -29,12 +29,15 @@ _Betrieb/Backlog/**              # zentraler Backlog + Seed-Dateien (Planungsüb
 CLAUDE.md                        # Root-Wegweiser
 
 Plattform/CLAUDE.md
+Plattform/Schritt-Log.md
 Plattform/Systemzustand/Uebersicht/**     # nur kuratierte Übersichten (MD + SVG), nicht der ganze Systemzustand
 
 Prisment/CLAUDE.md
+Prisment/Schritt-Log.md
 Prisment/Systemzustand/Uebersicht/**
 
 Intern/CLAUDE.md
+Intern/Schritt-Log.md
 Intern/Systemzustand/Uebersicht/**
 ```
 
@@ -42,7 +45,6 @@ Intern/Systemzustand/Uebersicht/**
 
 ```
 **/Arbeitsgedaechtnis/**         # flüchtig → Gesprächskanal
-**/Logbuch/** (geltungsbereich-spezifisch)   # gezielt nachgeschlagen, nicht im Dauer-Briefing
 **/Archiv/**                     # abgeschlossen, nicht aktiv nötig
 **/Migration/**                  # zerstörungsfreier Migrations-Korridor, transient
 10_Kunden/**                     # personenbezogen/sensibel — NIE
