@@ -76,7 +76,27 @@ statt Trennen — gleiche Logik wie zentraler Backlog (E14) und zentrales Logbuc
 
 (Block-Namen sind Vorschlag — in der Spec gegen die reale Seed-Liste schärfen.)
 
-### 4. Generierte Übersicht — `_Betrieb/Backlog/00_UEBERSICHT.md` + SVG
+### 4. Migration aller bestehenden Seeds (eigener Pflicht-Block, größter Aufwand)
+
+Alle ~15 vorhandenen Seeds + 2 Roadmaps bekommen `klasse`/`zugkraft`/`block`
+nachgetragen. Das ist NICHT Beiwerk, sondern der zeitintensivste Teil des
+Zyklus — Urteilsarbeit pro Seed (KI schlägt Einstufung + Begründung vor, Mensch
+gibt frei), nicht maschinelles Befüllen.
+
+**Pflicht-Stopp-Tor:** Claude Code legt die vorgeschlagene Einstufung ALLER
+Alt-Seeds als EINE Tabelle vor (Seed → klasse → zugkraft → block → kurze
+Begründung). Der Mensch sieht sie in einem Rutsch durch und gibt frei/revidiert —
+KEINE 15 Einzel-Freigaben nacheinander (das würde sich ziehen und den
+Geschwindigkeits-Vorteil fressen). Erst nach dieser Sammel-Freigabe werden die
+Felder in die Dateien geschrieben.
+
+**Rückkopplung auf die Felddefinition:** Fällt bei der Migration auf, dass eine
+Klasse fehlt, eine Zugkraft-Stufe unscharf ist oder die harte Security-Regel
+einen Alt-Seed falsch zwingt, fließt das zurück in Teil 1/2 (die Definition wird
+geschärft, bevor sie festgeschrieben wird). Die Migration ist der erste echte
+Test der Felder gegen die Realität — bewiesen, nicht angenommen.
+
+### 5. Generierte Übersicht — `_Betrieb/Backlog/00_UEBERSICHT.md` + SVG
 
 Abgeleitete Ansicht (Verfassung 03 SSOT — verdichtet die Seeds, ist nie zweite
 Wahrheit). Ein **dummes Skript** (Python-stdlib, kein LLM, kein Claude-Aufruf):
@@ -88,7 +108,7 @@ liest alle Backlog-`.md`, parst Front Matter (`klasse`, `zugkraft`, `block`,
   grafisch, was was blockiert.
 
 Form analog zu den Bereichs-Übersichten (`seed-bereichs-uebersichten`): MD + SVG,
-generiert, im Sync sichtbar.
+generiert, im Sync sichtbar. Alle operativen Seeds in einen Unterordner seeds verschieben. So dass unter Backlog nur die ubersicht sichtbar ist.
 
 ## Architektur-Klarstellung (wichtig, damit nichts verwechselt wird)
 
@@ -139,8 +159,6 @@ Mutationen — das wäre Overhead ohne Mutation.
 - `ROADMAP_lebende-bereichs-doku` Schritt 8: dieselbe Pflege-Mechanik
   (Pflicht-Tor + Derivat-Regenerierung) — Konsistenz wahren, nicht doppelt
   erfinden.
-- Migration der bestehenden ~15 Seeds: jeder Alt-Seed bekommt `klasse`/`zugkraft`/
-  `block` nachgetragen (Teil der Umsetzung, KI schlägt vor, Mensch gibt frei).
 
 ## Stufe / Risiko
 
