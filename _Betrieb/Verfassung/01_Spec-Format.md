@@ -67,6 +67,27 @@ Die Spec-weite `risikoklasse:` ist **Obergrenze**, nicht Ersatz: eine `kritisch`
 
 **Die Liste lebt:** wächst per Phase-9-Pflicht-Tor (Mensch gibt frei, E3-konform), wenn ein Schaden eine fehlende Kategorie aufdeckt.
 
+## Parallel-Lauf von Spuren
+
+Mehrere Spec-Zyklen können gleichzeitig laufen — in eigenen Git-Worktrees, jeweils eigener `tmux`-Session, jeweils eigener Branch `wt/<short>` (Mechanik: PLAT-014, E31).
+
+**Mengen-Regel (hart, maschinell geprüft):** Nie zwei Spuren mit `risikoklasse: kritisch` oder `sicherheitskritisch-akut` parallel. Der Mensch ist die Stop-Instanz, kann sich nicht zerteilen. **Keine Anzahl-Obergrenze** für gleichzeitige Spuren insgesamt — die Grenze setzt der Mensch über seine Stopp-Auslöser-Aufmerksamkeit.
+
+**Hot-File-Pflicht-Tor:** Wenn auch nur ein Pfad aus `_Betrieb/Backlog/00_HOT-FILES.md` in den `beruehrt:`-Mengen irgendeines parallel laufenden Strangs auftaucht, ist Parallelität ausgeschlossen — egal wie disjunkt der Rest ist. Hot-Files sind die Konflikt-Quellen, die jeder Strang berührt.
+
+**Disjunktheits-Check vor Strang-Start (Pflicht):**
+```
+python3 /opt/infrastructure/environment_a/scripts/backlog/check_parallel.py <pfad1> <pfad2> [<pfad3> ...]
+```
+Drei Ausgabe-Klassen:
+- ✓ `disjunkt` → parallel zulässig
+- ✗ `Schnittmenge zwischen Spuren` → seriell zwingend (gemeinsamer `beruehrt:`-Pfad oder Mengen-Regel-Verstoß)
+- ✗ `Hot-File-Treffer` → Parallelität ausgeschlossen
+
+Das Skript ist die maschinelle Wand; menschliche Disziplin bleibt die zweite Wand für Fälle, die das Skript nicht sieht (z.B. shared Code-Patterns innerhalb gleicher Ordner-Ebene). Beim Strang-Start ist der Check Pflicht — Verstoß per Override geht nur mit ausdrücklicher Logbuch-Notiz.
+
+**`10_Kunden/`-Schutz auf Worktree-Branches:** Der pre-commit-Hook im knowledge-base-Repo lehnt jeden Commit auf einem `wt/*`-Branch ab, der Dateien unter `10_Kunden/` berührt. Mandantendaten dürfen nur auf `main` bearbeitet werden. Override `--no-verify` nur in begründeten Ausnahmen.
+
 ## Bündelung gehört NICHT in die Spec
 
 Die Spec definiert das WAS (Ziel, Soll-Zustand, Akzeptanzkriterien). Die Bündelung/Arbeitsliste erarbeitet sich Claude Code selbst im Machbarkeits-Report — er kann Abhängigkeiten am echten System besser einschätzen. *(Beim Sprung: inline in der kombinierten Spec, knapp.)*
