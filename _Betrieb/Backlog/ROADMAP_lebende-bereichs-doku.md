@@ -18,12 +18,10 @@ kuratierte Übersicht unter `<Bereich>/Systemzustand/Uebersicht/` (MD + SVG)
 für Mensch und Chat-Architekt, und (c) eine Mechanik, die beides am Leben
 hält — Pflicht-Tor in Phase 9 plus nightly Drift-Check.
 
-**Stand:** 2026-05-24 — PLAT-008 pausiert vor Bündel-1-Ausführung; Einschub
-PLAT-009 (Twilio + Telegram End-of-Life) läuft, weil bei der Beweisführung
-zum Twilio-Tod auffiel, dass Twilio und Telegram quer durch Code, n8n und
-Doku noch lebende Referenzen haben. Nach EOL-Abschluss Re-Sync und
-Wiederaufnahme von PLAT-008. Spec-IDs der nachgelagerten Schritte um eins
-verschoben.
+**Stand:** 2026-05-25 — PLAT-009 (Twilio + Telegram End-of-Life)
+abgeschlossen (Archiv: `Plattform/Archiv/PLAT-009/`). PLAT-008 nach
+Re-Sync wieder aufgenommen mit reduziertem Bündel 1 (Twillo +
+n8n-Change-Log + HARDENING-Archiv-Ordner schon durch PLAT-009 erledigt).
 
 ## Stufeneinstufung
 
@@ -41,15 +39,14 @@ Pflege automatisieren.
 
 ## Schritte
 
-1. ⏸️ **PLAT-008 — Bestandsaufnahme + Bereinigung Plattform.**
-   Drift-Report Real vs Doku, dann Bereinigung veralteter Dateien +
-   Aktualisierung der bleibenden. **Pausiert** vor Bündel 1 — siehe
-   `Plattform/Arbeitsgedaechtnis/PLAT-008_PAUSE.md`. Re-Sync nach Einschub
-   PLAT-009.
-2. 🔄 **PLAT-009 — Einschub: Twilio + Telegram End-of-Life.**
-   Eigene Roadmap: `_Betrieb/Backlog/ROADMAP_telegram-twilio-eol.md`.
-   Voraussetzung dafür, dass PLAT-008 sauber abgeschlossen werden kann
-   (Doku darf nicht lügen — Code-Cleanup zuerst).
+1. 🔄 **PLAT-008 — Bestandsaufnahme + Bereinigung Plattform.**
+   Wieder aufgenommen 2026-05-25 nach Re-Sync. Bündel 1 jetzt reduziert
+   (3 von 6 Items durch PLAT-009 schon erledigt — siehe
+   `PLAT-008_PAUSE.md` Re-Sync-Ergebnis).
+2. ✅ **PLAT-009 — Einschub: Twilio + Telegram End-of-Life.** Abgeschlossen
+   2026-05-25 (Archiv: `Plattform/Archiv/PLAT-009/`). Logbuch E25
+   (Telegram-EOL) + E26 (WAF-Skip Access-Apps). Folge-Seed:
+   `seed-sma-doku-rewrite-nach-telegram-eol.md`.
 3. ⬜ **PLAT-010 — Übersichten Plattform** (vorher PLAT-009).
 4. ⬜ **PRIS-XXX — Bestandsaufnahme + Bereinigung Prisment.**
 5. ⬜ **PRIS-XXX+1 — Übersichten Prisment** (Bestand `Architektur/00_PRISMENT_…`
@@ -68,10 +65,11 @@ Pflege automatisieren.
 
 ## Aktueller Schritt — Detail
 
-**Schritt 2: PLAT-009 (Einschub) — Twilio + Telegram End-of-Life.**
-PLAT-008 ist pausiert (Pause-Snapshot vorhanden). Eigene Roadmap unter
-`_Betrieb/Backlog/ROADMAP_telegram-twilio-eol.md`. Nächste Aktion dort:
-Phase 1 (Auslöser + Stufen-Vorschlag + Faktensammlungs-Plan).
+**Schritt 1: PLAT-008 (Wiederaufgenommen) — Plattform-Doku-Bereinigung.**
+Nächste Aktion: Bündel 1 mit reduzierter Liste ausführen
+(authentik.md + mattermost.md löschen, SSH_PFADE_INVENTAR ins
+HARDENING-Archiv), dann normal weiter mit Bündel 2 (G — neue Dienst-Dokus
+für cloudflared, umami, redis-twenty, ollama-proxy).
 
 ## Vorsichtsregel zur Bereinigung
 

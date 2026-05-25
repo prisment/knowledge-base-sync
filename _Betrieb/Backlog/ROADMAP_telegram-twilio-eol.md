@@ -4,8 +4,9 @@ titel: "Twilio + Telegram End-of-Life (Code + Doku + n8n + compose)"
 stufe: spur
 geltungsbereich: plattform
 risikoklasse: sicherheitskritisch-akut
-status: in_arbeit
-stand: 2026-05-24
+status: abgeschlossen
+stand: 2026-05-25
+abschluss: "Plattform/Archiv/PLAT-009/PLAT-009_Abschluss.md"
 spec_id_geplant: PLAT-009
 einschub_in: "ROADMAP_lebende-bereichs-doku.md (PLAT-008 pausiert)"
 ---

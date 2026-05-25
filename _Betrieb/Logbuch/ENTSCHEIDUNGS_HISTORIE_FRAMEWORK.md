@@ -350,6 +350,38 @@ Harte Regeln: Risikoklasse `kritisch` erzwingt immer Spur (kein Klein-Fahren aus
 
 ---
 
+## E25 — Telegram + Twilio aus dem Produktbetrieb entfernen (PLAT-009, 2026-05-25)
+
+**Auslöser:** Während PLAT-008 (Plattform-Doku-Bereinigung) sollte als triviales Aufräumen `Twillo.md` gelöscht werden. Beweisführung zum Twilio-Tod legte offen: Telegram + Twilio leben quer durch System: 3 produktive n8n-Workflows mit 16 Telegram-Nodes (allen voran „T: Telegram Router v5" mit 11), Code in 5 langgraph-Codebases, env-Vars in compose, n8n-DB-Credential, ~40 Doku-Erwähnungen. „Schritt 24" (2026-05-11) hatte schon angefangen Telegram zu entfernen, war aber halbfertig — redaktionsplan komplett ausgelassen, content/analytics-Prompts noch telegram-spezifisch, Workflows produktiv.
+
+**Entscheidung:** Telegram und Twilio sind aus dem Produktbetrieb komplett raus. Externe Provider (Telegram-Bot bei BotFather, Twilio-Account) bleiben extern existent (Mensch-Eigentum, für „irgendwann mal"), werden aber nicht mehr genutzt und nicht referenziert. PLAT-008 wird pausiert, PLAT-009 als eigene Spur (`sicherheitskritisch-akut`, weil Code-Eingriff + compose + aktive Workflows) eingeschoben. Mandanten-Kommunikation läuft ausschließlich über PWA-Push + Email-Fallback.
+
+**Warum:** (1) DSGVO-Aufwand für Telegram-Bot-Hosting (Drittland-Datenfluss, AVV) nicht mehr tragbar. (2) Kunden-Einrichtungs-Last (Bot-Token, Chat-ID einrichten) war Hürde im Onboarding. (3) Architektur-Komplexität: `telegram-router.json` war 2383 Zeilen Lava, 6 von 8 letzten Bug-Fixes waren Telegram-Routing. (4) Halbfertige Bereinigung („Schritt 24") ist eigene Risikoquelle — Doku und Code sagen Unterschiedliches, Mensch und KI verlieren das Vertrauen in beide. (5) Eine kuratierte Übersicht (PLAT-008-Ziel) aus widersprüchlichem Code+Doku ist wertlos. Telegram-EOL ist Voraussetzung dafür, dass PLAT-008 sinnvoll abgeschlossen werden kann.
+
+**Verworfene Alternative:** Telegram nur in der Doku als „weg" markieren, Code/Workflows weiterlaufen lassen bis nächste Code-Iteration. Verworfen, weil das exakt die E2-Verletzung wäre („Doku darf nicht lügen") und der Drift erst recht zementiert würde.
+
+**Folge-Hinweis:** WhatsApp wird im Code/Content als Kommunikations-Label und Stil (Kontakt-Kanal, „WhatsApp-Nachricht-Stil") weiter genutzt — losgelöst von Twilio-Integration. Bleibt drin, ist nicht von dieser Entscheidung berührt.
+
+**Kontextbindung:** Sollte irgendwann ein Use-Case auftauchen, der Telegram/Twilio wirklich braucht (z.B. bewusste Reaktivierung als Notification-Kanal), wird das ein NEUER Eintrag mit eigener Begründung — nicht stillschweigend wieder einführen.
+
+---
+
+## E26 — Cloudflare-WAF (OWASP) für Access-Apps deaktiviert (BREAKOUT in PLAT-009, 2026-05-25)
+
+**Auslöser:** Während PLAT-009 Phase 2 konnte der Mensch nicht auf `n8n.prisment.de` zugreifen — Cloudflare-Block-Page nach erfolgreichem Access-Login. Diagnose via Cloudflare-Firewall-Events: OWASP-Rule 949110 „Inbound Anomaly Score Exceeded" blockte legitime n8n-UI-Requests (CSS, JS, /favicon.ico, /healthz, /rest/projects). Klassischer False Positive: n8n-UI sendet POSTs mit JSON-Payloads, die OWASP-Regexen treffen (Code-Nodes mit JS, SQL-Keywords etc.), Anomaly-Score addiert sich auf, dann Block.
+
+**Entscheidung:** Skip-Rule für alle 8 Cloudflare-Access-geschützten Hosts (`n8n`, `git`, `ai`, `crm`, `admin`, `konzept`, `agent-content`, `analytics-admin`) in der Custom-Firewall-Ruleset: deaktiviert für diese Hosts WAF (inkl. OWASP), Bot Fight, Security Level, Rate Limits, UA-Blocks, Hotlink, Zone Lockdown. Cloudflare Access (Identity-Login als Auth) und DDoS-L7-Schutz bleiben aktiv. Public-Hosts (`prisment.de`, `app.prisment.de`, `assets.prisment.de`, `analytics.prisment.de`) unverändert mit voller WAF.
+
+**Warum:** (1) Architektur-Erkenntnis — WAF lohnt sich für **öffentliche** Ziele mit anonymem Angriffs-Traffic. Hinter Cloudflare Access ist anonymer Traffic vor dem Origin blockiert; WAF läuft nur gegen die authentifizierten Admin-Sessions. (2) Doppelter Gürtel ohne Mehrwert — Access ist die Auth, WAF davor produziert nur False Positives bei Web-Apps mit reichhaltigen Payloads (n8n, Twenty-CRM, Open WebUI, gitea — alle haben hochkomplexe POST-Bodies). (3) Konsistent mit bestehendem Pattern bei cf-alarm (HMAC-Sig als Auth, WAF-Skip seit BOOT-001 Bündel E). (4) Cloudflare bewirbt diesen Skip-Pattern explizit für Access-Apps.
+
+**Verworfene Alternative:** OWASP-Override nur für die konkrete Rule 949110 entschärfen. Verworfen, weil das halbe Lösung wäre — andere OWASP-Rules würden bei nächstem Workflow-Edit triggern, derselbe Mensch-Debug-Aufwand wieder.
+
+**Status:** Als QUICK-FIX/BREAKOUT eingeschoben, nicht in der PLAT-009-Spec vorgesehen. Aber als sauber dokumentierte Architektur-Entscheidung mitgenommen.
+
+**Kontextbindung:** Falls jemals eine Access-App auf „öffentlich für alle eingeloggten Google-Konten" o.ä. erweitert wird, ist die Skip-Regel neu zu bewerten. Aktuelle Policy: alle 8 Apps mit `include: email == korbinian.schnall@prisment.de`. Solange das so eng ist, gilt: WAF schützt nur vor dem authentifizierten Admin = sinnlos.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.
