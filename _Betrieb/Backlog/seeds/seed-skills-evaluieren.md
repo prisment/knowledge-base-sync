@@ -4,7 +4,6 @@ titel: "Skills evaluieren: wiederkehrende operative Verfahren als SKILL.md fixie
 geltungsbereich: alle
 risikoklasse: sicher
 status: offen
-prioritaet: niedrig
 klasse: prozess
 zugkraft: irgendwann
 stufe: sprung

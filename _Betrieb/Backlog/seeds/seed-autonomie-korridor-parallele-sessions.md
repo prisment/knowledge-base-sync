@@ -4,7 +4,6 @@ titel: "Autonome Ausführung im freigegebenen Korridor (Freigabe-Modell v2) + pa
 geltungsbereich: alle
 risikoklasse: kritisch
 status: offen
-prioritaet: HOCH
 art: prozess
 klasse: prozess
 zugkraft: jetzt

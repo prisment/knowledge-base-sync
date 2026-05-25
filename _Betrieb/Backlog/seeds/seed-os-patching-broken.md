@@ -4,7 +4,6 @@ titel: "OS-Patching greift nicht — Diagnose + Fix (nächster Zyklus nach BOOT-
 geltungsbereich: plattform
 risikoklasse: sicherheitskritisch-akut
 status: offen
-prioritaet: HOCH (nächster Zyklus, vor der Website-Anpassung)
 klasse: security
 zugkraft: jetzt
 stufe: spur

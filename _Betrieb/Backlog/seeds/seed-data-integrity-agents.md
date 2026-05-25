@@ -4,7 +4,6 @@ titel: "Data-Integrity-Architektur für LangGraph-Agents (zentrale Datenpunkt-De
 geltungsbereich: prisment
 risikoklasse: kritisch
 status: offen
-prioritaet: HOCH
 klasse: qualitaet
 zugkraft: jetzt
 stufe: spur

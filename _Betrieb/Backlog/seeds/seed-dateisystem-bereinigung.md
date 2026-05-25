@@ -4,7 +4,6 @@ titel: "Dateisystem-Bereinigung nach Konsolidierung"
 geltungsbereich: alle
 risikoklasse: sicher
 status: offen
-prioritaet: niedrig (erst nach den abhängigen Zyklen)
 klasse: wartung
 zugkraft: irgendwann
 stufe: sprung

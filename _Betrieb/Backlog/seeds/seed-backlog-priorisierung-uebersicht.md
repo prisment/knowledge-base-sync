@@ -4,7 +4,6 @@ titel: "Backlog-Priorisierung (Klasse × Zugkraft + harte Security-Regel) + gene
 geltungsbereich: alle
 risikoklasse: sicher
 status: offen
-prioritaet: HOCH
 art: prozess
 klasse: prozess
 zugkraft: jetzt

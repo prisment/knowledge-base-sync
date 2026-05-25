@@ -4,7 +4,6 @@ titel: "apt-get download muss immer mit exakter Versions-Pinnung erfolgen"
 geltungsbereich: plattform
 risikoklasse: niedrig
 status: offen
-prioritaet: niedrig
 klasse: wartung
 zugkraft: irgendwann
 stufe: sprung

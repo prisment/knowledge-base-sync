@@ -4,7 +4,6 @@ titel: "Pending-Kernel-Whiptail-Dialog bei -updates-Apply beobachten/unterdrück
 geltungsbereich: plattform
 risikoklasse: niedrig
 status: offen
-prioritaet: niedrig
 klasse: wartung
 zugkraft: irgendwann
 stufe: schritt

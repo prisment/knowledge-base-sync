@@ -4,7 +4,6 @@ titel: "PreToolUse-Hook als echte Bash-Tool-Allowlist (E13 strukturell realisier
 geltungsbereich: plattform
 risikoklasse: kritisch
 status: offen
-prioritaet: HOCH (Voraussetzung für nächtlich-autonomen -updates-Pfad aus PLAT-001)
 klasse: security
 zugkraft: bald
 stufe: spur

@@ -4,7 +4,6 @@ titel: "Code-Security-Standards + automatisierte Checks für Prisment-Produkt-Co
 geltungsbereich: plattform
 risikoklasse: kritisch
 status: offen
-prioritaet: HOCH
 klasse: security
 zugkraft: jetzt
 stufe: spur

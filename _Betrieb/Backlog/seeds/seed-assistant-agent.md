@@ -4,7 +4,6 @@ titel: "Assistant-Agent: handelnder Agent an Geschäftsprozessen (eigenes Sicher
 geltungsbereich: intern
 risikoklasse: kritisch
 status: offen
-prioritaet: niedrig
 klasse: feature
 zugkraft: irgendwann
 stufe: spur

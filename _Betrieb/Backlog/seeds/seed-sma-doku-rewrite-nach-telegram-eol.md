@@ -4,7 +4,6 @@ titel: "SMA-Doku Re-Write nach Telegram-EOL (8 Dateien mit VERALTET-Markierung)"
 geltungsbereich: prisment
 risikoklasse: sicher
 status: offen
-prioritaet: mittel
 klasse: wartung
 zugkraft: bald
 stufe: sprung

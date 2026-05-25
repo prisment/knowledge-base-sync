@@ -4,7 +4,6 @@ titel: "Verwaiste paperless-DB im PostgreSQL-Hub auflösen"
 geltungsbereich: plattform
 risikoklasse: sicher
 status: offen
-prioritaet: niedrig
 klasse: wartung
 zugkraft: irgendwann
 stufe: sprung

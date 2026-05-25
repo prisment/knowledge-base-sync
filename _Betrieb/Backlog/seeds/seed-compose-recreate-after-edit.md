@@ -4,7 +4,6 @@ titel: "Pflicht-Recreate nach Compose-Topologie-Edit"
 geltungsbereich: plattform
 risikoklasse: mittel
 status: offen
-prioritaet: mittel
 klasse: wartung
 zugkraft: bald
 stufe: sprung

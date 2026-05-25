@@ -4,7 +4,6 @@ titel: "Feature-Flag als anerkannter Zustand: gebaut, aber nicht scharf"
 geltungsbereich: alle
 risikoklasse: sicher
 status: offen
-prioritaet: niedrig
 klasse: prozess
 zugkraft: irgendwann
 stufe: sprung
