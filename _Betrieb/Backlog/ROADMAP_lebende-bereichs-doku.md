@@ -18,7 +18,7 @@ kuratierte Übersicht unter `<Bereich>/Systemzustand/00_Uebersicht/` (MD + SVG)
 für Mensch und Chat-Architekt, und (c) eine Mechanik, die beides am Leben
 hält — Pflicht-Tor in Phase 9 plus nightly Drift-Check.
 
-**Stand:** 2026-05-25 — PLAT-008 (Bestandsaufnahme + Bereinigung Plattform) abgeschlossen (Archiv: `Plattform/Archiv/PLAT-008/`). PLAT-009 dito (Telegram-EOL). Nächster Schritt: PLAT-010 — Übersichten Plattform.
+**Stand:** 2026-05-25 — PLAT-008, PLAT-009 und PLAT-010 abgeschlossen (Plattform-Bereinigung + Telegram-EOL + Plattform-Übersichten). Nächster Schritt: Roadmap-Reihenfolge ab Schritt 4 vom Mensch zu entscheiden.
 
 ## Stufeneinstufung
 
@@ -42,7 +42,7 @@ Pflege automatisieren.
    2026-05-25 (Archiv: `Plattform/Archiv/PLAT-009/`). Logbuch E25
    (Telegram-EOL) + E26 (WAF-Skip Access-Apps). Folge-Seed:
    `seed-sma-doku-rewrite-nach-telegram-eol.md`.
-3. 🔄 **PLAT-010 — Übersichten Plattform** (Vollausstattung gemäß Seed: 00_Bereich, 01_Architektur, Infrastruktur, geteilte Dienste, Sicherheits-Architektur — MD + SVG).
+3. ✅ **PLAT-010 — Übersichten Plattform.** Abgeschlossen 2026-05-25 (Archiv: `Plattform/Archiv/PLAT-010/`). 4 MD + 3 SVG in `00_Uebersicht/`. SVG-Stil-Konvention etabliert für Folge-Zyklen.
 4. ⬜ **PRIS-XXX — Bestandsaufnahme + Bereinigung Prisment.**
 5. ⬜ **PRIS-XXX+1 — Übersichten Prisment** (Bestand `Architektur/00_PRISMENT_…`
    umziehen in `Uebersicht/`, Format vereinheitlichen, Sub-Übersichten:
@@ -63,8 +63,8 @@ Pflege automatisieren.
 
 ## Aktueller Schritt — Detail
 
-**Schritt 3: PLAT-010 — Übersichten Plattform.**
-Nächste Aktion: Phase 1 (Auslöser + Stufen-Vorschlag + Plan für Faktensammlung). Inhalte stehen jetzt auf stabilem Detail-Doku-Stand aus PLAT-008.
+**Schritt 4: PRIS-XXX — Bestandsaufnahme + Bereinigung Prisment.**
+Reihenfolge offen (vom Mensch zu entscheiden): (a) erst SMA-Doku-Re-Write via `seed-sma-doku-rewrite-nach-telegram-eol.md`, dann PRIS-Bereinigung; (b) Intern vorziehen; (c) Schritt 8 (Automatisierung) vorziehen, weil das Pflicht-Tor jetzt formuliert werden kann.
 
 ## Vorsichtsregel zur Bereinigung
 
