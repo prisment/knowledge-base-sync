@@ -20,7 +20,8 @@ bereich_arbeitsgedaechtnis: Plattform
 1. ✅ Seed eingeordnet + Einschübe eingearbeitet (commit `44523d4`)
 2. ✅ Phase 2 — Faktensammlung (commit `4e53d22`)
 3. ✅ Phase 3 — Spec-Entscheidungen (Architekt im Chat, 2026-05-25)
-4. 🔄 **Phase 4 — Spec-Datei im Repo** (PLAT-012_SPEC.md) — *Freigabe ausstehend*
+4. ✅ Phase 4 — Spec freigegeben (PLAT-012_SPEC, mit Sortier-Korrektur + AK 6 umformuliert)
+5. 🔄 **Phase 5 — Machbarkeit + Bündel B1–B5** — *aktuell, B1 startet*
 5. ⬜ Phase 5 — Machbarkeitsanalyse (Claude Code)
 6. ⬜ Phase 6 — Bundled Execution:
    - B1 Verfassungs-Patches (`01_Spec-Format`, `00_Iterationszyklus`, Templates)
