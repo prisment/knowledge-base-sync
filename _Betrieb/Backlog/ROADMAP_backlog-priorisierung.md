@@ -18,9 +18,9 @@ bereich_arbeitsgedaechtnis: Plattform
 ## Schritte
 
 1. ✅ Seed eingeordnet + Einschübe eingearbeitet (commit `44523d4`)
-2. 🔄 **Phase 2 — Faktensammlung** (Claude Code) — *aktuell*
-3. ⬜ Phase 3 — Spec (Architekt im Chat)
-4. ⬜ Phase 4 — Übergabe Spec ins Repo
+2. ✅ Phase 2 — Faktensammlung (commit `4e53d22`)
+3. ✅ Phase 3 — Spec-Entscheidungen (Architekt im Chat, 2026-05-25)
+4. 🔄 **Phase 4 — Spec-Datei im Repo** (PLAT-012_SPEC.md) — *Freigabe ausstehend*
 5. ⬜ Phase 5 — Machbarkeitsanalyse (Claude Code)
 6. ⬜ Phase 6 — Bundled Execution:
    - B1 Verfassungs-Patches (`01_Spec-Format`, `00_Iterationszyklus`, Templates)
@@ -34,14 +34,16 @@ bereich_arbeitsgedaechtnis: Plattform
 
 ## Aktueller Schritt — Detail
 
-Phase 2 läuft. Claude Code erhebt:
-- IST-Front-Matter aller Seeds + ROADMAPs in `_Betrieb/Backlog/`.
-- Hot-File-Kandidaten im `prisment-platform` Repo.
-- Vorschlags-Tabelle `klasse`/`zugkraft`/`block`/`beruehrt` pro Seed + Kurzbegründung — als Grundlage für die Migrations-Sammel-Freigabe in Phase 6 B3.
+Spec liegt unter `Plattform/Arbeitsgedaechtnis/PLAT-012_SPEC.md`. Wartet auf
+**Spec-Freigabe** (Pflicht-Stopp Phase 6 vorne). Danach Phase 5 (Machbarkeit
++ Bündel-Vorschlag B1–B5) durch Claude Code.
 
-Output: `Plattform/Arbeitsgedaechtnis/report_fakten_backlog-priorisierung_2026-05-25.md`.
-
-Danach Stopp → Übergabe an Architekt für Phase 3.
+**Architekten-Entscheidungen 2026-05-25 in der Spec verarbeitet:**
+- Fünfte Klasse `prozess`: JA.
+- `block:`-Feld vorerst NICHT einführen; Gruppierung über `geltungsbereich`.
+- Sortierung: `klasse` × `zugkraft`, gruppiert nach `geltungsbereich`.
+- `seed-pretooluse-hook-allowlist` → `zugkraft: bald` (Korrektur).
+- Restliche offene Fragen 3–10 von Claude Code beantwortet (siehe Spec).
 
 ## Offene Fragen / Entscheidungen (für Phase 3)
 
