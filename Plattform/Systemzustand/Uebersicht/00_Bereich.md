@@ -12,12 +12,37 @@ einzelnes Projekt weiterleben. „Plattform" = die geteilte Bühne, auf
 der mehrere Projekte stehen können (heute: Prisment-Produkt, perspektivisch
 weitere).
 
-## Architektur in einem Bild
+## Architektur in einem Absatz (für Lesende ohne SVG-Sicht)
+
+Das System läuft auf **einem Hetzner-Rootserver** unter Docker Compose.
+Zwei unabhängige Eingänge vom Internet: **Cloudflare Tunnel** (`cloudflared`)
+für HTTP/S — alle Web-Dienste laufen ausschließlich darüber, kein
+offener Inbound-Port. **Tailscale** als zweiter Pfad rein, ausschließlich
+für Admin-SSH (Port 22 zum Host + Port 2222 zum Gitea-SSH-Daemon).
+Vor dem Cloudflare-Tunnel filtert Cloudflare Edge WAF/DDoS (für öffentliche
+Hosts) und Cloudflare Access (Identity-Login für die acht
+Access-Apps `n8n`, `git`, `ai`, `crm`, `admin`, `konzept`, `agent-content`,
+`analytics-admin`). Hinter dem Tunnel verteilt der **Foundation-Traefik**
+(read-only Foundation-Stack) den Traffic an die Container in den drei
+Zonen — Public (Umami-Tracking, cf-alarm), Access-Apps (siehe oben),
+Backend (nicht web-erreichbar). Im Backend leben **PostgreSQL-Hub** als
+zentrale DB (Konsumenten: gitea, n8n, twenty, pwa_app, open_webui — jeder
+in eigenem `db_*`-Netz-Tunnel, paperless verwaist), **Redis dediziert für
+Twenty**, **separater Postgres für Umami** (isoliert vom Hub), und die
+**AI-Pipeline** (`internal_ollama` für lokale LLM-Inferenz, dahinter
+`internal_ollama_proxy` als Squid-Egress-Whitelist gegen
+Data-Exfiltration, plus `internal_whisper` für Audio-Transkription).
+**Diun** überwacht Container-Image-Updates für Registry-Tags — Custom-
+Builds (n8n, ollama-proxy, langgraph-*) fallen durch diese Pipeline und
+sind eigener offener Punkt (`seed-diun-rueckbau.md` Nachtrag 2026-05-25).
+
+## Architektur als Bild (nur lokal)
 
 ![Architektur](01_Architektur.svg)
 
-> Falls das eingebettete SVG nicht erscheint: `01_Architektur.svg` direkt
-> im selben Verzeichnis öffnen. Obsidian-Variante: `![[01_Architektur.svg]]`.
+> Das SVG ist nur lokal verfügbar (nicht im GitHub-Sync). Lesen im Chat
+> ohne Visual: der obige Absatz und die Sub-Übersichten enthalten dieselbe
+> Substanz textuell. Obsidian-Embed: `![[01_Architektur.svg]]`.
 
 ## Drei Zonen, drei Vertrauensstufen
 
