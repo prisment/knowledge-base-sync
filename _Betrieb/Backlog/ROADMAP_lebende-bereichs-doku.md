@@ -18,7 +18,7 @@ kuratierte Übersicht unter `<Bereich>/Systemzustand/00_Uebersicht/` (MD + SVG)
 für Mensch und Chat-Architekt, und (c) eine Mechanik, die beides am Leben
 hält — Pflicht-Tor in Phase 9 plus nightly Drift-Check.
 
-**Stand:** 2026-05-25 — PLAT-008, PLAT-009 und PLAT-010 abgeschlossen (Plattform-Bereinigung + Telegram-EOL + Plattform-Übersichten). Nächster Schritt: Roadmap-Reihenfolge ab Schritt 4 vom Mensch zu entscheiden.
+**Stand:** 2026-05-25 — Plattform-Seite komplett (PLAT-008/009/010). Prisment: PRIS-015 abgeschlossen (SMA-Doku Re-Write nach Telegram-EOL). Nächster Schritt: PRIS-016 — Übersichten Prisment.
 
 ## Stufeneinstufung
 
@@ -43,10 +43,8 @@ Pflege automatisieren.
    (Telegram-EOL) + E26 (WAF-Skip Access-Apps). Folge-Seed:
    `seed-sma-doku-rewrite-nach-telegram-eol.md`.
 3. ✅ **PLAT-010 — Übersichten Plattform.** Abgeschlossen 2026-05-25 (Archiv: `Plattform/Archiv/PLAT-010/`). 4 MD + 3 SVG in `00_Uebersicht/`. SVG-Stil-Konvention etabliert für Folge-Zyklen.
-4. ⬜ **PRIS-XXX — Bestandsaufnahme + Bereinigung Prisment.**
-5. ⬜ **PRIS-XXX+1 — Übersichten Prisment** (Bestand `Architektur/00_PRISMENT_…`
-   umziehen in `Uebersicht/`, Format vereinheitlichen, Sub-Übersichten:
-   Agenten, Onboarding-Pipeline, PWA, Strategie).
+4. ✅ **PRIS-015 — SMA-Doku Re-Write nach Telegram-EOL.** Abgeschlossen 2026-05-25 (Archiv: `Prisment/Archiv/PRIS-015/`). 10 Dateien re-geschrieben, SMA_ROADMAP umgezogen nach `_Betrieb/Backlog/ROADMAP_SMA.md`, prisment_architektur.svg im Brand-konformen Plattform-Stil neu.
+5. 🔄 **PRIS-016 — Übersichten Prisment** (Bestand `Architektur/00_PRISMENT_…` umziehen nach `00_Uebersicht/`, Format vereinheitlichen mit Plattform-Pattern, Sub-Übersichten: Agenten, Onboarding-Pipeline, PWA, Strategie).
 6. ⬜ **INT-XXX — Bestandsaufnahme + Bereinigung Intern.**
 7. ⬜ **INT-XXX+1 — Übersichten Intern** (interner Betrieb, Prozess-Inventar).
 8. ⬜ **PLAT-XXX — Automatisierung der Doku-Pflege.**
