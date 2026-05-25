@@ -30,19 +30,12 @@ bereich_arbeitsgedaechtnis: Plattform
    - ✅ B3 — Migrations-Sammel-Freigabe + Schreibhand (commit `726a950`)
    - ✅ B4 — Erst-Generierung + 00_HOT-FILES.md
    - ✅ B5 — Routine-Anbindung in `_Betrieb/CLAUDE.md`
+   - ✅ B6 — Backlog-Unterordner `seeds/` + `roadmaps/`, Skript rekursiv (commits `e148918` + `fd069cd`)
+   - ✅ B7 — Neue Backlog-Karte: Grid mit allen Knoten, Farbe nach klasse, Pfeile abhaengig_von (commits `3c4efc8` + `ff25099`)
+   - ✅ B8 — `prioritaet:`-Feld aus 15 Seeds entfernt (commit `ff25099`)
 6. ⬜ Phase 7 — Abschluss-Verifikation gegen die 8 Akzeptanzkriterien
 7. ⬜ Phase 8 — Retrospektive
 8. ⬜ Phase 9 — Logbuch-Eintrag + Archiv-Bewegung (R3 archivieren, MIGRATION-Doku archivieren)
-5. ⬜ Phase 5 — Machbarkeitsanalyse (Claude Code)
-6. ⬜ Phase 6 — Bundled Execution:
-   - B1 Verfassungs-Patches (`01_Spec-Format`, `00_Iterationszyklus`, Templates)
-   - B2 Übersichts-Skript im `prisment-platform` Repo (`scripts/backlog/`)
-   - B3 ★ Migration aller Alt-Seeds + ROADMAPs (Pflicht-Stopp: Sammel-Tabelle)
-   - B4 Erst-Generierung `_Betrieb/Backlog/00_UEBERSICHT.md` + SVG
-   - B5 Routine-Anbindung (Skript-Aufruf an Mutations-Punkten)
-7. ⬜ Phase 7 — Abschluss-Verifikation
-8. ⬜ Phase 8 — Retrospektive
-9. ⬜ Phase 9 — Abschluss (Logbuch-Eintrag, Archiv)
 
 ## Aktueller Schritt — Detail
 
