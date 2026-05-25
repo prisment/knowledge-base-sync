@@ -89,6 +89,16 @@ Keine Wiederholung der Spec-Begründung.]
 ## Abweichungen / Erkenntnisse
 [Nur falls vorhanden. Logbuch-Eintrag NUR, wenn eine bewusste Entscheidung
 mit Warum fiel. Sonst entfällt das Logbuch beim Sprung.]
+
+## Entscheidungs-Protokoll (Korridor-Review)
+[Geballter Review-Anker beim Sprung einmalig am Zyklus-Ende. Format:
+- **Gebaut:** <1 Satz>
+- **Entscheidungen (Gabelungen ohne Stopp):** <je 1 Zeile + Warum, ggf. leer>
+- **Was du wissen solltest:** <ggf. leer>
+- **Wo ich unsicher war:** <ggf. leer>
+
+Vollständige Definition: `_Betrieb/Verfassung/00_Iterationszyklus.md` Abschnitt
+„Autonome Ausführung im freigegebenen Korridor".]
 ```
 
 ---

@@ -120,11 +120,19 @@ Blocker. Grobe Abweichungen explizit markiert → "ZURÜCK IN DEN CHAT".]
 [Claude Codes eigene Bauliste, abgeleitet aus der Spec, referenziert auf deren
 Akzeptanzkriterien. Bündelgröße risikoabhängig, mit Stopp-/Testpunkten.
 
+Pro Bündel **Pflicht-Zeile** `kritisch: ja|nein [Halbsatz Begründung]`
+(siehe `_Betrieb/Verfassung/01_Spec-Format.md` Abschnitt „Kritikalität pro
+Bündel"). Markierte Bündel sind synchrone Stopps in Phase 6; nicht-markierte
+laufen autonom im Korridor.
+
 Beispiel:
 - Bündel 1 → erfüllt Kriterium [Config gesichert]: ...
+  kritisch: ja [Secret-Handling berührt]
   STOPP: manueller Test durch Mensch
 - Bündel 2 → erfüllt Kriterium [DNS migriert]: ...
-- Bündel 3 → erfüllt Kriterien [alter Anbieter abgeschaltet, Routen getestet]: ...]
+  kritisch: ja [Außenwirkung, irreversibel]
+- Bündel 3 → erfüllt Kriterien [alter Anbieter abgeschaltet, Routen getestet]: ...
+  kritisch: nein [reine Routen-Tests, reversibel]]
 ```
 
 ---
@@ -144,6 +152,20 @@ Erfüllt / nicht erfüllt / abweichend, jeweils mit Nachweis.]
 
 ## Abweichungen vom Plan
 [Was lief anders als in der Spec geplant, und warum. Material für das Logbuch.]
+
+## Entscheidungs-Protokoll (Korridor-Review)
+
+[Geballter Review-Anker für die Korridor-Mechanik (siehe
+`00_Iterationszyklus.md` Abschnitt „Autonome Ausführung im freigegebenen
+Korridor"). Bei Spur **pro Bündel** am Bündel-Ende, beim Sprung einmalig am
+Zyklus-Ende. Beim Schritt entfällt.
+
+- **Gebaut:** <1 Satz, was in diesem Bündel/Zyklus entstand>
+- **Entscheidungen (Gabelungen ohne Stopp):**
+  - <Gabelung 1> → <Wahl> (Warum: <Halbsatz>)
+  - <Gabelung 2> → <Wahl> (Warum: <Halbsatz>)
+- **Was du wissen solltest:** <Information für den Mensch — kein Veto-Trigger>
+- **Wo ich unsicher war:** <ggf. leer>]
 
 ## Wissens-Einarbeitung (Vorschlag für Phase 9)
 [Claude Codes Vorschlag, was wohin wandert — Mensch gibt frei:

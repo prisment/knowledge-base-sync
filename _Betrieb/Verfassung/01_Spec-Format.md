@@ -44,6 +44,27 @@ Kriterien sind prüfbare Zustände, keine Tätigkeiten. WIE geprüft wird, ist C
 - **sicher:** knapp, z. B. „Dienst läuft (Health-Check grün)".
 - **kritisch:** vollständige Liste, z. B. „DNS vollständig migriert / alter Anbieter nicht mehr autoritativ / Config gesichert / Routen X, Y, Z getestet".
 
+## Kritikalität pro Bündel (steuert Autonomie in Phase 6)
+
+Damit Phase 6 autonom laufen kann (`00_Iterationszyklus.md`, Abschnitt „Autonome Ausführung im freigegebenen Korridor"), markiert die Arbeitsliste/Machbarkeit pro Bündel ein `kritisch`-Flag: Bündel ohne Flag laufen autonom, markierte Bündel sind synchrone Stopps.
+
+**Feste Liste — immer kritisch** (Claude Code erkennt nur, ob berührt; schätzt hier nicht ein):
+
+- **Sicherheit & Zugang:** Auth (Login/Session/Token/Passwort), Tenant-Isolation/RLS, Berechtigungen/Rollen, Secret-Handling (Keys/Env/Credentials), Cloudflare-/Edge-Sicherheitsschicht.
+- **Daten-Integrität & -Verlust:** DB-Schema-Migrationen (besonders irreversible), alles was Kundendaten ändert/löscht, die zentrale Datenpunkt-Definition (sobald sie existiert).
+- **Außenwirkung (irreversibel):** Produktions-Deploy, öffentlicher Content, gesendete Mails/Nachrichten, Geldfluss.
+- **Abhängigkeiten/Lieferkette:** Dependency-Major-Updates, Framework-Versionssprünge, neue externe Dependencies.
+
+**Graubereich — Claude-Code-Urteil** über zwei Testfragen:
+1. Billig rückrollbar ohne bleibenden Schaden? **Nein → kritisch.**
+2. Hängt die richtige Wahl vom Wohin ab statt von Technik? **Ja → kritisch.**
+
+**Nur-nach-oben:** Claude Code und der Mensch dürfen nur **hoch**stufen. Ein Listen-Treffer kann nicht weggeurteilt werden. (Korrespondiert mit dem „Tut NICHT" des Arbeitstiers in `02_Rollen-Protokoll.md`: „stuft Kritikalität nie nach unten ab, um im Autopilot zu bleiben".)
+
+**Spec-Vermerk:** pro Nicht-Listen-Bündel nur `kritisch: ja/nein` + Halbsatz Begründung — nicht die ausformulierten Testfragen (die sind Werkzeug, nicht Lesestoff).
+
+**Die Liste lebt:** wächst per Phase-9-Pflicht-Tor (Mensch gibt frei, E3-konform), wenn ein Schaden eine fehlende Kategorie aufdeckt.
+
 ## Bündelung gehört NICHT in die Spec
 
 Die Spec definiert das WAS (Ziel, Soll-Zustand, Akzeptanzkriterien). Die Bündelung/Arbeitsliste erarbeitet sich Claude Code selbst im Machbarkeits-Report — er kann Abhängigkeiten am echten System besser einschätzen. *(Beim Sprung: inline in der kombinierten Spec, knapp.)*
@@ -68,7 +89,7 @@ Seeds und ROADMAPs in `_Betrieb/Backlog/` führen zusätzlich zu den allgemeinen
 
 **Vergabe-Mechanik** (analog `stufe`): Chat-Architekt/Claude Code schlägt mit Begründung vor, Mensch revidiert/gibt frei. Niemals vom Menschen allein geraten.
 
-**Querverweis:** Das `kritisch`-Flag pro Bündel (für autonome Korridor-Ausführung) ist ein verwandtes maschinell auswertbares Front-Matter-/Bundle-Feld mit derselben Vergabe-Mechanik. Es wird mit dem Autonomie-Zyklus eingeführt, nicht hier.
+**Querverweis:** Das `kritisch`-Flag pro Bündel (für autonome Korridor-Ausführung) folgt derselben Vergabe-Mechanik wie `klasse`/`zugkraft`. Definition siehe Abschnitt „Kritikalität pro Bündel" oben.
 
 ## Schritt-Log (Stufe Schritt)
 

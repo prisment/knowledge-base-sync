@@ -434,6 +434,28 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E29 — Autonome Ausführung im freigegebenen Korridor (PLAT-013, 2026-05-25)
+
+**Auslöser:** Das Framework lief nach wenigen Tagen stabil genug, dass der Engpass von der Agent-Geschwindigkeit zur **Review-Bandbreite des Menschen** wanderte. Der Mensch bekam zu viele Reviews, die er fachlich nicht beurteilen kann/will (Technik), und zu wenig Fokus auf das, was nur er kann (strategische Richtung). Die empirische Auswertung der letzten fünf Spuren (PLAT-001, -008, -009, -010, -012) zeigte: ~30–40% der synchronen Stopps waren Wie-Detail-Fragen, die kein menschliches Wohin-Urteil brauchten.
+
+**Entscheidung:** Nach Spec-Freigabe arbeitet Claude Code autonom innerhalb eines **Korridors**, dessen Wände die Freigabe gezogen hat (Verfassung 00, Abschnitt „Autonome Ausführung im freigegebenen Korridor"). Zwei zwingende Stopps (Spec-Freigabe vorne + Korridor-Bruch dynamisch bei Fall C), vier Stopp-Auslöser (Richtungs-Gabelung mit Wert-Urteil, schwer reversibel, Risikoklasse `kritisch`/`sicherheitskritisch-akut`, Scope-Sprengung), Stufen-Staffelung (Spur stoppt an als `kritisch` markierten Bündeln). Review wandert vom Code-Diff zum **Entscheidungs-Protokoll** (Erweiterung der Abschluss-Notiz, kein neues Template). Pro Bündel ein `kritisch:`-Flag, das die Kritikalitäts-Liste in `01_Spec-Format` ausfüllt (vier Cluster: Sicherheit/Daten/Außenwirkung/Lieferkette + zwei Testfragen für den Graubereich). **Nur-nach-oben** für die Kritikalität, verankert auch im „Tut NICHT" des Arbeitstiers in `02_Rollen-Protokoll`.
+
+**Warum kein Widerspruch zu E3 (Optimierung — nie selbstoptimierend):** E3 verbietet, dass das System sich SELBST verändert (Regeln/Verfassung) ohne Freigabe — das gilt unverändert. Hier wird nur die *Ausführung* freigegebener Arbeit autonom, nie das *Ziehen der Grenzen*. Der bewusste Begriff ist „autonome Ausführung im freigegebenen Korridor", nicht „Selbstoptimierung". Die Verfassung ändert weiterhin nur der Mensch per Freigabe.
+
+**Warum es sicher ist:** (1) **Wohin/Wie-Grenze** (Mensch = Richtung, Claude Code = Technik) macht Stoppen vorhersehbar statt willkürlich. (2) **Feste Kritikalitäts-Liste + Nur-nach-oben-Regel** schließen das Schlupfloch „Claude Code redet Kritisches klein, um durchzulaufen". (3) **Fall-C-Hardstop** (Spec widerspricht der Realität) bricht den Korridor sofort, egal wie spät. (4) **Stufen-Staffelung**: Spur stoppt an jedem `kritisch`-Bündel ohnehin — Autonomie greift nur auf `sicher`-Bündel. (5) **Selbst-Bootstrap-Schutz:** PLAT-013 selbst lief im alten Phase-6-Modus, das Korridor-Modell schaltet erst beim ersten Folgezyklus scharf (PLAT-011-Wiederaufnahme).
+
+**Verworfene Alternative 1 — Pauschal größere Bündel ohne Risiko-Staffelung.** Verworfen, weil kritische Arbeit dann unbeaufsichtigt liefe. Die Stopp-Auslöser-Liste ist der Schutz gegen genau das.
+
+**Verworfene Alternative 2 — Stille-Stufe sofort einführen.** Verschoben. Start mit „alles ist mindestens Information"; Stille wird datengestützt eingeführt, wenn die Protokolle der ersten Korridor-Spuren zeigen, was ohnehin nie relevant war. Sicherer Einstieg.
+
+**Verworfene Alternative 3 — Stopp bei `klasse: security` zusätzlich zu `risikoklasse: kritisch`.** Verworfen (Architekten-Entscheidung): sonst würden triviale Security-Wartungs-Bündel unnötig stoppen. Das echte Risiko fängt die Kritikalitäts-Liste; `klasse` ist Bedarfs-Etikett für die Priorisierung, nicht Risiko-Aussage.
+
+**Verworfene Alternative 4 — Phase 2 (Worktrees) gemeinsam mit dem Korridor freigeben.** Verworfen: erst Korridor an mindestens 3 realen Spuren erproben (Wirkung der Stopp-Auslöser, Tragfähigkeit des Entscheidungs-Protokolls, Vollständigkeit der Kritikalitäts-Liste), dann Worktrees als Folge-Seed (`seed-worktrees-parallele-sessions.md`).
+
+**Kontextbindung:** (a) **Stille-Stufe** scharfstellen, sobald die Information-Protokolle der ersten Spuren genug Daten liefern, was ohnehin nie relevant war. Eigener Folge-Mini-Zyklus. (b) **Sprung-Renaissance** prüfen: in den 14 Tagen vor PLAT-013 wurde keine einzige Stufe Sprung benutzt — nach 3 Korridor-Spuren bewerten, ob Sprung lebendig ist oder strukturell tot (Beobachtungspunkt in der PLAT-013-Abschluss-Doku). (c) **Kritikalitäts-Liste lebt** — Phase-9-Pflicht-Tor erweitert sie bei Bedarf, E3-konform (Mensch gibt frei).
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.

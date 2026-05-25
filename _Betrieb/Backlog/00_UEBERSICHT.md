@@ -11,24 +11,6 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 
 ## Aktive Roadmaps
 
-<<<<<<< HEAD
-| Datei                                       | Titel                                                                                   | Geltungsbereich | Stufe | Stand      |
-| ------------------------------------------- | --------------------------------------------------------------------------------------- | --------------- | ----- | ---------- |
-| `roadmaps/ROADMAP_backlog-priorisierung.md` | Backlog-Priorisierung (Klasse × Zugkraft + harte Security-Regel) + generierte Übersicht | alle            | spur  | 2026-05-25 |
-| `roadmaps/ROADMAP_lebende-bereichs-doku.md` | Lebende Bereichs-Dokumentation (Bereinigung + Übersichten + Automatisierung)            | alle            | spur  | 2026-05-24 |
-| `roadmaps/ROADMAP_SMA.md`                   | SMA — Social Media Automation Qualitätsarbeit                                           | prisment        | spur  | 2026-05-25 |
-
-## Geltungsbereich: alle
-
-| Datei                                                 | Titel                                                                                                           | klasse  | zugkraft   | risikoklasse | stufe  | status | abhängig von                                         |
-| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------- | ---------- | ------------ | ------ | ------ | ---------------------------------------------------- |
-| `seeds/seed-autonomie-korridor-parallele-sessions.md` | Autonome Ausführung im freigegebenen Korridor (Freigabe-Modell v2) + parallele Sessions via Worktrees           | prozess | jetzt      | kritisch     | spur   | offen  | -                                                    |
-| `seeds/seed-backlog-priorisierung-uebersicht.md`      | Backlog-Priorisierung (Klasse × Zugkraft + harte Security-Regel) + generierte Übersicht mit Abhängigkeits-Graph | prozess | jetzt      | sicher       | spur   | offen  | -                                                    |
-| `seeds/seed-bereichs-uebersichten.md`                 | Bereichs-Übersichten je Geltungsbereich erstellen                                                               | prozess | bald       | sicher       | spur   | offen  | -                                                    |
-| `seeds/seed-feature-flag-zustand.md`                  | Feature-Flag als anerkannter Zustand: gebaut, aber nicht scharf                                                 | prozess | irgendwann | sicher       | sprung | offen  | -                                                    |
-| `seeds/seed-skills-evaluieren.md`                     | Skills evaluieren: wiederkehrende operative Verfahren als SKILL.md fixieren                                     | prozess | irgendwann | sicher       | sprung | offen  | -                                                    |
-| `seeds/seed-dateisystem-bereinigung.md`               | Dateisystem-Bereinigung nach Konsolidierung                                                                     | wartung | irgendwann | sicher       | sprung | offen  | seed-code-repo-migration, seed-bereichs-uebersichten |
-=======
 | Datei | Titel | Geltungsbereich | Stufe | Stand |
 |-------|-------|-----------------|-------|-------|
 | `roadmaps/ROADMAP_lebende-bereichs-doku.md` | Lebende Bereichs-Dokumentation (Bereinigung + Übersichten + Automatisierung) | alle | spur | 2026-05-24 |
@@ -38,13 +20,12 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 
 | Datei | Titel | klasse | zugkraft | risikoklasse | stufe | status | abhängig von |
 |-------|-------|--------|----------|--------------|-------|--------|--------------|
-| `seeds/seed-autonomie-korridor-parallele-sessions.md` | Autonome Ausführung im freigegebenen Korridor (Freigabe-Modell v2) + parallele Sessions via Worktrees | prozess | jetzt | kritisch | spur | offen | - |
-| `seeds/seed-backlog-priorisierung-uebersicht.md` | Backlog-Priorisierung (Klasse × Zugkraft + harte Security-Regel) + generierte Übersicht mit Abhängigkeits-Graph | prozess | jetzt | sicher | spur | offen | - |
 | `seeds/seed-bereichs-uebersichten.md` | Bereichs-Übersichten je Geltungsbereich erstellen | prozess | bald | sicher | spur | offen | - |
+| `seeds/seed-korridor-beobachtung.md` | Korridor-Beobachtung: 4 Datenpunkte aus PLAT-013 nach 1–3 Spuren auswerten | prozess | bald | sicher | sprung | offen | - |
+| `seeds/seed-worktrees-parallele-sessions.md` | Parallele Sessions via Git-Worktrees (Phase 2 des Autonomie-Modells) | prozess | bald | kritisch | spur | offen | - |
 | `seeds/seed-feature-flag-zustand.md` | Feature-Flag als anerkannter Zustand: gebaut, aber nicht scharf | prozess | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-skills-evaluieren.md` | Skills evaluieren: wiederkehrende operative Verfahren als SKILL.md fixieren | prozess | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-dateisystem-bereinigung.md` | Dateisystem-Bereinigung nach Konsolidierung | wartung | irgendwann | sicher | sprung | offen | seed-bereichs-uebersichten |
->>>>>>> origin/main
 
 ## Geltungsbereich: plattform
 

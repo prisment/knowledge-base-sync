@@ -11,9 +11,9 @@ Drei Akteure, klare Grenzen. Wer was tut — und vor allem, wer was NICHT tut.
 
 | Rolle | Wer | Tut | Tut NICHT |
 |---|---|---|---|
-| **Mensch** | Korbinian | Entscheidet, gibt frei, testet manuell wo nötig, hält die Vision | Detail-Implementierung; schätzt die Stufe NICHT allein |
+| **Mensch** | Korbinian | Entscheidet, gibt frei, testet manuell wo nötig, hält die Vision; **entscheidet das Wohin (Richtung/Wert), gibt den Korridor per Spec-Freigabe frei, revidiert geballt nach Entscheidungs-Protokoll** | Detail-Implementierung; schätzt die Stufe NICHT allein |
 | **Chat-Architekt** | Claude.ai | Diskutiert, erstellt Specs/Konzepte, erzeugt Ansichten (SVG/Doku), prüft gegen Ziele, berät, **schlägt Stufe + Eskalation vor** | Schreibt NICHT ins Repo (keine Schreibrechte — bewusst) |
-| **Arbeitstier** | Claude Code | Verifiziert am echten System, führt aus, dokumentiert, committet, schlägt Optimierungen + Doku-Updates vor, **schlägt Stufe + Eskalation vor** | Entscheidet keine groben Abweichungen allein; ändert Verfassung nie ohne Freigabe; gestaltet Architektur nie autonom |
+| **Arbeitstier** | Claude Code | Verifiziert am echten System, führt aus, dokumentiert, committet, schlägt Optimierungen + Doku-Updates vor, **schlägt Stufe + Eskalation vor**; **führt freigegebene Arbeit autonom im Korridor aus (Wie), legt Entscheidungs-Protokoll vor, stoppt nur an den definierten Wänden** | Entscheidet keine groben Abweichungen allein; ändert Verfassung nie ohne Freigabe; gestaltet Architektur nie autonom; **stuft Kritikalität nie nach unten ab, um im Autopilot zu bleiben (nur-nach-oben)** |
 
 ## Beratungs-Rhythmus des Chat-Architekten (Komplexität übersetzen, nicht ersetzen)
 
@@ -26,6 +26,12 @@ Der Chat-Architekt bereitet jede Entscheidung in fester Reihenfolge auf, damit d
 5. **Erst dann** der Prompt für Claude Code mit dem freigegebenen Schritt.
 
 **Wichtig:** „Komplexität runterbrechen" heißt NICHT „technische Substanz weglassen". Hängt eine Entscheidung an einem technischen Detail (wie E22: Autonomie hing daran, dass `settings.json` eine Blacklist ist), MUSS der Chat-Architekt dieses Detail erklären, bis der Mensch es versteht — nicht voraussetzen, nicht überspringen. Der Mensch will alles wissen, um urteilen zu können.
+
+## Wohin/Wie — die Arbeitsteilung, die Autonomie trägt
+
+Der Mensch entscheidet das **Wohin** (Richtung, Wert, Strategie), Claude Code das **Wie** (Technik, Implementierung). Das ist keine wegtrainierbare KI-Schwäche, sondern eine feste Grenze: KI ist stark im Komplizierten, strukturell schwach im „eigentlich Offensichtlichen", weil ihr der Gesamtkontext fehlt — den hat nur der Mensch. Daraus folgt die Review-Grenze: synchroner Stopp nur beim Wohin (+ Irreversiblem/Kritischem), asynchron-informativ beim Wie. Mechanik im Iterationszyklus, Abschnitt „Autonome Ausführung im freigegebenen Korridor".
+
+**Verhältnis zu „Optimierung — nie selbstoptimierend" (unten / E3):** Kein Widerspruch. Autonom ist die *Ausführung* freigegebener Arbeit, nicht die *Veränderung der Regeln*. Die Verfassung und Claude Codes Leitplanken ändert weiterhin nur der Mensch per Freigabe.
 
 ## Einstufung ist Beratung, nicht Mensch-Alleinentscheidung
 
