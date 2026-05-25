@@ -50,9 +50,12 @@ Pflege automatisieren.
 6. ⬜ **INT-XXX — Bestandsaufnahme + Bereinigung Intern.**
 7. ⬜ **INT-XXX+1 — Übersichten Intern** (interner Betrieb, Prozess-Inventar).
 8. ⬜ **PLAT-XXX — Automatisierung der Doku-Pflege.**
-   - Verfassungs-Änderung: Pflicht-Tor in Phase 9 (Zyklus, der echtes System
-     ändert, MUSS Detail-Doku + Übersicht des Bereichs im selben Commit
-     aktualisieren).
+   - Verfassungs-Änderung: Pflicht-Tor in Phase 9 (Zyklus, der echtes
+     System ändert, MUSS **sowohl die betroffene Detail-Doku in
+     `<Bereich>/Systemzustand/...` ALS AUCH die Übersicht in
+     `<Bereich>/Systemzustand/00_Uebersicht/`** im selben Commit
+     aktualisieren). Detail-Doku ist SSOT, Übersicht ist abgeleitete
+     Ansicht — beide müssen synchron bleiben.
    - Nightly Drift-Check (Skript) für Änderungen außerhalb von Zyklen.
    - Verfassung-Ergänzung in `00_Iterationszyklus.md` + `02_Rollen-Protokoll.md`.
    - Bewusst ans Ende, weil wir erst durch Schritte 1–6 wissen, wo die Doku
