@@ -17,7 +17,6 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-error-sammler-security-checks.md` | Zentraler Error-Sammler + wiederkehrende Security-Checks-Schedule | qualitaet | bald | sicher | spur | offen | - |
 | `seeds/seed-bereichs-uebersichten.md` | Bereichs-Übersichten je Geltungsbereich erstellen | prozess | bald | sicher | spur | offen | - |
 | `seeds/seed-korridor-beobachtung.md` | Korridor-Beobachtung: 4 Datenpunkte aus PLAT-013 nach 1–3 Spuren auswerten | prozess | bald | sicher | sprung | offen | - |
-| `seeds/seed-worktrees-parallele-sessions.md` | Parallele Sessions via Git-Worktrees (Phase 2 des Autonomie-Modells) | prozess | bald | kritisch | spur | offen | - |
 | `seeds/seed-feature-flag-zustand.md` | Feature-Flag als anerkannter Zustand: gebaut, aber nicht scharf | prozess | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-skills-evaluieren.md` | Skills evaluieren: wiederkehrende operative Verfahren als SKILL.md fixieren | prozess | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-dateisystem-bereinigung.md` | Dateisystem-Bereinigung nach Konsolidierung | wartung | irgendwann | sicher | sprung | offen | seed-bereichs-uebersichten |
