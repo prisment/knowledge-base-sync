@@ -79,6 +79,35 @@ Drei zusammenhängende Bausteine:
    prüft den Code laufend dagegen. Setzt bewusst auf das bestehende Pflege-
    Muster auf (siehe „Bezug" unten) — kein neu erfundener Mechanismus.
 
+## Mit-Bausteine (aus ROADMAP_SMA-Zerlegung 2026-05-25)
+
+Beim Zerlegen der alten SMA-Roadmap ist klargeworden, dass zwei
+Bauteile **denselben CI-Pfad** bedienen wie die Security-Checks und
+deshalb in diesen Zyklus mit hineingehören (statt eigene Mini-Specs zu
+werden):
+
+- **Test-Suite + CI (alte „A1" aus Architektur-Härtung-Audit
+  2026-05-13).** `tests/`-Verzeichnis in pwa-api + LangGraph-Agents
+  fehlt komplett, jede Änderung wird live an Grubi getestet. Minimal
+  10–15 Smoke-Tests (Auth-Pfade, Queue-Bucketing, Approval-Flow,
+  Read-Endpoints, Voice-Hook-Extraktion mit Mock-LLM) gegen lokale
+  Test-DB. Gitea-CI-Hook auf jeden Push. — Aktuell tragbar mit 1
+  Live-Tenant, ab Tenant #3 wird jeder Regressionsbug ein Brand mit
+  Telefonanruf.
+- **Gitea-Actions-Aktivierung (alte „Repo Phase 3B").** Voraussetzung
+  für das CI dieses Seeds. Workflow `.gitea/workflows/build.yml` auf
+  jeden Push zu `main`: pro betroffenem Service `docker build` +
+  Smoke-Imports, bei Python `python -c "from app import nodes, tools,
+  main"`, bei Node `npm run build` / TypeScript-Check. Plus optional
+  Markdown-Lint für knowledge-base. Gitea-Actions muss aktiviert
+  werden (`ENABLED=true` in `[actions]`), mindestens ein `act_runner`
+  läuft (Docker-in-Docker oder dedizierter Host).
+
+**Verzahnung:** SAST/Dependency-Audit + Test-Suite + Build-Smoke leben
+in **einer** CI-Pipeline. Der Spec-Zyklus muss die Reihenfolge klären
+(Gitea-Actions-Runner zuerst aufsetzen, dann die drei Check-Schichten
+nacheinander oder gemeinsam ausrollen).
+
 ## Andockung an den nightly (Option, vom Menschen begrüßt)
 
 Der nightly macht bereits OS/Container-Updates + CVE-Korrelation, läuft aber

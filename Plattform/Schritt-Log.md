@@ -1,0 +1,11 @@
+# Schritt-Log — Plattform
+
+| Datum | Was | Commit |
+|-------|-----|--------|
+| 2026-05-24 | `_AUSGESONDERT_CODE/` vollständig entfernt (74 Dateien). Code-Repo-Migration abgeschlossen: langgraph/n8n-Workflows/Archetyp-Playbooks im prisment-platform Repo, `sync_playbooks.py`-Pfad umgestellt. nightly-Settings + sync-whitelist + nightly-runtime von obsoleten `_AUSGESONDERT_CODE`-Patterns bereinigt. Rückrollbar via Tag `pre-ausgesondert-cleanup`. | 2b5e4e5 |
+| 2026-05-25 | Einschübe aus `ergaenzung-priorisierungs-seed.md` in `seed-backlog-priorisierung-uebersicht.md` eingearbeitet (Front-Matter-Felder, Teil 6 `beruehrt:`/Hot-Files, Teil 7 `kritisch`-Flag, Offene Fragen, Bezug zum Autonomie-Seed). Verbrauchte Ergänzungs-Datei gelöscht. | 44523d4 |
+| 2026-05-25 | Autonomie-Seed-Anhang einsortiert: `verfassungs-aenderungen-autonomie.md` umbenannt zu `seed-autonomie-korridor-parallele-sessions__verfassungs-vorlage.md` (Anhang-Konvention via Doppel-Underscore), Querverweis im Seed ergänzt, beidseitige Seed-Bezüge geprüft. | 44523d4 |
+| 2026-05-25 | Verfassung 00 Phase 9 ergänzt: Backlog-Seed eines abgeschlossenen Zyklus wandert mit ins Spec-Archiv (Lücke, die bei PLAT-012 sichtbar wurde, weil der Seed übersehen wurde). Teil-abgearbeitete Seeds bleiben mit Hinweis im Backlog. | 575d49e |
+| 2026-05-25 | Beobachtungspunkte aus PLAT-013 Abschluss-Doku als eigenständigen Seed `seed-korridor-beobachtung.md` konsolidiert: 4 Datenpunkte (Stille-Stufe / Sprung-Renaissance / Kritikalitäts-Liste-Wachstum / Stopp-Auslöser-Schärfe), Voraussetzung 3 Korridor-Spuren, Sprung-Stufe. | dd9ad37 |
+| 2026-05-25 | `ROADMAP_lebende-bereichs-doku.md` ins Archiv `_Betrieb/Backlog/roadmaps/_archiv/` verschoben — alle 8 Schritte ✅, durch PLAT-011 abgeschlossen. Backlog-Übersicht via pre-commit-Hook automatisch nachgezogen. | 59238c7 |
+| 2026-05-26 | Verfassung 00 geschärft (Klarstellung, nur-nach-oben): „Entscheidungs-Protokoll (Review-Format)" ist jetzt der ausschließliche Chat-Output am Bündel-Ende, vier Punkte explizit, Negativliste (keine Akzeptanzhäkchen / Phasen-Verifikation / Status-Updates im Chat — Belege gehören in Doku/Commit/Log). Zusätzlich: keine Wie-Rückfragen im Korridor („Die zwei zwingenden Stopps") + Information-Stufe schärfer abgegrenzt. | 4488705 |
