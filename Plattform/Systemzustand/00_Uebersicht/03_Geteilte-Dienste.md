@@ -2,7 +2,7 @@
 typ: uebersicht
 geltungsbereich: plattform
 thema: geteilte-dienste
-stand: 2026-05-25
+stand: 2026-05-26
 zweck: "Topologie + Datenflüsse zwischen den Plattform-Diensten. Sub-Übersicht zu 00_Bereich.md."
 ---
 
@@ -51,9 +51,6 @@ als Image-Update-Notifier (mit bekannter Lücke bei Custom-Builds —
 | `internal_twenty` (+ `internal_redis_twenty`) | `db_twenty` | `twenty` | [twenty-crm.md](../Geteilte-Dienste/twenty-crm.md), [redis-twenty.md](../Geteilte-Dienste/redis-twenty.md) |
 | `pwa_api` (Prisment) | `db_pwa` | `pwa_app` | (Prisment-Bereich) |
 | `internal_open_webui` | im Hub | `open_webui` | [openwebui.md](../Geteilte-Dienste/openwebui.md) |
-
-Verwaiste DB: `paperless` (Owner `paperless_user`, kein Container) —
-Backlog-Seed `seed-paperless-db-aufloesen.md`.
 
 Hub-Detail: [PostgreSQL-Hub.md](../Geteilte-Dienste/PostgreSQL-Hub.md).
 

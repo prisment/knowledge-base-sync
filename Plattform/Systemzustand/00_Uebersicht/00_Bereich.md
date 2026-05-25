@@ -1,7 +1,7 @@
 ---
 typ: uebersicht
 geltungsbereich: plattform
-stand: 2026-05-25
+stand: 2026-05-26
 zweck: "Schneller Einstieg in den Plattform-Bereich für Mensch und Chat-Architekt. Verdichtet den Detail-Stand, ersetzt ihn nicht."
 ---
 
@@ -27,7 +27,7 @@ Access-Apps `n8n`, `git`, `ai`, `crm`, `admin`, `konzept`, `agent-content`,
 Zonen — Public (Umami-Tracking, cf-alarm), Access-Apps (siehe oben),
 Backend (nicht web-erreichbar). Im Backend leben **PostgreSQL-Hub** als
 zentrale DB (Konsumenten: gitea, n8n, twenty, pwa_app, open_webui — jeder
-in eigenem `db_*`-Netz-Tunnel, paperless verwaist), **Redis dediziert für
+in eigenem `db_*`-Netz-Tunnel), **Redis dediziert für
 Twenty**, **separater Postgres für Umami** (isoliert vom Hub), und die
 **AI-Pipeline** (`internal_ollama` für lokale LLM-Inferenz, dahinter
 `internal_ollama_proxy` als Squid-Egress-Whitelist gegen

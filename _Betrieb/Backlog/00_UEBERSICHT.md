@@ -13,13 +13,11 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 
 | Datei | Titel | klasse | zugkraft | risikoklasse | stufe | status | abhängig von |
 |-------|-------|--------|----------|--------------|-------|--------|--------------|
-| `seeds/seed-kritisch-schaerfen.md` | Risikoklasse `kritisch` schärfen — Bestand prüfen + Verfassung 01 ergänzen | prozess | jetzt | sicher | sprung | offen | - |
 | `seeds/seed-error-sammler-security-checks.md` | Zentraler Error-Sammler + wiederkehrende Security-Checks-Schedule | qualitaet | bald | sicher | spur | offen | - |
 | `seeds/seed-bereichs-uebersichten.md` | Bereichs-Übersichten je Geltungsbereich erstellen | prozess | bald | sicher | spur | offen | - |
 | `seeds/seed-korridor-beobachtung.md` | Korridor-Beobachtung: 4 Datenpunkte aus PLAT-013 nach 1–3 Spuren auswerten | prozess | bald | sicher | sprung | offen | - |
 | `seeds/seed-feature-flag-zustand.md` | Feature-Flag als anerkannter Zustand: gebaut, aber nicht scharf | prozess | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-skills-evaluieren.md` | Skills evaluieren: wiederkehrende operative Verfahren als SKILL.md fixieren | prozess | irgendwann | sicher | sprung | offen | - |
-| `seeds/seed-dateisystem-bereinigung.md` | Dateisystem-Bereinigung nach Konsolidierung | wartung | irgendwann | sicher | sprung | offen | seed-bereichs-uebersichten |
 
 ## Geltungsbereich: plattform
 
@@ -34,7 +32,6 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-apt-get-download-pin.md` | apt-get download muss immer mit exakter Versions-Pinnung erfolgen | wartung | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-pending-kernel-debconf-noise.md` | Pending-Kernel-Whiptail-Dialog bei -updates-Apply beobachten/unterdrücken | wartung | irgendwann | sicher | schritt | offen | - |
 | `seeds/seed-diun-rueckbau.md` | Diun zurückbauen, sobald nightly Stabilität bewiesen hat | wartung | irgendwann | sicher | sprung | offen | - |
-| `seeds/seed-paperless-db-aufloesen.md` | Verwaiste paperless-DB im PostgreSQL-Hub auflösen | wartung | irgendwann | sicher | sprung | offen | - |
 
 ## Geltungsbereich: prisment
 
