@@ -21,7 +21,12 @@ bereich_arbeitsgedaechtnis: Plattform
 2. ✅ Phase 2 — Faktensammlung (commit `4e53d22`)
 3. ✅ Phase 3 — Spec-Entscheidungen (Architekt im Chat, 2026-05-25)
 4. ✅ Phase 4 — Spec freigegeben (PLAT-012_SPEC, mit Sortier-Korrektur + AK 6 umformuliert)
-5. 🔄 **Phase 5 — Machbarkeit + Bündel B1–B5** — *aktuell, B1 startet*
+5. 🔄 **Phase 5 — Machbarkeit + Bündel B1–B5** — *aktuell*
+   - ✅ B1 — Verfassungs-Patches (commit `960f51b` knowledge-base)
+   - ✅ B2 — Übersichts-Skript (commit `0a3af09` prisment-platform, Idempotenz verifiziert)
+   - ⏸ **B3 — Migrations-Sammel-Tabelle (Pflicht-Stopp)**
+   - ⬜ B4 — Erst-Generierung + 00_HOT-FILES.md
+   - ⬜ B5 — Routine-Anbindung
 5. ⬜ Phase 5 — Machbarkeitsanalyse (Claude Code)
 6. ⬜ Phase 6 — Bundled Execution:
    - B1 Verfassungs-Patches (`01_Spec-Format`, `00_Iterationszyklus`, Templates)
