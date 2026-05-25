@@ -18,7 +18,7 @@ kuratierte Übersicht unter `<Bereich>/Systemzustand/00_Uebersicht/` (MD + SVG)
 für Mensch und Chat-Architekt, und (c) eine Mechanik, die beides am Leben
 hält — Pflicht-Tor in Phase 9 plus nightly Drift-Check.
 
-**Stand:** 2026-05-25 — Plattform + Prisment doku-stabil (Detail + Übersicht). Letzter Schritt heute: PRIS-016 abgeschlossen. Nächste Schritte (Mensch entscheidet): Intern (Schritt 6+7) oder Automatisierung (Schritt 8 vorziehen).
+**Stand:** 2026-05-25 — Plattform + Prisment doku-stabil (Detail + Übersicht). Intern abgehakt (leer, kein Inhalt). Nächster Schritt: PLAT-011 — Automatisierung der Doku-Pflege (Schritt 8).
 
 ## Stufeneinstufung
 
@@ -45,8 +45,8 @@ Pflege automatisieren.
 3. ✅ **PLAT-010 — Übersichten Plattform.** Abgeschlossen 2026-05-25 (Archiv: `Plattform/Archiv/PLAT-010/`). 4 MD + 3 SVG in `00_Uebersicht/`. SVG-Stil-Konvention etabliert für Folge-Zyklen.
 4. ✅ **PRIS-015 — SMA-Doku Re-Write nach Telegram-EOL.** Abgeschlossen 2026-05-25 (Archiv: `Prisment/Archiv/PRIS-015/`). 10 Dateien re-geschrieben, SMA_ROADMAP umgezogen nach `_Betrieb/Backlog/ROADMAP_SMA.md`, prisment_architektur.svg im Brand-konformen Plattform-Stil neu.
 5. ✅ **PRIS-016 — Übersichten Prisment.** Abgeschlossen 2026-05-25 (Archiv: `Prisment/Archiv/PRIS-016/`). 8 Dateien in `00_Uebersicht/` (5 MDs + 3 SVGs, Vollausstattung), Architektur-Bestand umgezogen, Helpdesk-Doku rudimentär nachgezogen.
-6. ⬜ **INT-XXX — Bestandsaufnahme + Bereinigung Intern.**
-7. ⬜ **INT-XXX+1 — Übersichten Intern** (interner Betrieb, Prozess-Inventar).
+6. ✅ **INT — Bestandsaufnahme + Bereinigung Intern.** Abgehakt 2026-05-25 — Intern-Bereich ist leer (nur `.gitkeep`-Skelett), kein Inhalt zu bereinigen. Sobald Inhalte angelegt werden, kommt ein eigener Aufbau-Zyklus.
+7. ✅ **INT — Übersichten Intern.** Abgehakt 2026-05-25 — keine Detail-Doku da, also keine Übersicht zu erstellen. Pattern (`00_Uebersicht/`) ist klar, wird angewandt sobald Intern-Inhalte da sind.
 8. ⬜ **PLAT-XXX — Automatisierung der Doku-Pflege.**
    - Verfassungs-Änderung: Pflicht-Tor in Phase 9 (Zyklus, der echtes
      System ändert, MUSS **sowohl die betroffene Detail-Doku in
