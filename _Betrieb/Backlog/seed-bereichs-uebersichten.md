@@ -20,7 +20,7 @@ Diese Übersichten haben Doppelnutzen:
 
 ## Soll-Zustand (grob)
 
-Je Bereich existiert `<Bereich>/Systemzustand/Uebersicht/` mit mindestens:
+Je Bereich existiert `<Bereich>/Systemzustand/00_Uebersicht/` mit mindestens:
 
 - `00_Bereich.md` — Zusammenfassung des Bereichs (was lebt hier, Kerngedanke).
 - `01_Architektur.svg` (oder ähnlich) — visuelle Übersicht (Komponenten, Flüsse).
@@ -60,7 +60,7 @@ werden (sonst entsteht stille Doppel-Wahrheit). Die Übersichten sind
 
 ## Whitelist-Konsequenz
 
-Nur `<Bereich>/Systemzustand/Uebersicht/**` ist im GitHub-Sync. Der restliche
+Nur `<Bereich>/Systemzustand/00_Uebersicht/**` ist im GitHub-Sync. Der restliche
 Systemzustand bleibt lokal (im Gitea-Repo). Die Übersichten verlinken bei
 Bedarf auf detaillierte Unterdokumente (lokal lesbar, im Chat per Pfad
 benennbar).

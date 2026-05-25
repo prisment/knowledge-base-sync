@@ -13,7 +13,7 @@ Definiert, WAS via GitHub ins Projekt-Wissen des Chats gespiegelt wird. Whitelis
 
 - GitHub-Sync ist KEIN Live-Zugriff. Es ist ein Import zu einem Zeitpunkt in den Projekt-Wissensspeicher; der Chat lädt diesen Speicher beim Sitzungsstart. Zwei Versatz-Stellen, kein lebender Draht.
 - Gespiegelt wird der **stabile Unterbau** (langsam alternd, Versatz verkraftbar). Die **flüchtige Arbeitsschicht** (Specs, Reports, Abschluss-Dokus des laufenden Zyklus) wird NICHT gespiegelt — sie kommt frisch über den Gesprächskanal (Claude Code nennt den Dateinamen, der Mensch bringt sie ein).
-- Der **Systemzustand insgesamt** wird NICHT gespiegelt (Volumen, Volatilität, Mandantennähe). Stattdessen lebt in `<Bereich>/Systemzustand/Uebersicht/00_Bereich.md` je Bereich genau **eine** kuratierte Einstiegs-Übersicht, die der Chat-Architekt im Projekt-Wissen sieht. Sub-Übersichten und SVGs in `Uebersicht/` bleiben lokal (für den Menschen visuell), weil Chat-Architekt keine SVG-Sicht hat. Detail-Wissen wird gezielt über den Gesprächskanal eingebracht (Claude Code nennt den Pfad).
+- Der **Systemzustand insgesamt** wird NICHT gespiegelt (Volumen, Volatilität, Mandantennähe). Stattdessen lebt in `<Bereich>/Systemzustand/00_Uebersicht/00_Bereich.md` je Bereich genau **eine** kuratierte Einstiegs-Übersicht, die der Chat-Architekt im Projekt-Wissen sieht. Sub-Übersichten und SVGs in `Uebersicht/` bleiben lokal (für den Menschen visuell), weil Chat-Architekt keine SVG-Sicht hat. Detail-Wissen wird gezielt über den Gesprächskanal eingebracht (Claude Code nennt den Pfad).
 - Datenmenge bleibt klein → alle Geltungsbereiche werden mit ihren Übersichten gespiegelt. Fokus entsteht nicht durch selektives Laden, sondern durch das konkrete Problem + Claude Codes Prompt mit Dateinamen.
 
 ## Gespiegelt (stabiler Unterbau)
@@ -30,15 +30,15 @@ CLAUDE.md                        # Root-Wegweiser
 
 Plattform/CLAUDE.md
 Plattform/Schritt-Log.md
-Plattform/Systemzustand/Uebersicht/00_Bereich.md   # nur die Einstiegs-Übersicht; SVGs + Sub-MDs bleiben lokal
+Plattform/Systemzustand/00_Uebersicht/00_Bereich.md   # nur die Einstiegs-Übersicht; SVGs + Sub-MDs bleiben lokal
 
 Prisment/CLAUDE.md
 Prisment/Schritt-Log.md
-Prisment/Systemzustand/Uebersicht/00_Bereich.md
+Prisment/Systemzustand/00_Uebersicht/00_Bereich.md
 
 Intern/CLAUDE.md
 Intern/Schritt-Log.md
-Intern/Systemzustand/Uebersicht/00_Bereich.md
+Intern/Systemzustand/00_Uebersicht/00_Bereich.md
 ```
 
 ## NICHT gespiegelt

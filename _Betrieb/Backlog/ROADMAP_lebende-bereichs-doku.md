@@ -14,7 +14,7 @@ vorgaenger_roadmap: "ROADMAP_bereichs-uebersichten.md (am 2026-05-24 umbenannt, 
 
 **Ziel:** Pro Geltungsbereich existiert (a) eine aktuelle, mit der Realität
 übereinstimmende Detail-Doku unter `<Bereich>/Systemzustand/`, (b) eine
-kuratierte Übersicht unter `<Bereich>/Systemzustand/Uebersicht/` (MD + SVG)
+kuratierte Übersicht unter `<Bereich>/Systemzustand/00_Uebersicht/` (MD + SVG)
 für Mensch und Chat-Architekt, und (c) eine Mechanik, die beides am Leben
 hält — Pflicht-Tor in Phase 9 plus nightly Drift-Check.
 

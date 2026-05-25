@@ -200,7 +200,7 @@
 
 **Auslöser:** In Bündel D stand der Plan, den gesamten `<Bereich>/Systemzustand/**` ins GitHub-Sync-Repo zu spiegeln. Architekt korrigierte vor der Anlage.
 
-**Entscheidung:** Nicht der ganze Systemzustand, sondern pro Bereich ein dedizierter `<Bereich>/Systemzustand/Uebersicht/`-Unterordner mit kuratierten MD- und SVG-Übersichten. Whitelist entsprechend umgestellt. Bereichs-Übersichten werden als eigener Folgezyklus aufgebaut (Backlog-Seed `seed-bereichs-uebersichten.md`).
+**Entscheidung:** Nicht der ganze Systemzustand, sondern pro Bereich ein dedizierter `<Bereich>/Systemzustand/00_Uebersicht/`-Unterordner mit kuratierten MD- und SVG-Übersichten. Whitelist entsprechend umgestellt. Bereichs-Übersichten werden als eigener Folgezyklus aufgebaut (Backlog-Seed `seed-bereichs-uebersichten.md`).
 
 **Warum:** Voller Systemzustand wäre Datenvolumen, hohe Volatilität (jede Detail-Änderung triggert Sync-Drift), Mandantennähe-Risiken (in Architektur-/Workflow-Dokus stecken Container-Namen, Pfade, Tenant-IDs). Übersichten sind ABGELEITETE Sicht (vgl. Verfassung 03 SSOT) — verdichten, was im Systemzustand steht, und sind beim Aufschreiben bewusst über das, was geteilt wird. Doppelnutzen: dieselben Übersichten sind auch für den Menschen die schnelle Verdichtung des Bereichs.
 
