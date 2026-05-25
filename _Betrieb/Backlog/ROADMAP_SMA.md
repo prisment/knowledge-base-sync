@@ -3,6 +3,10 @@ typ: roadmap
 titel: "SMA — Social Media Automation Qualitätsarbeit"
 geltungsbereich: prisment
 status: in_arbeit
+klasse: qualitaet
+zugkraft: jetzt
+stufe: spur
+beruehrt: ["langgraph/", "Prisment/Systemzustand/SMA/"]
 stand: 2026-05-25
 umzug: "2026-05-25 von Prisment/Arbeitsgedaechtnis/SMA_ROADMAP.md hierher (PRIS-015 Bündel 7)"
 ---

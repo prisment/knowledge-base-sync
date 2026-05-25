@@ -1,10 +1,13 @@
 ---
 typ: roadmap
 titel: "Lebende Bereichs-Dokumentation (Bereinigung + Übersichten + Automatisierung)"
-stufe: spur
 geltungsbereich: alle
 risikoklasse: sicher
 status: in_arbeit
+klasse: prozess
+zugkraft: jetzt
+stufe: spur
+beruehrt: ["Plattform/", "Prisment/", "Intern/"]
 stand: 2026-05-24
 seed: "[[Backlog/seed-bereichs-uebersichten]]"
 vorgaenger_roadmap: "ROADMAP_bereichs-uebersichten.md (am 2026-05-24 umbenannt, Scope erweitert)"

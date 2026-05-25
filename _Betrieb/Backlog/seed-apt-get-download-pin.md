@@ -5,6 +5,10 @@ geltungsbereich: plattform
 risikoklasse: niedrig
 status: offen
 prioritaet: niedrig
+klasse: wartung
+zugkraft: irgendwann
+stufe: sprung
+beruehrt: ["scripts/"]
 stand: 2026-05-24
 erzeugt_durch: PLAT-001 Bündel 3.2 (Tailscale-Rollback-Cache-Fehlbefüllung)
 ---

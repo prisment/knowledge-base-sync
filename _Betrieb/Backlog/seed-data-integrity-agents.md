@@ -5,6 +5,10 @@ geltungsbereich: prisment
 risikoklasse: kritisch
 status: offen
 prioritaet: HOCH
+klasse: qualitaet
+zugkraft: jetzt
+stufe: spur
+beruehrt: ["langgraph/", "n8n/"]
 stand: 2026-05-25
 erzeugt_durch: Chat-Architekt (Diskussion nach Security/Integrity-Woche)
 ---

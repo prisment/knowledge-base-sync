@@ -4,6 +4,10 @@ titel: "SMA-Operative-Doku in strukturierte Systemzustand-Dateien aufteilen"
 geltungsbereich: prisment
 risikoklasse: sicher
 status: offen
+klasse: wartung
+zugkraft: bald
+stufe: sprung
+beruehrt: ["Prisment/Systemzustand/SMA/"]
 stand: 2026-05-23
 erzeugt_durch: BOOT-001
 ---

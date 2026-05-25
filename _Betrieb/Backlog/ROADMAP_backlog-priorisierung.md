@@ -1,10 +1,13 @@
 ---
 typ: roadmap
 titel: "Backlog-Priorisierung (Klasse × Zugkraft + harte Security-Regel) + generierte Übersicht"
-stufe: spur
 geltungsbereich: alle
 risikoklasse: sicher
 status: in_arbeit
+klasse: prozess
+zugkraft: jetzt
+stufe: spur
+beruehrt: ["_Betrieb/Backlog/", "_Betrieb/Verfassung/", "scripts/backlog/"]
 stand: 2026-05-25
 seed: "[[Backlog/seed-backlog-priorisierung-uebersicht]]"
 bereich_arbeitsgedaechtnis: Plattform

@@ -4,6 +4,10 @@ titel: "Diun zurückbauen, sobald nightly Stabilität bewiesen hat"
 geltungsbereich: plattform
 risikoklasse: sicher
 status: offen
+klasse: wartung
+zugkraft: irgendwann
+stufe: sprung
+beruehrt: ["diun/", "n8n/workflows/"]
 stand: 2026-05-25
 erzeugt_durch: BOOT-001
 nachtrag: 2026-05-25 (n8n-Update-Drift aufgedeckt — Vorbedingung verschärft)

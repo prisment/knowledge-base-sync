@@ -1,10 +1,14 @@
 ---
 typ: backlog_seed
 titel: "Code-Security-Standards + automatisierte Checks für Prisment-Produkt-Code (Next.js + LangGraph)"
-geltungsbereich: prisment
+geltungsbereich: plattform
 risikoklasse: kritisch
 status: offen
 prioritaet: HOCH
+klasse: security
+zugkraft: jetzt
+stufe: spur
+beruehrt: ["pwa/", "langgraph/", "admin/admin_web/"]
 stand: 2026-05-25
 erzeugt_durch: Chat-Architekt (nach Next.js-Sicherheitsvorfall, Security/Integrity-Woche)
 ---

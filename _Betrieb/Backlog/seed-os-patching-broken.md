@@ -5,6 +5,10 @@ geltungsbereich: plattform
 risikoklasse: sicherheitskritisch-akut
 status: offen
 prioritaet: HOCH (nächster Zyklus, vor der Website-Anpassung)
+klasse: security
+zugkraft: jetzt
+stufe: spur
+beruehrt: ["scripts/", "/etc/apt/"]
 stand: 2026-05-24
 erzeugt_durch: BOOT-001 Bündel E Mini-Test
 ---

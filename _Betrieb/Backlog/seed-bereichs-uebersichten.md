@@ -4,6 +4,10 @@ titel: "Bereichs-Übersichten je Geltungsbereich erstellen"
 geltungsbereich: alle
 risikoklasse: sicher
 status: offen
+klasse: prozess
+zugkraft: bald
+stufe: spur
+beruehrt: ["Plattform/", "Prisment/", "Intern/"]
 stand: 2026-05-23
 erzeugt_durch: BOOT-001
 ---

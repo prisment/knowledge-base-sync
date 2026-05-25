@@ -5,6 +5,10 @@ geltungsbereich: prisment
 risikoklasse: sicher
 status: offen
 prioritaet: mittel
+klasse: wartung
+zugkraft: bald
+stufe: sprung
+beruehrt: ["Prisment/Systemzustand/SMA/"]
 stand: 2026-05-25
 erzeugt_durch: PLAT-009 Bündel 6
 ---

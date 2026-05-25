@@ -5,6 +5,10 @@ geltungsbereich: alle
 risikoklasse: sicher
 status: offen
 prioritaet: niedrig (erst nach den abhängigen Zyklen)
+klasse: wartung
+zugkraft: irgendwann
+stufe: sprung
+beruehrt: ["./"]
 stand: 2026-05-24
 erzeugt_durch: BOOT-001
 abhaengig_von:

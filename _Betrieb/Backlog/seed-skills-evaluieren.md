@@ -5,6 +5,10 @@ geltungsbereich: alle
 risikoklasse: sicher
 status: offen
 prioritaet: niedrig
+klasse: prozess
+zugkraft: irgendwann
+stufe: sprung
+beruehrt: ["/home/claude-deploy/.claude/skills/"]
 stand: 2026-05-24
 erzeugt_durch: Framework-Retro nach BOOT-001/PLAT-001
 ---

@@ -5,6 +5,10 @@ geltungsbereich: plattform
 risikoklasse: kritisch
 status: offen
 prioritaet: HOCH (Voraussetzung für nächtlich-autonomen -updates-Pfad aus PLAT-001)
+klasse: security
+zugkraft: bald
+stufe: spur
+beruehrt: ["/home/claude-deploy/.claude/", "scripts/"]
 stand: 2026-05-24
 erzeugt_durch: PLAT-001 Q2
 abhaengig_von:

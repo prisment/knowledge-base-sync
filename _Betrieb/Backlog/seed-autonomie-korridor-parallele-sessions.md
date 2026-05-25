@@ -5,11 +5,11 @@ geltungsbereich: alle
 risikoklasse: kritisch
 status: offen
 prioritaet: HOCH
-stufe: spur
 art: prozess
 klasse: prozess
 zugkraft: jetzt
-block: framework-autonomie
+stufe: spur
+beruehrt: ["_Betrieb/Verfassung/", "_Betrieb/Backlog/"]
 stand: 2026-05-25
 erzeugt_durch: Chat-Architekt (Diskussion Bundle-Autonomie + Parallelität, nach Framework-Stabilisierung)
 ---

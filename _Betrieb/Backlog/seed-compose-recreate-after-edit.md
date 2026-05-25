@@ -5,6 +5,10 @@ geltungsbereich: plattform
 risikoklasse: mittel
 status: offen
 prioritaet: mittel
+klasse: wartung
+zugkraft: bald
+stufe: sprung
+beruehrt: ["_Betrieb/Verfassung/", "scripts/"]
 stand: 2026-05-24
 erzeugt_durch: PLAT-001 Bündel 3.1 (Postgres-Recreate-Vorfall)
 ---

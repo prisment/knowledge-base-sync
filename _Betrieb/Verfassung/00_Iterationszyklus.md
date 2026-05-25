@@ -31,7 +31,7 @@ Die Stufe wird **nicht vom Menschen allein geraten**. Der Mensch kann den Aufwan
 
 ### Harte Regel gegen Stufen-Inflation
 
-- **Risikoklasse `kritisch` erzwingt immer Spur.** Sie kann nie als Sprung oder Schritt gefahren werden — das schützt davor, Gefährliches aus Bequemlichkeit klein zu fahren.
+- **Risikoklasse `kritisch` und `sicherheitskritisch-akut` erzwingen immer Spur.** Beide können nie als Sprung oder Schritt gefahren werden — das schützt davor, Gefährliches aus Bequemlichkeit klein zu fahren. (Lücke ergänzt 2026-05-25 mit PLAT-012, aufgedeckt bei der Backlog-Migration über `seed-os-patching-broken`.)
 - Die Versuchung, sich alles als „Schritt" schönzureden, ist genau die menschliche Trägheit, vor der dieses Framework an mehreren Stellen warnt. Ehrliche Einstufung ist Disziplin, kein Formalismus.
 
 ### Eskalation einer Stufe während des laufenden Vorhabens

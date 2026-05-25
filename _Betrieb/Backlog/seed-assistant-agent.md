@@ -5,6 +5,10 @@ geltungsbereich: intern
 risikoklasse: kritisch
 status: offen
 prioritaet: niedrig
+klasse: feature
+zugkraft: irgendwann
+stufe: spur
+beruehrt: ["langgraph/", "n8n/"]
 stand: 2026-05-25
 erzeugt_durch: Chat-Architekt (Diskussion Claude-Code-Handy-Zugriff)
 ---

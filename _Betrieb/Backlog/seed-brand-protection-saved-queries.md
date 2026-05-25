@@ -4,6 +4,10 @@ titel: "Cloudflare Brand Protection — Saved Queries + Logos einrichten"
 geltungsbereich: plattform
 risikoklasse: sicher
 status: offen
+klasse: security
+zugkraft: bald
+stufe: sprung
+beruehrt: ["(extern: Cloudflare)"]
 stand: 2026-05-24
 erzeugt_durch: BOOT-001
 ---

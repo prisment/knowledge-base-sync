@@ -5,6 +5,10 @@ geltungsbereich: plattform
 risikoklasse: sicher
 status: offen
 prioritaet: niedrig
+klasse: wartung
+zugkraft: irgendwann
+stufe: sprung
+beruehrt: ["postgres/"]
 stand: 2026-05-25
 erzeugt_durch: PLAT-008 Bündel 4
 ---

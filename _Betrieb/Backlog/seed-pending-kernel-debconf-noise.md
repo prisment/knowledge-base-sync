@@ -5,6 +5,10 @@ geltungsbereich: plattform
 risikoklasse: niedrig
 status: offen
 prioritaet: niedrig
+klasse: wartung
+zugkraft: irgendwann
+stufe: schritt
+beruehrt: ["scripts/"]
 stand: 2026-05-24
 erzeugt_durch: PLAT-001 (Block 1 Apply-Bündel)
 ---

@@ -5,11 +5,10 @@ geltungsbereich: alle
 risikoklasse: sicher
 status: offen
 prioritaet: HOCH
-stufe: spur
 art: prozess
-klasse:   prozess
+klasse: prozess
 zugkraft: jetzt
-block:    framework-autonomie
+stufe: spur
 beruehrt: ["_Betrieb/Backlog/", "_Betrieb/Verfassung/01_Spec-Format.md"]
 stand: 2026-05-25
 erzeugt_durch: Chat-Architekt (Diskussion Backlog-Überblick nach Seed-Wachstum)
