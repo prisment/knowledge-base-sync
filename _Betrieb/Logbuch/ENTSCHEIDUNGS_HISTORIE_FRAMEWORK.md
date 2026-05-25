@@ -382,6 +382,38 @@ Harte Regeln: Risikoklasse `kritisch` erzwingt immer Spur (kein Klein-Fahren aus
 
 ---
 
+## E27 — VERALTET-Header-Pattern als zulässige Form der Doku-Bereinigung (PLAT-008/009, 2026-05-25)
+
+**Auslöser:** Während PLAT-009 Bündel 6 (Doku-Bereinigung nach Telegram-EOL) und PLAT-008 Bündel 4 standen 9 Dokus an, deren Re-Write den jeweiligen Spur-Rahmen gesprengt hätte: 8 große SMA-Dokus (eine mit 76 Telegram-Treffern, eine mit 52) plus `Plattform/Systemzustand/Geteilte-Dienste/KI-Wissenspipeline.md` (komplett im pre-CF-MIG + pre-Mattermost-Modell verfasst). Halbherzige Suchen-Ersetzen-Bereinigung hätte teilkonsistente Doku produziert, die Leser irreführt — exakt die E2-Verletzung („Doku darf nicht lügen"). Komplett-Re-Write wäre der saubere Weg, aber nicht im laufenden Spur-Scope leistbar.
+
+**Entscheidung:** Es ist zulässig, eine inhaltlich überholte Doku-Datei mit einem **VERALTET-MARKIERUNG-Header** zu versehen, der explizit nennt (a) ab welchem Zeitpunkt/Zyklus die Inhalte überholt sind, (b) wo der heutige Soll-Zustand stattdessen steht, (c) auf welchen Backlog-Seed der eigentliche Re-Write zeigt. Die Datei bleibt sonst inhaltlich unangetastet im Systemzustand. Der Re-Write läuft als eigener Folge-Zyklus (eigene Stufe, eigene Spec).
+
+**Warum:** (1) **Ehrliches Markieren ist keine Lüge.** Der Leser (Mensch + Chat-Architekt) sieht beim ersten Blick, dass die Inhalte historisch sind und nicht zum aktuellen System passen. Damit ist E2 erfüllt — die Doku behauptet nichts Falsches mehr, sie deklariert ihren eigenen Veralterungsstand. (2) **Re-Writes haben eigene Stufen-Charakteristik.** Ein 500-Zeilen-SMA-Doku-Re-Write hat eigene Akzeptanzkriterien, eigene Soll-Zustand-Diskussion, eigenen Mensch-Review-Bedarf — gehört in eine eigene Spec, nicht als Anhängsel an einen Bereinigungs-Zyklus. (3) **Alternative wäre schlechter:** entweder Pseudo-Bereinigung (Suchen-Ersetzen ohne Kontext → halbkonsistente Doku, schlimmer als markiert-veraltet) oder die laufende Spur ewig ausdehnen (verzögert Abschluss, blockiert nachgelagerte Schritte). (4) **Begrenzte Lebensdauer:** Der VERALTET-Header verweist auf einen Backlog-Seed. Solange der Seed offen ist, ist die Markierung berechtigt. Wird er nicht abgearbeitet, ist das ein Backlog-Pflege-Problem, kein Doku-Pattern-Problem.
+
+**Verworfene Alternative 1 — Pseudo-Bereinigung:** ein paar Suchen-Ersetzen-Edits, Datei „sieht" gepflegt aus, aber Pipelines/Soll-Zustand-Beschreibungen passen nicht zur Realität. Verworfen weil E2-Verstoß.
+
+**Verworfene Alternative 2 — Datei sofort löschen statt markieren:** Wissensverlust ohne Ersatz. Die historischen Inhalte sind oft als Verlaufs-/Begründungs-Kontext wertvoll (z.B. „warum wurde Telegram-Pipeline gebaut"), auch wenn das System sie nicht mehr lebt. Verworfen weil Kontext-Verlust.
+
+**Pattern-Definition (verbindlich für künftige Anwendung):**
+
+```markdown
+> ⚠️ **VERALTET-MARKIERUNG (<Zyklus-ID>, <Datum>):** <ein Satz, was
+> sich am System geändert hat und wann.> Telegram-Erwähnungen / X /
+> Y in dieser Datei beschreiben den historischen Stand vor <Zyklus>
+> (<Datum>) und müssen in einem eigenen Re-Write-Zyklus aktualisiert
+> werden — siehe Backlog-Seed `seed-<thema>-rewrite.md`.
+```
+
+Direkt nach erster H1-Überschrift einfügen. Frontmatter bleibt
+unverändert (insbesondere `stand:` zeigt auf den Zeitpunkt der
+Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
+
+**Pflicht-Beigabe:** der Backlog-Seed muss existieren, bevor der VERALTET-Header gesetzt wird. Sonst ist es eine Sackgasse.
+
+**Kontextbindung:** Wenn die Häufigkeit dieses Patterns überhand nimmt (z.B. mehr als ~10% aller Systemzustand-Dateien tragen VERALTET-Header), ist das ein Signal, dass die zugrundeliegende Pflege-Mechanik versagt — dann gehört eine Verfassungs-Frage in den Backlog (z.B. „warum entstehen Re-Write-Bedarfe schneller als sie abgearbeitet werden"). Aktuell (Stand 2026-05-25, 9 markierte Dateien) ist die Quote noch klein und durch den großen Telegram-EOL-Schnitt erklärbar.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.
