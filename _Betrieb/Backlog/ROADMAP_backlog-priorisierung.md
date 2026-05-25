@@ -25,11 +25,14 @@ bereich_arbeitsgedaechtnis: Plattform
 3. ✅ Phase 3 — Spec-Entscheidungen (Architekt im Chat, 2026-05-25)
 4. ✅ Phase 4 — Spec freigegeben (PLAT-012_SPEC, mit Sortier-Korrektur + AK 6 umformuliert)
 5. 🔄 **Phase 5 — Machbarkeit + Bündel B1–B5** — *aktuell*
-   - ✅ B1 — Verfassungs-Patches (commit `960f51b` knowledge-base)
-   - ✅ B2 — Übersichts-Skript (commit `0a3af09` prisment-platform, Idempotenz verifiziert)
-   - ⏸ **B3 — Migrations-Sammel-Tabelle (Pflicht-Stopp)**
-   - ⬜ B4 — Erst-Generierung + 00_HOT-FILES.md
-   - ⬜ B5 — Routine-Anbindung
+   - ✅ B1 — Verfassungs-Patches (commit `960f51b` knowledge-base; verfassungs-Lücke geschlossen mit `726a950`)
+   - ✅ B2 — Übersichts-Skript (commit `0a3af09` prisment-platform)
+   - ✅ B3 — Migrations-Sammel-Freigabe + Schreibhand (commit `726a950`)
+   - ✅ B4 — Erst-Generierung + 00_HOT-FILES.md
+   - ✅ B5 — Routine-Anbindung in `_Betrieb/CLAUDE.md`
+6. ⬜ Phase 7 — Abschluss-Verifikation gegen die 8 Akzeptanzkriterien
+7. ⬜ Phase 8 — Retrospektive
+8. ⬜ Phase 9 — Logbuch-Eintrag + Archiv-Bewegung (R3 archivieren, MIGRATION-Doku archivieren)
 5. ⬜ Phase 5 — Machbarkeitsanalyse (Claude Code)
 6. ⬜ Phase 6 — Bundled Execution:
    - B1 Verfassungs-Patches (`01_Spec-Format`, `00_Iterationszyklus`, Templates)

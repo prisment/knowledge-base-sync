@@ -14,6 +14,8 @@ Arbeitsdokument-Vorlagen:
 Übergreifende Historie und Planung:
 - [Logbuch/](Logbuch/) — Entscheidungs-Historie (Warum-Einträge).
 - [Backlog/](Backlog/) — zentraler Backlog + Seed-Dateien.
+  - [Backlog/00_UEBERSICHT.md](Backlog/00_UEBERSICHT.md) — **generiert** vom Skript `scripts/backlog/generate_uebersicht.py` (im `prisment-platform` Repo). Wird beim Anlegen oder Archivieren eines Seeds im selben Commit aktualisiert (Pflicht-Tor, Verfassung 00 „Backlog-Pflege").
+  - [Backlog/00_HOT-FILES.md](Backlog/00_HOT-FILES.md) — **handgepflegt** (NICHT generiert). Strang-übergreifend nur seriell anfassbare Pfade.
 
 Spiegelregel:
 - [sync-whitelist.md](sync-whitelist.md) — was nach GitHub gespiegelt wird.
