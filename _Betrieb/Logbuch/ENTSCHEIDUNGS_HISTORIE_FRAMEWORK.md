@@ -414,6 +414,26 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E28 — Backlog-Priorisierung über Klasse × Zugkraft + harte Regel + generiertes Derivat (PLAT-012, 2026-05-25)
+
+**Auslöser:** Der zentrale Backlog war auf 19 Seeds + 3 aktive Roadmaps gewachsen. Das `prioritaet`-Feld war Freitext (mal „HOCH", mal „niedrig (erst nach …)", mal leer), Abhängigkeiten zwischen Seeds existierten nur in `abhaengig_von:`, wurden aber nirgends sichtbar gemacht, und es gab keine konsistente Antwort auf „was kommt als nächstes?". Der Next.js-Sicherheitsvorfall lieferte zusätzlich die Lehre: Security darf strukturell nicht zwischen Wartung und Feature versinken. Der Mensch konnte die Reihenfolge nicht mehr im Kopf halten, und die Faktensammlung zeigte, dass 6 von 19 Seeds (Framework-Arbeit) in keine der vier Bedarfs-Klassen security/feature/qualitaet/wartung sauber passten.
+
+**Entscheidung:** Drei neue Pflichtfelder für Seeds und Roadmaps — `klasse` (5 Werte: `security`/`qualitaet`/`prozess`/`feature`/`wartung`), `zugkraft` (`jetzt`/`bald`/`irgendwann`), `beruehrt` (Ordner-Ebene). Fünfte Klasse `prozess` für Framework-eigene Arbeit. Harte Regel: `security`-Seeds nie auf `irgendwann`, `wartung`-Seeds nie auf `jetzt` (Default mit Begründungszwang). Risikoklasse `kritisch` UND `sicherheitskritisch-akut` erzwingen Spur (bestehende Regel erweitert). Sortier-Primat: `zugkraft` schlägt `klasse` — Dringlichkeit vor Bedarfsart; Klassen-Reihenfolge `security → qualitaet → prozess → feature → wartung`. Generiertes Backlog-Derivat (`00_UEBERSICHT.md` + farbcodiertes Grid-SVG) wird beim Anlegen/Archivieren eines Seeds im selben Commit aktualisiert, technisch erzwungen durch einen pre-commit-Hook im knowledge-base Repo.
+
+**Warum:** (1) **Klasse × Zugkraft ist die einfachste vollständige Aufspaltung.** Klasse beantwortet WAS, Zugkraft beantwortet WANN — jede Kombination ist sinnvoll, keine ist redundant. Freitext-`prioritaet` enthielt beides vermischt und war deshalb nie maschinell auswertbar. (2) **Fünfte Klasse `prozess` empirisch belegt.** Bei der Migration mussten 6 der 19 Seeds in `prozess` einsortiert werden (Backlog-Priorisierung, Autonomie-Korridor, Skills, Feature-Flag-Zustand, Bereichs-Übersichten, Dateisystem-Bereinigung). Eine vierte-Klassen-Lösung hätte Framework-Arbeit mit Kosmetik vermischt — semantisch unsauber. (3) **Zugkraft schlägt Klasse**, weil Dringlichkeit immer über Bedarfsart steht: ein `prozess`+`jetzt` (Engpass blockiert) gehört vor ein `feature`+`irgendwann`. (4) **`prozess` vor `feature`** in der Klassen-Reihenfolge, weil Framework-Arbeit Fundament für alles andere ist — Features auf wackligem Fundament zu bauen ist teurer als die Reihenfolge umzukehren. (5) **Pre-commit-Hook statt nur Norm**, weil die Erfahrung aus PLAT-001/-009 zeigt: rein normative Pflicht-Tore werden vergessen, sobald sie nicht technisch erzwungen sind. Der Hook macht das, was die Verfassung ohnehin sagt, automatisch.
+
+**Verworfene Alternative 1 — `prioritaet`-Freitext schärfen.** Hätte das Strukturproblem nicht gelöst: Freitext bleibt nicht maschinell verarbeitbar, Mischung von WAS+WANN bleibt drin. Verworfen, weil das Werkzeug (Übersichts-Skript) zwei unabhängige Achsen braucht.
+
+**Verworfene Alternative 2 — `block:`-Feld jetzt einführen.** Im ursprünglichen Seed-Vorschlag enthalten, vom Architekten in der Spec verworfen: bei 19 Seeds reicht `geltungsbereich` als Gruppierung. Wird zum Folge-Seed, falls die Übersicht später unübersichtlich wird; dann mit max. 4–5 Blöcken. Verworfen, weil Kosten (Pflege + Vergabe-Entscheidung pro Seed) den heutigen Nutzen übersteigen.
+
+**Verworfene Alternative 3 — Vierter Geltungsbereich `betrieb`.** Kurz erwogen, weil viele `prozess`-Seeds inhaltlich Framework sind, formal aber als `alle` getaggt. Vom Architekten verworfen: logisch ist es dasselbe, und ein vierter Bereich würde die Sync-Whitelist, das ID-Schema und die Bereichs-Logik aufwerten ohne klaren Mehrwert.
+
+**Verworfene Alternative 4 — Nightly-Anbindung des Skripts.** Wäre eine vierte Auslösebahn (neben Anlegen, Archivieren, manuell) gewesen. Verworfen, weil das Nightly-System aktuell nicht stabil ist (siehe `seed-os-patching-broken`); eine kaputte Nightly würde stille Übersicht-Drift erzeugen.
+
+**Kontextbindung:** Wenn der Backlog auf >50 Seeds wächst und die `geltungsbereich`-Gruppierung in der Übersicht unübersichtlich wird, ist das das Signal, das `block:`-Feld nachzuziehen (Verworfene Alternative 2 reaktivieren). Wenn `beruehrt:`-Overlaps häufig zwischen verschiedenen Strängen entstehen und parallele Sessions konkret blockieren, ist es Zeit für die echte Parallelisierungs-Karte (heute nur Spalten-Trennung als Heuristik). Beides eigene Folge-Zyklen.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.

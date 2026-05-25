@@ -10,7 +10,12 @@ stufe: spur
 beruehrt: ["Plattform/", "Prisment/", "Intern/"]
 stand: 2026-05-23
 erzeugt_durch: BOOT-001
+ueberfuehrt_in: "[[_Betrieb/Backlog/roadmaps/ROADMAP_lebende-bereichs-doku.md]]"
 ---
+
+> ℹ️ **Hinweis (PLAT-012, 2026-05-25):** Dieser Seed wird nicht mehr eigenständig
+> verfolgt — der Inhalt lebt in `ROADMAP_lebende-bereichs-doku.md` (Status
+> `in_arbeit`). Archivierung an deren Abschluss hängen, nicht jetzt entfernen.
 
 ## Anlass
 

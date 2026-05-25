@@ -11,8 +11,7 @@ beruehrt: ["./"]
 stand: 2026-05-24
 erzeugt_durch: BOOT-001
 abhaengig_von:
-  - "[[_Betrieb/Backlog/seed-code-repo-migration.md]]"
-  - "[[_Betrieb/Backlog/seed-bereichs-uebersichten.md]]"
+  - "[[_Betrieb/Backlog/seeds/seed-bereichs-uebersichten.md]]"
 ---
 
 ## Anlass
