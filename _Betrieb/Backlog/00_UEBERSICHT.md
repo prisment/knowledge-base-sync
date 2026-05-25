@@ -13,48 +13,48 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 
 | Datei | Titel | Geltungsbereich | Stufe | Stand |
 |-------|-------|-----------------|-------|-------|
-| `ROADMAP_backlog-priorisierung.md` | Backlog-Priorisierung (Klasse × Zugkraft + harte Security-Regel) + generierte Übersicht | alle | spur | 2026-05-25 |
-| `ROADMAP_lebende-bereichs-doku.md` | Lebende Bereichs-Dokumentation (Bereinigung + Übersichten + Automatisierung) | alle | spur | 2026-05-24 |
-| `ROADMAP_SMA.md` | SMA — Social Media Automation Qualitätsarbeit | prisment | spur | 2026-05-25 |
+| `roadmaps/ROADMAP_backlog-priorisierung.md` | Backlog-Priorisierung (Klasse × Zugkraft + harte Security-Regel) + generierte Übersicht | alle | spur | 2026-05-25 |
+| `roadmaps/ROADMAP_lebende-bereichs-doku.md` | Lebende Bereichs-Dokumentation (Bereinigung + Übersichten + Automatisierung) | alle | spur | 2026-05-24 |
+| `roadmaps/ROADMAP_SMA.md` | SMA — Social Media Automation Qualitätsarbeit | prisment | spur | 2026-05-25 |
 
 ## Geltungsbereich: alle
 
 | Datei | Titel | klasse | zugkraft | risikoklasse | stufe | status | abhängig von |
 |-------|-------|--------|----------|--------------|-------|--------|--------------|
-| `seed-autonomie-korridor-parallele-sessions.md` | Autonome Ausführung im freigegebenen Korridor (Freigabe-Modell v2) + parallele Sessions via Worktrees | prozess | jetzt | kritisch | spur | offen | - |
-| `seed-backlog-priorisierung-uebersicht.md` | Backlog-Priorisierung (Klasse × Zugkraft + harte Security-Regel) + generierte Übersicht mit Abhängigkeits-Graph | prozess | jetzt | sicher | spur | offen | - |
-| `seed-bereichs-uebersichten.md` | Bereichs-Übersichten je Geltungsbereich erstellen | prozess | bald | sicher | spur | offen | - |
-| `seed-feature-flag-zustand.md` | Feature-Flag als anerkannter Zustand: gebaut, aber nicht scharf | prozess | irgendwann | sicher | sprung | offen | - |
-| `seed-skills-evaluieren.md` | Skills evaluieren: wiederkehrende operative Verfahren als SKILL.md fixieren | prozess | irgendwann | sicher | sprung | offen | - |
-| `seed-dateisystem-bereinigung.md` | Dateisystem-Bereinigung nach Konsolidierung | wartung | irgendwann | sicher | sprung | offen | seed-code-repo-migration, seed-bereichs-uebersichten |
+| `seeds/seed-autonomie-korridor-parallele-sessions.md` | Autonome Ausführung im freigegebenen Korridor (Freigabe-Modell v2) + parallele Sessions via Worktrees | prozess | jetzt | kritisch | spur | offen | - |
+| `seeds/seed-backlog-priorisierung-uebersicht.md` | Backlog-Priorisierung (Klasse × Zugkraft + harte Security-Regel) + generierte Übersicht mit Abhängigkeits-Graph | prozess | jetzt | sicher | spur | offen | - |
+| `seeds/seed-bereichs-uebersichten.md` | Bereichs-Übersichten je Geltungsbereich erstellen | prozess | bald | sicher | spur | offen | - |
+| `seeds/seed-feature-flag-zustand.md` | Feature-Flag als anerkannter Zustand: gebaut, aber nicht scharf | prozess | irgendwann | sicher | sprung | offen | - |
+| `seeds/seed-skills-evaluieren.md` | Skills evaluieren: wiederkehrende operative Verfahren als SKILL.md fixieren | prozess | irgendwann | sicher | sprung | offen | - |
+| `seeds/seed-dateisystem-bereinigung.md` | Dateisystem-Bereinigung nach Konsolidierung | wartung | irgendwann | sicher | sprung | offen | seed-code-repo-migration, seed-bereichs-uebersichten |
 
 ## Geltungsbereich: plattform
 
 | Datei | Titel | klasse | zugkraft | risikoklasse | stufe | status | abhängig von |
 |-------|-------|--------|----------|--------------|-------|--------|--------------|
-| `seed-os-patching-broken.md` | OS-Patching greift nicht — Diagnose + Fix (nächster Zyklus nach BOOT-001) | security | jetzt | sicherheitskritisch-akut | spur | offen | - |
-| `seed-code-security-checks.md` | Code-Security-Standards + automatisierte Checks für Prisment-Produkt-Code (Next.js + LangGraph) | security | jetzt | kritisch | spur | offen | - |
-| `seed-brand-protection-saved-queries.md` | Cloudflare Brand Protection — Saved Queries + Logos einrichten | security | bald | sicher | sprung | offen | - |
-| `seed-pretooluse-hook-allowlist.md` | PreToolUse-Hook als echte Bash-Tool-Allowlist (E13 strukturell realisieren) | security | bald | kritisch | spur | offen | PLAT-001_SPEC_v2 |
-| `seed-compose-recreate-after-edit.md` | Pflicht-Recreate nach Compose-Topologie-Edit | wartung | bald | mittel | sprung | offen | - |
-| `seed-apt-get-download-pin.md` | apt-get download muss immer mit exakter Versions-Pinnung erfolgen | wartung | irgendwann | niedrig | sprung | offen | - |
-| `seed-pending-kernel-debconf-noise.md` | Pending-Kernel-Whiptail-Dialog bei -updates-Apply beobachten/unterdrücken | wartung | irgendwann | niedrig | schritt | offen | - |
-| `seed-diun-rueckbau.md` | Diun zurückbauen, sobald nightly Stabilität bewiesen hat | wartung | irgendwann | sicher | sprung | offen | - |
-| `seed-paperless-db-aufloesen.md` | Verwaiste paperless-DB im PostgreSQL-Hub auflösen | wartung | irgendwann | sicher | sprung | offen | - |
+| `seeds/seed-os-patching-broken.md` | OS-Patching greift nicht — Diagnose + Fix (nächster Zyklus nach BOOT-001) | security | jetzt | sicherheitskritisch-akut | spur | offen | - |
+| `seeds/seed-code-security-checks.md` | Code-Security-Standards + automatisierte Checks für Prisment-Produkt-Code (Next.js + LangGraph) | security | jetzt | kritisch | spur | offen | - |
+| `seeds/seed-brand-protection-saved-queries.md` | Cloudflare Brand Protection — Saved Queries + Logos einrichten | security | bald | sicher | sprung | offen | - |
+| `seeds/seed-pretooluse-hook-allowlist.md` | PreToolUse-Hook als echte Bash-Tool-Allowlist (E13 strukturell realisieren) | security | bald | kritisch | spur | offen | PLAT-001_SPEC_v2 |
+| `seeds/seed-compose-recreate-after-edit.md` | Pflicht-Recreate nach Compose-Topologie-Edit | wartung | bald | mittel | sprung | offen | - |
+| `seeds/seed-apt-get-download-pin.md` | apt-get download muss immer mit exakter Versions-Pinnung erfolgen | wartung | irgendwann | niedrig | sprung | offen | - |
+| `seeds/seed-pending-kernel-debconf-noise.md` | Pending-Kernel-Whiptail-Dialog bei -updates-Apply beobachten/unterdrücken | wartung | irgendwann | niedrig | schritt | offen | - |
+| `seeds/seed-diun-rueckbau.md` | Diun zurückbauen, sobald nightly Stabilität bewiesen hat | wartung | irgendwann | sicher | sprung | offen | - |
+| `seeds/seed-paperless-db-aufloesen.md` | Verwaiste paperless-DB im PostgreSQL-Hub auflösen | wartung | irgendwann | sicher | sprung | offen | - |
 
 ## Geltungsbereich: prisment
 
 | Datei | Titel | klasse | zugkraft | risikoklasse | stufe | status | abhängig von |
 |-------|-------|--------|----------|--------------|-------|--------|--------------|
-| `seed-data-integrity-agents.md` | Data-Integrity-Architektur für LangGraph-Agents (zentrale Datenpunkt-Definition + Verifikation + definierte Übergaben) | qualitaet | jetzt | kritisch | spur | offen | - |
-| `seed-sma-operative-doku-aufteilen.md` | SMA-Operative-Doku in strukturierte Systemzustand-Dateien aufteilen | wartung | bald | sicher | sprung | offen | - |
-| `seed-sma-doku-rewrite-nach-telegram-eol.md` | SMA-Doku Re-Write nach Telegram-EOL (8 Dateien mit VERALTET-Markierung) | wartung | bald | sicher | sprung | offen | - |
+| `seeds/seed-data-integrity-agents.md` | Data-Integrity-Architektur für LangGraph-Agents (zentrale Datenpunkt-Definition + Verifikation + definierte Übergaben) | qualitaet | jetzt | kritisch | spur | offen | - |
+| `seeds/seed-sma-operative-doku-aufteilen.md` | SMA-Operative-Doku in strukturierte Systemzustand-Dateien aufteilen | wartung | bald | sicher | sprung | offen | - |
+| `seeds/seed-sma-doku-rewrite-nach-telegram-eol.md` | SMA-Doku Re-Write nach Telegram-EOL (8 Dateien mit VERALTET-Markierung) | wartung | bald | sicher | sprung | offen | - |
 
 ## Geltungsbereich: intern
 
 | Datei | Titel | klasse | zugkraft | risikoklasse | stufe | status | abhängig von |
 |-------|-------|--------|----------|--------------|-------|--------|--------------|
-| `seed-assistant-agent.md` | Assistant-Agent: handelnder Agent an Geschäftsprozessen (eigenes Sicherheitsmodell) | feature | irgendwann | kritisch | spur | offen | - |
+| `seeds/seed-assistant-agent.md` | Assistant-Agent: handelnder Agent an Geschäftsprozessen (eigenes Sicherheitsmodell) | feature | irgendwann | kritisch | spur | offen | - |
 
 ---
 
