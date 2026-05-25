@@ -98,24 +98,17 @@ Die Spec-weite `risikoklasse:` ist **Obergrenze**, nicht Ersatz: eine `kritisch`
 
 ## Parallel-Lauf von Spuren
 
-Mehrere Spec-Zyklen können gleichzeitig laufen — in eigenen Git-Worktrees, jeweils eigener `tmux`-Session, jeweils eigener Branch `wt/<short>` (Mechanik: PLAT-014, E31).
+Mehrere Spec-Zyklen können gleichzeitig laufen — in eigenen Git-Worktrees, jeweils eigener `tmux`-Session/Window, jeweils eigener Branch `wt/<short>` (Mechanik: PLAT-014, E31). Ebenso können innerhalb **einer** Session mehrere Seeds/Specs sequenziell abgearbeitet werden, jeder in seinem eigenen Worktree (PLAT-015, E34): **neuer Seed = neuer Worktree.**
 
-**Mengen-Regel (hart, maschinell geprüft):** Nie zwei Spuren mit `risikoklasse: kritisch` oder `sicherheitskritisch-akut` parallel. Der Mensch ist die Stop-Instanz, kann sich nicht zerteilen. **Keine Anzahl-Obergrenze** für gleichzeitige Spuren insgesamt — die Grenze setzt der Mensch über seine Stopp-Auslöser-Aufmerksamkeit.
+**Selbst-Disziplin statt maschineller Wand (E34).** Anzahl gleichzeitiger Spuren und Anzahl gleichzeitiger `kritisch`-Spuren liegen vollständig in der Verantwortung des Architekten. Es gibt keine Obergrenze, keinen Hook, keine maschinelle Sperre. Wenn Konzentrationsprobleme oder häufende Merge-Konflikte auftauchen, schraubt der Architekt die Parallelität zurück. Begründung: Beschleunigung schlägt Bürokratie, der Architekt kennt die echten Konfliktquellen besser als ein Skript.
 
-**Hot-File-Pflicht-Tor:** Wenn auch nur ein Pfad aus `_Betrieb/Backlog/00_HOT-FILES.md` in den `beruehrt:`-Mengen irgendeines parallel laufenden Strangs auftaucht, ist Parallelität ausgeschlossen — egal wie disjunkt der Rest ist. Hot-Files sind die Konflikt-Quellen, die jeder Strang berührt.
-
-**Disjunktheits-Check vor Strang-Start (Pflicht):**
+**Werkzeug zur freiwilligen Selbst-Prüfung:**
 ```
 python3 /opt/infrastructure/environment_a/scripts/backlog/check_parallel.py <pfad1> <pfad2> [<pfad3> ...]
 ```
-Drei Ausgabe-Klassen:
-- ✓ `disjunkt` → parallel zulässig
-- ✗ `Schnittmenge zwischen Spuren` → seriell zwingend (gemeinsamer `beruehrt:`-Pfad oder Mengen-Regel-Verstoß)
-- ✗ `Hot-File-Treffer` → Parallelität ausgeschlossen
+Drei Ausgabe-Klassen: ✓ `disjunkt` / ✗ `Schnittmenge zwischen Spuren` / ✗ `Hot-File-Treffer`. Das Skript ist Werkzeug, nicht Pflicht-Tor — der Architekt entscheidet, wann er es aufruft.
 
-Das Skript ist die maschinelle Wand; menschliche Disziplin bleibt die zweite Wand für Fälle, die das Skript nicht sieht (z.B. shared Code-Patterns innerhalb gleicher Ordner-Ebene). Beim Strang-Start ist der Check Pflicht — Verstoß per Override geht nur mit ausdrücklicher Logbuch-Notiz.
-
-**`10_Kunden/`-Schutz auf Worktree-Branches:** Der pre-commit-Hook im knowledge-base-Repo lehnt jeden Commit auf einem `wt/*`-Branch ab, der Dateien unter `10_Kunden/` berührt. Mandantendaten dürfen nur auf `main` bearbeitet werden. Override `--no-verify` nur in begründeten Ausnahmen.
+**`10_Kunden/`-Schutz bleibt technische Wand:** Der pre-commit-Hook im knowledge-base-Repo lehnt jeden Commit auf einem `wt/*`-Branch ab, der Dateien unter `10_Kunden/` berührt. Mandantendaten gehören nur auf `main`. Override `--no-verify` nur in begründeten Ausnahmen + Logbuch-Notiz. Begründung: das ist Datenschutz/Datenintegrität, nicht Mengen-Steuerung — bleibt deshalb hart.
 
 ## Bündelung gehört NICHT in die Spec
 

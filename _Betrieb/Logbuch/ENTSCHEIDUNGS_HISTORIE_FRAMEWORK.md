@@ -532,6 +532,26 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E34 — Mengen-Regel als Mensch-Sache: keine maschinelle Wand für Parallel-Spuren (PLAT-015, 2026-05-26)
+
+**Auslöser:** Bei der Spec-Diskussion zu Bündel 3 (`session-start-check.sh` + Hook-Konfiguration) fragte der Architekt: „Brauche ich das überhaupt?". Begründung: Anzahl gleichzeitiger Sessions und Anzahl gleichzeitiger `kritisch`-Spuren sollen in seiner Verantwortung liegen. Wenn Konzentrationsprobleme oder häufende Merge-Konflikte auftauchen, schraubt er die Parallelität selbst zurück. System soll flexibel beschleunigen, nicht Bürokratie aufbauen. Mengen-Regel ist „nur eine Regel für mich selbst", keine maschinelle Wand.
+
+**Entscheidung:** Maschinelle Mengen-Regel verworfen. Konsequenzen, alle in einem Rutsch umgesetzt: (a) Verfassung 01 Abschnitt „Parallel-Lauf von Spuren" auf Selbst-Disziplin umgeschrieben — `check_parallel.py` bleibt als freiwilliges Werkzeug, keine Pflicht-Tor-Sprache, keine Anzahl-Obergrenze, kein Hook. (b) Globale CLAUDE.md Block „Maschinelle Mengen-Regel beim Session-Start" entfernt, ersetzt durch knappen Verweis auf `check_parallel.py`. (c) PLAT-015 Spec und Machbarkeit angepasst: Bündel 3 entfällt komplett (`session-start-check.sh` wird nicht gebaut, kein Hook-Eintrag in `settings.json`). (d) `10_Kunden/`-Pre-commit-Hook bleibt — das ist Datenschutz, keine Mengen-Steuerung.
+
+**Architekten-Erweiterung im selben Schritt — neuer Seed = neuer Worktree, auch in derselben Session.** Der Architekt schärfte zugleich die Auto-Worktree-Logik: innerhalb einer laufenden Session kann er mehrere Seeds nacheinander abarbeiten; jeder Seed bekommt seinen eigenen Worktree, vorher muss die aktuelle Spur in Phase 9 sauber abgeschlossen sein (Inline-Konflikt-Lösung greift wenn nötig). Konsequenz: Phase-9-Merge passiert nach **jedem** Seed/Spec-Abschluss, nicht nur am Session-Ende. Verfassung 01 und globale CLAUDE.md führen diese Regel jetzt explizit.
+
+**Warum kein Widerspruch zu Vorhandenem:** (a) E29 (Korridor-Mechanik) verlangt Stopp an `kritisch`-Bündeln, nicht maschinelle Wände gegen Parallelität — diese Trennung bleibt intakt. (b) PLAT-014-Werkzeuge (`check_parallel.py`, `wt`-Helfer, `10_Kunden/`-Hook) bleiben in voller Funktion; nur der Pflicht-Charakter des Disjunkt-Checks fällt. (c) PLAT-015 reduziert sich auf das, was Mensch-Entlastung wirklich bringt — Auto-Worktree-Anlage und Inline-Konflikt-Lösung — und verzichtet auf die Schutz-Schicht, deren Wert der Mensch nicht spürt.
+
+**Verworfene Alternative 1 — `UserPromptSubmit`-Hook (Claudes Empfehlung in der Diskussion).** Verworfen, weil der Architekt die Mengen-Regel als Selbst-Verantwortung ansieht, nicht als systemische Sicherheit. Skript-Latenz wäre tragbar, aber das ist nicht der Grund — der Grund ist, dass Bürokratie-Schichten den Effekt eines flexiblen Beschleunigungssystems untergraben.
+
+**Verworfene Alternative 2 — `SessionStart`-Hook.** Verworfen aus demselben Grund. Plus: Verfügbarkeit war ohnehin unsicher.
+
+**Verworfene Alternative 3 — Mengen-Regel als CLAUDE.md-Anweisung an Claude (Soft-Wand).** Verworfen, weil Claude die Regel dann bei jedem Session-Start in seinem Kontext mitziehen müsste. Doppelarbeit ohne Mehrwert: der Architekt erinnert sich an seine eigene Selbst-Regel auch ohne Claude-Erinnerung.
+
+**Kontextbindung:** (a) Wenn nach 3–5 echten Parallel-Spuren sichtbar wird, dass die Selbst-Disziplin doch reißt (z.B. wiederholte Merge-Konflikte aus disjunkt-aussehenden Spuren), Re-Evaluation — die Entscheidung ist umkehrbar per neuem Eintrag, nicht hartkodiert. (b) `seed-kritisch-schaerfen` (Bündel 1 von PLAT-015) ist trotzdem sinnvoll geblieben — er war nicht für die Mengen-Regel da, sondern für die ehrliche Backlog-Aussagekraft. Steht. (c) Falls externer Druck (Multi-Mensch-Setup, Audit-Anforderung) später eine maschinelle Wand verlangt, ist `check_parallel.py` als Helfer schon da — Hook-Konfiguration wäre dann ein 10-Minuten-Schritt, nicht ein eigener Zyklus.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.
