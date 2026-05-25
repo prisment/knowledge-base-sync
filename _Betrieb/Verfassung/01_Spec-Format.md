@@ -48,6 +48,28 @@ Kriterien sind prüfbare Zustände, keine Tätigkeiten. WIE geprüft wird, ist C
 
 Die Spec definiert das WAS (Ziel, Soll-Zustand, Akzeptanzkriterien). Die Bündelung/Arbeitsliste erarbeitet sich Claude Code selbst im Machbarkeits-Report — er kann Abhängigkeiten am echten System besser einschätzen. *(Beim Sprung: inline in der kombinierten Spec, knapp.)*
 
+## Backlog-Felder (Seeds & Roadmaps)
+
+Seeds und ROADMAPs in `_Betrieb/Backlog/` führen zusätzlich zu den allgemeinen Front-Matter-Feldern drei Pflichtfelder, über die das Übersichts-Skript priorisiert und das Backlog lesbar wird:
+
+- **`klasse:`** — WAS für ein Bedarf. Fünf Werte:
+  - `security` — Sicherheit.
+  - `qualitaet` — Stabilität/Integrity. Voraussetzung, dass Features tragen.
+  - `feature` — Kundenwert, neue Fähigkeit.
+  - `prozess` — Framework-eigene Vorhaben (Verfassung, Backlog, Skills, Feature-Flags, Autonomie). Eigene Klasse, weil Bedarfs-Klassen das Fundament nicht abbilden.
+  - `wartung` — Kosmetik, Aufräumen, Drift.
+
+- **`zugkraft:`** — WIE bald nötig. Drei Werte:
+  - `jetzt` — blockiert, akut, oder Kunde wartet.
+  - `bald` — absehbar gebraucht, kein Blocker.
+  - `irgendwann` — sinnvoll, kein Datum.
+
+- **`beruehrt:`** — Liste der Pfade/Ordner, die der Seed bei Umsetzung anfasst. **Ordner-Ebene** (z. B. `langgraph/`, `pwa/`) — gröber, robuster, weniger Pflege als datei-genau. Bei unklarem Footprint leer/grob, wird beim Spec-Start präzisiert.
+
+**Vergabe-Mechanik** (analog `stufe`): Chat-Architekt/Claude Code schlägt mit Begründung vor, Mensch revidiert/gibt frei. Niemals vom Menschen allein geraten.
+
+**Querverweis:** Das `kritisch`-Flag pro Bündel (für autonome Korridor-Ausführung) ist ein verwandtes maschinell auswertbares Front-Matter-/Bundle-Feld mit derselben Vergabe-Mechanik. Es wird mit dem Autonomie-Zyklus eingeführt, nicht hier.
+
 ## Schritt-Log (Stufe Schritt)
 
 Jeder Geltungsbereich hat eine Datei `<Bereich>/Schritt-Log.md`. Claude Code hängt **automatisch, ohne Nachfrage** pro ausgeführtem Schritt eine Zeile an:

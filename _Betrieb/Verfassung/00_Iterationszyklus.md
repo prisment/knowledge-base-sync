@@ -70,6 +70,24 @@ Beim **Sprung** ist Phase 9 schlanker: Abschluss-Notiz ins Archiv, Logbuch-Eintr
 - Ein Zyklus gilt nicht als abgeschlossen, bevor sein definierter Ausgang existiert (z. B. Logbuch-Eintrag bei einer Entscheidung). Claude Code WEIGERT sich, einen neuen Zyklus zu starten, wenn der alte nicht sauber geschlossen ist, und erinnert daran. *(Gilt für Spur + Sprung. Schritt hat keinen offenen Zustand.)*
 - **Breakout-Klappe:** Das Codewort `BREAKOUT` (oder `QUICK-FIX`) setzt den Prozess bewusst aus, PROTOKOLLIERT die Aussetzung und erinnert später ans Nachholen. Flexibilität bricht nie das System — sie wird aufgezeichnet.
 
+## Backlog-Pflege
+
+### Harte Security-Regel
+
+**`security`-Seeds rutschen nicht ab.** Ein offener `security`-Seed ist per Definition mindestens `bald` — er darf nie auf `irgendwann` rutschen. `wartung`-Seeds sind nie `jetzt`, außer sie blockieren nachweislich etwas anderes. Beide Regeln gelten als **Default mit Begründungszwang**: Wer abweicht, schreibt eine Zeile ins Seed, warum.
+
+Mechanik wie bei „kritisch erzwingt Spur" (E23): Disziplin durch Default, nicht durch Sperre. Flexibilität bleibt, aber das Abweichen ist sichtbar.
+
+### Pflege-Routine — Übersicht im selben Commit
+
+`_Betrieb/Backlog/00_UEBERSICHT.md` + `.svg` sind ein Derivat der Seeds (Verfassung 03 SSOT). Sie werden vom Skript `scripts/backlog/generate_uebersicht.py` (im `prisment-platform` Repo) erzeugt.
+
+**Mutations-Punkte (Pflicht-Tor):** Wenn Claude Code einen Seed **anlegt** oder **archiviert**, läuft das Skript im **selben Commit** mit. Damit kann die Übersicht strukturell nicht veralten.
+
+Das ist die Anwendung des Phase-9-Pflicht-Tors aus `ROADMAP_lebende-bereichs-doku` Schritt 8 („Zyklus, der das System ändert, aktualisiert die abgeleitete Ansicht im selben Commit") auf den Backlog — kein neues Muster.
+
+Hot-Files (strang-übergreifend nur seriell anfassbare Pfade) werden handgepflegt in `_Betrieb/Backlog/00_HOT-FILES.md` — getrennt von der generierten Übersicht, damit das Skript handgepflegtes Wissen nicht überschreibt.
+
 ## Zwischenprojekte (Abzweigungen)
 
 - Niemals „hineinwachsen" lassen. Stattdessen: laufenden Zyklus **pausieren**, Zwischenprojekt als eigenen Mini-Zyklus **einschieben**.

@@ -157,6 +157,30 @@ strukturierte Vorschlag für die Wissens-Bewegung beim Abschluss.]
 
 ---
 
+## Backlog-Seed — zusätzliche Pflichtfelder
+
+Seeds und ROADMAPs im `_Betrieb/Backlog/` führen drei zusätzliche Pflichtfelder, die das Übersichts-Skript auswertet (Definition: `_Betrieb/Verfassung/01_Spec-Format.md`, Abschnitt „Backlog-Felder").
+
+```yaml
+---
+typ:             backlog_seed     # backlog_seed | roadmap
+titel:           "…"
+geltungsbereich: alle              # alle | plattform | prisment | intern
+risikoklasse:    sicher
+status:          offen
+stufe:           spur              # spur | sprung | schritt
+klasse:          prozess           # security | qualitaet | feature | prozess | wartung   (PFLICHT)
+zugkraft:        jetzt             # jetzt | bald | irgendwann                            (PFLICHT)
+beruehrt:        ["_Betrieb/Backlog/", "_Betrieb/Verfassung/01_Spec-Format.md"]            # PFLICHT, Ordner-Ebene
+stand:           2026-05-25
+erzeugt_durch:   "…"
+abhaengig_von:                                       # optional
+  - "[[_Betrieb/Backlog/seed-anderer-seed]]"
+---
+```
+
+**Vergabe-Mechanik** wie `stufe`: KI schlägt mit Begründung vor, Mensch revidiert/gibt frei. Bei unklarem Footprint bleibt `beruehrt:` grob/leer und wird beim Spec-Start präzisiert.
+
 ## Verkettung (warum der gemeinsame Header zählt)
 
 Über die identische `spec_id` und die einheitlichen Front-Matter-Keys lässt sich die gesamte Kette eines Zyklus maschinell zusammenführen:
