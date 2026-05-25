@@ -1,7 +1,7 @@
 ---
 typ: verfassung
 titel: "Iterationszyklus"
-stand: 2026-05-24
+stand: 2026-05-26
 aenderung: "nur nach oben (nie schlechter), nur durch bewusste Freigabe des Menschen"
 ---
 
@@ -68,7 +68,7 @@ Der Mensch entscheidet das **Wohin** (Richtung, Wert, Strategie). Claude Code en
 ### Drei Stufen der Sichtbarkeit
 
 1. **Stopp/Freigabe** (synchron, blockierend) — selten, nur Wohin + irreversibel.
-2. **Information** (asynchron, kein Veto) — Claude Code lief weiter, Mensch liest später.
+2. **Information** (asynchron, kein Veto) — Claude Code lief weiter, Mensch liest später. Information landet in **Doku / Commit / Log**, nicht in Zwischen-Chat-Statusberichten. Wenn der Mensch unterwegs etwas wissen muss, ist es Stopp Stufe 1, nicht Information.
 3. *Stille* (gar nichts) — Routine. **Heute nicht aktiv.** Start ohne Stille, alles ist mindestens Information. Stille wird später eingeführt, wenn die Information-Protokolle zeigen, was ohnehin nie relevant war.
 
 ### Die vier Stopp-Auslöser
@@ -94,7 +94,7 @@ Lackmustest pro Phase: „Tue ich noch das, was die freigegebene Spec sagt — o
 1. **Spec-Freigabe** (vorne) — hier steckt der Gesamtüberblick des Menschen.
 2. **Korridor-Bruch** (dynamisch, nur bei Fall C).
 
-Dazwischen kein synchroner Stopp; Phasenübergänge sind informativ protokolliert.
+Dazwischen kein synchroner Stopp **und keine Wie-Rückfragen im Chat**. Phasenübergänge (Phase 6→7→9) und Folge-Aufräumschritte, die sich zwingend aus dem Bündel ergeben (Archivierung, Status-Update, abhängige Schritt-Log-Einträge), gehören in den Korridor — werden durchgezogen, nicht erneut angefragt. Rückfragen sind nur an den definierten Wänden (Spec-Freigabe vorne, Fall-C-Hardstop dynamisch).
 
 ### Stufen-Staffelung
 
@@ -104,7 +104,16 @@ Dazwischen kein synchroner Stopp; Phasenübergänge sind informativ protokollier
 
 ### Entscheidungs-Protokoll (Review-Format)
 
-Der Mensch reviewt Entscheidungen, nicht Code. Claude Code legt nach Bündel/Zyklus vor: *Was gebaut* (1 Satz) · *Welche Entscheidungen* (Gabelungen ohne Stopp, je 1 Zeile + Warum) · *Was du wissen solltest* · *Wo ich unsicher war*. Das Code-Diff bleibt verfügbar, ist aber Kür. Revision erfolgt geballt im Nachhinein (auf Branch billig), statt vorab häppchenweise freizugeben.
+Der Mensch reviewt Entscheidungen, nicht Code. **Der Chat-Output am Bündel-/Zyklus-Ende ist ausschließlich das Entscheidungs-Protokoll** — vier Punkte in dieser Reihenfolge:
+
+1. **Was ich gebaut habe** — ein Satz, das Ziel des Bündels.
+2. **Entscheidungen** — die Gabelungen, an denen ich nicht gestoppt habe, je eine Zeile: „X statt Y, weil …". Wenn keine echten Gabelungen, dann „keine" — nicht stillschweigend leer lassen.
+3. **Was du wissen solltest** — Information, kein Veto nötig.
+4. **Wo ich unsicher war** — der eigentliche Review-Fokus des Menschen (darf leer sein).
+
+**Nicht in den Chat:** Akzeptanzkriterien-Häkchen, Phasen-Verifikations-Tabellen, Datei-Listen, Commit-Hash-Aufzählungen, „was ich geprüft habe"-Belege, Status-Updates pro Phase. Das ist Belegmaterial — gehört in Abschluss-Doku / Schritt-Log / Logbuch, nicht in den Review-Anker des Menschen. Der Mensch hat diese Belege eingerichtet, **damit er sie nicht lesen muss**.
+
+Code-Diff und Doku-Diff bleiben verfügbar, sind aber Kür. Revision erfolgt geballt im Nachhinein (auf Branch billig), statt vorab häppchenweise freizugeben.
 
 ## Lebenszyklus-Bewegung beim Abschluss (Phase 9)
 
@@ -113,6 +122,7 @@ Von Claude Code vorgeschlagen, vom Menschen freigegeben:
 - Das „Warum" wird als **Logbuch-Eintrag** verewigt (Format: siehe Logbuch). Das Logbuch ist **zentral** in `_Betrieb/Logbuch/` (siehe `02_Rollen-Protokoll.md` und Logbuch E24).
 - Der Rest (Specs, Reports, Deviation-Logs) wandert ins **Archiv**.
 - Hatte der Zyklus einen **Backlog-Seed als Auslöser**, wandert auch dieser Seed ins Archiv des Zyklus — er ist mit Abschluss kein offener Backlog-Posten mehr. (Ausnahme: Seed wurde nur teilweise abgearbeitet → bleibt im Backlog mit Hinweis-Block + Querverweis auf die Spec.)
+- **Doku-Ebene synchronisieren:** Detail-Doku (`<Bereich>/Systemzustand/<Topik>/`) gegen die realen Änderungen auf Ist-Stand bringen, dann die abgeleitete `<Bereich>/Systemzustand/00_Uebersicht/` nachziehen — Verweistabellen, SVGs, Architektur-Tabellen. Detail bleibt SSOT, Übersicht ist abgeleitete Ansicht; beide synchron. (Pflicht-Tor: siehe unten „Doku-Synchronität".)
 - Das Arbeitsgedächtnis ist danach leer für den nächsten Zyklus.
 
 Beim **Sprung** ist Phase 9 schlanker: Abschluss-Notiz ins Archiv, Logbuch-Eintrag nur, wenn eine bewusste Entscheidung mit Warum gefallen ist. Beim **Schritt** entfällt Phase 9 ganz — die Schritt-Log-Zeile + Commit sind der Abschluss.
@@ -122,6 +132,17 @@ Beim **Sprung** ist Phase 9 schlanker: Abschluss-Notiz ins Archiv, Logbuch-Eintr
 - Ein Zyklus gilt nicht als abgeschlossen, bevor sein definierter Ausgang existiert (z. B. Logbuch-Eintrag bei einer Entscheidung). Claude Code WEIGERT sich, einen neuen Zyklus zu starten, wenn der alte nicht sauber geschlossen ist, und erinnert daran. *(Gilt für Spur + Sprung. Schritt hat keinen offenen Zustand.)*
 - **Breakout-Klappe:** Das Codewort `BREAKOUT` (oder `QUICK-FIX`) setzt den Prozess bewusst aus, PROTOKOLLIERT die Aussetzung und erinnert später ans Nachholen. Flexibilität bricht nie das System — sie wird aufgezeichnet.
 - **Autonomie-Klappe:** Stoppt Claude Code im Korridor an einem der vier Auslöser, ist das kein Abbruch, sondern Korridor-Funktion. Er legt das Entscheidungs-Protokoll des bis dahin Gelaufenen vor und benennt die offene Wohin-/Kritikalitäts-Frage. Nach Mensch-Entscheidung läuft der Korridor weiter.
+- **Doku-Synchronität (Phase 9):** Wenn ein Zyklus den **realen Systemzustand** eines Bereichs ändert — Container kommt/geht/wechselt Image, n8n-Workflow, Skript, `docker-compose.yml`, Auth-/Netz-Topologie, neue Komponente — ODER bestehende Detail-Doku unterhalb `<Bereich>/Systemzustand/**` (außerhalb `00_Uebersicht/`) umarbeitet, MUSS im selben Zyklus VOR dem Phase-9-Commit: **(a)** die betroffene Detail-Doku im `Systemzustand/` auf den neuen Ist-Stand gebracht werden (SSOT zuerst), **und (b)** die abgeleitete `00_Uebersicht/00_Bereich.md` (ggf. thematische Sub-Übersicht inkl. SVG) nachgezogen werden. Beide Ebenen sind Korridor-Wand: fehlt (a) oder (b) beim Phase-9-Abschluss = Fall C = synchroner Stopp. Begründete Ausnahme (Bereich bewusst undokumentiert, z. B. Intern leer) gehört in die Abschluss-Doku. *(Gilt für Spur, Sprung UND Schritt — sobald der reale Systemzustand berührt wird. Nur rein doku-interne Trivialitäten ohne System-Bezug, z. B. Typo-Fix, sind ausgenommen.)* Generalisiert das Backlog-Pflege-Muster („Übersicht im selben Commit", siehe unten) auf den Systemzustand — handgepflegt statt skript-generiert, gleicher Gedanke. Schwellenwerte:
+
+| Reale Änderung im Bereich | Pflicht-Update Detail-Doku | Pflicht-Update Übersicht |
+|---|---|---|
+| Container kommt/geht / Image-Wechsel | Detail-Doku im betroffenen Topik | Sub-Übersicht + ggf. Architektur-SVG |
+| Neuer/entfallener n8n-Workflow | Workflow-Doku im Topik | Onboarding-/Operative-Doku-Übersicht |
+| Agent-Pipeline-Änderung | Detail-Doku Agent/Pipeline | Agenten-Sub-Übersicht + SVG |
+| Pricing/Strategie-Change | Detail-Doku Strategie | Strategie-Sub-Übersicht |
+| Auth/Sicherheit-Topologie-Change | Detail-Doku Sicherheit | Architektur-SVG |
+| Doku-Datei in `Systemzustand/<Topik>/` neu/gelöscht/umbenannt | (die Änderung selbst) | `00_Bereich.md` Detail-Quellen-Tabelle |
+| Reines Wording/Typo in Detail-Datei | (kein) | **kein** Pflicht-Update |
 
 ## Backlog-Pflege
 

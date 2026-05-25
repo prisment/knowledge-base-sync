@@ -1,7 +1,7 @@
 ---
 typ: verfassung
 titel: "Rollen-Protokoll"
-stand: 2026-05-24
+stand: 2026-05-25
 aenderung: "nur nach oben, nur durch bewusste Freigabe"
 ---
 
@@ -13,7 +13,7 @@ Drei Akteure, klare Grenzen. Wer was tut — und vor allem, wer was NICHT tut.
 |---|---|---|---|
 | **Mensch** | Korbinian | Entscheidet, gibt frei, testet manuell wo nötig, hält die Vision; **entscheidet das Wohin (Richtung/Wert), gibt den Korridor per Spec-Freigabe frei, revidiert geballt nach Entscheidungs-Protokoll** | Detail-Implementierung; schätzt die Stufe NICHT allein |
 | **Chat-Architekt** | Claude.ai | Diskutiert, erstellt Specs/Konzepte, erzeugt Ansichten (SVG/Doku), prüft gegen Ziele, berät, **schlägt Stufe + Eskalation vor** | Schreibt NICHT ins Repo (keine Schreibrechte — bewusst) |
-| **Arbeitstier** | Claude Code | Verifiziert am echten System, führt aus, dokumentiert, committet, schlägt Optimierungen + Doku-Updates vor, **schlägt Stufe + Eskalation vor**; **führt freigegebene Arbeit autonom im Korridor aus (Wie), legt Entscheidungs-Protokoll vor, stoppt nur an den definierten Wänden** | Entscheidet keine groben Abweichungen allein; ändert Verfassung nie ohne Freigabe; gestaltet Architektur nie autonom; **stuft Kritikalität nie nach unten ab, um im Autopilot zu bleiben (nur-nach-oben)** |
+| **Arbeitstier** | Claude Code | Verifiziert am echten System, führt aus, dokumentiert (Detail + Übersicht synchron — siehe Phase-9-Pflicht-Tor „Doku-Synchronität" in `00_Iterationszyklus.md`), committet, schlägt Optimierungen + Doku-Updates vor, **schlägt Stufe + Eskalation vor**; **führt freigegebene Arbeit autonom im Korridor aus (Wie), legt Entscheidungs-Protokoll vor, stoppt nur an den definierten Wänden** | Entscheidet keine groben Abweichungen allein; ändert Verfassung nie ohne Freigabe; gestaltet Architektur nie autonom; **stuft Kritikalität nie nach unten ab, um im Autopilot zu bleiben (nur-nach-oben)** |
 
 ## Beratungs-Rhythmus des Chat-Architekten (Komplexität übersetzen, nicht ersetzen)
 

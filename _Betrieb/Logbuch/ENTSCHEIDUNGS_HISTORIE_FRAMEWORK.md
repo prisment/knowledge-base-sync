@@ -456,6 +456,26 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E30 — Doku-Synchronität als Phase-9-Pflicht-Tor, system-zentriert (PLAT-011, 2026-05-25)
+
+**Auslöser:** Drei aufeinanderfolgende Zyklen zeigten Drift zwischen realer System-Veränderung und der nachgezogenen Doku (PLAT-008 Telegram-Reste in Detail-Doku; PRIS-016 leere Helpdesk-Übersicht; PRIS-015 Authentik-SVG-Drift). Disziplin allein reicht nicht — das System brauchte einen strukturellen Mechanismus. Backlog hatte sein eigenes Pflicht-Tor („Übersicht im selben Commit", siehe Verfassung 00 „Backlog-Pflege"); Systemzustand hatte keins. Damit war das Derivat (Backlog-Übersicht) härter geschützt als der Systemzustand selbst.
+
+**Entscheidung:** Neue Bullet in der „Pflicht-Tore"-Sektion von `00_Iterationszyklus.md`: Doku-Synchronität ist Pflicht-Tor in Phase 9, **system-zentriert**. Auslöser ist die reale System-Änderung (Container, Workflow, Skript, Compose, Topologie) oder Umarbeitung bestehender Detail-Doku — nicht primär die Doku-Datei. Pflicht ist explizit zweistufig: **(a)** Detail-Doku im `Systemzustand/` zuerst (SSOT), **(b)** abgeleitete `00_Uebersicht/` hinterher (Verweistabellen, SVGs, Sub-Übersichten). Beide Ebenen sind Korridor-Wand: Diff beim Phase-9-Abschluss = Fall C = synchroner Stopp. Gilt für **Spur, Sprung UND Schritt**, sobald der reale Systemzustand berührt wird; nur rein doku-interne Trivialität (Typo) bleibt ausgenommen. Schwellenwerte als kompakte Tabelle direkt unter der Bullet. Generalisiert das bestehende Backlog-Pflege-Muster (handgepflegt statt skript-generiert). Parallel: neue Bullet in der „Lebenszyklus-Bewegung (Phase 9)"-Sektion (Detail zuerst, dann Übersicht) + Querverweis in der Arbeitstier-Zeile in `02_Rollen-Protokoll.md` (keine Doppeldefinition, nur Konsistenz).
+
+**Warum system-zentriert statt doku-zentriert (zentral):** Ein doku-zentrierter Auslöser („wenn Datei unterhalb `Systemzustand/` geändert wird") lässt system-direkte Änderungen ohne Detail-Doku-Touch durchschlüpfen — genau die Lücke, die in PLAT-008/PRIS-016 sichtbar wurde. Reale System-Änderung als Auslöser dreht die Beweislast: der Zyklus muss aktiv ausweisen, dass keine Doku-Pflicht entstand.
+
+**Warum Schritt nicht pauschal ausgenommen:** Ein Image-Tag-Bump kann ein Schritt sein, ändert aber den realen Systemzustand. Würde Schritt pauschal ausgenommen, wäre genau diese hochfrequente Klasse von System-Berührung dauerhaft ungeschützt. Die Verfassungs-Stufen-Definition (Schritt = trivial/reversibel/isoliert) schließt das nicht aus, daher gilt die Pflicht auch hier — Schwelle ist „System berührt", nicht „Zeremonie-Tiefe".
+
+**Verworfene Alternative 1 — Nightly Drift-Check (Python-Stdlib-Skript mit vier Drift-Klassen, Eintrag in `nacht-aufgaben.md` als Aufgabe 6, Klassen: Container vs. Doku / n8n-Workflows vs. Doku / Bereichs-Übersicht-Vollständigkeit / VERALTET-Marker-Halbwertzeit).** Verworfen, weil Plaintext-grep auf MD/SVG fragil ist (Treffer/Nicht-Treffer hängen an Schreibweise und Markup), die Ziel-Dateiliste selbst drift-anfällig wäre (jeder neue Übersichts-Pfad müsste nachgezogen werden) und der Wartungsaufwand unverhältnismäßig zur aktuellen Systemgröße (~27 Container, überschaubare Doku-Menge). Drift wird stattdessen durch das Pflicht-Tor + Beim-Arbeiten-Drüberfallen abgedeckt. **Folge-Option** (kein Auftrag jetzt): ein schlanker Klasse-C-only-Check (Bereichs-Übersichts-Vollständigkeit — alle `.md` in `Systemzustand/**` müssen in `00_Bereich.md` referenziert sein) ist später denkbar; wenn die Pflicht-Tor-Disziplin im Alltag nicht trägt, kann das als Folge-Seed entstehen. Nicht jetzt anlegen.
+
+**Verworfene Alternative 2 — Pflicht-Tor nur für Übersicht (Detail-Doku weich im Rollen-Protokoll).** Verworfen, weil dann das Derivat härter geschützt wäre als die SSOT — strukturell verkehrt. Erste Spec-Fassung hatte genau diese Form; im zweiten Wurf geschärft.
+
+**Verworfene Alternative 3 — Schwellenwert-Tabelle in `_Betrieb/Templates/` auslagern.** Verworfen für „kompakt direkt unter die Bullet". Die Tabelle ist Teil des Pflicht-Tor-Verständnisses (gibt die Zeile „Typo zählt nicht" mit), nicht Implementierungs-Detail; sie gehört in den Lesefluss der Verfassung. Sieben Zeilen passen.
+
+**Kontextbindung:** (a) Wenn die Pflicht-Tor-Disziplin im Alltag belastet (zu viele Stopps, „Pflicht-Hin- und -Herziehen" für Mini-Änderungen), nach 3–5 Korridor-Spuren bewerten und ggf. die Schwellenwert-Tabelle nachschärfen. (b) Der Klasse-C-only-Drift-Check als Folge-Option (siehe Verworfene Alternative 1) kommt nur, wenn empirisch sichtbar wird, dass Drift trotz Tor durchrutscht — sonst nicht. (c) Querverweis: Backlog-Pflege-Sektion in `00_Iterationszyklus.md` und `ROADMAP_lebende-bereichs-doku` Schritt 8.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.

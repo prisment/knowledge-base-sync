@@ -13,7 +13,7 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 
 | Datei | Titel | Geltungsbereich | Stufe | Stand |
 |-------|-------|-----------------|-------|-------|
-| `roadmaps/ROADMAP_lebende-bereichs-doku.md` | Lebende Bereichs-Dokumentation (Bereinigung + Übersichten + Automatisierung) | alle | spur | 2026-05-24 |
+| `roadmaps/_archiv/ROADMAP_lebende-bereichs-doku.md` | Lebende Bereichs-Dokumentation (Bereinigung + Übersichten + Automatisierung) | alle | spur | 2026-05-24 |
 | `roadmaps/ROADMAP_SMA.md` | SMA — Social Media Automation Qualitätsarbeit | prisment | spur | 2026-05-25 |
 
 ## Geltungsbereich: alle
