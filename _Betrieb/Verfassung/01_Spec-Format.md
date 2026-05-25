@@ -46,7 +46,9 @@ Kriterien sind prüfbare Zustände, keine Tätigkeiten. WIE geprüft wird, ist C
 
 ## Kritikalität pro Bündel (steuert Autonomie in Phase 6)
 
-Damit Phase 6 autonom laufen kann (`00_Iterationszyklus.md`, Abschnitt „Autonome Ausführung im freigegebenen Korridor"), markiert die Arbeitsliste/Machbarkeit pro Bündel ein `kritisch`-Flag: Bündel ohne Flag laufen autonom, markierte Bündel sind synchrone Stopps.
+Damit Phase 6 autonom laufen kann (`00_Iterationszyklus.md`, Abschnitt „Autonome Ausführung im freigegebenen Korridor"), **setzt Claude Code in Phase 5 (Machbarkeit) pro Bündel verbindlich ein `kritisch:`-Flag** mit einem der drei Werte `sicher` / `kritisch` / `sicherheitskritisch-akut` — geprüft gegen die feste Liste unten. `sicher`-Bündel laufen autonom; `kritisch`- und `sicherheitskritisch-akut`-Bündel sind synchrone Stopps in der Spur.
+
+Die Spec-weite `risikoklasse:` ist **Obergrenze**, nicht Ersatz: eine `kritisch`-Spec kann und soll `sicher`-Bündel enthalten — nicht jede Aufgabe innerhalb einer kritischen Spec ist selbst kritisch. Eine `sicher`-Spec hingegen kann nie kritische Bündel haben (Stufen-Inflation-Schutz: würde so etwas auftauchen, ist die Spec falsch eingestuft und gehört eskaliert, siehe `00_Iterationszyklus.md` „Eskalation").
 
 **Feste Liste — immer kritisch** (Claude Code erkennt nur, ob berührt; schätzt hier nicht ein):
 
@@ -61,7 +63,7 @@ Damit Phase 6 autonom laufen kann (`00_Iterationszyklus.md`, Abschnitt „Autono
 
 **Nur-nach-oben:** Claude Code und der Mensch dürfen nur **hoch**stufen. Ein Listen-Treffer kann nicht weggeurteilt werden. (Korrespondiert mit dem „Tut NICHT" des Arbeitstiers in `02_Rollen-Protokoll.md`: „stuft Kritikalität nie nach unten ab, um im Autopilot zu bleiben".)
 
-**Spec-Vermerk:** pro Nicht-Listen-Bündel nur `kritisch: ja/nein` + Halbsatz Begründung — nicht die ausformulierten Testfragen (die sind Werkzeug, nicht Lesestoff).
+**Spec-Vermerk:** pro Nicht-Listen-Bündel nur `kritisch: sicher|kritisch|sicherheitskritisch-akut` + Halbsatz Begründung — nicht die ausformulierten Testfragen (die sind Werkzeug, nicht Lesestoff). Listen-Treffer brauchen keinen Halbsatz (die Liste IST die Begründung).
 
 **Die Liste lebt:** wächst per Phase-9-Pflicht-Tor (Mensch gibt frei, E3-konform), wenn ein Schaden eine fehlende Kategorie aufdeckt.
 
