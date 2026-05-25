@@ -476,6 +476,26 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E31 — Worktree-Phase scharf geschaltet trotz übersprungenem Drei-Spuren-Gate (PLAT-014, 2026-05-25)
+
+**Auslöser:** `seed-worktrees-parallele-sessions.md` definiert ein hartes Voraussetzungs-Gate vor Spec-Start: „Mindestens drei reale Korridor-Spuren unter PLAT-013-Mechanik gefahren und ausgewertet." Stand 2026-05-25 sind post-PLAT-013 nur **zwei** Spuren archiviert (PRIS-015, PRIS-016). Die laufenden Plattform-Specs (HAERTUNGS_SPEC_PRISMENT, ROADMAP_cloudflare_migration) sind vor PLAT-013 gestartet und liefern keine saubere Korridor-Datenbasis. Architekt entscheidet, das Gate bewusst zu überspringen und PLAT-014 (Worktrees) direkt zu starten.
+
+**Entscheidung:** Drei-Spuren-Gate wird übersprungen. PLAT-014 startet als kombinierte Spur-Spec mit Pilot-Paar-Akzeptanzkriterium (zwei disjunkte `sicher`-Spuren durchlaufen Worktree-Mechanik gleichzeitig). Mengen-Regel „nie zwei `risikoklasse: kritisch`-Spuren parallel" wird in Verfassung 01 verankert. Keine Anzahl-Obergrenze für gleichzeitige Spuren — die Grenze setzt der Mensch über seine Stopp-Auslöser-Aufmerksamkeit. Pilot zählt als erste Erfahrungs-Sammlung, die die ausgefallene Drei-Spuren-Datenbasis nachholt.
+
+**Warum trotz Gate-Übersprung sicher:** (1) Der Bedarf nach Parallelität ist real geworden — der Backlog enthält nach der SMA-Roadmap-Zerlegung 15 zusätzliche Seeds, viele mit disjunkten `beruehrt:`-Mengen. Serielle Abarbeitung würde Monate kosten. (2) Worktree-Mechanik ist additiv, jede Sicherheits-Schicht ist einzeln deaktivierbar (siehe PLAT-014 Rollback-Erwartung). (3) Der ursprüngliche Gate-Zweck war die Bewertung der Korridor-Stopp-Auslöser; deren Tragfähigkeit zeigt sich auch im Worktree-Pilot, also nicht verloren — nur in anderer Reihenfolge erarbeitet. (4) Pilot-Paar ist als `sicher`-Paar definiert; die kritische Mengen-Regel wird über das Skript erzwungen, nicht über Disziplin.
+
+**Folge-Korrektur (Voraussetzung für die Mengen-Regel):** Architekt stellt bei der Spec-Diskussion fest, dass `risikoklasse: kritisch` heute inflationär vergeben wird (DSGVO, Data-Integrity, LLM-Kosten, Meta-API, PreToolUse-Hook etc. tragen das Flag, sind aber faktisch nicht kritisch im Sinne von Unwiederbringlichkeit). Ohne Schärfung wäre die Mengen-Regel „nie zwei kritisch parallel" sofort blockierend. Neuer Seed `seed-kritisch-schaerfen.md` (Sprung, jetzt) läuft direkt nach PLAT-014-Spec-Freigabe und sichtet alle bestehenden Seeds + ergänzt Verfassung 01 um Negativ-Beispiele + Sparsamkeits-Klausel. PLAT-014 selbst bleibt `kritisch` (Branch-/Tree-/Auth-Topologie-Änderung — Listen-Treffer).
+
+**Verworfene Alternative 1 — Auf dritte Spur warten.** Verworfen, weil die nächste sauber-PLAT-013-konforme Spur (vermutlich PLAT-002 PreToolUse-Hook oder der Skalierungs-Härtungs-Seed) selbst mehrere Wochen läuft. Der Engpass ist nicht „zu wenig Datenpunkte für die Korridor-Beobachtung", sondern „zu viele unabhängige Themen, alles seriell". Eine dritte Spur abzuwarten wäre Bürokratie ohne Erkenntnisgewinn — die Erkenntnisse liefert der Worktree-Pilot selbst.
+
+**Verworfene Alternative 2 — Worktrees nur als Werkzeug-Vorarbeit (kein Pilot, kein produktiver Einsatz).** Verworfen, weil eine Werkzeug-Kette ohne Pilot-Run nie beweist, dass sie trägt. Der Pilot ist die einzige ehrliche Form der Tragfähigkeits-Prüfung — kostet wenig zusätzlich, ergibt aber Beweismaterial.
+
+**Verworfene Alternative 3 — Anzahl-Obergrenze (z.B. max. 2 gleichzeitige Spuren).** Verworfen auf Architekten-Wunsch. Die Begrenzung ist nicht Git-mechanisch (Worktrees skalieren), sondern Mensch-Aufmerksamkeit-mechanisch. Der Mensch ist die natürliche Stopp-Instanz und entscheidet bewusst, wie viele Spuren parallel laufen. Eine Verfassungs-Zahl wäre Pseudo-Sicherheit — die echte Steuerung ist die Mengen-Regel auf `kritisch` plus das Disjunktheits-Skript.
+
+**Kontextbindung:** (a) Korridor-Beobachtungs-Auswertung (`seed-korridor-beobachtung.md`) wird verschoben, bis Pilot + 1–2 weitere Worktree-Spuren Daten geliefert haben. (b) Wenn der Pilot zeigt, dass die Mengen-Regel oder das Disjunktheits-Skript regelmäßig zu False-Positives führt (zwei Spuren werden als „kollidiert" gemeldet, obwohl sie es nicht sind), Schärfung in Folge-Mini-Zyklus. (c) Wenn `seed-kritisch-schaerfen` zeigt, dass faktisch keine Spec ehrlich `kritisch` ist, ist die Mengen-Regel im Alltag unauffällig — das ist OK, sie greift als Schutz für Ausnahmen, nicht als Standardfall.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.
