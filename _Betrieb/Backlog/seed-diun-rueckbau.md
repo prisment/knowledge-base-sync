@@ -4,8 +4,9 @@ titel: "Diun zurückbauen, sobald nightly Stabilität bewiesen hat"
 geltungsbereich: plattform
 risikoklasse: sicher
 status: offen
-stand: 2026-05-24
+stand: 2026-05-25
 erzeugt_durch: BOOT-001
+nachtrag: 2026-05-25 (n8n-Update-Drift aufgedeckt — Vorbedingung verschärft)
 ---
 
 ## Anlass
@@ -45,3 +46,47 @@ Diun bleibt parallel.
   nightly NICHT abdeckt? (Wenn ja, in den nightly einbauen, bevor Diun raus.)
 - Soll der Diun-Mail-Kanal als „audit notification" trotzdem bleiben (einmalige
   Image-Up-to-Date-Bestätigung), oder komplett raus?
+
+## Nachtrag 2026-05-25 — Vorbedingung verschärft: ALLE Container müssen erfasst sein
+
+**Anlass:** n8n wurde am 2026-05-25 im Browser als „9 Versionen hinter aktuell"
+gemeldet (UI-Banner: 2.13.3 statt 2.21.7). Verifikation am System:
+
+- `n8n --version` im Container: **2.13.3**
+- Image-LABEL `org.opencontainers.image.version`: **2.13.3**, „2 months ago"
+- `docker-update-log.md` letzter Eintrag: **2026-05-09** (redis-twenty). n8n
+  erscheint **nirgends** im Log.
+- Nacht-Report 2026-05-24 §1: Diun-Lauf „23 Images analysiert, 0 updates,
+  13 unchanged, **10 failed**: lokale Eigen-Builds ohne Registry-Push: erwartet."
+
+**Befund:** Custom-Build-Images (`environment_a-n8n-internal`, ggf. weitere wie
+`environment_a-ollama-proxy`, `langgraph-*`, `pwa-api`, `admin-web`,
+`landingpage-web`, `cf-alarm`) fallen aus der gesamten Update-Pipeline — Diun
+kann nicht vergleichen, also auch der nightly tut nichts. Das wurde im
+Nacht-Report als „erwartet" eingeordnet — was es **NICHT** ist. Ein Container
+ohne Update-Pfad ist ein Sicherheits-Loch mit Zeitfaktor.
+
+**Verschärfte Vorbedingung für Diun-Rückbau** (zwingend, ohne diese kein Rückbau):
+
+1. Inventur aller Container in `environment_a` mit Update-Klasse:
+   - Klasse A: offizielles Registry-Image mit Tag → Diun/nightly funktioniert
+   - Klasse B: Custom-Build aus eigenem Dockerfile → fällt aktuell durch
+2. Für Klasse B Update-Pfad bauen, der **nicht** auf Diun angewiesen ist.
+   Mögliche Mechaniken (Spec-Entscheidung):
+   - Base-Image-Pin im Dockerfile + nightly prüft Base-Image auf neue Tags,
+     triggert Re-Build via `scripts/build_image.sh` + `promote_image.sh`
+   - Upstream-Version-Check via API (n8n: GitHub-Releases, npm-Tag) →
+     Vergleich gegen LABEL → bei Diff Re-Build
+   - Push der Custom-Builds ins lokale Gitea-Registry, dann sieht Diun sie
+3. Nightly-Report muss explizit auflisten, **welche Container er gar nicht
+   prüfen konnte**, mit Begründung. „failed" als Sammelbecken ist die
+   eigentliche Ursache, warum n8n unbemerkt drei Monate alt wurde.
+4. Akzeptanzkriterium für Rückbau: **jeder Container** in `environment_a` hat
+   einen Eintrag in der letzten Wochen-Verlaufs-Tabelle „letzter Update-Check"
+   (Datum) + „letzter Update-Apply" (Datum oder „n/a — pinned"). Keine
+   stillen Lücken.
+
+**Konsequenz für die Stufung:** Bei Umsetzung wird das KEIN reiner
+Diun-Rückbau-Zyklus mehr, sondern „Nightly-Update-Pipeline-Vollabdeckung"
+mit Diun-Rückbau als letzter Schritt. Seed-Titel passt nicht mehr ganz —
+wird in der zugehörigen Spec umbenannt.
