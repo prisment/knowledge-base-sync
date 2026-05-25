@@ -18,10 +18,7 @@ kuratierte Übersicht unter `<Bereich>/Systemzustand/Uebersicht/` (MD + SVG)
 für Mensch und Chat-Architekt, und (c) eine Mechanik, die beides am Leben
 hält — Pflicht-Tor in Phase 9 plus nightly Drift-Check.
 
-**Stand:** 2026-05-25 — PLAT-009 (Twilio + Telegram End-of-Life)
-abgeschlossen (Archiv: `Plattform/Archiv/PLAT-009/`). PLAT-008 nach
-Re-Sync wieder aufgenommen mit reduziertem Bündel 1 (Twillo +
-n8n-Change-Log + HARDENING-Archiv-Ordner schon durch PLAT-009 erledigt).
+**Stand:** 2026-05-25 — PLAT-008 (Bestandsaufnahme + Bereinigung Plattform) abgeschlossen (Archiv: `Plattform/Archiv/PLAT-008/`). PLAT-009 dito (Telegram-EOL). Nächster Schritt: PLAT-010 — Übersichten Plattform.
 
 ## Stufeneinstufung
 
@@ -39,15 +36,13 @@ Pflege automatisieren.
 
 ## Schritte
 
-1. 🔄 **PLAT-008 — Bestandsaufnahme + Bereinigung Plattform.**
-   Wieder aufgenommen 2026-05-25 nach Re-Sync. Bündel 1 jetzt reduziert
-   (3 von 6 Items durch PLAT-009 schon erledigt — siehe
-   `PLAT-008_PAUSE.md` Re-Sync-Ergebnis).
+1. ✅ **PLAT-008 — Bestandsaufnahme + Bereinigung Plattform.**
+   Abgeschlossen 2026-05-25 (Archiv: `Plattform/Archiv/PLAT-008/`). 6 Bündel durch, Doku stabil als Basis für Übersichten.
 2. ✅ **PLAT-009 — Einschub: Twilio + Telegram End-of-Life.** Abgeschlossen
    2026-05-25 (Archiv: `Plattform/Archiv/PLAT-009/`). Logbuch E25
    (Telegram-EOL) + E26 (WAF-Skip Access-Apps). Folge-Seed:
    `seed-sma-doku-rewrite-nach-telegram-eol.md`.
-3. ⬜ **PLAT-010 — Übersichten Plattform** (vorher PLAT-009).
+3. 🔄 **PLAT-010 — Übersichten Plattform** (Vollausstattung gemäß Seed: 00_Bereich, 01_Architektur, Infrastruktur, geteilte Dienste, Sicherheits-Architektur — MD + SVG).
 4. ⬜ **PRIS-XXX — Bestandsaufnahme + Bereinigung Prisment.**
 5. ⬜ **PRIS-XXX+1 — Übersichten Prisment** (Bestand `Architektur/00_PRISMENT_…`
    umziehen in `Uebersicht/`, Format vereinheitlichen, Sub-Übersichten:
@@ -65,11 +60,8 @@ Pflege automatisieren.
 
 ## Aktueller Schritt — Detail
 
-**Schritt 1: PLAT-008 (Wiederaufgenommen) — Plattform-Doku-Bereinigung.**
-Nächste Aktion: Bündel 1 mit reduzierter Liste ausführen
-(authentik.md + mattermost.md löschen, SSH_PFADE_INVENTAR ins
-HARDENING-Archiv), dann normal weiter mit Bündel 2 (G — neue Dienst-Dokus
-für cloudflared, umami, redis-twenty, ollama-proxy).
+**Schritt 3: PLAT-010 — Übersichten Plattform.**
+Nächste Aktion: Phase 1 (Auslöser + Stufen-Vorschlag + Plan für Faktensammlung). Inhalte stehen jetzt auf stabilem Detail-Doku-Stand aus PLAT-008.
 
 ## Vorsichtsregel zur Bereinigung
 
