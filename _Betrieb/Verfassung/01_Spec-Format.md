@@ -44,6 +44,35 @@ Kriterien sind prüfbare Zustände, keine Tätigkeiten. WIE geprüft wird, ist C
 - **sicher:** knapp, z. B. „Dienst läuft (Health-Check grün)".
 - **kritisch:** vollständige Liste, z. B. „DNS vollständig migriert / alter Anbieter nicht mehr autoritativ / Config gesichert / Routen X, Y, Z getestet".
 
+## Risikoklasse `kritisch` — Definition und Sparsamkeit
+
+Risikoklasse-Werte: `sicher` / `kritisch` / `sicherheitskritisch-akut`. Andere Werte (`niedrig`, `mittel`, `hoch` etc.) sind **nicht im Wertebereich** — sind sie irgendwo erfasst, ist das ein Bestands-Drift und gehört korrigiert.
+
+### Drei Aspekte — `kritisch` nur, wenn mindestens einer erfüllt ist
+
+1. **Unwiederbringlichkeit:** ein Fehler kann nicht ohne Datenverlust, Vertrauensverlust oder Aussperrung zurückgerollt werden. Beispiele: SSH-Lockdown ohne Notausgang, irreversible DB-Migration auf Live-Kundendaten, einmal an Sub-Processors gesendete Klartextdaten, öffentlich versendete falsche Inhalte.
+2. **Akut bewiesener Schmerz mit Außenwirkung:** es gibt einen realen Incident, nicht nur ein theoretisches Risiko. CVE-Vorfall mit dokumentierter Ausnutzung = ja. „Könnte mal CVE geben" = nein.
+3. **Branch-/Tree-/Auth-Topologie:** der Zyklus ändert die Mechanik, mit der zukünftige Zyklen überhaupt sicher laufen können. Worktree-Mengen-Regel, PreToolUse-Hook scharf geschaltet, Tenant-Isolation mit fail-closed, eigenes Sicherheitsmodell für einen handelnden Agent.
+
+### Negativ-Beispiele — was NICHT kritisch ist, auch wenn es so anfühlt
+
+- **Architektur-Größe allein** ist nicht kritisch. Eine Spur kann groß sein und trotzdem `sicher` (z.B. Datenpunkt-Mechanik über mehrere Agents — Architektur-groß, aber rollback-fähig pro Bug).
+- **Komplexität** ist nicht kritisch. Schwer zu bauen ≠ schwer zu reverten.
+- **„Berührt sensible Daten"** ist nicht kritisch, wenn die Berührung sauber gekapselt ist. PII-Anonymisierungs-Layer ist additiv vor LLM-Calls; ein Bug ist Schicht-Bug, kein dauerhafter Datenverlust.
+- **Externe Service-Anbindung** ist nicht kritisch, wenn sie additiv ist und ein Rollback-Pfad existiert (Token weglassen → Stub-Pfad wieder). Sie wird kritisch, sobald Endkunden-PII das System verlässt und nicht zurückholbar ist.
+- **Doku-/Kategorisierungs-Arbeit** ist nie kritisch, auch wenn sie den Bestand stark verändert.
+
+### Sparsamkeits-Klausel
+
+Kritisch ist die Ausnahme, nicht die Norm. **Wenn mehr als die Hälfte des aktiven Backlogs `kritisch` ist, stimmt die Definition oder die Einstufung nicht — Schärfung oder Revision pflichtgemäß.** Inflation entwertet das Steuer-Signal: im Korridor-Modell (`00_Iterationszyklus.md`) bedeutet `kritisch` einen synchronen Stopp pro Bündel + harte Mengen-Regel beim Parallel-Lauf — bei Inflation kein Korridor, keine Parallelität, nur Bürokratie.
+
+Die Schärfung steht im Backlog als `seed-kritisch-schaerfen` (Sprung, jetzt) und wird wiederholt, sobald die Quote wieder kippt.
+
+### Begriffstrennung — Spec-Risikoklasse vs. Bündel-Flag
+
+- **`risikoklasse:` im Spec-Front-Matter** ist die **Obergrenze** für die Bündel-Einstufung in Phase 5. Eine `kritisch`-Spec kann und soll `sicher`-Bündel enthalten; eine `sicher`-Spec kann nie kritische Bündel haben (Stufen-Inflation-Schutz; tauchen welche auf, ist die Spec falsch eingestuft und eskaliert).
+- **Pro-Bündel-`kritisch:`-Flag in der Machbarkeit (Phase 5)** ist die operative Wand, an der der Korridor synchron stoppt. Drei Werte wie die Spec-Risikoklasse.
+
 ## Kritikalität pro Bündel (steuert Autonomie in Phase 6)
 
 Damit Phase 6 autonom laufen kann (`00_Iterationszyklus.md`, Abschnitt „Autonome Ausführung im freigegebenen Korridor"), **setzt Claude Code in Phase 5 (Machbarkeit) pro Bündel verbindlich ein `kritisch:`-Flag** mit einem der drei Werte `sicher` / `kritisch` / `sicherheitskritisch-akut` — geprüft gegen die feste Liste unten. `sicher`-Bündel laufen autonom; `kritisch`- und `sicherheitskritisch-akut`-Bündel sind synchrone Stopps in der Spur.

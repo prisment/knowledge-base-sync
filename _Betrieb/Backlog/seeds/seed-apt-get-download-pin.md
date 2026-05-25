@@ -2,7 +2,7 @@
 typ: backlog_seed
 titel: "apt-get download muss immer mit exakter Versions-Pinnung erfolgen"
 geltungsbereich: plattform
-risikoklasse: niedrig
+risikoklasse: sicher
 status: offen
 klasse: wartung
 zugkraft: irgendwann

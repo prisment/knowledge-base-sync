@@ -2,7 +2,7 @@
 typ: backlog_seed
 titel: "Pending-Kernel-Whiptail-Dialog bei -updates-Apply beobachten/unterdrücken"
 geltungsbereich: plattform
-risikoklasse: niedrig
+risikoklasse: sicher
 status: offen
 klasse: wartung
 zugkraft: irgendwann

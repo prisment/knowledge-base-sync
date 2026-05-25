@@ -2,7 +2,7 @@
 typ: backlog_seed
 titel: "Data-Integrity-Architektur für LangGraph-Agents (zentrale Datenpunkt-Definition + Verifikation + definierte Übergaben)"
 geltungsbereich: prisment
-risikoklasse: kritisch
+risikoklasse: sicher
 status: offen
 klasse: qualitaet
 zugkraft: jetzt
@@ -117,11 +117,13 @@ einen dritten zu erfinden:
 
 ## Stufe / Risiko
 
-**Spur, zwingend.** Architektur-gestaltend (Kern-Datenfluss des Produkts),
-berührt alle Agent-Codepfade, prägt einen Verfassungs-Standard. Risikoklasse
-`kritisch` (greift in produktiven Produkt-Code ein, der Kundendaten verarbeitet)
-→ erzwingt ohnehin Spur (Verfassung 00). Voller Zyklus mit Faktensammlung,
-Spec, Machbarkeit, gebündelter Ausführung mit Einzel-Freigaben, Abschluss-Doku.
+**Spur** wegen Architektur-Größe (Kern-Datenfluss des Produkts, alle Agent-
+Codepfade, prägt einen Verfassungs-Standard). Risikoklasse `sicher` (PLAT-015-
+Schärfung 2026-05-26): Bugs in der Datenpunkt-Mechanik sind agent-internes
+Code-Problem, rollback-fähig pro Bug, ohne Außenwirkung. Architektur-Größe
+allein ist nicht kritisch (Verfassung 01). Voller Zyklus mit Faktensammlung,
+Spec, Machbarkeit, gebündelter Ausführung, Abschluss-Doku — Spur trägt die
+Größe, nicht das Risiko.
 
 ## Trigger
 

@@ -2,7 +2,7 @@
 typ: backlog_seed
 titel: "Meta Graph API Integration (echte Analytics, BoostCard, Voice-Learning-Trigger, Hashtag-Performance)"
 geltungsbereich: prisment
-risikoklasse: kritisch
+risikoklasse: sicher
 status: offen
 klasse: feature
 zugkraft: bald
@@ -88,8 +88,12 @@ Engagement schließt:
 
 **Spur.** Architektur-gestaltend (neuer externer Sub-Processor, neue
 Datenpfade, mehrere abhängige Folge-Features), berührt 4 Agents + PWA + n8n-
-respektive APScheduler-Worker + neue DB-Tabellen. Risikoklasse `kritisch`
-(externer Service, Token-Handling, Mandanten-Daten via Meta) — erzwingt Spur.
+respektive APScheduler-Worker + neue DB-Tabellen. Risikoklasse `sicher`
+(PLAT-015-Schärfung 2026-05-26): externe Service-Anbindung ist additiv mit
+Rollback-Pfad (Token weglassen → Stub-Pfad wieder). Verfassung 01 explizit:
+„Externe Service-Anbindung ist nicht kritisch, wenn additiv und Rollback-Pfad
+existiert." Spur wegen Architektur-Größe (App-Review-Wartezeit, mehrere
+abhängige Folge-Features), nicht wegen Risiko.
 
 App-Review-Wartezeit (1–3 Wochen) ist eigener Zeit-Faktor und gehört in
 die Bündelung — Antrag-Bündel zuerst, Code-Bündel parallel zur Wartezeit.

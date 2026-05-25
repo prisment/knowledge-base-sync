@@ -2,7 +2,7 @@
 typ: backlog_seed
 titel: "Pflicht-Recreate nach Compose-Topologie-Edit"
 geltungsbereich: plattform
-risikoklasse: mittel
+risikoklasse: sicher
 status: offen
 klasse: wartung
 zugkraft: bald

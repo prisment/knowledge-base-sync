@@ -2,7 +2,7 @@
 typ: backlog_seed
 titel: "LLM-Kosten-Tracking + PII-Anonymisierungs-Layer in Agent-Calls"
 geltungsbereich: prisment
-risikoklasse: kritisch
+risikoklasse: sicher
 status: offen
 klasse: qualitaet
 zugkraft: bald
@@ -81,10 +81,10 @@ Kosten-Tracking.
 ## Stufe / Risiko
 
 **Sprung.** Ein Wrapper-Refactor + neue Tabelle + Admin-UI-Erweiterung,
-klar abgegrenzt. Risikoklasse `kritisch` (PII-Layer = Datenschutz-
-Pflicht-Pfad — Listen-Treffer Sicherheits-Schicht). Auch wenn der Scope
-sprung-groß ist, ist die Architektur unverändert (nur Schicht
-dazwischen).
+klar abgegrenzt. Risikoklasse `sicher` (PLAT-015-Schärfung 2026-05-26):
+PII-Layer ist konzeptionell additiv vor jedem Anthropic-Call; ein Layer-Bug
+ist behebbar, Anthropic-Logs sind kein dauerhafter unwiederbringlicher
+Schaden. Architektur bleibt unverändert (nur Schicht dazwischen).
 
 ## Trigger
 
