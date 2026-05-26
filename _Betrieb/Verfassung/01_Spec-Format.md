@@ -64,7 +64,7 @@ Risikoklasse-Werte: `sicher` / `kritisch` / `sicherheitskritisch-akut`. Andere W
 
 ### Sparsamkeits-Klausel
 
-Kritisch ist die Ausnahme, nicht die Norm. **Wenn mehr als die Hälfte des aktiven Backlogs `kritisch` ist, stimmt die Definition oder die Einstufung nicht — Schärfung oder Revision pflichtgemäß.** Inflation entwertet das Steuer-Signal: im Korridor-Modell (`00_Iterationszyklus.md`) bedeutet `kritisch` einen synchronen Stopp pro Bündel + harte Mengen-Regel beim Parallel-Lauf — bei Inflation kein Korridor, keine Parallelität, nur Bürokratie.
+Kritisch ist die Ausnahme, nicht die Norm. **Wenn mehr als die Hälfte des aktiven Backlogs `kritisch` ist, stimmt die Definition oder die Einstufung nicht — Schärfung oder Revision pflichtgemäß.** Inflation entwertet das Steuer-Signal: im Korridor-Modell (`00_Iterationszyklus.md`) bedeutet `kritisch` Pflicht-Vorsicht + autonomen Durchlauf, `sicherheitskritisch-akut` einen synchronen Vor-Stopp + harte Mengen-Regel beim Parallel-Lauf — bei Inflation der obersten Klasse kein Korridor, keine Parallelität, nur Bürokratie.
 
 Die Schärfung steht im Backlog als `seed-kritisch-schaerfen` (Sprung, jetzt) und wird wiederholt, sobald die Quote wieder kippt.
 
@@ -75,20 +75,35 @@ Die Schärfung steht im Backlog als `seed-kritisch-schaerfen` (Sprung, jetzt) un
 
 ## Kritikalität pro Bündel (steuert Autonomie in Phase 6)
 
-Damit Phase 6 autonom laufen kann (`00_Iterationszyklus.md`, Abschnitt „Autonome Ausführung im freigegebenen Korridor"), **setzt Claude Code in Phase 5 (Machbarkeit) pro Bündel verbindlich ein `kritisch:`-Flag** mit einem der drei Werte `sicher` / `kritisch` / `sicherheitskritisch-akut` — geprüft gegen die feste Liste unten. `sicher`-Bündel laufen autonom; `kritisch`- und `sicherheitskritisch-akut`-Bündel sind synchrone Stopps in der Spur.
+Damit Phase 6 autonom laufen kann (`00_Iterationszyklus.md`, Abschnitt „Autonome Ausführung im freigegebenen Korridor"), **setzt Claude Code in Phase 5 (Machbarkeit) pro Bündel verbindlich ein `kritisch:`-Flag** mit einem der drei Werte `sicher` / `kritisch` / `sicherheitskritisch-akut` — geprüft gegen die feste Liste unten.
+
+Die drei Werte steuern Autonomie und Vorsicht, nicht mehr „Stopp ja/nein aus Prinzip":
+
+- **`sicher`** — autonom, Standard-Verifikation, Auto-Rollback-Pfad.
+- **`kritisch`** — autonom **mit Pflicht-Vorsicht**: Backup vor der Aktion, tiefe Verifikation, dokumentierter Restore-Pfad. **Kein Stopp aus Prinzip.** Synchron gestoppt wird nur bei Stopp-Auslöser 1–4 oder Fall C (siehe `00_Iterationszyklus.md`).
+- **`sicherheitskritisch-akut`** — **unbedingter Vor-Stopp** („Architekt sitzt daneben"). Hierhin gehört alles, wo das Versagen schon im **Verifikationsfenster** (zwischen Ausführung und Prüfung) live wirkt, oder was von Natur aus irreversibel ist.
 
 Die Spec-weite `risikoklasse:` ist **Obergrenze**, nicht Ersatz: eine `kritisch`-Spec kann und soll `sicher`-Bündel enthalten — nicht jede Aufgabe innerhalb einer kritischen Spec ist selbst kritisch. Eine `sicher`-Spec hingegen kann nie kritische Bündel haben (Stufen-Inflation-Schutz: würde so etwas auftauchen, ist die Spec falsch eingestuft und gehört eskaliert, siehe `00_Iterationszyklus.md` „Eskalation").
 
-**Feste Liste — immer kritisch** (Claude Code erkennt nur, ob berührt; schätzt hier nicht ein):
+**Feste Liste — Claude Code erkennt nur, ob berührt; schätzt hier nicht ein.**
 
-- **Sicherheit & Zugang:** Auth (Login/Session/Token/Passwort), Tenant-Isolation/RLS, Berechtigungen/Rollen, Secret-Handling (Keys/Env/Credentials), Cloudflare-/Edge-Sicherheitsschicht.
-- **Daten-Integrität & -Verlust:** DB-Schema-Migrationen (besonders irreversible), alles was Kundendaten ändert/löscht, die zentrale Datenpunkt-Definition (sobald sie existiert).
-- **Außenwirkung (irreversibel):** Produktions-Deploy, öffentlicher Content, gesendete Mails/Nachrichten, Geldfluss.
-- **Abhängigkeiten/Lieferkette:** Dependency-Major-Updates, Framework-Versionssprünge, neue externe Dependencies.
+Test für die oberste Stufe: *Wirkt das Versagen schon im Verifikationsfenster live, oder ist es von Natur aus irreversibel?* Ja → `sicherheitskritisch-akut`. Nein, aber sensibel → `kritisch` (Vorsicht).
+
+**`sicherheitskritisch-akut` (Vor-Stopp):**
+- Tenant-Isolation / RLS (ein falscher Stand leakt live Mandantendaten).
+- Auth in Produktion live (Login/Session/Token live umstellen).
+- Kundendaten ändern/löschen; zentrale Datenpunkt-Definition.
+- Irreversible DB-Schema-Migrationen.
+- Produktions-Deploy mit Außenwirkung, gesendete Mails/Nachrichten, Geldfluss.
+
+**`kritisch` (Vorsicht, autonom):**
+- Übriges Secret-Handling / Key-Rotation (reversibel, mit Backup).
+- Berechtigungen/Rollen reversibel; Cloudflare-/Edge-Sicherheitsschicht reversibel.
+- Dependency-Major-Updates, Framework-Versionssprünge, neue externe Dependencies.
 
 **Graubereich — Claude-Code-Urteil** über zwei Testfragen:
-1. Billig rückrollbar ohne bleibenden Schaden? **Nein → kritisch.**
-2. Hängt die richtige Wahl vom Wohin ab statt von Technik? **Ja → kritisch.**
+1. Billig rückrollbar ohne bleibenden Schaden? **Nein → mindestens `kritisch`.**
+2. Hängt die richtige Wahl vom Wohin ab statt von Technik? **Ja → Stopp-Auslöser 1 (nicht über die Klasse, sondern über die Gabelung).**
 
 **Nur-nach-oben:** Claude Code und der Mensch dürfen nur **hoch**stufen. Ein Listen-Treffer kann nicht weggeurteilt werden. (Korrespondiert mit dem „Tut NICHT" des Arbeitstiers in `02_Rollen-Protokoll.md`: „stuft Kritikalität nie nach unten ab, um im Autopilot zu bleiben".)
 
@@ -100,7 +115,7 @@ Die Spec-weite `risikoklasse:` ist **Obergrenze**, nicht Ersatz: eine `kritisch`
 
 Mehrere Spec-Zyklen können gleichzeitig laufen — in eigenen Git-Worktrees, jeweils eigener `tmux`-Session/Window, jeweils eigener Branch `wt/<short>` (Mechanik: PLAT-014, E31). Ebenso können innerhalb **einer** Session mehrere Seeds/Specs sequenziell abgearbeitet werden, jeder in seinem eigenen Worktree (PLAT-015, E34): **neuer Seed = neuer Worktree.**
 
-**Selbst-Disziplin statt maschineller Wand (E34).** Anzahl gleichzeitiger Spuren und Anzahl gleichzeitiger `kritisch`-Spuren liegen vollständig in der Verantwortung des Architekten. Es gibt keine Obergrenze, keinen Hook, keine maschinelle Sperre. Wenn Konzentrationsprobleme oder häufende Merge-Konflikte auftauchen, schraubt der Architekt die Parallelität zurück. Begründung: Beschleunigung schlägt Bürokratie, der Architekt kennt die echten Konfliktquellen besser als ein Skript.
+**Selbst-Disziplin statt maschineller Wand (E34).** Anzahl gleichzeitiger Spuren und Anzahl gleichzeitiger `sicherheitskritisch-akut`-Spuren liegen vollständig in der Verantwortung des Architekten. Es gibt keine Obergrenze, keinen Hook, keine maschinelle Sperre. Wenn Konzentrationsprobleme oder häufende Merge-Konflikte auftauchen, schraubt der Architekt die Parallelität zurück. Begründung: Beschleunigung schlägt Bürokratie, der Architekt kennt die echten Konfliktquellen besser als ein Skript.
 
 **Werkzeug zur freiwilligen Selbst-Prüfung:**
 ```

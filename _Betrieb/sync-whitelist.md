@@ -20,6 +20,7 @@ Definiert, WAS via GitHub ins Projekt-Wissen des Chats gespiegelt wird. Whitelis
 
 ```
 _Betrieb/CLAUDE.md
+_Betrieb/CLAUDE-global.md        # versionierte Kopie der globalen ~/.claude/CLAUDE.md (PLAT-025)
 _Betrieb/sync-whitelist.md       # diese Datei selbst (Kontroll-Manifest sichtbar im Chat)
 _Betrieb/Verfassung/**           # alle 6 Verfassungsdateien
 _Betrieb/Templates/**            # Dokument-Templates

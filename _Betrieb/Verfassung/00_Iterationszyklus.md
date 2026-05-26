@@ -73,22 +73,45 @@ Der Mensch entscheidet das **Wohin** (Richtung, Wert, Strategie). Claude Code en
 
 1. **Stopp/Freigabe** (synchron, blockierend) — selten, nur Wohin + irreversibel.
 2. **Information** (asynchron, kein Veto) — Claude Code lief weiter, Mensch liest später. Information landet in **Doku / Commit / Log**, nicht in Zwischen-Chat-Statusberichten. Wenn der Mensch unterwegs etwas wissen muss, ist es Stopp Stufe 1, nicht Information.
-3. *Stille* (gar nichts) — Routine. **Heute nicht aktiv.** Start ohne Stille, alles ist mindestens Information. Stille wird später eingeführt, wenn die Information-Protokolle zeigen, was ohnehin nie relevant war.
+3. **Stille** (gar nichts im Chat) — **aktiv** für die feste Silent-Whitelist unten. Was geglückt-wie-geplant lief, erzeugt keinen Chat-Output; es landet nur in Doku/Commit/Log.
 
-### Die vier Stopp-Auslöser
+**Umkehr-Logik (tragender Satz):** Konformität ist die Default-Annahme. **Gemeldet wird die Abweichung, nicht die Einhaltung.** „Ich habe mich an die Spec gehalten" ist kein Output — das wird vorausgesetzt. Output entsteht nur, wo etwas *nicht* ging.
 
-Grundregel: Stopp nur, wenn eine Entscheidung **strategisch UND schwer reversibel** ist. Lackmustest: „Kann ich das selbst entscheiden, ohne das Wohin zu kennen, und ist es billig rückrollbar?" Zweimal ja → kein Stopp.
+**Boden der Stille:** Stille gilt ausschließlich für Geglücktes-wie-geplant. Jedes Nicht-Können bricht sie sofort — Spec-Widerspruch → Fall C (Stopp); physisch-nicht-möglich → Mensch-Handlung (vorgezogen, oder bei Entdeckung im Lauf sofort gemeldet).
 
-1. **Richtungs-Gabelung mit Wert-Urteil** (welcher Weg hängt vom Wohin ab; reine Technik-Wahl ist nie Stopp).
-2. **Schwer umkehrbar** (DB-Schema, Daten löschen, Außenwirkung, Geld).
-3. **Risikoklasse `kritisch`/`sicherheitskritisch-akut`** (Auth, Tenant, Security, Kundendaten, Secrets — auch bei kleiner Einzeländerung).
-4. **Scope-Sprengung** (Sprung → Spur; Stopp + Eskalation).
+**Silent-Whitelist** (Claude Code prüft nur Zugehörigkeit, schätzt nicht ein):
+- Schritt-Log-Zeile schreiben
+- Archiv-Verschiebung (Phase 9)
+- Übersicht-/SVG-Regenerierung (abgeleitete Ansicht)
+- Commit + Push reiner Doku-Änderungen
+- Phasenübergangs-Hausarbeit im Korridor (5→6, 6→7)
+- Spec↔Machbarkeit-Abgleich Fall A/B (Vermerk nur in Doku/Protokoll)
+- ausgeführte Befehle/SQL als Beleg (in Commit/Doku)
+
+### Die Stopp-Auslöser
+
+Grundregel: Stopp nur, wenn eine Entscheidung **strategisch UND schwer reversibel** ist — oder wenn Claude Code physisch nicht weiterkann. Lackmustest: „Kann ich das selbst entscheiden, ohne das Wohin zu kennen, und ist es billig rückrollbar?" Zweimal ja → kein Stopp, **auch bei `kritisch`**.
+
+1. **Richtungs-Gabelung mit Wert-Urteil** — welcher Weg hängt vom Wohin ab; reine Technik-Wahl ist nie Stopp.
+2. **Schwer umkehrbar** — DB-Schema, Daten löschen, Außenwirkung, Geld.
+3. **Scope-Sprengung** — Sprung → Spur; Stopp + Eskalation.
+4. **Mensch muss physisch handeln** — sudo jenseits der NOPASSWD-Liste, UI-Klick, manueller Test, Vertragsklick, Snapshot-Anstoß. Das ist KEIN Wohin-Stopp, sondern ein Kann-nicht-Stopp; er wird vorgezogen (siehe „Vorgezogene Mensch-Handlungen").
+
+**Risikoklasse ist kein Stopp-Auslöser mehr.** `kritisch` löst keinen Stopp aus Prinzip aus — es verpflichtet zu Vorsichtsmaßnahmen während der Ausführung (Backup vorher, tiefe Verifikation, dokumentierter Restore-Pfad) und läuft dann autonom durch. Synchron gestoppt wird nur, wenn zusätzlich Auslöser 1–4 oder Fall C greift. Ausnahme: `sicherheitskritisch-akut` behält einen unbedingten Vor-Stopp (siehe Stufen-Staffelung + `01_Spec-Format.md`).
+
+### Vorgezogene Mensch-Handlungen
+
+Stopps des Typs „Mensch muss physisch handeln" (Auslöser 4) werden in Phase 5 gesammelt und **an den Anfang des Bündels bzw. der Serie gelegt** — als eine Liste „dafür brauche ich dich, bevor ich loslaufe" (inkl. etwaiger Pauschal-Freigaben, siehe unten). Der Mensch arbeitet sie in einem Rutsch ab, dann läuft Claude Code autonom durch. Wird eine solche Handlung erst im Lauf entdeckt (in Phase 5 nicht absehbar), **bricht sie die Stille sofort und wird gemeldet** — niemals still weggesteckt.
+
+### Serien (gleichartige Operation auf mehreren Instanzen)
+
+Sind N Bündel dieselbe Operation auf N Instanzen (z. B. 5× Agent umschalten, 3× Cluster-Drop), fasst Claude Code sie in Phase 5 zu einer **Serie** zusammen statt zu N Einzelbündeln. Eine Serie hat: einen **Vor-Stopp** am Anfang (trägt alle vorgezogenen Mensch-Handlungen der Serie und — falls die Serie `sicherheitskritisch-akut` ist — die akut-Freigabe), einen **autonomen Durchlauf**, und **einen** Sektions-Bericht am Ende. Das Zusammenfassen ist Claude Codes Wie-Entscheidung; der Vor-Stopp ist die eine Mensch-Freigabe.
 
 ### Korridor-Wand: Spec-Treue (Fall A/B/C)
 
 Treffen Fakten/Machbarkeit auf die Spec:
 - **A — bestätigen:** Autopilot bis zum Schluss.
-- **B — präzisieren** (kein Widerspruch, nur Detail): weiter, Vermerk im Protokoll (Information).
+- **B — präzisieren** (kein Widerspruch, nur Detail): weiter, **still** — Vermerk nur im Protokoll, kein Chat-Output. Nur Fall C bricht durch.
 - **C — widersprechen / Hardstop:** **Stopp**, egal wann. Die Freigabe-Grundlage ist hinfällig; eine geänderte Spec ist eine Wohin-Frage → Mensch.
 
 Lackmustest pro Phase: „Tue ich noch das, was die freigegebene Spec sagt — oder etwas, WEIL die Spec so nicht funktioniert?" Letzteres = Fall C = Stopp.
@@ -98,15 +121,19 @@ Lackmustest pro Phase: „Tue ich noch das, was die freigegebene Spec sagt — o
 1. **Spec-Freigabe** (vorne) — hier steckt der Gesamtüberblick des Menschen.
 2. **Korridor-Bruch** (dynamisch, nur bei Fall C).
 
+### Pauschal-Freigaben pro Zyklus
+
+Wiederkehrende, pro-Vorkommen-freigabepflichtige Operationen können am Zyklus-Anfang **pauschal** für den ganzen Zyklus freigegeben werden, statt bei jedem Vorkommen erneut zu stoppen. Pauschalierbar ist nur **Reversibles mit aus der Spec bekanntem Scope**: Compose-Edits, Container-Rebuilds, `environment_a`-Restarts. **Nie pauschalierbar** (bleibt Stopp pro Vorkommen, weil Auslöser 2): DB-Migration/Datenlöschung in Produktion, Traefik-/Foundation-/Netz-Konfiguration, Datei-Löschung außerhalb des `knowledge-base`-Repos. Die Pauschal-Freigabe gehört in den Vor-Stopp des Bündels/der Serie.
+
 Dazwischen kein synchroner Stopp **und keine Wie-Rückfragen im Chat**. Phasenübergänge (Phase 5→6, 6→7, 7→9) und Folge-Aufräumschritte, die sich zwingend aus dem Bündel ergeben (Archivierung, Status-Update, abhängige Schritt-Log-Einträge), gehören in den Korridor — werden durchgezogen, nicht erneut angefragt. Rückfragen sind nur an den definierten Wänden (Spec-Freigabe vorne, Fall-C-Hardstop dynamisch).
 
-**Insbesondere Phase 5 → Phase 6:** Liegt die Machbarkeit ohne grobe Abweichung vor (Fall A/B), geht Claude Code direkt in die Ausführung über — **keine „Machbarkeit freigeben?"-Rückfrage**. Synchron gestoppt wird nur an den beiden zwingenden Stopps, an einem der vier Stopp-Auslöser und — bei der Spur — an jedem als `kritisch`/`sicherheitskritisch-akut` markierten Bündel. Eine **grobe Abweichung in der Machbarkeit IST ein Fall C** (die Spec funktioniert so nicht) und geht als solcher zurück in den Chat.
+**Insbesondere Phase 5 → Phase 6:** Liegt die Machbarkeit ohne grobe Abweichung vor (Fall A/B), geht Claude Code direkt in die Ausführung über — **keine „Machbarkeit freigeben?"-Rückfrage**. Synchron gestoppt wird nur an den beiden zwingenden Stopps, an einem der vier Stopp-Auslöser und — bei der Spur — an jedem als `sicherheitskritisch-akut` markierten Bündel. Eine **grobe Abweichung in der Machbarkeit IST ein Fall C** (die Spec funktioniert so nicht) und geht als solcher zurück in den Chat.
 
 ### Stufen-Staffelung
 
 - **Schritt:** autonom komplett (war nie Freigabe-Thema).
 - **Sprung:** Spec-Freigabe vorne (das bestehende „ein Stopp"), durchziehen, Protokoll hinten.
-- **Spur:** autonom durch `sicher`-Bündel, synchroner Stopp an jedem als `kritisch`/`sicherheitskritisch-akut` markierten Bündel.
+- **Spur:** autonom durch `sicher`- UND `kritisch`-Bündel (`kritisch` = mit Vorsichtsmaßnahmen, kein Stopp aus Prinzip); synchroner Vor-Stopp nur an `sicherheitskritisch-akut`-Bündeln sowie bei jedem der Stopp-Auslöser 1–4 / Fall C.
 
 ### Entscheidungs-Protokoll (Review-Format)
 

@@ -120,19 +120,24 @@ Blocker. Grobe Abweichungen explizit markiert → "ZURÜCK IN DEN CHAT".]
 [Claude Codes eigene Bauliste, abgeleitet aus der Spec, referenziert auf deren
 Akzeptanzkriterien. Bündelgröße risikoabhängig, mit Stopp-/Testpunkten.
 
-Pro Bündel **Pflicht-Zeile** `kritisch: ja|nein [Halbsatz Begründung]`
-(siehe `_Betrieb/Verfassung/01_Spec-Format.md` Abschnitt „Kritikalität pro
-Bündel"). Markierte Bündel sind synchrone Stopps in Phase 6; nicht-markierte
-laufen autonom im Korridor.
+Pro Bündel **Pflicht-Zeile** `kritisch: sicher|kritisch|sicherheitskritisch-akut [Halbsatz Begründung]`
+(siehe `01_Spec-Format.md` „Kritikalität pro Bündel"). `sicher`/`kritisch` laufen
+autonom (`kritisch` mit Pflicht-Vorsicht: Backup/Verifikation/Restore-Pfad);
+nur `sicherheitskritisch-akut` ist Vor-Stopp.
+
+Zusätzlich pro Bündel/Serie **Pflicht-Zeile** `vorgezogen:` — die Mensch-Handlungen,
+die VOR dem Lauf nötig sind (sudo/UI/manueller Test) plus etwaige Pauschal-Freigaben
+(Compose/Rebuild/Restart) — oder `vorgezogen: keine`.
 
 Beispiel:
-- Bündel 1 → erfüllt Kriterium [Config gesichert]: ...
-  kritisch: ja [Secret-Handling berührt]
-  STOPP: manueller Test durch Mensch
-- Bündel 2 → erfüllt Kriterium [DNS migriert]: ...
-  kritisch: ja [Außenwirkung, irreversibel]
-- Bündel 3 → erfüllt Kriterien [alter Anbieter abgeschaltet, Routen getestet]: ...
-  kritisch: nein [reine Routen-Tests, reversibel]]
+- Bündel 1 → erfüllt Kriterium [Auth-Container neu gebaut]: ...
+  kritisch: kritisch [Auth berührt, aber reversibel + :prev-Backup]
+- Serie A (3 Cluster-Drops) → erfüllt Kriterium [Cluster migriert]: ...
+  kritisch: kritisch [reversibel pro Instanz]
+  vorgezogen: Pauschal-Freigabe „alle environment_a-Restarts dieses Zyklus"
+- Bündel 4 → erfüllt Kriterium [RLS-Policy umgestellt]: ...
+  kritisch: sicherheitskritisch-akut [Tenant-Isolation, Versagen leakt live]
+  vorgezogen: manueller Cross-Tenant-Test durch Architekt]
 ```
 
 ---

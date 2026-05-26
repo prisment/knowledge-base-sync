@@ -588,6 +588,24 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E37 — Stopp-Mechanik von Risikoklasse entkoppelt + Silent-Stufe scharfgeschaltet (Verfassungs-Sprung, 2026-05-26)
+
+**Auslöser:** Zu viele Stopps „aus Prinzip" — markiert als `kritisch`, gestoppt, obwohl keine Wohin-Frage anstand. Wurzel: Auslöser 3 band den Stopp an die Risikoklasse statt an ein Ereignis. Zugleich war die Stille-Stufe seit E29 bewusst abgeschaltet („Start ohne Stille"); die Information-Protokolle haben inzwischen gezeigt, was ohnehin nie relevant war.
+
+**Entscheidung:** (1) Risikoklasse ist kein Stopp-Auslöser mehr. `kritisch` = Pflicht-Vorsicht (Backup/Verifikation/Restore) + autonomer Durchlauf; die echten Stopps hängen an Auslöser 1 (Wohin-Gabelung), 2 (irreversibel), 4 (Mensch muss physisch handeln) + Fall C. (2) `sicherheitskritisch-akut` behält einen unbedingten Vor-Stopp für alles, wo das Versagen schon im Verifikationsfenster live wirkt (Tenant/RLS, Live-Auth, irreversible Migration). (3) Mensch-Handlungen werden vorgezogen an den Bündel-/Serien-Anfang. (4) Serien fassen gleichartige Operationen zu einem Vor-Stopp + autonomem Durchlauf + einem Bericht zusammen. (5) Pauschal-Freigaben pro Zyklus für reversible, scope-bekannte Operationen. (6) Stille scharfgeschaltet über eine feste Whitelist; tragender Satz: gemeldet wird die Abweichung, nicht die Einhaltung. Boden: Nicht-Können bricht die Stille sofort.
+
+**Warum kein Widerspruch zu Vorhandenem:** Die beiden „extrem wichtigen" Stopps des Architekten bleiben unangetastet — die Wohin-Gabelung (Auslöser 1) und die Wohin-Änderung (Fall C). Entfernt wird nur die Redundanz: Auslöser 3 stoppte genau die Fälle, die 1/2/4 ohnehin fangen, plus die unnötigen. Das ist die in E29 verschobene Stille, jetzt datengestützt eingeführt (verworfene Alternative 2 aus E29 aufgelöst).
+
+**Verworfene Alternative 1 — neues STOP-A/B/C-Vokabular (Vorschlag des Vor-Agenten).** Verworfen: überschneidet sich namentlich mit dem bestehenden Fall A/B/C bei anderer Bedeutung → Lesbarkeits-Unfall. Substanz in die vorhandenen Begriffe gegossen.
+
+**Verworfene Alternative 2 — Stille voll an (Claude entscheidet, was Routine ist).** Verworfen: das ist das Schlupfloch „Claude redet etwas klein, um durchzulaufen". Stattdessen feste Whitelist (Architekt entscheidet vorab, was still ist), analog zur Kritikalitäts-Liste.
+
+**Verworfene Alternative 3 — alle „Nur EINMAL fragen"-Trigger pauschalierbar.** Verworfen: DB-Migration/Datenlöschung Prod, Traefik/Netz und Datei-Löschung außerhalb KB sind Auslöser-2-Fälle (irreversibel) und bleiben pro Vorkommen.
+
+**Kontextbindung:** (a) Erste Anwendung ist dieser Zyklus selbst (lief autonom durch, ein Entscheidungs-Protokoll am Ende). (b) Globale CLAUDE.md wurde in Bündel 0 erstmals versioniert — vorher außerhalb von Git (Folge-Schritt-Kandidat aus PLAT-015 Bündel 2 damit erledigt). (c) Falls die Silent-Whitelist im Alltag etwas verschluckt, das hätte sichtbar sein sollen → Whitelist-Punkt schärfen oder streichen.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.
