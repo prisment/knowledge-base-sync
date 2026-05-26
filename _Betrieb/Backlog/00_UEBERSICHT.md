@@ -25,7 +25,7 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-brand-protection-saved-queries.md` | Cloudflare Brand Protection — Saved Queries + Logos einrichten | security | bald | sicher | sprung | offen | - |
 | `seeds/seed-dependency-monitoring-renovate.md` | Dependency-Monitoring (Dependabot/Renovate) für alle Gitea-Repos | security | bald | kritisch | sprung | offen | - |
 | `seeds/seed-firewall-drop-port22-public.md` | Firewall-Drop Port 22 auf Public-Interface (defense-in-depth über SSH-Socket-Bind) | security | bald | sicher | sprung | offen | - |
-| `seeds/seed-image-pinning-latest-services.md` | Image-Pinning: Gitea, Twenty, Open WebUI und übrige :latest/:main → exakte Versionen | security | bald | sicher | schritt | offen | - |
+| `seeds/seed-image-pinning-latest-services.md` | Image-Pinning: Gitea, Twenty, Open WebUI und übrige :latest/:main → exakte Versionen | security | bald | sicher | schritt | in_arbeit | - |
 | `seeds/seed-logging-forensik-grundlage.md` | Logging/Forensik-Grundlage: CF-Access-Logs Logpush + Postgres log_connections + Traefik accessLog | security | bald | kritisch | spur | offen | - |
 | `seeds/seed-n8n-migration-2-21.md` | n8n-Migration 2.13.3 → aktuelle Upstream-Version (erster echter Pipeline-Lauf) | security | bald | kritisch | sprung | offen | - |
 | `seeds/seed-test-umgebung-neu-secrets.md` | Test-Familie neu aufbauen: eigene Secrets, intern-only, eigene Test-DB | security | bald | sicher | spur | offen | - |

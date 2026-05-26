@@ -3,7 +3,8 @@ typ: backlog_seed
 titel: "Image-Pinning: Gitea, Twenty, Open WebUI und übrige :latest/:main → exakte Versionen"
 geltungsbereich: plattform
 risikoklasse: sicher
-status: offen
+status: in_arbeit
+spec_id: PLAT-030
 klasse: security
 zugkraft: bald
 stufe: schritt
