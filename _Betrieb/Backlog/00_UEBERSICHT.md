@@ -32,6 +32,7 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-firewall-drop-port22-public.md` | Firewall-Drop Port 22 auf Public-Interface (defense-in-depth über SSH-Socket-Bind) | security | bald | sicher | sprung | offen | - |
 | `seeds/seed-image-pinning-latest-services.md` | Image-Pinning: Gitea, Twenty, Open WebUI und übrige :latest/:main → exakte Versionen | security | bald | sicher | schritt | offen | - |
 | `seeds/seed-logging-forensik-grundlage.md` | Logging/Forensik-Grundlage: CF-Access-Logs Logpush + Postgres log_connections + Traefik accessLog | security | bald | kritisch | spur | offen | - |
+| `seeds/seed-n8n-migration-2-21.md` | n8n-Migration 2.13.3 → aktuelle Upstream-Version (erster echter Pipeline-Lauf) | security | bald | kritisch | sprung | offen | - |
 | `seeds/seed-test-umgebung-neu-secrets.md` | Test-Familie neu aufbauen: eigene Secrets, intern-only, eigene Test-DB | security | bald | sicher | spur | offen | - |
 | `seeds/seed-architekt-lesezugriff-worktree.md` | Architekten-Lesezugriff auf Worktree-Branche (Sync-Werkzeug, nicht git-Topologie biegen) | prozess | bald | sicher | sprung | offen | - |
 | `seeds/seed-dsgvo-dpa-cloudflare.md` | DSGVO-Auftragsverarbeitungsvertrag mit Cloudflare unterzeichnen | prozess | bald | sicher | schritt | offen | - |
@@ -43,8 +44,10 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-waf-owasp-block-modus.md` | Cloudflare WAF OWASP Core Ruleset von 'log' auf 'block' umstellen (nach Live-Tuning) | security | irgendwann | sicher | schritt | offen | - |
 | `seeds/seed-foundation-repo.md` | Foundation-Stack als zweites Git-Repo (Versionierung der Traefik/Foundation-Configs) | prozess | irgendwann | sicher | schritt | offen | - |
 | `seeds/seed-cloudflare-token-notifications-edit.md` | Cloudflare-API-Token: Notifications-Edit-Permission ergänzen (Token-Hygiene) | prozess | irgendwann | sicher | schritt | offen | - |
+| `seeds/seed-gitea-container-registry.md` | Gitea-Container-Registry-Pfad für Custom-Builds (End-to-End-Pull-Pfad) | prozess | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-pending-kernel-debconf-noise.md` | Pending-Kernel-Whiptail-Dialog bei -updates-Apply beobachten/unterdrücken | wartung | irgendwann | sicher | schritt | offen | - |
 | `seeds/seed-diun-rueckbau.md` | Diun zurückbauen, sobald nightly Stabilität bewiesen hat | wartung | irgendwann | sicher | sprung | offen | - |
+| `seeds/seed-base-image-majors.md` | Base-Image-Major-Sprünge: Node 20→22, Python 3.12→3.13, Alpine-Pin | wartung | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-base-image-versionen.md` | Base-Image-Versionen aktualisieren (Node-LTS, Python-Base, etc.) | wartung | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-dns-cache-resolved-hairpin.md` | systemd-resolved Cache: Origin-IP statt CF-Edge bei Hairpin-Aufrufen vom Server selbst | wartung | irgendwann | sicher | schritt | offen | - |
 
