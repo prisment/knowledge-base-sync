@@ -181,11 +181,11 @@ strukturierte Vorschlag für die Wissens-Bewegung beim Abschluss.]
 
 ## Backlog-Seed — zusätzliche Pflichtfelder
 
-Seeds und ROADMAPs im `_Betrieb/Backlog/` führen drei zusätzliche Pflichtfelder, die das Übersichts-Skript auswertet (Definition: `_Betrieb/Verfassung/01_Spec-Format.md`, Abschnitt „Backlog-Felder").
+Seeds im `_Betrieb/Backlog/seeds/` führen drei zusätzliche Pflichtfelder, die das Übersichts-Skript auswertet (Definition: `_Betrieb/Verfassung/01_Spec-Format.md`, Abschnitt „Backlog-Felder").
 
 ```yaml
 ---
-typ:             backlog_seed     # backlog_seed | roadmap
+typ:             backlog_seed
 titel:           "…"
 geltungsbereich: alle              # alle | plattform | prisment | intern
 risikoklasse:    sicher

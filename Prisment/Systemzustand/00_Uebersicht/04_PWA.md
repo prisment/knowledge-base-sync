@@ -118,7 +118,7 @@ Aktuell verwendete Types (aus den Agents):
 | `boost_recommended` | Analytics-Agent nach `boost_check` | nein | nein |
 | `monthly_report` / `monthly_report_ready` | Analytics-Agent nach `monthly_report` | nein | ✅ ja |
 | `legal_blocked` | Content-Agent nach Compliance-BLOCK | nein | nein |
-| `admin_alert` | Error-Sammler (geplant, siehe ROADMAP_SMA) | nein | ✅ ja (geplant) |
+| `admin_alert` | Error-Sammler (geplant, siehe `seed-error-sammler-security-checks`) | nein | ✅ ja (geplant) |
 
 ### Bundling + Email-Fallback (exakte Config)
 
@@ -175,7 +175,7 @@ seit n8n-Cron-Migration 2026-05-18). Zwei Job-Klassen:
   Idempotenz)
 - Aktuell: `job_type='redaktionsplan'`
 - Analytics-Trigger geplant mit eigener Spec (siehe
-  [`../../../_Betrieb/Backlog/ROADMAP_SMA.md`](../../../_Betrieb/Backlog/ROADMAP_SMA.md))
+  `seed-sma-meta-api-integration`)
 
 ## Test-vs-Live-Stack-Trennung
 

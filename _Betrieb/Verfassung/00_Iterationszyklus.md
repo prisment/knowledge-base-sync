@@ -29,6 +29,10 @@ Die Stufe wird **nicht vom Menschen allein geraten**. Der Mensch kann den Aufwan
 - Der Mensch kann die vorgeschlagene Stufe **revidieren**, trägt die Einschätzung aber nicht allein.
 - Die Stufe steht als Pflichtfeld `stufe:` im Front Matter jeder Spec/Notiz (Format: `01_Spec-Format.md`).
 
+### Keine Planungs-Ebene über der Spur (PLAT-022, E36)
+
+Es gibt genau drei Stufen — Spur, Sprung, Schritt. **Eine Spur IST das große Vorhaben.** Sie erhebt in Phase 2/5 alle Aspekte und formt in Phase 3 eine präzise Spec. Folge-Arbeit wird als Seed abgezweigt, nie als übergeordnetes Schirm-Dokument geführt. Der Begriff „Roadmap" ist als Framework-Artefakt abgeschafft. Strategie-/Produkt-Dokumente, die das Wort „Roadmap" inhaltlich verwenden (z. B. `Prisment/Systemzustand/Strategie/prisment_roadmap_businessplan.md`), sind davon ausgenommen — das ist nicht Framework-Ebene.
+
 ### Harte Regel gegen Stufen-Inflation
 
 - **Risikoklasse `kritisch` und `sicherheitskritisch-akut` erzwingen immer Spur.** Beide können nie als Sprung oder Schritt gefahren werden — das schützt davor, Gefährliches aus Bequemlichkeit klein zu fahren. (Lücke ergänzt 2026-05-25 mit PLAT-012, aufgedeckt bei der Backlog-Migration über `seed-os-patching-broken`.)
@@ -162,7 +166,7 @@ Mechanik wie bei „kritisch erzwingt Spur" (E23): Disziplin durch Default, nich
 
 **Mutations-Punkte (Pflicht-Tor):** Wenn Claude Code einen Seed **anlegt** oder **archiviert**, läuft das Skript im **selben Commit** mit. Damit kann die Übersicht strukturell nicht veralten.
 
-Das ist die Anwendung des Phase-9-Pflicht-Tors aus `ROADMAP_lebende-bereichs-doku` Schritt 8 („Zyklus, der das System ändert, aktualisiert die abgeleitete Ansicht im selben Commit") auf den Backlog — kein neues Muster.
+Das ist die Anwendung des Phase-9-Pflicht-Tors („Zyklus, der das System ändert, aktualisiert die abgeleitete Ansicht im selben Commit") auf den Backlog — kein neues Muster.
 
 Hot-Files (strang-übergreifend nur seriell anfassbare Pfade) werden handgepflegt in `_Betrieb/Backlog/00_HOT-FILES.md` — getrennt von der generierten Übersicht, damit das Skript handgepflegtes Wissen nicht überschreibt.
 

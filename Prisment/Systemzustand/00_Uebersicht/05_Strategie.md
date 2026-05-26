@@ -176,5 +176,5 @@ netto/Monat aus Prisment.
 | [`../Strategie/Compliance & Moat.md`](../Strategie/Compliance%20%26%20Moat.md) | Wettbewerbsvorteil + Compliance-Stand |
 | [`../Strategie/legal_guardrails_entwurf.md`](../Strategie/legal_guardrails_entwurf.md) | Legal Guardrails für Content-Output |
 | [`../Strategie/Datenschutz/`](../Strategie/Datenschutz/) | DSGVO + AVV + Datenschutz-Quellen |
-| [`../../../_Betrieb/Backlog/ROADMAP_SMA.md`](../../../_Betrieb/Backlog/ROADMAP_SMA.md) | Produkt-Roadmap (Qualitätsarbeit, Pipeline-Iterationen) |
+| [`../../../_Betrieb/Backlog/00_UEBERSICHT.md`](../../../_Betrieb/Backlog/00_UEBERSICHT.md) | Backlog-Übersicht — SMA-Arbeit als Seeds mit `sma`-Präfix (ehemalige `ROADMAP_SMA.md` zerlegt 2026-05-25, PLAT-022) |
 | `../Strategie/Business Strategy.md` | ⚠️ historisch (B2B-Handwerks-OS-Konzept, anderes Produkt) |

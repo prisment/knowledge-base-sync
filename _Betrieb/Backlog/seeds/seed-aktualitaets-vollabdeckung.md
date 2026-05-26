@@ -167,13 +167,14 @@ gepatcht oder dokumentiert begründet, warum nicht.
   Hand-Arbeit, nicht autonom — das ist Absicht (siehe PLAT-001 v2). Das
   Dashboard B3 muss Majors als „nicht-autonom-Apply" markieren, damit
   Architekt sieht, wo bewusste Eingriffe nötig sind.
-- **„Aktualitäts-Vollabdeckung" als Sammel-Seed vs. ROADMAP-Datei:**
-  Sieben Bausteine unter einem Schirm ist klassisches ROADMAP-Material
-  (siehe globale CLAUDE.md „Mehrstufige Vorhaben"). Wenn dieser Seed
-  über mehrere Wochen umgesetzt wird, lieber zu
-  `_Betrieb/Backlog/roadmaps/ROADMAP_aktualitaets-vollabdeckung.md`
-  hochstufen. Heute bleibt es Seed, weil die Bausteine noch nicht alle
-  ihre eigene Spec haben.
+- **„Aktualitäts-Vollabdeckung" — Schnitt-Logik bei Spec-Start:** Die
+  sieben Bausteine werden bei der Spec-Erarbeitung als zusammen-
+  hängende Spur geführt (Phase 2 erhebt alle, Phase 3 formt die
+  Spec) — keine separate Roadmap-/Schirm-Datei. Bausteine, die im
+  Spec-Lauf eigenständig werden, werden als Folge-Seeds abgezweigt.
+  Siehe Verfassung 00, Stufen-Abschnitt: keine Planungs-Ebene über
+  der Spur (PLAT-022). Heute bleibt es Seed, weil die Bausteine
+  noch nicht alle ihre Detail-Klärung haben.
 - **Was Folge-Seed nicht ist:** ein Versuch, Diun durch etwas Neues zu
   ersetzen. Diun bleibt der Registry-Klasse-Checker bis sein Rückbau
   selbst eine Spec geworden ist (`seed-diun-rueckbau`).

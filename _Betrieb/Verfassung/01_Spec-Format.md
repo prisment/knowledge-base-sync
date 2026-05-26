@@ -114,9 +114,9 @@ Drei Ausgabe-Klassen: ✓ `disjunkt` / ✗ `Schnittmenge zwischen Spuren` / ✗ 
 
 Die Spec definiert das WAS (Ziel, Soll-Zustand, Akzeptanzkriterien). Die Bündelung/Arbeitsliste erarbeitet sich Claude Code selbst im Machbarkeits-Report — er kann Abhängigkeiten am echten System besser einschätzen. *(Beim Sprung: inline in der kombinierten Spec, knapp.)*
 
-## Backlog-Felder (Seeds & Roadmaps)
+## Backlog-Felder (Seeds)
 
-Seeds und ROADMAPs in `_Betrieb/Backlog/` führen zusätzlich zu den allgemeinen Front-Matter-Feldern drei Pflichtfelder, über die das Übersichts-Skript priorisiert und das Backlog lesbar wird:
+Seeds in `_Betrieb/Backlog/seeds/` führen zusätzlich zu den allgemeinen Front-Matter-Feldern drei Pflichtfelder, über die das Übersichts-Skript priorisiert und das Backlog lesbar wird:
 
 - **`klasse:`** — WAS für ein Bedarf. Fünf Werte:
   - `security` — Sicherheit.

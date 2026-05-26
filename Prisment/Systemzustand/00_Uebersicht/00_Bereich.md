@@ -142,7 +142,7 @@ Echte Posting-Veröffentlichungen über die Mandanten-PWA stehen noch
 aus (pwa_web ist via HARDENING-Profile-Lock offline). Kunde #2 setzt
 HARDENING Phase 5 (RLS in `customer_postgres`) voraus.
 
-Roadmap-Stand siehe [`../../../_Betrieb/Backlog/ROADMAP_SMA.md`](../../../_Betrieb/Backlog/ROADMAP_SMA.md).
+Offene SMA-Arbeit lebt im zentralen Backlog ([`../../../_Betrieb/Backlog/00_UEBERSICHT.md`](../../../_Betrieb/Backlog/00_UEBERSICHT.md), Seeds mit `sma`-Präfix). Die ehemalige `ROADMAP_SMA.md` wurde am 2026-05-25 in Einzel-Seeds zerlegt (PLAT-022 Folge-Bereinigung).
 
 ## Was sich gegenüber pre-Telegram-EOL geändert hat
 
@@ -160,6 +160,5 @@ Roadmap-Stand siehe [`../../../_Betrieb/Backlog/ROADMAP_SMA.md`](../../../_Betri
 Diese Übersicht ist abgeleitete Ansicht (Konzept SSOT). Bei einer
 Systemzustands-Änderung im Prisment-Bereich soll diese Übersicht
 (MD + SVG) im selben Zyklus mit aktualisiert werden — sonst entsteht
-stille Doppel-Wahrheit. Eine maschinelle Verpflichtung (Pflicht-Tor in
-Verfassung-Phase 9) ist in Schritt 8 der Roadmap geplant
-([`../../../_Betrieb/Backlog/ROADMAP_lebende-bereichs-doku.md`](../../../_Betrieb/Backlog/ROADMAP_lebende-bereichs-doku.md)).
+stille Doppel-Wahrheit. Pflicht-Tor in Verfassung 00 (Phase 9 „Doku-
+Synchronität") verankert.

@@ -568,6 +568,26 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E36 — Roadmap-Ebene als Framework-Begriff abgeschafft (PLAT-022, 2026-05-26)
+
+**Auslöser:** Das alte Framework kannte eine „Roadmap"-Ebene über den Vorhaben. Mit dem neuen Stufen-Modell (Spur/Sprung/Schritt) ist sie redundant — eine Spur IST das große Vorhaben, eine Ebene darüber ist Doppelplan. Trotzdem überlebten Roadmap-Konzept-Stellen an mehreren Orten: Vorlage in `Dokument-Templates.md` mit `typ: backlog_seed | roadmap`, Generator-Logik in `generate_uebersicht.py` mit eigener Klassifikation + SVG-Legende, Verfassung-01-Abschnitt „Backlog-Felder (Seeds & Roadmaps)", globaler CLAUDE.md-Sonderfall-Halbsatz „Bestehende ROADMAP_*-Dateien bleiben, bis sie auslaufen", zwei aktive ROADMAP-benannte Dateien (`ROADMAP_cloudflare_migration` + tote Verlinkungen auf gelöschte `ROADMAP_SMA`), Sprachgebrauch in HAERTUNGS_SPEC („Roadmap-Resterampe"), Hochstufungs-Empfehlung in `seed-aktualitaets-vollabdeckung` Z. 170–176. Architekt am 2026-05-26: Roadmap-Ebene ist Relikt, restlos raus — inhaltliche Strategiedokumente, die zufällig „Roadmap" heißen, bleiben.
+
+**Entscheidung:** Roadmap-Ebene als Framework-Begriff abgeschafft. (a) **Neue Klausel in Verfassung 00 Stufen-Abschnitt** „Keine Planungs-Ebene über der Spur" — genau drei Stufen, eine Spur IST das große Vorhaben, Folge-Arbeit als Seeds. (b) **Verfassung 01 + Templates + globale CLAUDE.md** sprachlich + strukturell bereinigt (kein `typ: roadmap` mehr, kein „Seeds & Roadmaps", kein „Sonderfall ROADMAP_-Dateien"). (c) **`generate_uebersicht.py`** ohne Roadmap-Typ-Logik + SVG-Legende — eine Entry-Klassifikation (`backlog_seed`). (d) **`ROADMAP_cloudflare_migration.md`** archiviert nach `Plattform/Archiv/PLAT-CF-MIGRATION/PLAT-CF-MIGRATION_SPEC.md` (Architekten-Entscheid Option ii: faktisch durch, Rest-Backlog lebt als Einzel-Seeds, keine Inhalts-Zerlegung). (e) **HAERTUNGS_SPEC (Arbeitsgedaechtnis + Spiegel)** Sprachpolitur: „Roadmap-Resterampe" → „Phase-7-Backlog", CF-Verweise umgebogen. (f) **Bereichs-Übersichten Prisment** tote ROADMAP_SMA-Links umgebogen auf Backlog-Übersicht + Einzel-Seeds. (g) **`seed-bereichs-uebersichten.md`** als abgeschlossen ins Archiv (toter `ueberfuehrt_in:`-Anker, Pflicht-Tor lebt in Verfassung 00 Phase 9). (h) **`seed-aktualitaets-vollabdeckung.md`** Hochstufungs-Empfehlung durch Schnitt-Logik-bei-Spec-Start ersetzt (vorrangig: PLAT-021 startet darauf).
+
+**Strategie-/Produkt-Doku ausgenommen:** `Prisment/Systemzustand/Strategie/prisment_roadmap_businessplan.md` (Produkt-Fahrplan) und „PWA-Roadmap (noch in Arbeit)" in `03_Onboarding-Pipeline.md` bleiben — das ist nicht Framework-Ebene. Verfassungs-Klausel benennt diese Ausnahme explizit.
+
+**Warum kein Widerspruch zu Vorhandenem:** Roadmap-Ebene war schon vor PLAT-022 funktional ausgehöhlt — `ROADMAP_SMA.md` wurde am 2026-05-25 in 15 Seeds zerlegt (Commit `9700a2c`), `ROADMAP_lebende-bereichs-doku.md` war seit PLAT-011 nur noch im Archiv. Die Bereinigung schärft formal, was inhaltlich schon da war. Die neue Klausel macht die organische Praxis zur Regel.
+
+**Verworfene Alternative 1 — Roadmap-Ebene als „nur historische Wort"-Begriff parken.** Verworfen, weil Vorlagen (`Dokument-Templates.md` `typ: roadmap`) + Generator-Logik das Konzept aktiv am Leben halten. Wort-allein lassen reicht nicht — die Mechanik muss weg, sonst legt der nächste Zyklus ohne Bewusstsein wieder eine an.
+
+**Verworfene Alternative 2 — ROADMAP_cloudflare_migration in Einzel-Specs zerlegen wie zuvor ROADMAP_SMA.** Verworfen (Architekten-Entscheid Option ii), weil die Substanz schon durch (Blöcke 1–7.2 erledigt, Phase-7-Backlog-Reste als Einzel-Seeds extrahiert). Eine Inhalts-Zerlegung wäre Schein-Arbeit ohne neuen Wert. Archivierung als Spec-Dokument hält die History sauber.
+
+**Verworfene Alternative 3 — `prisment_roadmap_businessplan.md` mit-umbenennen, weil „roadmap" im Namen.** Verworfen — das ist Produkt-Fahrplan, kein Framework-Konstrukt. Wortgebrauch außerhalb des Framework-Vokabulars ist neutral. Die neue Verfassungs-Klausel benennt diese Ausnahme explizit, damit künftige Lesart nicht ins Schwurbel rutscht.
+
+**Kontextbindung:** (a) Wenn künftig jemand eine ROADMAP_-benannte Datei anlegen will, blockiert der Default in der globalen CLAUDE.md („Keine separaten ROADMAP-Dateien anlegen") plus die Verfassungs-Klausel. Der Bypass ist eine bewusste Architekten-Entscheidung mit Logbuch-Eintrag, kein Pfad ohne Spur. (b) Falls die Phase-9-Pflicht-Tor-Sprache (Bereichs-Übersicht-Aktualisierung) im Alltag belastet — beobachten, nicht jetzt schärfen. (c) `~/.claude/CLAUDE.md` bleibt nicht-versionierter Architekten-Pfad — wenn Server-Wechsel kommt, ist die Datei verloren. Folge-Schritt-Kandidat (Befund schon offen seit PLAT-014/015), bleibt offen.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.
