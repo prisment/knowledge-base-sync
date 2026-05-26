@@ -32,11 +32,9 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-logging-forensik-grundlage.md` | Logging/Forensik-Grundlage: CF-Access-Logs Logpush + Postgres log_connections + Traefik accessLog | security | bald | kritisch | spur | offen | - |
 | `seeds/seed-n8n-migration-2-21.md` | n8n-Migration 2.13.3 → aktuelle Upstream-Version (erster echter Pipeline-Lauf) | security | bald | kritisch | sprung | offen | - |
 | `seeds/seed-test-umgebung-neu-secrets.md` | Test-Familie neu aufbauen: eigene Secrets, intern-only, eigene Test-DB | security | bald | sicher | spur | offen | - |
-| `seeds/seed-architekt-lesezugriff-worktree.md` | Architekten-Lesezugriff auf Worktree-Branche (Sync-Werkzeug, nicht git-Topologie biegen) | prozess | bald | sicher | sprung | offen | - |
 | `seeds/seed-dsgvo-dpa-cloudflare.md` | DSGVO-Auftragsverarbeitungsvertrag mit Cloudflare unterzeichnen | prozess | bald | sicher | schritt | offen | - |
 | `seeds/seed-notausgang-doku.md` | Notausgang-Doku: schriftliche Rescue-System- und Telefon-Tailscale-Prozedur | prozess | bald | sicher | schritt | offen | - |
 | `seeds/seed-secret-inventar-pg-rollen.md` | Secret-Inventar codifizieren: pg_authid-Rollen-Audit pro Postgres-Cluster | prozess | bald | sicher | schritt | offen | - |
-| `seeds/seed-spec-id-vergabe-kollisionsfrei.md` | Spec-ID-Vergabe kollisionsfrei machen (Race-Schutz für parallele Worktree-Spuren) | prozess | bald | sicher | sprung | offen | - |
 | `seeds/seed-compose-recreate-after-edit.md` | Pflicht-Recreate nach Compose-Topologie-Edit | wartung | bald | sicher | sprung | offen | - |
 | `seeds/seed-cve-watchdog-regel-b.md` | Cloudflare WAF: CVE-2025-55182 Watchdog-Regel B mit gehärteter Expression | security | irgendwann | sicher | schritt | offen | - |
 | `seeds/seed-waf-owasp-block-modus.md` | Cloudflare WAF OWASP Core Ruleset von 'log' auf 'block' umstellen (nach Live-Tuning) | security | irgendwann | sicher | schritt | offen | - |
