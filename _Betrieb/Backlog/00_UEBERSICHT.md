@@ -21,13 +21,12 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | Datei | Titel | klasse | zugkraft | risikoklasse | stufe | status | abhängig von |
 |-------|-------|--------|----------|--------------|-------|--------|--------------|
 | `seeds/seed-code-security-checks.md` | Code-Security-Standards + automatisierte Checks für Prisment-Produkt-Code (Next.js + LangGraph) | security | jetzt | kritisch | spur | offen | - |
-| `seeds/seed-pg-hba-haerten.md` | pg_hba.conf härten: trust 127.0.0.1/32 raus + host-Regeln subnetz-spezifisch | security | jetzt | sicherheitskritisch-akut | sprung | offen | - |
 | `seeds/seed-brand-protection-saved-queries.md` | Cloudflare Brand Protection — Saved Queries + Logos einrichten | security | bald | sicher | sprung | offen | - |
 | `seeds/seed-dependency-monitoring-renovate.md` | Dependency-Monitoring (Dependabot/Renovate) für alle Gitea-Repos | security | bald | kritisch | sprung | offen | - |
 | `seeds/seed-firewall-drop-port22-public.md` | Firewall-Drop Port 22 auf Public-Interface (defense-in-depth über SSH-Socket-Bind) | security | bald | sicher | sprung | offen | - |
-| `seeds/seed-image-pinning-latest-services.md` | Image-Pinning: Gitea, Twenty, Open WebUI und übrige :latest/:main → exakte Versionen | security | bald | sicher | schritt | in_arbeit | - |
 | `seeds/seed-logging-forensik-grundlage.md` | Logging/Forensik-Grundlage: CF-Access-Logs Logpush + Postgres log_connections + Traefik accessLog | security | bald | kritisch | spur | offen | - |
 | `seeds/seed-n8n-migration-2-21.md` | n8n-Migration 2.13.3 → aktuelle Upstream-Version (erster echter Pipeline-Lauf) | security | bald | kritisch | sprung | offen | - |
+| `seeds/seed-pg-hba-local-haerten.md` | pg_hba.conf: local all all trust ersetzen (In-Prozess-Bypass schließen) | security | bald | sicherheitskritisch-akut | spur | offen | PLAT-029_SPEC_pg_hba_haerten |
 | `seeds/seed-test-umgebung-neu-secrets.md` | Test-Umgebung wieder aufbauen: test.app.prisment.de neu — intern-only, eigene Secrets, eigene Test-DB | security | bald | sicher | spur | offen | seed-code-security-checks, seed-data-integrity-agents |
 | `seeds/seed-pwa-user-superuser-entzug.md` | pwa_user-Restschuld: SUPERUSER entziehen (impliziert noch BYPASSRLS) | qualitaet | bald | kritisch | schritt | offen | - |
 | `seeds/seed-apply-autonomie-pipeline.md` | Apply-Autonomie-Politik: Custom-Build-Patch + Renovate-Merge-Rebuild nutzen die PLAT-002-Wand | prozess | bald | kritisch | spur | offen | PLAT-002_SPEC |

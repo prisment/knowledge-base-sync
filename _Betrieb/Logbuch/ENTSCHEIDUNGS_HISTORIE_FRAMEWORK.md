@@ -752,6 +752,53 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E46 — Image-Pinning-Default: pure Versions-Tag, nicht `:tag@sha256:digest` (PLAT-030, 2026-05-26)
+
+**Auslöser:** PLAT-030 hat die 7 externen `:latest`/`:main`-Compose-Einträge auf konkrete Versionen gepinnt. Beim Edit stellte sich die Frage: pure Versions-Tag (`gitea/gitea:1.25.5`) oder Hybrid mit Digest-Anker (`gitea/gitea:1.25.5@sha256:f846d26…`)? Hybrid wäre strikter reproduzierbar — bei Tag-Bewegung in der Registry würde derselbe Tag denselben Layer ergeben.
+
+**Entscheidung:** Pure Versions-Tag als Default. Digest-Pin nur dort, wo kein semantischer Tag existiert (im aktuellen Stand genau ein Service: Open WebUI `:main`).
+
+**Warum:** (a) Renovate ist das primäre Ziel der Pinning-Aktion — PLAT-026 (Apply-Autonomie) baut darauf auf. Renovate-PRs gegen `:tag@sha256` haben anderes Verhalten als gegen pure `:tag` (PR-Vorlage ist „Tag-Update + Digest-Update" zusammen, nicht „Tag-Update"). Pure Tag ist der eindeutigere Renovate-Eingang. (b) Striktere Reproduzierbarkeit durch Digest-Pin ist real, aber der Schutz greift nur bei Registry-Manipulation eines bereits veröffentlichten Tags — ein sehr seltenes Angriffsbild, das die Hauptkosten (Renovate-Friktion) nicht rechtfertigt. (c) Wenn später Reproduzierbarkeit harte Anforderung wird (z.B. Compliance-Audit), ist der Hybrid-Switch eine kleine Erweiterung, nicht ein Architektur-Bruch.
+
+**Verworfene Alternativen:**
+- **Hybrid `:tag@sha256:digest` für alle:** zu viel Renovate-Friktion gegen sehr geringen Gewinn.
+- **Reiner Digest-Pin (`image@sha256:…`, ohne Tag):** macht Diun/Renovate-Erkennung gegen Tag-Index unmöglich — Updates wären unsichtbar bis zum Manifest-Check.
+- **Floating-Pin (`gitea/gitea:1.25`):** Auto-Patch beim Pull = Sollwert-Drift unkontrolliert, kein PR-Sichtbarkeit.
+
+**Kontextbindung:** Wenn PLAT-026 zeigt, dass Renovate gegen Hybrid-Pins genauso gut PRs öffnet, wird die Default-Entscheidung obsolet — bis dahin ist „pure Tag" die operative Default. Open-WebUI bleibt Sonderfall, weil Upstream kein semver liefert; bewegt sich Upstream auf semver-Tags, fällt auch dieser Sonderfall.
+
+---
+
+## E47 — pg_hba.conf-Auth-Bypass geschlossen (PLAT-029, 2026-05-26)
+
+**Auslöser:** `seed-pg-hba-haerten` (Klasse security, Zugkraft jetzt) — in der CVE-2025-55182-Auswertung als „aktiv ausgenutzter Bypass-Pfad" markiert. Beide produktiven Postgres-Cluster (`internal_postgres`, `customer_postgres`) hatten `trust 127.0.0.1/32` (+ `::1/128`) in `pg_hba.conf`: jede Code-Execution im PG-Container (Extension-Bug, Injection in geladener Extension, kompromittierter Sidecar) wurde damit zu passwortlosem Superuser. Zusätzlich erlaubte `host all all all scram-sha-256` Connects aus jedem beliebigen Docker-Network.
+
+**Entscheidung:** `trust` für `host`-Einträge entfernt → `scram-sha-256` auf 127.0.0.1/32 + ::1/128. `host all all all` ersetzt durch subnetz-spezifische Whitelist pro Cluster: internal (db_gitea/n8n/twenty/pwa = 172.23/24/25/28.0.0/16), customer (db_customer = 172.29.0.0/16). Umsetzung per `pg_reload_conf()`, kein Restart, Backup-Datei `pg_hba.conf.prev-<timestamp>` direkt im Daten-Volume.
+
+**Warum jetzt:** (a) Architekt hatte den Bypass „eigenständig dringend" markiert; das CVE-Incident-Kapitel (E45) ist formal geschlossen, aber die Audit-Restschulden lebten weiter — pg_hba war die größte davon. (b) Die Voraussetzungs-Inventur (`pg_rollen_inventar.md`) war frisch fertig: ohne sie hätte der Cut auf `scram-sha-256` blind passwortlose Rollen brechen können.
+
+**Entscheidungen (chronologisch, mit Warum):**
+
+(1) **Stufen-Hochstufung Sprung → Spur.** Seed war als `stufe: sprung` formuliert (vor PLAT-012-Lücken-Ergänzung). `risikoklasse: sicherheitskritisch-akut` erzwingt nach Verfassung 00 zwingend Spur — also vollständiger 9-Phasen-Zyklus, Spec/Report/Abschluss-Doku, Phase-9-Merge im eigenen Worktree. Korrektur im Spec-Frontmatter (`stufe: spur`) und Vermerk im Body.
+
+(2) **Reihenfolge `internal` zuerst, `customer` zweite.** Internal trägt mehr abhängige Services (gitea, n8n, twenty) — Bruch wird schnell sichtbar. Customer (Kundendaten-Cluster) bekommt das Sicherheitsnetz aus dem ersten Reload und einen menschlichen Stop dazwischen. Verworfen: parallel oder customer-first (würde Mandanten-Pfad unnötig zuerst riskieren).
+
+(3) **`pwa_user`-Orphan in `internal_postgres` vorab auf NOLOGIN.** Befund aus `pg_rollen_inventar.md`: Login-Rolle ohne DB-Owner, Pre-PRIS-017-Relikt. Architekt-Entscheidung: vorab stilllegen statt im großen Reload mitlaufen lassen — falls wider Erwarten doch ein Connect existiert, bricht er an kontrollierter, einzeln reversibler Stelle (`ALTER ROLE pwa_user LOGIN`). Verworfen: erst nach dem Reload (würde Bruch versteckt machen) bzw. droppen (irreversibel ohne klaren Bedarf).
+
+(4) **db_pwa-Subnetz (172.28.0.0/16) trotz leerem Netz in der Whitelist.** Aktuell hängt kein Client-Container an db_pwa, aber das Netz ist für PWA-Connects reserviert. Whitelist-Zeile ist harmlos (kein Sicherheits-Verlust), spart aber späteres Nachpflegen wenn ein PWA-Container an das Netz kommt. Verworfen: nur tatsächlich-aktive Subnetze whitelisten (würde Folge-Spur erzwingen, sobald PWA-Container ans Netz kommt).
+
+(5) **`local all all trust` (Unix-Socket im Container) bleibt in dieser Spec drin.** Wording in der Spec wurde explizit von „kosmetisch" zu „bewusst akzeptierter Rest-Bypass" korrigiert: gegen den `docker exec`-Pfad ist Härtung tatsächlich kosmetisch (wer root im Container ist, hat sowieso Datenzugriff), gegen den **In-Prozess-Code-Execution-Pfad** (Extension-Exploit als `postgres`-User → Unix-Socket → passwortloser Superuser) wirkt sie als realer Rest-Bypass. Reduktion verlangt Verfahrens-Klärung (welche PG-internen Tasks brauchen `local`-Connects, in welchem Auth-Modus ersetzt man `trust`) → eigener Folge-Seed `seed-pg-hba-local-haerten`. Verworfen: ad-hoc-Mit-Härtung in dieser Spur (würde Scope sprengen, ohne Klärung würden interne PG-Wartungs-Tasks brechen).
+
+(6) **Reload (`pg_reload_conf()`), nicht Restart.** PG akzeptiert HBA-Reload ohne Postmaster-Restart; bei Syntax-Fehler lehnt PG den Reload ab und behält die laufende Config — kein Outage-Risiko durch Tippfehler. Trockenprüfung vor dem `t`-Reload per `SELECT * FROM pg_hba_file_rules` (zeigt vorgemerkte Datei mit error-Spalte) — beide Cluster zeigten 0 Fehler.
+
+**Restschulden, ehrlich notiert** (nicht PLAT-029-blockierend, aber registriert):
+- `local all all trust` bleibt aktiv → Folge-Seed `seed-pg-hba-local-haerten` (plattform, security, bald, sicherheitskritisch-akut, spur).
+- Side-Befund in customer-Logs direkt vor Reload: `FATAL: database "pwa_app" does not exist`. Pre-existing, nicht durch PLAT-029 ausgelöst, Auth war erfolgreich (`pwa_app` liegt historisch in `internal_postgres`, nicht in customer). Folge-Punkt: Service mit hartkodiertem `pwa_app` finden und korrigieren. Nicht jetzt vergeben, weil out-of-scope.
+
+**Kontextbindung:** (a) Wenn in den nächsten 14 Tagen kein Auth-Folgesymptom auftritt (keine Container-Connect-Bruchstellen, keine versehentlich vergessene `host all all all`-Quelle), ist die Härtung empirisch bestätigt. (b) Wenn ein neuer Client an `db_pwa`-Netz kommt (172.28.0.0/16) oder ein neues Subnetz für PG-Clients angelegt wird, muss `pg_hba.conf` aktiv nachgepflegt werden — das wandert in den Compose-Drift-Check-Pfad (PLAT-001).
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.
