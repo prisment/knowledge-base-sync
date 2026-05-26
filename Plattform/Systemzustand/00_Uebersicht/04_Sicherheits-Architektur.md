@@ -2,7 +2,7 @@
 typ: uebersicht
 geltungsbereich: plattform
 thema: sicherheits-architektur
-stand: 2026-05-25
+stand: 2026-05-26
 zweck: "Schichten-Modell der Verteidigungslinien, HARDENING-Status, nightly-Mechanik. Sub-Übersicht zu 00_Bereich.md."
 ---
 
@@ -27,9 +27,11 @@ an den Origin durch. **Schicht 3 (Cloudflare Tunnel, `cloudflared`)** ist
 der einzige HTTPS-Eingang — kein offener Inbound-Port am Server.
 **Schicht 4 (App-Session)** ist die container-eigene Auth (Twenty-JWT,
 n8n-Session, Open-WebUI-Session), die den CF-Access-Headern vertraut.
-**Schicht 5 (geplant — Tenant-Isolation)** wird fail-closed RLS in
-`customer_postgres` etablieren, bevor Kunde #2 onboardet wird — das ist
-HARDENING Phase 5 und noch offen. Der **parallele Admin-Pfad** (Tailscale
+**Schicht 5 (Tenant-Isolation)** ist seit PRIS-017 (2026-05-26) scharf:
+fail-closed RLS auf allen Tenant-Tabellen in `customer_postgres` (`public.*`
++ `auth.*`), Drei-Rollen-Modell (`tenant_app_user` / `admin_user` /
+`pwa_migrator`), `pwa_user` ohne BYPASSRLS und aus jedem Request-Pfad
+entfernt — Cross-Tenant-Vollverifikation auf 23 Tenant-Tabellen grün. Der **parallele Admin-Pfad** (Tailscale
 Mesh-VPN) bindet SSH-22 und Gitea-SSH-2222 ausschließlich an die
 Tailnet-IP — niemand außer Korbinian kommt überhaupt in die Nähe.
 **Nightly-Mechanik** sichert das System operativ: unattended-upgrades
@@ -54,7 +56,7 @@ Restore-Pfad komplett dokumentiert.
 | CF-MIG (Authentik → CF Access) | ✅ abgeschlossen | Logbuch E26, Mai 2026 |
 | Telegram-EOL | ✅ abgeschlossen | Logbuch E25 (PLAT-009 2026-05-25) |
 | Public-Exposure-Reduktion (Mattermost weg, Test-Familie deprecated) | ✅ abgeschlossen | HARDENING Phase 1.1 / 1.4 |
-| **Tenant-Isolation (RLS in customer_postgres)** | ⬜ **noch offen** | Phase 5 · vor Onboarding Kunde #2 |
+| Tenant-Isolation (fail-closed RLS in customer_postgres) | ✅ abgeschlossen | PRIS-017, 2026-05-26 (Logbuch E36/E39) |
 | WAF-Skip für Access-Apps | ✅ abgeschlossen | Logbuch E26 (BREAKOUT in PLAT-009) |
 
 Detail: [`HAERTUNGS_SPEC_PRISMENT.md`](../Sicherheit/HAERTUNGS_SPEC_PRISMENT.md).
