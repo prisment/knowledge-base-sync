@@ -113,6 +113,8 @@ Der Mensch reviewt Entscheidungen, nicht Code. **Der Chat-Output am Bündel-/Zyk
 3. **Was du wissen solltest** — Information, kein Veto nötig.
 4. **Wo ich unsicher war** — der eigentliche Review-Fokus des Menschen (darf leer sein).
 
+**Inhaltlich, nicht referenzierend.** Die vier Punkte werden direkt im Chat ausgeschrieben — **keine „siehe Spec / siehe File / siehe Abschluss-Doku"-Verweise.** Der Mensch ist sowieso in der CLI, dort kommt das Schnellste an — wenn der Inhalt in der Datei steht und nicht im Chat, muss er Branch/File aufrufen für was, das in drei Sätzen im Chat stehen könnte. Belegmaterial (Akzeptanzkriterien-Häkchen, Diffs, Hash-Listen) bleibt weiter in der Datei; die **Substanz der Entscheidungen** und **die offenen Fragen** stehen im Chat-Text. Ausnahme nur für rein deskriptive Verweise („Details siehe `<Datei>` Z. 42–60") — und auch dort nicht ohne kurze Vorab-Substanz im Chat.
+
 **Nicht in den Chat:** Akzeptanzkriterien-Häkchen, Phasen-Verifikations-Tabellen, Datei-Listen, Commit-Hash-Aufzählungen, „was ich geprüft habe"-Belege, Status-Updates pro Phase. Das ist Belegmaterial — gehört in Abschluss-Doku / Schritt-Log / Logbuch, nicht in den Review-Anker des Menschen. Der Mensch hat diese Belege eingerichtet, **damit er sie nicht lesen muss**.
 
 Code-Diff und Doku-Diff bleiben verfügbar, sind aber Kür. Revision erfolgt geballt im Nachhinein (auf Branch billig), statt vorab häppchenweise freizugeben.

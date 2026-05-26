@@ -36,26 +36,42 @@ Der Architekt bekommt Lesezugriff auf `wt/*`-Branches über
 publiziert. Welcher der drei Pfade primär gewählt wird, klärt die Spec
 am echten Setup:
 
-### Pfad (A) — Gitea-Web-UI (Null-Setup, Standard-Lösung)
+### Pfad (A) — Gitea-Web-UI ✅ DEFAULT (festgelegt 2026-05-26 nach Praxis-Test)
 
-`git.prisment.de/admin/knowledge-base` → Branch-Dropdown auf
+`git.prisment.de/admin/knowledge-base/branches` → Branch-Dropdown auf
 `wt/<short>` → Markdown wird gerendert. Funktioniert sofort, kein
-Tooling-Aufwand. Geeignet für: gelegentliches Reinschauen, Diff-Review
-beim Bündel-Ende, Spec-Lesen vor Freigabe.
+Tooling-Aufwand. **Praxis-Test 2026-05-26 bestätigt:** der Branch-
+Dropdown auf `branches`-Page zeigt direkt „commits ahead/behind" pro
+Branch, du erkennst sofort welche Spur Aktivität hat.
 
-**Voraussetzung:** Architekt erreicht Gitea-Web (heute via Cloudflare
-Tunnel + Access — bewiesen).
+**Bookmark-Empfehlung:** `https://git.prisment.de/admin/knowledge-base/branches`
+als Startpunkt — von dort ein Klick auf den Branch-Namen → Code-View
+mit gerendertem Markdown.
 
-### Pfad (B) — Obsidian Git Plugin „Auto fetch" + Branch-Switch
+**Direkt-URL-Schema** für oft-aufgerufene Files (in Bookmark mit
+variabler `<branch>`-Komponente):
+```
+https://git.prisment.de/admin/knowledge-base/src/branch/wt/<short>/<pfad>
+```
 
-Plugin-Setting: **„Auto fetch interval (minutes)"** auf z.B. `5` (oder
-Manuell-Fetch). Damit liegen alle `wt/*`-Branches lokal in
-`refs/remotes/origin/`. Lesen: Plugin-Befehl „Switch branch" →
-`wt/<short>`. Working-Tree wechselt readonly, Architekt liest, switcht
-zurück zu `main`.
+### Pfad (B) — Obsidian Git Plugin Branch-Switch ❌ NICHT PRAKTIKABEL
 
-**Voraussetzung:** Plugin-Setting prüfen (heute vermutlich Default-Aus),
-einmaliges Setup.
+**Verworfen am 2026-05-26 nach Praxis-Test.** Das Obsidian Git Plugin
+(Standard-Build) zeigt im „Switch branch"-Command **nur lokale
+Branches**, nicht die per `auto-fetch` geholten Remote-Tracking-
+Refs (`refs/remotes/origin/wt/*`). Damit wären alle `wt/<short>`-
+Branches unsichtbar, solange sie nicht manuell als lokale Tracking-
+Branche angelegt sind (`git branch wt/<short> origin/wt/<short>`).
+
+Das ist Plugin-Designed-As-Backup-Sync, nicht Plugin-Bug — das Plugin
+ist nie als Multi-Branch-Reader gebaut. Auch Plugin-Forks und
+Sub-Plugins („Source Control", „Branch View") sind heute nicht
+ausreichend zuverlässig im Standard-Setup.
+
+**Wer trotzdem Obsidian-internal lesen will:** kann lokal mit CLI
+(`git fetch --all && git branch wt/<short> origin/wt/<short>`) den
+Tracking-Branch anlegen, danach ist „Switch branch" verfügbar.
+Aber: pro neuer wt/-Spur einmal CLI = nicht praktikabel.
 
 ### Pfad (C) — `wt-show`-Helfer am Server
 
@@ -68,13 +84,20 @@ wt-show plat-019 fakten       # → zeigt PLAT-019_FAKTEN.md falls vorhanden
 ```
 **Voraussetzung:** Architekt hat Server-Terminal-Zugriff (was er hat).
 Nützlich, wenn Pfade nicht im Obsidian-Vault gemapped sind oder
-schneller Konsolen-Lookup gewünscht ist.
+schneller Konsolen-Lookup gewünscht ist. Sekundärer Pfad — Pfad (A)
+deckt 95% ab.
 
 ## Empfehlung für die Spec
 
-**Pfad (A) als Default, (B) als Fallback wenn UX-Gründe gegen Web-UI.**
-(C) nur, wenn (A) und (B) nicht reichen — Sprung-Stufe (Skript +
-Doku-Verweis).
+**Pfad (A) als DEFAULT (festgelegt nach Praxis-Test 2026-05-26).** Pfad
+(C) nur, wenn der Architekt eh in einer Server-Session ist und schneller
+Konsolen-Lookup gewünscht. Pfad (B) ausdrücklich **nicht empfohlen** —
+Plugin-Setup-Aufwand pro Branch übersteigt den Nutzen.
+
+**Damit kann der Seed-Inhalt am Spec-Start sofort in die Praxis
+gebracht werden:** Bookmark setzen, fertig. Eine Spec ist
+möglicherweise gar nicht mehr nötig — nur ein Schritt für
+`wt-show`-Skript, falls jemand das später als Komfort haben will.
 
 Begründung Default (A):
 - Null-Setup: läuft sofort.
