@@ -98,6 +98,26 @@ Klasse-A/B-Auto-Apply braucht definierten Rollback bei Health-Check-rot:
   Major-Sprung läuft, ist klar, dass Apply-Autonomie n8n NICHT
   einschließt.
 
+## Akzeptanz-Pflicht: Syntax-/Lesbarkeits-Check der Allowlist vor Aktivierung
+
+PLAT-002 hat den Hook fail-closed gemacht: wenn
+`/etc/claude/nightly-allowlist.conf` nicht lesbar ist oder leer
+ankommt, blockiert der Hook **alle** Bash-Calls (Logbuch E38
+Nachzug). Das ist die richtige Failure-Richtung — aber heißt für
+PLAT-026: ein fehlerhafter Edit an dieser Datei (Aktivierung einer
+auskommentierten Allowlist-Stelle mit Tippfehler) kann den ganzen
+Nachtlauf hart blockieren.
+
+**Akzeptanzkriterium der PLAT-026-Spec (vorgemerkt):** Pro Aktivierung
+einer Allowlist-Stelle Pflicht-Verifikation
+- Allowlist-Datei syntaktisch lesbar (Skript prüft Zeilen-Format,
+  keine unbalancierten Quotes etc.)
+- Test-Trockenlauf via direktem Hook-Pfad
+  (`echo '{"tool_name":"Bash","tool_input":{"command":"<aktivierte
+  Form>"}}' | /usr/local/sbin/claude-allowlist-hook; echo "exit=$?"`)
+  → ALLOW erwartet, exit 0.
+- Erst nach grüner Verifikation Re-Install + Logbuch-Eintrag.
+
 ## Stufe / Risiko
 
 **Spur** (kritisch, weil Auth-/Container-Topologie-Wirkung, plus
