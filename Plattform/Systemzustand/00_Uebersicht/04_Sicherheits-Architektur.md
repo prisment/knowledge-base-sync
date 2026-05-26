@@ -72,6 +72,11 @@ Detail: [`HAERTUNGS_SPEC_PRISMENT.md`](../Sicherheit/HAERTUNGS_SPEC_PRISMENT.md)
   Arbeitsgedächtnis (mail-unabhängige Sichtbarkeits-Garantie). Pre-
   commit-Hook erzwingt `nacht-aufgaben.md ↔ .sha256`-Konsistenz —
   Vergess-Aussetzen wie am 25./26.05. nicht mehr möglich.
+- **PreToolUse-Hook als echte Bash-Wand (PLAT-002):** Bash-Allowlist
+  als Präfix-Liste, Hook-Skript root-owned in `/usr/local/sbin/`,
+  Allowlist + settings.json root-owned in `/etc/claude/`. claude-deploy
+  kann die Wand weder editieren noch ihre Aktivierung abschalten —
+  strukturelle Realisierung von E13. Detail: [`pretooluse-hook.md`](../Sicherheit/pretooluse-hook.md).
 - **Aktualitäts-Vollabdeckung (PLAT-021):** Renovate-CLI (Cron 07:30,
   Bot-Account `renovate-bot`, SSH über Tailnet) öffnet PRs für npm/pip-
   CVE-/Patch-Updates. Drei nightly-Aufgaben außerhalb des LLM-Laufs

@@ -605,7 +605,9 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 **Kontextbindung:** (a) Erste Anwendung ist dieser Zyklus selbst (lief autonom durch, ein Entscheidungs-Protokoll am Ende). (b) Globale CLAUDE.md wurde in Bündel 0 erstmals versioniert — vorher außerhalb von Git (Folge-Schritt-Kandidat aus PLAT-015 Bündel 2 damit erledigt). (c) Falls die Silent-Whitelist im Alltag etwas verschluckt, das hätte sichtbar sein sollen → Whitelist-Punkt schärfen oder streichen.
 ---
 
-## E38 — `auth.tenant_memberships`: kategorisch kein RLS (Brücken-Tabelle definiert Zugehörigkeit, kann nicht durch sie gefiltert werden) — PRIS-017, 2026-05-26
+## E39 — `auth.tenant_memberships`: kategorisch kein RLS (Brücken-Tabelle definiert Zugehörigkeit, kann nicht durch sie gefiltert werden) — PRIS-017, 2026-05-26
+
+> **Nachträgliche Header-Umnummerierung (2026-05-26 abends):** ursprünglich als E38 gepusht; nach PLAT-002-Merge auf E39 verschoben, weil PLAT-002 parallel ebenfalls E38 reservierte. Body unverändert (Verfassungs-Klausel „Einträge werden nie geändert" gewahrt — Korrektur betrifft nur die Header-Nummer wegen Multi-Branch-Kollision).
 
 **Auslöser:** Phase-5-Machbarkeit zu PRIS-017 (Tenant-Isolation) brachte als grobe Abweichung 1 zurück: wörtliche fail-closed RLS auf `auth.tenant_memberships` mit `tenant_id`-Match bricht den Login. Drei Konsumenten betroffen — pwa-web NextAuth-Adapter (`pwa/pwa-web/auth.ts:106`), pwa-api Membership-Lookup (`pwa/pwa-api/app/auth.py:28`), orchestrator.py 2951/3031 (User-Lookup pro Tenant). Alle laufen zur Login-Zeit oder erzeugen den Tenant-Kontext erst.
 
@@ -624,7 +626,9 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 **Kontextbindung:** (a) Wenn später eine neue Tabelle mit Brücken-Funktion (Multi-Tenant-Mapping) angelegt wird, gilt dieselbe Mechanik: GRANT-Schutz, kein RLS. (b) Wenn der Code-Audit bei einer späteren Spur (z.B. Skalierungs-Schulden-Aufräumung) zeigt, dass `WHERE user_id`-Filter doch nicht überall greift, ist das ein Bug-Fix-Auftrag in der App, nicht ein Anlass, hier nachträglich RLS einzubauen. (c) Die Spec-Zielklausel „jede Tabelle mit Mandantenbezug" wird in PRIS-017 explizit eingeschränkt: Brücken-Tabellen sind ausgenommen.
 ---
 
-## E37 — A3-Migrations-Lücke: `onboarded_at` wurde nicht in `agent_data.auth.users` mitmigriert (PRIS-016b, 2026-05-26)
+## E40 — A3-Migrations-Lücke: `onboarded_at` wurde nicht in `agent_data.auth.users` mitmigriert (PRIS-016b, 2026-05-26)
+
+> **Nachträgliche Header-Umnummerierung (2026-05-26 abends):** ursprünglich als E37 gepusht; nach PLAT-025-Merge auf E40 verschoben (Doppelnummer-Auflösung mit dem PLAT-025-E37). Body unverändert.
 
 **Auslöser:** Beim Daten-Diff in PRIS-016b Bündel 0.1 fiel auf, dass `customer_postgres.pwa_app.users` für beide Live-User produktive `onboarded_at`-Zeitstempel hielt (2026-05-12 14:23:26 / 18:40:59), während `customer_postgres.agent_data.auth.users` für dieselben User `onboarded_at = NULL` zeigte. Die App-Code-Suche bestätigte: `onboarded_at` wird aktiv genutzt (NextAuth-Adapter setzt `token.onboarded`, pwa-api `/me`-Endpoint, orchestrator.py Folge-Posts-Logik via `WHERE u.onboarded_at IS NOT NULL`).
 
@@ -635,6 +639,26 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 **Warum Logbuch-würdig:** Nicht für die Migration selbst (die ist trivial), sondern für das **Muster**: Schema-Konsolidierungen ohne strikten Spalten-für-Spalten-Daten-Abgleich hinterlassen unsichtbare Lücken. Die Lücke wurde 12 Tage später erst beim Aufräumen entdeckt, nicht beim Migrations-Test selbst.
 
 **Kontextbindung:** (a) Wenn künftig eine Schema-Konsolidierung ähnlicher Größenordnung kommt (z.B. Skalierungs-Schulden-Aufräumung mit Tabellen-Zusammenführungen), muss ein Spalten-Diff-Test Pflicht-Tor sein, nicht „danach beim Aufräumen merken wir's schon". (b) Verdacht: weitere A3-Migrations-Lücken könnten in anderen `auth.*`/`public.*`-Tabellen schlummern (NULL-Spalten, wo Werte hätten landen sollen). Vor pwa-web-Reaktivierung (HAERTUNGS Phase 6) ein gezielter Sanity-Check auf "verdächtig viele NULLs in Spalten, die vom App-Code aktiv gelesen werden" sinnvoll — kandidat für eigenen Seed wenn Phase-6-Wiederanlauf naht.
+
+---
+
+## E38 — PreToolUse-Hook ist die echte Bash-Wand, settings-allow nur dokumentarisch (PLAT-002, 2026-05-26)
+
+**Auslöser:** E22 (PLAT-001 Q2, vier Tests) hat bewiesen, dass die settings-`allow`-Liste für Bash im `acceptEdits`-Modus strukturell wirkungslos ist — settings ist eine Deny-Blacklist. E13 („Repo definiert AUSWAHL aus OS-Allowlist") war damit auf der Bash-Tool-Ebene **aspirational, nicht realisiert**. Eine Blacklist gegen `sudo` ist durch Form-Variation schlagbar (`sudo bash -c`, `sudo find -exec`, lokaler `.deb`-Pfad) — exakt das E16-Antimuster, das für den nachts-unbeaufsichtigten Lauf bewusst verworfen wurde.
+
+**Entscheidung:** (1) PreToolUse-Hook `/usr/local/sbin/claude-allowlist-hook` (root-owned, claude-deploy execute-only) prüft jeden Bash-Tool-Call gegen Präfix-Allowlist in `/etc/claude/nightly-allowlist.conf` (root-owned, claude-deploy read-only). (2) `claude --settings`-Argument zeigt auf `/etc/claude/nightly-settings.json` (root-owned), alte `~/.claude-nightly/settings.json` ist Symlink dorthin. **Wer claude-deploy kapert, kann weder Hook noch dessen Aktivierung editieren** — sonst wäre die Wand eine Wand mit unverschlossener Tür daneben. (3) Hook-Default ist **defer** (exit 0 ohne JSON); JSON-allow nur bei eindeutigem Präfix-Match + Argument-Constraint ok. (4) settings-deny bleibt als zweite Linie für defer-Pfade.
+
+**Phase-5-Befund (Spec-Präzisierung):** JSON-`permissionDecision: allow` **überschreibt** settings-deny strukturell. Defense-in-Depth gilt deshalb nur für defer-Pfade, nicht für allowed-Pfade. Hook-Disziplin: niemals JSON-allow mit broader-than-intended-Pattern.
+
+**Bündel-4-Live-Befund:** Parse-Unsicherheits-Filter erkannte zunächst nur Subshell/Process-Substitution/Variable-Indirektion. Live-Test `date; ls /tmp` ging als ALLOW durch (Präfix `date` matched, Rest des Strings durch JSON-allow unkontrolliert). Filter erweitert um `;`, `&&`, `||`, Background-`&`. Heißt: jeder Befehl muss als eigener Bash-Call kommen.
+
+**Verworfene Alternative 1 — settings.json-Hash-Check im Wrapper (statt root-Verlagerung).** Verworfen: verlagert das Schutzproblem auf Wrapper + Soll-Hash (beide claude-deploy-Bereich) und ist Laufzeit- statt OS-Garantie (TOCTOU-Rest).
+
+**Verworfene Alternative 2 — Hook-Self-Check der erwarteten Konfiguration.** Verworfen: struktureller Zirkel — eine entfernte Hook-Registrierung legt den prüfenden Hook still.
+
+**Verworfene Alternative 3 — settings-allow als ausreichende Wand (status quo).** Verworfen durch E22 — bewiesen wirkungslos für Bash, plus E16-Anti-Pattern durch Form-Variation.
+
+**Kontextbindung:** (a) Allowlist-Erweiterungen sind ab jetzt sicherheitskritisch — Logbuch-Pflicht pro Erweiterung. (b) Apply-Autonomie-Politik (welche Allowlist-Stellen scharf geschaltet werden) ist `seed-apply-autonomie-pipeline` (PLAT-026), nutzt diese Mechanik. (c) Pipe `|` bleibt erlaubt (lesende Pipes nightly-üblich); Folge-Verschärfung möglich wenn Risiko sichtbar wird. (d) Allowlist-Drift zwischen Repo-Quelle (`_Betrieb/Skripte/pretooluse-hook/`) und live-Datei (`/etc/claude/`) ist möglich, weil Re-Install via Architekten-`sudo`-Klick läuft — kein Auto-Deploy. Folge-Schritt-Kandidat: Drift-Check-Cron.
 
 ---
 
