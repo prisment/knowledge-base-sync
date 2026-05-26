@@ -713,6 +713,28 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E44 — Skill-System etabliert: technische Verfahren als SKILL.md im Repo, Lifecycle als Phase-9-Glied (PLAT-028, 2026-05-26)
+
+**Auslöser:** `seed-skills-evaluieren` (stufe sprung) eskaliert zu Spur, weil die Aufgabe von „eine Skill bauen" auf CLAUDE.md-Vollbereinigung + Doku-Scan + dauerhafte Lifecycle-Verfassungsregel wuchs. Trigger-Präzisierung des Seeds: „erst bei 3. Auftreten bauen" wird erweitert auf „fehleranfällig-wiederholt ODER permanent-teuer (always-on in CLAUDE.md)" — Klasse-A-Verfahren erfüllen das zweite Kriterium, kosten Token bei jedem Schritt jedes Agents.
+
+**Entscheidungen (chronologisch, mit Warum):**
+
+(1) **Lade-Pfad — Spec-Annahme `~/.claude/skills/` war falsch.** Phase-2-Faktencheck in v2.1.126 zeigte: Skills laufen aus `~/.claude/commands/*.md` (eigene) oder dem Plugin-Marketplace. Canary-Test in neuer Session bewies aber: direkter Repo-Pfad `<repo>/.claude/skills/<name>/SKILL.md` lädt model-invoked. **Gewählt: Repo-Pfad** statt Marketplace-Konstrukt (architekten-favorisiert 2b-iii) — eine Datei, eine Quelle, kein Plugin-Boilerplate. Verworfen: (a) Symlink von `~/.claude/skills/` auf Repo (Marketplace-2b-iii) — überflüssig, sobald direkter Pfad bewiesen ist. (b) eigenes lokales Plugin mit `extraKnownMarketplaces` — mehr Mechanik ohne Mehrwert für Solo-Betrieb.
+
+(2) **Klassen-Trennung (Spec-konform):** Klasse A (Verfahren, wandert raus) vs. Klasse B (Sicherheits-Leitplanken, bleibt hart always-on) vs. Klasse C (Verfassungs-Router, bleibt) vs. Klasse D (Identität, bleibt). **Leitplanken-Auslagerung in Skills verworfen** (E13/E16-Antimuster): Skill-Trigger ist unzuverlässig — nicht-geladene Leitplanke = Agent ohne Leitplanken = Sicherheitsvorfall. Bei Verfahrens-Skills ist der Fehlfall „Claude versucht es ohne Skill" harmlos.
+
+(3) **CLAUDE-global.md-Bereinigung mit Schranke:** Klasse-A-Zeilen werden erst entfernt, wenn der korrespondierende Skill nachweislich model-invoked greift. Sammeltest (6/6 Skills) ersetzte pro-Skill-Beweis — auf Architekten-Lockerung („nicht jeden einzeln"). Resultat: 8 Skills, CLAUDE-global 443 → 369 Zeilen (~17 % schlanker), Router-Stubs als Brücke.
+
+(4) **Doku-Scan B3 ergänzend:** keine weiteren Klasse-A-Kandidaten außerhalb CLAUDE-global. Bereichs-CLAUDE.md sind reine Router (0 Befehlszeilen); Sicherheits-Runbooks sind Leitplanken (E13/E16-Logik). Bestehender `docker-update`-Stumpf im Repo gehört zum abgegrenzten späteren Sprung (eigene SKILL.md-Struktur mit Schritte/Health-Check/Rollback).
+
+(5) **Lifecycle-Regel (B4) in Verfassung 00 Phase-9-Sektion:** Skill-Kandidat-**Erkennung** + **Vorschlag** automatisch am Zyklus-Ende; **Anlage** strikt durch E4-Schreibrichtung + Architekten-Freigabe — „nie selbstoptimierend" (E3) unverändert. Schwester der CLAUDE.md-Selbstverbesserungs-Regel: gleiche Mechanik, gleicher Geist, kein neues Muster. Verworfen: Auto-Anlage von Skills beim Abschluss (bricht E3).
+
+(6) **Sync-Whitelist:** Skill-Quellen sollen für den Chat-Architekten sichtbar sein → `.claude/skills/**` explizit in `_Betrieb/Skripte/sync_to_github.sh` FILTER aufgenommen + `_Betrieb/sync-whitelist.md` ergänzt. Eine Zeile pro Stelle, minimal-invasiv.
+
+**Kontextbindung:** (a) Der erste „echte Bedarf"-Trigger im Live-Betrieb wird als kurzer Schritt-Log-Eintrag bestätigt — initialer Sammeltest (6/6) belegt nur die Mechanik. (b) Wenn die Lifecycle-Regel im nächsten Zyklus zum ersten Mal einen Skill-Seed produziert, prüfen, ob der Vorschlag-Output-Ort (Entscheidungs-Protokoll des Abschlusses) ergonomisch genug ist — oder ob ein zusätzliches Feld im Abschluss-Doku-Template helfen würde. (c) Verfahrens-Skills aus dem Original-Seed (Docker-Update, Rollback-Pinning, Recreate-Health-Check) bleiben abgegrenzter späterer Sprung, andere SKILL.md-Struktur als reine Nachschlage-Verfahren.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.

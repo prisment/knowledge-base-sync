@@ -29,6 +29,8 @@ _Betrieb/Backlog/**              # zentraler Backlog + Seed-Dateien (Planungsüb
 
 CLAUDE.md                        # Root-Wegweiser
 
+.claude/skills/**                # Claude-Code Skills (PLAT-028) — Quelle im Repo, Chat-Sicht
+
 Plattform/CLAUDE.md
 Plattform/Schritt-Log.md
 Plattform/Systemzustand/00_Uebersicht/*.md          # alle MD-Übersichten; SVGs bleiben lokal
