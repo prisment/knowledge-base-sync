@@ -15,10 +15,14 @@ zweck: "Topologie + Datenflüsse zwischen den Plattform-Diensten. Sub-Übersicht
 
 Die geteilten Plattform-Dienste gruppieren sich in vier Cluster.
 **Cluster A** ist die zentrale Daten-Schicht: `internal_postgres`
-(PostgreSQL-Hub) bedient gitea, n8n, twenty, pwa_app (Prisment) und
-open_webui — jeder Konsument in seinem eigenen `db_*`-Netz-Tunnel
-(Lateral-Movement-Schutz). Twenty bekommt zusätzlich `internal_redis_twenty`
-als dedizierten Cache im selben `db_twenty`-Netz, ebenfalls isoliert.
+(PostgreSQL-Hub) bedient gitea, n8n, twenty und open_webui — jeder
+Konsument in seinem eigenen `db_*`-Netz-Tunnel (Lateral-Movement-
+Schutz). Twenty bekommt zusätzlich `internal_redis_twenty` als
+dedizierten Cache im selben `db_twenty`-Netz, ebenfalls isoliert.
+**`pwa_api` hängt NICHT am internal-Hub**, sondern am separaten
+`customer_postgres` (DB `agent_data`, Schemas `auth.*` + `public.*`) —
+Trust-Boundary-Trennung App-Daten/Mandanten-Daten vs. interne Tool-
+Daten. Siehe 04_PWA.md (Prisment) für Details.
 **Cluster B** ist die AI-Pipeline: open_webui, langgraph-Agents (Prisment)
 und n8n als LLM-Konsumenten greifen über `net_ai_pipeline` auf
 `internal_ollama` zu; `internal_whisper` macht Audio-Transkription für
@@ -49,8 +53,12 @@ als Image-Update-Notifier (mit bekannter Lücke bei Custom-Builds —
 | `internal_gitea` | `db_gitea` | `gitea` | [gitea.md](../Geteilte-Dienste/gitea.md) |
 | `internal_n8n` | `db_n8n` | `n8n` | [n8n.md](../Geteilte-Dienste/n8n.md) |
 | `internal_twenty` (+ `internal_redis_twenty`) | `db_twenty` | `twenty` | [twenty-crm.md](../Geteilte-Dienste/twenty-crm.md), [redis-twenty.md](../Geteilte-Dienste/redis-twenty.md) |
-| `pwa_api` (Prisment) | `db_pwa` | `pwa_app` | (Prisment-Bereich) |
 | `internal_open_webui` | im Hub | `open_webui` | [openwebui.md](../Geteilte-Dienste/openwebui.md) |
+
+`pwa_api` ist **kein Konsument** dieses Hubs (häufige Verwechslung):
+hängt am separaten `customer_postgres`-Cluster, DB `agent_data`
+(Schemas `auth.*` + `public.*`). Tabelle oben listet nur internal-Hub-
+Konsumenten.
 
 Hub-Detail: [PostgreSQL-Hub.md](../Geteilte-Dienste/PostgreSQL-Hub.md).
 

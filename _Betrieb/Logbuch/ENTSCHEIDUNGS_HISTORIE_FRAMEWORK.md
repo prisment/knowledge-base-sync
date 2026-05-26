@@ -603,6 +603,38 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 **Verworfene Alternative 3 — alle „Nur EINMAL fragen"-Trigger pauschalierbar.** Verworfen: DB-Migration/Datenlöschung Prod, Traefik/Netz und Datei-Löschung außerhalb KB sind Auslöser-2-Fälle (irreversibel) und bleiben pro Vorkommen.
 
 **Kontextbindung:** (a) Erste Anwendung ist dieser Zyklus selbst (lief autonom durch, ein Entscheidungs-Protokoll am Ende). (b) Globale CLAUDE.md wurde in Bündel 0 erstmals versioniert — vorher außerhalb von Git (Folge-Schritt-Kandidat aus PLAT-015 Bündel 2 damit erledigt). (c) Falls die Silent-Whitelist im Alltag etwas verschluckt, das hätte sichtbar sein sollen → Whitelist-Punkt schärfen oder streichen.
+---
+
+## E38 — `auth.tenant_memberships`: kategorisch kein RLS (Brücken-Tabelle definiert Zugehörigkeit, kann nicht durch sie gefiltert werden) — PRIS-017, 2026-05-26
+
+**Auslöser:** Phase-5-Machbarkeit zu PRIS-017 (Tenant-Isolation) brachte als grobe Abweichung 1 zurück: wörtliche fail-closed RLS auf `auth.tenant_memberships` mit `tenant_id`-Match bricht den Login. Drei Konsumenten betroffen — pwa-web NextAuth-Adapter (`pwa/pwa-web/auth.ts:106`), pwa-api Membership-Lookup (`pwa/pwa-api/app/auth.py:28`), orchestrator.py 2951/3031 (User-Lookup pro Tenant). Alle laufen zur Login-Zeit oder erzeugen den Tenant-Kontext erst.
+
+**Entscheidung:** Kein RLS auf `auth.tenant_memberships`. Schutz ausschließlich über GRANT-Engerung: `tenant_app_user` bekommt nur SELECT; INSERT/UPDATE/DELETE nur `admin_user` + `pwa_migrator`.
+
+**Warum kategorisch — nicht „App filtert ohnehin":** `tenant_memberships` ist die **Brücken-Tabelle User→Tenant**. Eine `tenant_id`-Policy ist nicht „pragmatisch ungünstig", sondern **kategorisch falsch**: die Tabelle **definiert** die Mandanten-Zugehörigkeit; sie kann nicht **durch** diese Zugehörigkeit gefiltert werden. Der Membership-Lookup **erzeugt** den Tenant-Kontext, **kann ihn nicht voraussetzen**. Eine USER-basierte Policy verschiebt das Problem nur — beim NextAuth-`createUser`-Pfad existiert noch nicht einmal die User-ID, die zum Filtern dienen sollte. Die kategorische Begründung verhindert, dass spätere Spec-Erweiterungen dieselbe Falle stellen („wir machen jetzt doch RLS, App-Code ist sauber genug"). Brücken-Tabellen brauchen Schreib-Pfad-Schutz, keinen Lese-Pfad-Filter.
+
+**Der GRANT-Schutz ist der eigentliche Hebel** — er adressiert das echte Risiko: ein kompromittierter Tenant-Kontext (Angreifer hat Tenant-A-Session) darf keine fremde Mitgliedschaft anlegen können (kein INSERT auf `tenant_memberships` für Tenant B). Das ist Schreibseite. Lese-Disziplin (`WHERE user_id = $1` im App-Code) ist Komplement, nicht der Hebel — diese Disziplin ist ohnehin Spec-übergreifender Bestandteil der Tenant-Isolation und nicht spezifisch für tenant_memberships.
+
+**Verworfene Alternative 1 — USER-basierte Policy (`USING (user_id = current_setting('app.current_user'))`).** Verworfen, weil sie das Problem nur verschiebt: beim `createUser`/`getUser`-Pfad gibt es keinen User-Kontext (User existiert noch nicht oder wird gerade erst erstellt). Außerdem App-Eingriffe in 5+ Stellen plus NextAuth-Adapter-Wrapper. Nutzen gering, weil der echte Schutz Schreibseite ist.
+
+**Verworfene Alternative 2 — Hybrid (kein RLS, aber CHECK-Constraint beim INSERT für tenant_id-Konsistenz).** Verworfen als Doppelung: die GRANT-Engerung erreicht dasselbe — wer kein INSERT-Recht hat, kann auch keinen konsistenten/inkonsistenten Eintrag schreiben.
+
+**Verworfene Alternative 3 — Wörtlich Spec-Ziel 1 umsetzen.** Verworfen, weil Login bricht (Faktencheck-belegt). Wäre Spec ohne Live-Check.
+
+**Kontextbindung:** (a) Wenn später eine neue Tabelle mit Brücken-Funktion (Multi-Tenant-Mapping) angelegt wird, gilt dieselbe Mechanik: GRANT-Schutz, kein RLS. (b) Wenn der Code-Audit bei einer späteren Spur (z.B. Skalierungs-Schulden-Aufräumung) zeigt, dass `WHERE user_id`-Filter doch nicht überall greift, ist das ein Bug-Fix-Auftrag in der App, nicht ein Anlass, hier nachträglich RLS einzubauen. (c) Die Spec-Zielklausel „jede Tabelle mit Mandantenbezug" wird in PRIS-017 explizit eingeschränkt: Brücken-Tabellen sind ausgenommen.
+---
+
+## E37 — A3-Migrations-Lücke: `onboarded_at` wurde nicht in `agent_data.auth.users` mitmigriert (PRIS-016b, 2026-05-26)
+
+**Auslöser:** Beim Daten-Diff in PRIS-016b Bündel 0.1 fiel auf, dass `customer_postgres.pwa_app.users` für beide Live-User produktive `onboarded_at`-Zeitstempel hielt (2026-05-12 14:23:26 / 18:40:59), während `customer_postgres.agent_data.auth.users` für dieselben User `onboarded_at = NULL` zeigte. Die App-Code-Suche bestätigte: `onboarded_at` wird aktiv genutzt (NextAuth-Adapter setzt `token.onboarded`, pwa-api `/me`-Endpoint, orchestrator.py Folge-Posts-Logik via `WHERE u.onboarded_at IS NOT NULL`).
+
+**Befund:** Die A3-Konsolidierung (14.05.2026) hat das Schema von `pwa_app` nach `agent_data.auth.*` migriert, aber den `onboarded_at`-Inhalt nicht mit übertragen. Das ist 12 Tage lang unbemerkt geblieben, weil pwa-web im Profile-Lock offline ist (keine echten Login-Flows zur Tageszeit). Hätte sich erst bei pwa-web-Reaktivierung (HAERTUNGS Phase 6) bemerkbar gemacht — User wären als "noch nicht onboarded" behandelt worden, Folge-Posts-Logik wäre falsch gefeuert. Wurde durch Aufräum-Diff abgefangen, nicht durch Audit.
+
+**Was getan wurde:** PRIS-016b Bündel 0.1.b (`kritisch` eingestuft, weil Kundendaten-Änderung auf Live-DB) hat die zwei `onboarded_at`-Werte mit hartkodierten Statements vor dem Drop nach `agent_data.auth.users` migriert. Idempotenz-Guard `AND onboarded_at IS NULL` schützt vor Doppel-Schreibung. Restic-Snapshot `90b093da` davor angelegt.
+
+**Warum Logbuch-würdig:** Nicht für die Migration selbst (die ist trivial), sondern für das **Muster**: Schema-Konsolidierungen ohne strikten Spalten-für-Spalten-Daten-Abgleich hinterlassen unsichtbare Lücken. Die Lücke wurde 12 Tage später erst beim Aufräumen entdeckt, nicht beim Migrations-Test selbst.
+
+**Kontextbindung:** (a) Wenn künftig eine Schema-Konsolidierung ähnlicher Größenordnung kommt (z.B. Skalierungs-Schulden-Aufräumung mit Tabellen-Zusammenführungen), muss ein Spalten-Diff-Test Pflicht-Tor sein, nicht „danach beim Aufräumen merken wir's schon". (b) Verdacht: weitere A3-Migrations-Lücken könnten in anderen `auth.*`/`public.*`-Tabellen schlummern (NULL-Spalten, wo Werte hätten landen sollen). Vor pwa-web-Reaktivierung (HAERTUNGS Phase 6) ein gezielter Sanity-Check auf "verdächtig viele NULLs in Spalten, die vom App-Code aktiv gelesen werden" sinnvoll — kandidat für eigenen Seed wenn Phase-6-Wiederanlauf naht.
 
 ---
 

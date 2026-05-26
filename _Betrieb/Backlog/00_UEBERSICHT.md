@@ -34,10 +34,10 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-apply-autonomie-pipeline.md` | Apply-Autonomie-Politik: Custom-Build-Patch + Renovate-Merge-Rebuild nutzen die PLAT-002-Wand | prozess | bald | kritisch | spur | offen | PLAT-002_SPEC |
 | `seeds/seed-dsgvo-dpa-cloudflare.md` | DSGVO-Auftragsverarbeitungsvertrag mit Cloudflare unterzeichnen | prozess | bald | sicher | schritt | offen | - |
 | `seeds/seed-notausgang-doku.md` | Notausgang-Doku: schriftliche Rescue-System- und Telefon-Tailscale-Prozedur | prozess | bald | sicher | schritt | offen | - |
+| `seeds/seed-n8n-execution-data-pruning.md` | n8n: EXECUTIONS_DATA_PRUNE aktivieren (3.8 GB DB durch ungebremstes execution_data) | wartung | bald | sicher | schritt | offen | - |
 | `seeds/seed-cve-watchdog-regel-b.md` | Cloudflare WAF: CVE-2025-55182 Watchdog-Regel B mit gehärteter Expression | security | irgendwann | sicher | schritt | offen | - |
 | `seeds/seed-waf-owasp-block-modus.md` | Cloudflare WAF OWASP Core Ruleset von 'log' auf 'block' umstellen (nach Live-Tuning) | security | irgendwann | sicher | schritt | offen | - |
 | `seeds/seed-foundation-repo.md` | Foundation-Stack als zweites Git-Repo (Versionierung der Traefik/Foundation-Configs) | prozess | irgendwann | sicher | schritt | offen | - |
-| `seeds/seed-cloudflare-token-notifications-edit.md` | Cloudflare-API-Token: Notifications-Edit-Permission ergänzen (Token-Hygiene) | prozess | irgendwann | sicher | schritt | offen | - |
 | `seeds/seed-gitea-container-registry.md` | Gitea-Container-Registry-Pfad für Custom-Builds (End-to-End-Pull-Pfad) | prozess | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-pending-kernel-debconf-noise.md` | Pending-Kernel-Whiptail-Dialog bei -updates-Apply beobachten/unterdrücken | wartung | irgendwann | sicher | schritt | offen | - |
 | `seeds/seed-diun-rueckbau.md` | Diun zurückbauen, sobald nightly Stabilität bewiesen hat | wartung | irgendwann | sicher | sprung | offen | - |
@@ -64,6 +64,7 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-sma-rag-pgvector-hybrid.md` | RAG-Endzustand: pgvector-Hybrid (Variante C) — wenn Voice-Material zu groß für direkten Prompt | qualitaet | irgendwann | sicher | spur | offen | - |
 | `seeds/seed-sma-prestashop-meta-audiences.md` | Webshop-Anbindung Prestashop → Meta Custom Audiences (Lookalike + Cold-Audience) | feature | irgendwann | kritisch | spur | offen | seed-sma-meta-api-integration |
 | `seeds/seed-sma-webauthn-passkeys.md` | WebAuthn / Passkeys als einheitlicher Login (Hybrid-Flow ablösen) | feature | irgendwann | sicher | spur | offen | - |
+| `seeds/seed-pwa-api-db-pfad-konsolidierung.md` | pwa-api: zwei parallele DB-Pfade konsolidieren (asyncpg + psycopg2 → einer) | wartung | irgendwann | sicher | spur | offen | - |
 
 ## Geltungsbereich: intern
 
