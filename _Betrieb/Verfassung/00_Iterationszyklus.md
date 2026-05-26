@@ -162,6 +162,8 @@ Von Claude Code vorgeschlagen, vom Menschen freigegeben:
 
 Beim **Sprung** ist Phase 9 schlanker: Abschluss-Notiz ins Archiv, Logbuch-Eintrag nur, wenn eine bewusste Entscheidung mit Warum gefallen ist. Beim **Schritt** entfällt Phase 9 ganz — die Schritt-Log-Zeile + Commit sind der Abschluss.
 
+**Kontext-Hygiene (Phase-9-Ende):** Ist der Zyklus sauber geschlossen (alle Pflicht-Tore erfüllt, kein offener Stopp), schlägt Claude Code dem Architekten `/clear` vor und legt es in der CLI-Eingabe vor — Ausführung bleibt beim Menschen, nie automatisch. Begründung im Vorschlag: dauerhaftes Wissen ist persistent im Repo (Systemzustand/Logbuch/Schritt-Log), die Session-Historie ist toter Kontext für den nächsten Zyklus. Bei offenem Zustand (Stopp/Fall C/unbeantwortete Frage) wird `/clear` NICHT vorgeschlagen.
+
 ## Pflicht-Tore (Strenge mit Notausgang)
 
 - Ein Zyklus gilt nicht als abgeschlossen, bevor sein definierter Ausgang existiert (z. B. Logbuch-Eintrag bei einer Entscheidung). Claude Code WEIGERT sich, einen neuen Zyklus zu starten, wenn der alte nicht sauber geschlossen ist, und erinnert daran. *(Gilt für Spur + Sprung. Schritt hat keinen offenen Zustand.)*
