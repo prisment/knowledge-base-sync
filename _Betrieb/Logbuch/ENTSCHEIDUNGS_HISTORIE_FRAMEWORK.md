@@ -552,6 +552,22 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E35 — Kein Cloudflare-Access-SSH als dritter Backup-Pfad (ROADMAP_cf_migration Block 7.2, 2026-05-26)
+
+**Auslöser:** Nach Abschluss des SSH-Lockdowns auf Tailscale-IP (Block 7.1) stand die offene Bewertung aus der Roadmap an: lohnt sich ein dritter, von Tailscale und Hetzner-Rescue unabhängiger SSH-Pfad über Cloudflare Access (cloudflared-Brücke mit kurzlebigen Zertifikaten + MFA)? Roadmap-Empfehlung war „nein", Entscheidung formal noch offen.
+
+**Entscheidung:** Nein, kein Cloudflare-Access-SSH. Die zwei bestehenden Pfade — Tailscale-SSH (täglich genutzt) + Hetzner Rescue (Notfall, out-of-band/BIOS-Level) — bleiben als alleinige SSH-Plane. Blockstatus „Block 7.2" in der Roadmap auf abgeschlossen, Phase-7-Backlog der Roadmap bleibt davon unberührt.
+
+**Warum:** (a) **Pfad-Diversität wird verwässert, nicht gestärkt** — CF-SSH liefe über dieselbe Cloudflare-Infrastruktur wie alle Tool-Logins (Block 3.3, Block 4 OIDC). Cloudflare-Account-Block oder globaler CF-Outage nähme CF-SSH und CF-Access-Tools simultan offline — das ist kein zweiter unabhängiger Pfad, sondern ein gebündelter Single-Point-of-Failure. (b) **Hetzner Rescue ist überlegen** — BIOS/IPMI-Level, funktioniert auch wenn das Hauptsystem unten ist, Network-Stack hängt, eigener Konfig-Fehler den Boot blockiert. CF-SSH funktioniert nicht ohne gebootetes Hauptsystem. (c) **Komplexität ohne Mehrwert** — cloudflared-SSH-Setup mit CA-Keys und ssh-config-ProxyCommand fügt eine weitere Komponente (mit eigener Fehleroberfläche) hinzu, deren Nutzen sich nur dann realisiert, wenn Tailscale UND Rescue gleichzeitig ausfallen — ein Szenario, in dem auch CF mit ziemlicher Sicherheit nicht erreichbar wäre.
+
+**Verworfene Alternative 1 — CF-Access-SSH einrichten, weil es bereits am Stack ist.** Verworfen, weil „weil es da ist" kein Sicherheits-Argument ist. Jede zusätzliche Authentifizierungsfläche ist eine zusätzliche Angriffsfläche; Mehrwert muss positiv begründet sein, nicht über Bequemlichkeit.
+
+**Verworfene Alternative 2 — CF-Access-SSH später aktivieren, wenn ein Co-Admin dazukommt (MFA-Audit-Logs).** Aktuell verworfen, bleibt aber als Wiederaufgreif-Trigger im Backlog (Co-Admin-Onboarding). Heißt: heute „nein", aber nicht „nie".
+
+**Kontextbindung:** (a) Re-Evaluation bei Co-Admin-Onboarding oder bei externer Audit-Anforderung, die MFA-protokollierte SSH-Logins verlangt. (b) Falls Tailscale dauerhaft instabil wird (länger als ein Quartal), Rescue als alleiniger Backup neu bewerten und ggf. WireGuard-Self-Host (Headscale) oder CF-Access-SSH als Ersatz prüfen. (c) Entscheidung ist umkehrbar per neuem Eintrag.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.
