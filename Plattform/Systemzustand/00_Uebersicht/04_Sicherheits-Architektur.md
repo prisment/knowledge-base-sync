@@ -67,6 +67,11 @@ Detail: [`HAERTUNGS_SPEC_PRISMENT.md`](../Sicherheit/HAERTUNGS_SPEC_PRISMENT.md)
 - [`diun-setup.md`](../Sicherheit/diun-setup.md) — Image-Update-Notifier (mit Custom-Build-Lücke)
 - [`docker-update-log.md`](../Sicherheit/docker-update-log.md) — Container-Update-Verlauf
 - Morgen-Reports in `Plattform/Arbeitsgedaechtnis/nacht-report-YYYY-MM-DD.md`
+- **Liveness-Watchdog (PLAT-020):** eigener Cron 06:30 prüft Heartbeat
+  des Nightly-Laufs; bei Stille → `NIGHTLY-AUSFALL-<datum>.md` ins
+  Arbeitsgedächtnis (mail-unabhängige Sichtbarkeits-Garantie). Pre-
+  commit-Hook erzwingt `nacht-aufgaben.md ↔ .sha256`-Konsistenz —
+  Vergess-Aussetzen wie am 25./26.05. nicht mehr möglich.
 
 ## Backup & Disaster Recovery
 
