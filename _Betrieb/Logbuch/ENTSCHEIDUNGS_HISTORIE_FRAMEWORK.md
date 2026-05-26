@@ -662,6 +662,55 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E41 — Phase 7.9 (Tailscale-Layer-4-Härtung) gestrichen als gegenstandslos (HAERTUNGS-Spec, 2026-05-26)
+
+**Auslöser:** Phase 7.9 der HAERTUNGS_SPEC_PRISMENT stammt aus der Zeit der Layer-7-Tailscale-Whitelist (Phase 2 der ursprünglichen Spec, mit `tailscale-only@file`-Middleware auf Traefik-Ebene). Sie war damals als „später härtbar"-Folge-Frage gedacht: ein zweiter Traefik, der nur auf Tailscale-IP bindet (Layer-4-Versteck), statt der bestehenden Layer-7-Whitelist. Mit dem CF-Migrations-Pivot (PLAT-CF-MIGRATION) wurde Block 6 die Tailscale-Web-Whitelist explizit abgebaut — die Layer-7-Schicht, die Phase 7.9 ersetzen sollte, existiert nicht mehr. Plus: SSH-Lockdown (Phase 3 / ROADMAP_cf_migration Block 7.1) bindet `ssh.socket` bereits Layer-4 auf `100.100.69.78:22` exklusiv. Die Frage, was Phase 7.9 noch eigentlich härtet, hat keine Antwort mehr.
+
+**Entscheidung:** Phase 7.9 gestrichen, kein Folge-Seed. Streichung im HAERTUNGS_SPEC dokumentiert (Spec-Tabelle in Phase 7 zeigt 7.9 als „obsolet, siehe Logbuch E41" statt „offen").
+
+**Warum gegenstandslos:** Die Architektur-Schichtenmodell-Lage heute:
+- **Tools** (Gitea, n8n, Twenty, Open WebUI, agent-content, konzept, admin): nicht mehr direkt ans Public-Internet, sondern hinter Cloudflare-Tunnel + CF Access. Kein Layer-7-Whitelist-Bedarf mehr, weil keine Layer-7-exponierte Tool-Route mehr existiert.
+- **SSH**: Layer-4-Bind auf Tailscale-IP scharf (`ssh.socket` Drop-In `/etc/systemd/system/ssh.socket.d/listen.conf`, ListenStream=100.100.69.78:22). Public-IP-SSH refused. Das ist das, was 7.9 für Tools geplant hatte — bereits aktiv für SSH.
+- **Public-Hostnamen** (prisment.de, app, assets, analytics, www): bewusst public hinter CF-Proxy/WAF. Layer-4-Verstecken wäre kontraintuitiv.
+
+**Verworfene Alternative — als Seed im Backlog parken.** Verworfen: ein „Layer-4-Bind"-Seed ohne adressierten Layer-7-Pfad ist ein totes Item; würde nach Monaten als zombie-Punkt auftauchen ohne klaren Trigger. Sauberer Schnitt: streichen, in Phase 7 als „obsolet" markiert, im Logbuch nachvollziehbar warum.
+
+**Kontextbindung:** Sollte das System wieder einen Layer-7-Tool-Pfad eröffnen (Cloudflare als zu unzuverlässig erweisen, Rückkehr zu direkt-Public-Tool-Routing), ist Layer-4-Bind eine sinnvolle Wieder-Aufnahme-Frage. Trigger dann: ROADMAP_cf_migration-Rückbau-Diskussion, nicht selbstständige Re-Aktivierung von 7.9.
+
+---
+
+## E42 — Pattern-Klon-Refactor muss den vollständigen Importer-Graph erfassen, nicht nur die Definitionsdatei (PRIS-017, 2026-05-26)
+
+**Auslöser:** PRIS-017 Bündel 6+7 (content + interview-Agent auf zweistufige Pool-Architektur). Mein Patcher hat `_conn` in `db_sync.py` selbst zerlegt (in `_admin_conn` + `_tenant_conn`), aber `_conn`-Importer in **Subdateien** des Agents (z.B. `material_specs.py`, `nodes.py`, `archetyp_classifier.py`, ...) übersehen. content lief healthy, weil die `_conn`-Importer dort alle lazy (in Funktion-Bodies) waren — ImportError-Bombe ungezündet. interview brach im Container-Start, weil dort `from app.db_sync import _conn` als Modul-Top-Import stand. Bei vier kopierten Agents wäre der Bruch ohne Verifikation pro Agent fünffach geklont worden, bevor er sichtbar geworden wäre.
+
+**Entscheidung:** Zwei Lehren als gemeinsamer Eintrag, weil sie miteinander wirken:
+
+(1) **Pattern-Klon-Refactor-Pflicht:** Bei einem Refactor, der über mehrere kopierte Dateien geklont wird, muss der Audit den **vollständigen Importer-Graph** der refaktorierten Symbole erfassen — nicht nur die Definitionsdatei. Konkret: `grep -rn "from <module> import <symbol>"` in allen Aufrufer-Modulen, vor dem ersten Build des ersten Klons. Sonst wandert ein Bruch lazy durch fünf kopierte Files, bevor er beim ersten Container-Restart-with-Module-Top-Import sichtbar wird.
+
+(2) **Verifikation pro Bündel stützt die Verfassungs-Linie „kritische Bündel nicht in Autopilot stufen":** Der Grund, warum der Bruch nach dem ersten Agent (interview) gefangen wurde statt nach dem dritten oder vierten, war die fünfschrittige Verifikation pro Agent (TEST1-TEST5) — kein Schluss-Bericht-Autopilot. Pattern-Bestätigung ist nicht das Recht, auf Verifikation zu verzichten, sondern ist das Werkzeug, das die Verifikation pro Klon kompakt macht.
+
+**Warum kein Widerspruch zu E37 (Stopp-Mechanik):** E37 abolierte Stopps-aus-Bündel-Bürokratie zugunsten ereignis-getriggerter Stopps. Verifikation pro Bündel ist nicht „Stopp", sondern „Beweis vor Folge-Klon" — gehört in die Vorsichts-Maßnahmen-Pflicht des `kritisch`-Flags, nicht in eine Bürokratie-Wand. Pattern-Bestätigung-nach-erstem-Klon plus mechanischer Audit-Map vor zweitem Klon ist die saubere Anwendung.
+
+**Verworfene Alternative — vollständige Audit-Map bei Spec-Schreibung erstellen.** Verworfen: Pattern-Klone basieren auf der Annahme „Strukturen sind identisch" — wenn die Spec-Schreibung schon die Audit-Map erfordert, ist der Pattern-Klon-Vorteil weg. Die richtige Stelle ist die **Phase-5-Machbarkeit**: dort Audit-Map als Pflicht-Teil aufnehmen, nicht in der Spec selbst. Konkret: bei Pattern-Klon-Specs muss die Machbarkeit eine Importer-Graph-Tabelle enthalten (pro betroffenes Symbol: alle Files die importieren, mit „Modul-Top vs lazy").
+
+**Kontextbindung:** (a) Ergänzungs-Vorschlag für Verfassung 01 (Spec-Format) bzw. das Phase-5-Machbarkeits-Template: Klausel „Pattern-Klone brauchen Importer-Graph-Audit in der Machbarkeit". (b) Konkrete Anwendung beim nächsten Pattern-Klon-Refactor (z.B. wenn `seed-pwa-api-db-pfad-konsolidierung` läuft) — Audit-Map als Pflicht-Output der Machbarkeit. (c) Die fünfschrittige Test-Schablone aus PRIS-017 (leerer-Kontext-ValueError / Negativ / Positiv / Admin-Cross / Tx-Trap) ist wiederverwendbar für jeden RLS-Switch — verdient eine Doku-Vorlage, wenn ähnliche Switches noch kommen.
+
+---
+
+## E43 — A3-Migrations-Vollständigkeits-Lücke nicht endgültig geschlossen (PRIS-017 Glied 0 Rückblick, 2026-05-26)
+
+**Auslöser:** Architekten-Rückfrage nach Zyklus-Abschluss zum A3-Migrations-Check in PRIS-016b Bündel 0.1 (siehe E40 — `onboarded_at` als gerettete Spalte). Konkret: hat der Daten-Diff in Bündel 0.1 das `pwa_app.users`-Schema **vollständig** (alle Spalten) gegen `agent_data.auth.users` abgeglichen, oder nur `onboarded_at`?
+
+**Befund (ehrlich nachgelesen):** Nur die vier Spalten `id, email, name, onboarded_at` wurden verglichen, plus `tenant_memberships` mit `user_id, tenant_id, accepted_at, invited_at`. **Kein vollständiger Spalten-Diff** (`\d`-vs-`\d`) zwischen `customer_postgres.pwa_app.users` und `customer_postgres.agent_data.auth.users`. Heißt: weitere übersehene Spalten in der zu droppenden `pwa_app.users` (etwa Flags, Zeitstempel, neue Spalten die in A3 vergessen wurden) konnten möglicherweise existieren und sind mit dem DROP nicht mehr aus der laufenden DB prüfbar. Restic-Snapshot `90b093da` (12:50 Uhr, vor Bündel 0.1.b) enthält den `pg_dump db_customer_pwa_app.dump` — daraus kann das Schema nachträglich rekonstruiert werden, aber das ist nicht-trivialer Aufwand.
+
+**Entscheidung:** Bekannte Rest-Unsicherheit, kein nachträglicher Fix. Begründung: (a) das einzige festgestellte Anwendungs-Risiko (onboarded_at-Branching-Logik in NextAuth-Adapter / `/me`-Endpoint / orchestrator.py Folge-Posts-Logik) ist abgehandelt. (b) Wenn weitere übersehene Spalten kritisch wären, wäre das in der 12-Tage-A3-Phase zwischen Migration und Aufräum-Diff aufgefallen (pwa-web ist offline → kein NextAuth-Flow, aber Agents UND pwa-api lesen auch aus `auth.users` — ein wirklich-genutztes Feld wäre durch leere Werte bemerkt worden). (c) Restic-Snapshot ist die Hintertür, falls bei pwa-web-Reaktivierung etwas auf eine fehlende Spalte hindeutet.
+
+**Warum jetzt im Logbuch, nicht im E40-Eintrag mit-ergänzt:** Verfassungs-Klausel „Einträge werden nie geändert". E40 dokumentiert die Migration des `onboarded_at`-Wertes; diese Notiz ergänzt die methodische Rest-Unsicherheit als eigener Eintrag — ehrliche Trennung „was wir gemacht haben" vs „was wir wissentlich nicht geprüft haben".
+
+**Kontextbindung:** (a) Vor pwa-web-Reaktivierung (HAERTUNGS Phase 6) ein gezielter Sanity-Check: pro Spalte in `auth.users` (und ggf. weiteren auth.*-Tabellen) prüfen, ob NULL-Werte für die zwei Live-User auffällig viele sind. Falls ja: ins pg_dump aus Snapshot 90b093da schauen, ob die Originaldaten da waren. (b) Methodisch lehrt der Fall: bei DB-Konsolidierungen ist ein automatisierter `\d`-vs-`\d`-Schema-Diff vor dem Aufräumen Pflicht. Verbindung zu E40-Kontextbindung (a) — denselben Befund aus methodischer Sicht.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.

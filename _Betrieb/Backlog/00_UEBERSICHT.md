@@ -64,6 +64,7 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-sma-prestashop-meta-audiences.md` | Webshop-Anbindung Prestashop → Meta Custom Audiences (Lookalike + Cold-Audience) | feature | irgendwann | kritisch | spur | offen | seed-sma-meta-api-integration |
 | `seeds/seed-sma-webauthn-passkeys.md` | WebAuthn / Passkeys als einheitlicher Login (Hybrid-Flow ablösen) | feature | irgendwann | sicher | spur | offen | - |
 | `seeds/seed-pwa-api-db-pfad-konsolidierung.md` | pwa-api: zwei parallele DB-Pfade konsolidieren (asyncpg + psycopg2 → einer) | wartung | irgendwann | sicher | spur | offen | - |
+| `seeds/seed-test-mandant-cleanup-voicedb.md` | test-mandant Aufräumung in voicedb_entries (4 Testdaten-Zeilen) | wartung | irgendwann | sicher | schritt | offen | - |
 
 ## Geltungsbereich: intern
 
