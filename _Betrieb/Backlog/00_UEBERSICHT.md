@@ -27,6 +27,7 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-pg-hba-haerten.md` | pg_hba.conf härten: trust 127.0.0.1/32 raus + host-Regeln subnetz-spezifisch | security | jetzt | sicherheitskritisch-akut | sprung | offen | - |
 | `seeds/seed-brand-protection-saved-queries.md` | Cloudflare Brand Protection — Saved Queries + Logos einrichten | security | bald | sicher | sprung | offen | - |
 | `seeds/seed-pretooluse-hook-allowlist.md` | PreToolUse-Hook als echte Bash-Tool-Allowlist (E13 strukturell realisieren) | security | bald | kritisch | spur | offen | - |
+| `seeds/seed-aktualitaets-vollabdeckung.md` | Aktualitäts-Vollabdeckung: jede Komponente aktuell + jederzeit beweisbar (Sammel-Seed) | security | bald | kritisch | spur | offen | - |
 | `seeds/seed-dependency-monitoring-renovate.md` | Dependency-Monitoring (Dependabot/Renovate) für alle Gitea-Repos | security | bald | kritisch | sprung | offen | - |
 | `seeds/seed-firewall-drop-port22-public.md` | Firewall-Drop Port 22 auf Public-Interface (defense-in-depth über SSH-Socket-Bind) | security | bald | sicher | sprung | offen | - |
 | `seeds/seed-image-pinning-latest-services.md` | Image-Pinning: Gitea, Twenty, Open WebUI und übrige :latest/:main → exakte Versionen | security | bald | sicher | schritt | offen | - |
