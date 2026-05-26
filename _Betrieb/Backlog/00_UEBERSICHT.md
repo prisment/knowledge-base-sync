@@ -33,7 +33,6 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-test-umgebung-neu-secrets.md` | Test-Familie neu aufbauen: eigene Secrets, intern-only, eigene Test-DB | security | bald | sicher | spur | offen | - |
 | `seeds/seed-dsgvo-dpa-cloudflare.md` | DSGVO-Auftragsverarbeitungsvertrag mit Cloudflare unterzeichnen | prozess | bald | sicher | schritt | offen | - |
 | `seeds/seed-notausgang-doku.md` | Notausgang-Doku: schriftliche Rescue-System- und Telefon-Tailscale-Prozedur | prozess | bald | sicher | schritt | offen | - |
-| `seeds/seed-secret-inventar-pg-rollen.md` | Secret-Inventar codifizieren: pg_authid-Rollen-Audit pro Postgres-Cluster | prozess | bald | sicher | schritt | offen | - |
 | `seeds/seed-cve-watchdog-regel-b.md` | Cloudflare WAF: CVE-2025-55182 Watchdog-Regel B mit gehärteter Expression | security | irgendwann | sicher | schritt | offen | - |
 | `seeds/seed-waf-owasp-block-modus.md` | Cloudflare WAF OWASP Core Ruleset von 'log' auf 'block' umstellen (nach Live-Tuning) | security | irgendwann | sicher | schritt | offen | - |
 | `seeds/seed-foundation-repo.md` | Foundation-Stack als zweites Git-Repo (Versionierung der Traefik/Foundation-Configs) | prozess | irgendwann | sicher | schritt | offen | - |

@@ -127,6 +127,7 @@ Plus Querschnitts-Dokus:
 | [`RESTORE.md`](../Sicherheit/RESTORE.md) | Disaster-Recovery-Runbook |
 | [`os-updates-runbook.md`](../Sicherheit/os-updates-runbook.md) + [`os-update-log.md`](../Sicherheit/os-update-log.md) | unattended-upgrades |
 | [`docker-update-log.md`](../Sicherheit/docker-update-log.md) | Container-Update-Verlauf |
+| [`pg_rollen_inventar.md`](../Sicherheit/pg_rollen_inventar.md) | Login-Rollen pro PG-Cluster (internal + customer) |
 
 ## Was sich gegenüber pre-CF-MIG geändert hat (Stand: Mai 2026)
 
