@@ -72,6 +72,13 @@ Detail: [`HAERTUNGS_SPEC_PRISMENT.md`](../Sicherheit/HAERTUNGS_SPEC_PRISMENT.md)
   Arbeitsgedächtnis (mail-unabhängige Sichtbarkeits-Garantie). Pre-
   commit-Hook erzwingt `nacht-aufgaben.md ↔ .sha256`-Konsistenz —
   Vergess-Aussetzen wie am 25./26.05. nicht mehr möglich.
+- **Aktualitäts-Vollabdeckung (PLAT-021):** Renovate-CLI (Cron 07:30,
+  Bot-Account `renovate-bot`, SSH über Tailnet) öffnet PRs für npm/pip-
+  CVE-/Patch-Updates. Drei nightly-Aufgaben außerhalb des LLM-Laufs
+  (Base-Image-Drift 04:15, n8n-Upstream 04:20, Renovate-PR-Stand 04:30)
+  appenden Sektionen 7/8/6 an den Morgen-Report. Aggregat-Sicht in
+  [`AKTUALITAET.md`](AKTUALITAET.md) (Cron 04:35, Substanz-Diff-Commit).
+  Renovate-Watchdog 08:30. Detail: [`renovate.md`](../Sicherheit/renovate.md).
 
 ## Backup & Disaster Recovery
 
