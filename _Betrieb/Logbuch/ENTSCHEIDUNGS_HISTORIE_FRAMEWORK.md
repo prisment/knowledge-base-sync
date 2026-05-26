@@ -735,6 +735,23 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E45 — Härtungs-Vorgang als Incident-Response formal geschlossen (PRIS-018, 2026-05-26)
+
+**Auslöser:** Phase 6 der HAERTUNGS_SPEC_PRISMENT (PWA-Wiederanlauf) ist das letzte unerledigte Tor zwischen CVE-2025-55182-Incident und „technisch empfangsbereit für Kunde #2". Mit PRIS-018 wurde es durchgefahren: `app.prisment.de` proxied=true, Managed-Rulesets greifen, `pwa_web` läuft mit `next 15.5.18` / `react 19.0.6`, Login E2E grün, NextAuth verbindet mit der schmalen `nextauth_user`-Rolle (NOSUPERUSER, NOBYPASSRLS).
+
+**Entscheidung:** Der CVE-2025-55182-Incident-Vorgang wird formal als geschlossen markiert. Die Phasen 0–6 der Härtungs-Spec sind alle abgehakt. Phase 7 (Logging-Forensik, Renovate, Image-Pinning, Test-Cluster-Neuaufbau, Notausgang-Doku) wandert von „Incident-Nacharbeit" in „normales Backlog" — die Seeds existieren schon und werden nach gewöhnlicher Zugkraft priorisiert, nicht mehr unter Incident-Druck.
+
+**Warum jetzt:** (a) Eintrittskarte für Kunde #2 ist physisch gestellt — PWA online, Tenant-isoliert, gepatcht, hinter CF. (b) Phase 7 sind echte Verbesserungen, aber kein Incident-Stopper mehr — die Trennung „Incident-Notwendig vs. nice-to-have" zu verlieren, würde den Druck verschleppen und gleichzeitig nichts mehr bewegen. (c) Das schließt formal das Kapitel ab, das im November 2025 mit dem Scanner-Hit begann und 5,5 Monate Schatten-Existenz hatte.
+
+**Restschulden, ehrlich notiert** (nicht Incident-blockierend, aber registriert):
+- `pwa_user.rolsuper = true` (PRIS-017 Bündel 12 hat nur BYPASSRLS entzogen; SUPERUSER impliziert es) → Seed `seed-pwa-user-superuser-entzug` (plattform, qualitaet, bald, kritisch, schritt).
+- A3-Migrations-Vollständigkeits-Rest aus E43 — Sanity-Check vor produktivem Schreibverkehr, falls neuer Daten-Druck entsteht.
+- `pwa_api` wurde beim `compose up --build pwa-web` mit-recreated (Compose-Topologie-Lese-Trigger). Lief sauber neu hoch, healthy. Nicht eingeplant, aber nicht schädlich — `pwa-api` ist stateless gegen Postgres, und Tenant-Pools werden lazy aufgebaut.
+
+**Kontextbindung:** (a) Wenn in den nächsten 14 Tagen kein Incident-Folgesymptom auftaucht (kein 500er-Cluster, keine WAF-False-Positive, kein DB-Login-Fehler), ist das die Schließung empirisch bestätigt. (b) Sobald Kunde #2 onboarded ist, lebt die Härtungs-Spec als historisches Dokument im Systemzustand weiter — sie wird nicht mehr aktiv gepflegt, sondern nur referenziert.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.
