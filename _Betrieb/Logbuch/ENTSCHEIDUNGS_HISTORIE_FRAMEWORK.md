@@ -799,6 +799,39 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E48 — Code-Security-Fundament für Produkt-Code etabliert (PLAT-031, 2026-05-27)
+
+**Auslöser:** Faktensammlung (`FAKTEN-integrity-security.md`) zeigte 6 offene npm-CVEs in pwa-web (1× high `nodemailer`), kein CI für Produkt-Code, kein Update-Pfad für Produkt-Deps (strukturelle Vorfall-Ursache des Next.js-Hacks nicht geschlossen), RLS in `customer_postgres` nur in Code-Pattern vorbereitet, DB aber leer.
+
+**Entscheidung:** Spec PLAT-031 als Spur über 6 Bündel ausgeführt — alle Akzeptanzkriterien grün ohne Architekt-Eingriff. Mehrere operative Gabelungen unterwegs:
+
+(1) **`npm audit fix` verboten, gezielte Einzel-Anhebung gewählt.** Würde `next` von 15.5.18 auf 9.3.3 zurückstufen (Major-Downgrade, zerstört die PWA). Stattdessen: `next-auth` beta.31, `@auth/pg-adapter` 1.11.2, `nodemailer` via `overrides`-Feld auf 8.0.9 (peer-Konflikt mit next-auth via `--legacy-peer-deps` akzeptiert — next-auth nutzt nodemailer nur bei Email-Provider, hier ungenutzt). `postcss` via overrides auf 8.5.15 (next pinnt transitiv 8.4.49 mit XSS-CVE). Verworfen: Major-Bump `next` auf 16 oder Wechsel zu Auth.js OAuth-only — beides hätte App-Code berührt, Scope-Sprengung.
+
+(2) **fastapi-Pfad: 0.115.0 → 0.115.14, NICHT 0.136.** Fastapi 0.115.x bringt starlette 0.46.2 — schließt CVE-2024-47874 (high). Drei verbleibende starlette-CVEs (PYSEC-2026-161, CVE-2025-54121, CVE-2025-62727) brauchen starlette ≥0.49.1/1.0.1, was fastapi 0.116+/0.136+ erzwingt (Cross-Minor-Sprung, größere API-Drift-Fläche). Entscheidung: per `--ignore-vuln` in CI-Workflow namentlich dokumentiert, eigene Folge-Arbeit. Verworfen: 0.136-Sprung im selben Bündel — kein Zeit-/Test-Budget für Cross-Minor-Verifikation aller 6 Services.
+
+(3) **Update-Pfad: nightly-Schedule auf bestehendem CI-Workflow statt Renovate-self-hosted.** Renovate ist auf PR-Workflow optimiert — prisment fährt explizit no-PR/direct-to-main. Renovate-Issue-Modus liefert weniger als der ohnehin gebaute CI: ein `on: schedule '0 4 * * *'` re-auditiert den gemergten Code-Stand gegen frische CVE-DBs (osv + npm). Plus Gitea-Mailer (SMTP-Pwd aus secrets gemountet) für Fail-Notification an info@prisment.de. Vorteil: keine zweite Container-Pflege-Last, gleiche Detektions-Tiefe. Verworfen: Renovate-self-hosted (mehr Pflege, kein PR-Workflow-Nutzen), reine Diun-Erweiterung (Diun monitort Container-Images, nicht Lockfiles).
+
+(4) **Ruff-Starter-Set: nur Pyflakes (`F`), Style-Regeln (`E`/`W`) bewusst aus.** Erst-Lauf fand 159 Verstöße (75 auto-fixbar, davon 73× F401 unused imports). Pragmatik: F-Regeln (Bugs) hart enforced, Style iterativ wachsen in `03_Code-Standards.md`. **4× F821 echte Bugs in db_sync.py** entdeckt (alle 4 `update_boost_recommendation_status`-Kopien benutzen `tenant_id` ohne Parameter zu sein — würde bei Aufruf crashen, ist heute nur ungetriggert). Per `# noqa: F821 — TODO` markiert mit explizitem Verweis auf Data-Integrity-Spec (Folge-Zyklus), die ohnehin die tenant-id-Schemas typisiert anpackt. Verworfen: Bug-Fix in dieser Spur (out of scope, würde Pydantic-Modelle ändern wollen, die in der Folge-Spec entstehen), F821 global-disable (würde künftige echte Bugs verstecken).
+
+(5) **ESLint: `react/no-unescaped-entities` deaktiviert.** Erste pwa-web-Lint fand 17 Verstöße, alle dieselbe Regel — straight quotes in JSX-Text. Rein kosmetisch, kein Security-Bezug. Alternative wäre 17 Dateien anfassen für `&quot;` — Diff-Lärm ohne Wert. Verworfen: pre-existing Verstöße fixen (out of scope) oder ganzes ESLint-Set lockern (würde künftige echte Lint-Bugs durchlassen). Andere Regeln bleiben hart enforced.
+
+(6) **RLS-Bereitlegung über `_apply_tenant_rls(table)`-Funktion, nicht copy-paste pro Tabelle.** Eine Funktion in `06_rls.sql` definiert das Pattern (ENABLE + FORCE + Policy mit admin/tenant-Pfaden); pwa-Migrationen rufen `SELECT public._apply_tenant_rls('public.X')` je neue Tenant-Tabelle. Verfassung 03 SSOT: das Pattern lebt an EINER Stelle, keine Drift-Möglichkeit zwischen Tabellen. Verworfen: explizite `CREATE POLICY` pro Tabelle in Init-Scripts (würde bei neuer Tabelle in Migration vergessen werden können).
+
+(7) **E39-Schutz für auth.tenant_memberships voll umgesetzt + im Trockenlauf verifiziert.** Test 4 des Smoke-Scripts: `tenant_app_user` darf SELECT (Login-Pfad funktioniert), aber INSERT/UPDATE/DELETE wird mit `permission denied` blockiert. Bestätigt die Logbuch-E39-Entscheidung im Code-Pfad.
+
+(8) **customer_postgres pwa_app-vs-agent_data-Mismatch nicht in dieser Spur.** Compose hat `POSTGRES_DB=pwa_app`, Doku + Code-Pattern (db.py) sagt `agent_data`. Bekannter Pre-PLAT-031-Drift (taucht im Logbuch E47 als Side-Befund auf). Init-Scripts sind DB-Name-agnostisch (`current_database()` + Schema-relative SQLs) und laufen mit beidem; der Name-Cut ist eigene Folge-Arbeit.
+
+**Restschulden, ehrlich notiert:**
+- Starlette-CVE-Trio (3 moderate): fastapi 0.115→0.136 Cross-Minor-Bump als eigene Folge-Spur (geringe Priorität — beide CVEs sind Form-/Header-DoS, kein Code-Exec).
+- langchain-core CVE-Trio (3 in helpdesk): braucht langchain-core 1.x mit langchain-anthropic-Bump zusammen. Folge-Spur.
+- 4× F821 tenant_id-Bug in update_boost_recommendation_status: Übergabe an Data-Integrity-Spec (Folge-Zyklus), die die Pydantic-Modelle ohnehin überarbeitet.
+- customer_postgres ist heute leer → RLS faktisch noch nicht scharf; greift beim realen DB-Init (gekoppelt an Kunde #2 / Produktiv-DB-Initialisierung, eigener Anlass).
+- pwa-web npm ci braucht `--legacy-peer-deps` wegen nodemailer-Override; CI hat das Flag explizit. Folge: wenn next-auth-Stable v5 (non-beta) verfügbar wird, beide Constraints prüfen.
+
+**Kontextbindung:** (a) Wenn nightly-Re-Audit in den nächsten 30 Tagen keine Mail an info@prisment.de erzeugt, ist die Mailer-Konfiguration empirisch bestätigt. (b) Wenn ein CVE-Update später `--ignore-vuln`-Einträge in `ci.yml` obsolet macht, bei dieser Gelegenheit Eintrag entfernen + dokumentieren (Hygiene). (c) Wenn pwa-Migrationen neue `public.X`-Tenant-Tabellen anlegen, ohne `_apply_tenant_rls(...)` aufzurufen, sieht der CI-Smoke das nicht — Drift-Risiko. Erwägen: Pre-merge-Check, der CREATE TABLE in public-Schema gegen vorhandene RLS-Policy prüft.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.
