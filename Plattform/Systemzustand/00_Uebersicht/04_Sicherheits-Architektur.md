@@ -57,6 +57,7 @@ Restore-Pfad komplett dokumentiert.
 | Telegram-EOL | ✅ abgeschlossen | Logbuch E25 (PLAT-009 2026-05-25) |
 | Public-Exposure-Reduktion (Mattermost weg, Test-Familie deprecated) | ✅ abgeschlossen | HARDENING Phase 1.1 / 1.4 |
 | Tenant-Isolation (fail-closed RLS in customer_postgres) | ✅ abgeschlossen | PRIS-017, 2026-05-26 (Logbuch E36/E39) |
+| PWA-Wiederanlauf (gepatcht, durch CF, NextAuth auf schmaler Rolle) | ✅ abgeschlossen | PRIS-018, 2026-05-26 (Logbuch E45) — `next 15.5.18` (latest stable 15.x, alle CVEs gefixt) |
 | WAF-Skip für Access-Apps | ✅ abgeschlossen | Logbuch E26 (BREAKOUT in PLAT-009) |
 
 Detail: [`HAERTUNGS_SPEC_PRISMENT.md`](../Sicherheit/HAERTUNGS_SPEC_PRISMENT.md).
