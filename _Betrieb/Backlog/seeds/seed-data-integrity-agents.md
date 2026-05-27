@@ -6,6 +6,7 @@ risikoklasse: sicher
 status: erledigt
 klasse: qualitaet
 zugkraft: jetzt
+mission:         live-gang
 stufe: spur
 beruehrt: ["langgraph/", "n8n/"]
 stand: 2026-05-27

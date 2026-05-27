@@ -6,6 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: wartung
 zugkraft: irgendwann
+mission:         ""
 stufe: schritt
 beruehrt: ["scripts/"]
 stand: 2026-05-24

@@ -6,6 +6,7 @@ risikoklasse: kritisch
 status: offen
 klasse: security
 zugkraft: bald
+mission:         security-haertung-plattform
 stufe: sprung
 beruehrt: ["alle Gitea-Repos", "Renovate-Config in admin/prisment-platform"]
 stand: 2026-05-26

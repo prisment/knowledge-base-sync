@@ -6,6 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: prozess
 zugkraft: irgendwann
+mission:         framework
 stufe: sprung
 beruehrt: ["_Betrieb/Verfassung/"]
 stand: 2026-05-24

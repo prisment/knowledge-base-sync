@@ -6,6 +6,7 @@ risikoklasse: kritisch
 status: offen
 klasse: qualitaet
 zugkraft: bald
+mission:         security-haertung-plattform
 stufe: schritt
 beruehrt: ["customer_postgres/agent_data Rolle pwa_user"]
 stand: 2026-05-26

@@ -6,6 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: feature
 zugkraft: bald
+mission:         kunde-2
 stufe: sprung
 beruehrt: ["pwa/pwa-web/"]
 stand: 2026-05-25

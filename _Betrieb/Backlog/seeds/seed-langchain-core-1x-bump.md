@@ -6,6 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: security
 zugkraft: spaeter
+mission:         security-haertung-plattform
 stufe: sprung
 beruehrt: ["langgraph/helpdesk/"]
 stand: 2026-05-27

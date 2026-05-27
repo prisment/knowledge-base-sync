@@ -6,6 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: security
 zugkraft: bald
+mission:         security-haertung-plattform
 stufe: sprung
 beruehrt: ["UFW/iptables-Regeln Host-Level", "Public-Interface eno1 (Hetzner)"]
 stand: 2026-05-26

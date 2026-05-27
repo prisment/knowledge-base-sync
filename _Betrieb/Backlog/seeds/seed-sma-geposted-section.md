@@ -6,6 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: feature
 zugkraft: bald
+mission:         live-gang
 stufe: sprung
 beruehrt: ["pwa/pwa-web/", "pwa/pwa-api/"]
 stand: 2026-05-25

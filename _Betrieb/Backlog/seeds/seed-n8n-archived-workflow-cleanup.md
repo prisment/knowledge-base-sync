@@ -6,6 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: wartung
 zugkraft: bald
+mission:         ""
 stufe: schritt
 beruehrt: ["internal_n8n DB", "n8n/workflows/t-praesentation-versenden.json (Repo)"]
 stand: 2026-05-27

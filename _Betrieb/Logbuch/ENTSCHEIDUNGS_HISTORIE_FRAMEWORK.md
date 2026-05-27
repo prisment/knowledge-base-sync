@@ -1015,6 +1015,19 @@ Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → W
 
 **Kontextbindung:** (a) Wenn beim ersten echten Rescue-Lauf das tatsächliche Disk-Layout abweicht, die `mount`-Beispiele anpassen — keine Inventur-Pflicht, sondern Stresstest-Nachzug. (b) Wenn die Tailscale-Admin-Console-URL oder die Auth-Key-Generierung sich UI-mäßig ändert, dort minimal-invasiv updaten — Doku darf knapp bleiben.
 
+<<<<<<< HEAD
+
+
+**E55 — Worker-Pilot 1: Bau-Schicht trägt, Erkennungs-Schicht blind (PLAT-035, 2026-05-27)**
+
+**Auslöser:** Erster scharfer Worker-Pilot, drei `sicher`-Specs (PLAT-036/037/038) autonom gebaut, abgeschlossen, nach main gemergt. Inhaltliche Main-Verifikation durch den Architekten: alle drei Diffs sauber, Akzeptanzkriterien erfüllt. Kehraus lief erstmals scharf (Single-Seed-Move bei 036, korrekt).
+
+**Erkenntnis:** Die _Ausführungs_-Schicht des Workers funktioniert — dreimal korrekte autonome Arbeit bis auf main. Die _Selbstbeurteilungs_-Schicht ist blind: 3 von 3 erfolgreichen Läufen wurden als Blocker fehlklassifiziert (100% False-Positive). Zwei strukturelle Ursachen: (A) Blocker-Erkennung grept Prosa-Output nach Schlüsselwörtern und kann „über Stopp reden" nicht von „stoppen" trennen; (B) Phase-9-Verifikation sucht im Worktree-Pfad, den Sub-Claude nach dem Merge wegräumt — findet den Abschluss nie. Dritter Befund (C): Kehraus-Tool archiviert nur den Seed, nicht Spec/Abschluss; inkonsistentes Sub-Claude-Verhalten (036/037 ließen liegen, 038 räumte selbst mit).
+
+**Zentrale Lehre:** Alle drei Fehler gingen in die **sichere Richtung** — der Worker war zu vorsichtig (meldete Blocker auf Erfolg), nie zu sorglos (Erfolg auf echtem Blocker). Das ist der gewollte fail-safe-Default aus Bündel 5. Der gefährliche Zwilling (echter Blocker als beiläufig fehlgelesen → stiller Durchlauf) trat nicht auf, ist aber durch dieselbe unscharfe Erkennung möglich — deshalb ist der Fix nicht optional. E52(b) griff korrekt: Pilot-Pause + Architekten-Entscheidung statt heimlicher Marker-Listen-Schrumpfung.
+
+**Folge:** Verfassungs-Entscheidung Variante eins (Spec/Abschluss/Seed wandern gemeinsam ins Archiv, Arbeitsgedächtnis bleibt leer für den nächsten Zyklus — Z.159 wörtlich). Zwei Fix-Specs: A (strukturiertes Status-Signal statt Prosa-Grep, `kritisch`, Architekten-Hand) und B+C (Verifikation am Merge-Commit statt Dateipfad + Kehraus archiviert vollständig + Z.159-Schärfung, `kritisch`). Zweiter Pilot erst nach A und B; C nicht blockierend. Drei Frozen-Set-Einträge aus dem Pilot wirkungslos (Seeds archiviert) — manuell geleert.
+=======
 ## E55 — Worker-Pilot 1: drei Erfolge auf main, drei False-Positives, drei Befunde (PLAT-035, 2026-05-27)
 
 **Warum:** Erster Live-Pilot des unbeaufsichtigten Workers (PLAT-035, Variante δ) mit drei Test-Specs. Beobachteter Lauf, kein blinder. Vor Start `pre-worker-pilot`-Tag auf beiden Repos gesetzt als Ein-Befehl-Rückweg.
@@ -1029,6 +1042,9 @@ Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → W
 - C — `phase9_seed_archive.py` archiviert nur Seeds, nicht Spec/Abschluss/Machbarkeit. Sub-Claudes interpretieren das unterschiedlich (036/037: nur Tool, Specs bleiben im Arbeitsgedächtnis; 038: zusätzlich manueller Move). Verfassung 00 Z.159 will den vollständigen Satz im Archiv. Lösung-Richtung: Tool wird allein zuständig für den vollständigen Archiv-Move (Single-Seed sofort, Kettenglied beim Ketten-Kehraus gemeinsam). Sub-Claude lässt liegen, Tool räumt. Wird als PLAT-040 (sprung, kritisch, Architekten-Hand wegen Z.159-Edit) zusammen mit B geführt.
 
 **Kontextbindung — Revisions-Trigger:** (a) Vor PLAT-039+PLAT-040-Abschluss läuft KEIN zweiter Pilot. (b) Wenn nach Fix die False-Positive-Rate unter 5% in fünf konsekutiven Läufen liegt, kann der Worker wieder produktiv. (c) Wenn Variante δ-Kehraus im nächsten Pilot Anker falsch wegräumt (z. B. Kettenglied weggekehrt obwohl noch offene Folge-Specs), Rollback via `pre-worker-pilot` + Wahl-Revision δ→α im Architekten-Dialog. (d) `phase9_seed_archive.py`-Zuständigkeits-Schärfung (PLAT-040) ist unabhängig von der Detektor-Lösung (PLAT-039) — Reihenfolge egal, parallel baubar.
+<<<<<<< HEAD
+>>>>>>> origin/main
+=======
 
 ## E56 — Worker-Pilot-Fixes (PLAT-039 + PLAT-040) deployed, Pilot 2 pflicht vor produktivem Worker-Lauf (2026-05-27)
 
@@ -1042,3 +1058,21 @@ Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → W
 **Altlasten-Nachzug (Bündel 4 von PLAT-040):** PLAT-036/037 (Pilot 1) und PLAT-039/040 (Architekten-Hand) Spec+Abschluss retrospektiv via `git mv` ins jeweilige Archiv. Verfassungs-konform nach 00 Z.158 + 01 Bullet „Vollständiger Zyklus-Satz". Phase-9-Tool macht aktuell no-op bei Specs ohne Seed-Backref — als Folge-Befund notiert.
 
 **Kontextbindung — Revisions-Trigger:** (a) Vor produktivem Worker-Lauf läuft Pilot 2 PFLICHT. Mindestens drei neue ziehbare Sicher-Specs, alle drei mit `WORKER_STATUS: clean` sauber durch, alle drei mit vollständigem Archiv-Move durch das Tool (kein manueller Sub-Claude-Move mehr). (b) Wenn Pilot 2 auch nur ein einziges False-Positive zeigt, Sofort-Pause + Architekten-Analyse — wir akzeptieren den Detektor nur bei < 5% False-Positive über mindestens fünf konsekutive Läufe. (c) Wenn der Kehraus im Pilot 2 fehlerhaft archiviert (z. B. Seeds verschwinden, die noch als Lese-Anker dienen müssen), Rollback via `pre-worker-pilot`-Tag + δ-Wahl revidieren. (d) Phase-9-Tool für Architekten-Hand-Specs (ohne Seed) ist Folge-Spec, wenn der Worker je solche Specs ziehen soll. Heute kein Schmerz.
+
+## E57 — Obsidian-Vault als Mensch-Sicht auf Seeds + Mission-Achse als optionale Klammer (INT-001, 2026-05-27)
+
+**Warum:** Der Mensch verlor in der bestehenden Seed-Struktur den Faden — KI-vergebene Seed-Namen, Datei-Inhalt nicht ohne Öffnen erkennbar, kein visuelles Ausschneiden eines aktuellen Arbeitsschwerpunkts, keine Sperrzone für eigene Notizen.
+
+**Was entschieden:**
+
+- **Repo-Native statt externes Tool.** Obsidian-Vault liegt direkt am Repo-Root (war schon so), Dataview rendert beim Öffnen aus dem aktuellen File-Stand. Kein zusätzlicher Sync-Pfad (Twenty, Eigenbau, externe DB) — Schreibhand bleibt bei Claude Code allein. Mensch hat eine Lesehilfe, keine zweite Wahrheit.
+- **`mission:` als optionale Klammer, nicht Pflicht-Achse.** Ein Seed gehört zu max. einer Mission (kebab-case-Slug aus handgepflegter Registry `_Betrieb/Missionen/00_aktive-missionen.md`). Leerer Wert = keine Mission. Hat KEINEN Einfluss auf den Prozess — nur Filterung/Bündelung im Dashboard. Damit bleibt die Stufen-/Risikoklasse-Mechanik unangetastet, eine neue Sicht entsteht trotzdem.
+- **Kanban als Triage-Sicht ohne Schreibrechte (Option A).** Kanban-Plugin würde nativ direkt auf Frontmatter schreiben können (Option B), das hätte die Schreibhand-Regel verletzt. Stattdessen: Kanban-Dateien (falls jemals angelegt) führen Wiki-Links als Karten — Verschieben ist Signal an Claude Code, nicht Status-Schreibrecht. Quelle der Wahrheit bleibt das `status:`-Frontmatter.
+- **Sperrzone „Eigene Notizen" am Seed-Ende.** Mensch braucht einen Platz für eigene Gedanken am Seed, ohne dass Re-Writes durch Claude Code sie überschreiben. Verfassungs-Regel: Sektion `## 📝 Eigene Notizen` ist byte-identisch zu erhalten; Konflikt = synchroner Stopp + Frage.
+- **Missions-Cluster gewinnt gegen Projektstrang-Cluster.** Im SVG würden sonst doppelte Box-Zugehörigkeiten entstehen (z. B. SMA-Familie + live-gang). Missions-Cluster sind das aktive Mensch-Steuer-Signal, Projektstrang-Cluster sind Geschichts-Sediment — daher Mission vorne.
+
+**Kontextbindung — Revisions-Trigger:**
+- Wenn `mission:` sich als Pflicht-Feld zeigt (jeder Seed kriegt sowieso eine), beim nächsten Lese-Vorgang zur Pflichtgröße aufwerten.
+- Wenn Kanban-Option-A im Alltag zu umständlich wirkt (Mensch verschiebt Karten, nichts passiert maschinell), eigener Mini-Spur-Zyklus für eine bessere Brücke (z. B. Skript, das nach Kanban-Edit den Mensch-Intent als Vorschlag in den Chat hebt).
+- Wenn der Mensch nach drei Wochen das Dashboard nicht mehr öffnet, hat die Mensch-Sicht ihren Job nicht gemacht — Annahmen revidieren.
+>>>>>>> origin/main

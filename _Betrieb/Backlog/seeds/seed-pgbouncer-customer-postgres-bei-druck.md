@@ -6,6 +6,7 @@ risikoklasse: kritisch
 status: offen
 klasse: wartung
 zugkraft: spaeter
+mission:         ""
 stufe: spur
 beruehrt: ["customer_postgres", "pwa-api Pool-Layer", "langgraph_* Pool-Layer"]
 stand: 2026-05-27

@@ -206,6 +206,7 @@ status:          offen
 stufe:           spur              # spur | sprung | schritt
 klasse:          prozess           # security | qualitaet | feature | prozess | wartung   (PFLICHT)
 zugkraft:        jetzt             # jetzt | bald | irgendwann                            (PFLICHT)
+mission:         ""                # OPTIONAL: kebab-case-Slug aus _Betrieb/Missionen/00_aktive-missionen.md, leer = keine Mission
 beruehrt:        ["_Betrieb/Backlog/", "_Betrieb/Verfassung/01_Spec-Format.md"]            # PFLICHT, Ordner-Ebene
 autonom_ziehbar: nein              # abgeleitet, nicht geurteilt: ja gdw. freigegebene Spec UND risikoklasse: sicher
 stand:           2026-05-25
@@ -216,6 +217,18 @@ abhaengig_von:                                       # optional
 ```
 
 **Vergabe-Mechanik** wie `stufe`: KI schlägt mit Begründung vor, Mensch revidiert/gibt frei. Bei unklarem Footprint bleibt `beruehrt:` grob/leer und wird beim Spec-Start präzisiert.
+
+**Body-Schluss (Pflicht):** Jeder Seed endet mit folgender Mensch-Sperrzone — Claude Code liest, schreibt aber NICHT hinein. Verfassungs-Verankerung: Sperrzonen-Regel in `_Betrieb/Verfassung/01_Spec-Format.md` direkt unter dem Backlog-Felder-Block.
+
+```markdown
+
+---
+
+## 📝 Eigene Notizen
+
+<!-- Mensch-Sperrzone. Claude Code liest hier, schreibt NICHT hinein.
+     Inhalt überlebt jeden Re-Write des Seeds. -->
+```
 
 ## Verkettung (warum der gemeinsame Header zählt)
 

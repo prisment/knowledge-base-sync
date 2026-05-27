@@ -6,6 +6,7 @@ risikoklasse: kritisch
 status: offen
 klasse: security
 zugkraft: bald
+mission:         security-haertung-plattform
 stufe: sprung
 beruehrt: ["n8n/Dockerfile", "scripts/build_image.sh", "internal_n8n Container", "n8n-Workflows"]
 stand: 2026-05-26

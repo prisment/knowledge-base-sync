@@ -6,6 +6,7 @@ risikoklasse: sicherheitskritisch-akut
 status: offen
 klasse: security
 zugkraft: bald
+mission:         security-haertung-plattform
 stufe: spur
 beruehrt: ["internal_postgres pg_hba.conf", "customer_postgres pg_hba.conf"]
 stand: 2026-05-26

@@ -6,6 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: wartung
 zugkraft: bald
+mission:         ""
 stufe: schritt
 beruehrt: ["/opt/infrastructure/environment_a/docker-compose.yml (n8n-Service-ENV)", "internal_postgres/n8n.execution_data"]
 stand: 2026-05-26

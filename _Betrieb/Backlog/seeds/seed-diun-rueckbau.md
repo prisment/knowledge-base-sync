@@ -6,6 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: wartung
 zugkraft: irgendwann
+mission:         security-haertung-plattform
 stufe: sprung
 beruehrt: ["diun/", "n8n/workflows/"]
 stand: 2026-05-25

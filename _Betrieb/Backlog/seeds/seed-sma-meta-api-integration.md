@@ -6,6 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: feature
 zugkraft: bald
+mission:         live-gang
 stufe: spur
 beruehrt: ["langgraph/analytics/", "langgraph/content/", "pwa/pwa-api/", "n8n/"]
 stand: 2026-05-25

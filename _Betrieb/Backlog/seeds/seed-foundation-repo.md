@@ -6,6 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: prozess
 zugkraft: irgendwann
+mission:         ""
 stufe: schritt
 beruehrt: ["/opt/infrastructure/foundation/"]
 stand: 2026-05-25

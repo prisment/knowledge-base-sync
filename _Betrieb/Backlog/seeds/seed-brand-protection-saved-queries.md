@@ -6,6 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: security
 zugkraft: bald
+mission:         security-haertung-plattform
 stufe: sprung
 beruehrt: ["(extern: Cloudflare)"]
 stand: 2026-05-24

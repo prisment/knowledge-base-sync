@@ -6,6 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: security
 zugkraft: bald
+mission:         security-haertung-plattform
 stufe: spur
 beruehrt: ["docker-compose.test.yml (neu)", "secrets/*_test.txt (neu)", "customer_postgres (neue Test-DB)", "Tailscale/Cloudflare-Reichweite", "Traefik-Routes test.app.prisment.de", "scripts/build_image.sh + promote_image.sh"]
 stand: 2026-05-26
