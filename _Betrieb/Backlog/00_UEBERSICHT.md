@@ -32,17 +32,6 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-apply-autonomie-pipeline.md` | Apply-Autonomie-Politik: Custom-Build-Patch + Renovate-Merge-Rebuild nutzen die PLAT-002-Wand | prozess | bald | kritisch | spur | offen | PLAT-002_SPEC |
 | `seeds/seed-dsgvo-dpa-cloudflare.md` | DSGVO-Auftragsverarbeitungsvertrag mit Cloudflare unterzeichnen | prozess | bald | sicher | schritt | offen | - |
 | `seeds/seed-notausgang-doku.md` | Notausgang-Doku: schriftliche Rescue-System- und Telefon-Tailscale-Prozedur | prozess | bald | sicher | schritt | offen | - |
-| `seeds/seed-urgent-allowlist-eintrag-fehlt-f-r-admin-web.md` | Allowlist-Eintrag fehlt für admin-web | prozess | bald | kritisch | spur | offen | - |
-| `seeds/seed-urgent-allowlist-eintrag-fehlt-f-r-cf-alarm.md` | Allowlist-Eintrag fehlt für cf-alarm | prozess | bald | kritisch | spur | offen | - |
-| `seeds/seed-urgent-allowlist-eintrag-fehlt-f-r-langgraph-analytics.md` | Allowlist-Eintrag fehlt für langgraph-analytics | prozess | bald | kritisch | spur | offen | - |
-| `seeds/seed-urgent-allowlist-eintrag-fehlt-f-r-langgraph-content.md` | Allowlist-Eintrag fehlt für langgraph-content | prozess | bald | kritisch | spur | offen | - |
-| `seeds/seed-urgent-allowlist-eintrag-fehlt-f-r-langgraph-helpdesk.md` | Allowlist-Eintrag fehlt für langgraph-helpdesk | prozess | bald | kritisch | spur | offen | - |
-| `seeds/seed-urgent-allowlist-eintrag-fehlt-f-r-langgraph-interview.md` | Allowlist-Eintrag fehlt für langgraph-interview | prozess | bald | kritisch | spur | offen | - |
-| `seeds/seed-urgent-allowlist-eintrag-fehlt-f-r-langgraph-redaktionsplan.md` | Allowlist-Eintrag fehlt für langgraph-redaktionsplan | prozess | bald | kritisch | spur | offen | - |
-| `seeds/seed-urgent-allowlist-eintrag-fehlt-f-r-ollama-proxy.md` | Allowlist-Eintrag fehlt für ollama-proxy | prozess | bald | kritisch | spur | offen | - |
-| `seeds/seed-urgent-allowlist-eintrag-fehlt-f-r-pwa-api.md` | Allowlist-Eintrag fehlt für pwa-api | prozess | bald | kritisch | spur | offen | - |
-| `seeds/seed-urgent-allowlist-eintrag-fehlt-f-r-pwa-web.md` | Allowlist-Eintrag fehlt für pwa-web | prozess | bald | kritisch | spur | offen | - |
-| `seeds/seed-urgent-apply-au-erhalb-des-nachtfensters-versucht.md` | Apply außerhalb des Nachtfensters versucht | prozess | bald | kritisch | spur | offen | - |
 | `seeds/seed-n8n-execution-data-pruning.md` | n8n: EXECUTIONS_DATA_PRUNE aktivieren (3.8 GB DB durch ungebremstes execution_data) | wartung | bald | sicher | schritt | offen | - |
 | `seeds/seed-next-spec-id-working-tree.md` | next-spec-id: untracked Working-Tree-Specs einbeziehen, damit IDs nicht kollidieren | wartung | bald | sicher | schritt | offen | - |
 | `seeds/seed-cve-watchdog-regel-b.md` | Cloudflare WAF: CVE-2025-55182 Watchdog-Regel B mit gehärteter Expression | security | irgendwann | sicher | schritt | offen | - |
