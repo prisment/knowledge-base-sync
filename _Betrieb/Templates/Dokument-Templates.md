@@ -182,6 +182,14 @@ Dies ist der Scharnierpunkt gegen Sediment: nicht nur Rückblick, sondern der
 strukturierte Vorschlag für die Wissens-Bewegung beim Abschluss.]
 ```
 
+**Phase-9-Pflichtaufruf (Seed-Status + Ketten-Kehraus, PLAT-035 Variante δ):** Hatte der Zyklus einen Seed als Auslöser, ruft der abschließende Agent in Phase 9 verbindlich auf:
+
+```
+python3 /opt/infrastructure/environment_a/scripts/backlog/phase9_seed_archive.py <spec_id>
+```
+
+Das Tool setzt den Seed-`status:` auf `abgeschlossen` und entscheidet, ob der Seed allein ins Archiv geht oder als Lese-Anker in `seeds/` stehen bleibt (falls Folge-Glieder noch offen). Erst beim Abschluss des letzten Kettenglieds wandern alle abgeschlossenen Seeds der Kette gemeinsam in einen Archiv-Ordner. Verfassungs-Verankerung: `_Betrieb/Verfassung/01_Spec-Format.md`, Abschnitt „Autonome Halde".
+
 ---
 
 ## Backlog-Seed — zusätzliche Pflichtfelder

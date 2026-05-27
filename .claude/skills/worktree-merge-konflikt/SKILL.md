@@ -34,6 +34,7 @@ Claude Code löst inline:
 - Reihenfolge anpassen.
 - Sections konkatenieren.
 - Auto-Regenerate neu erzeugen (Schritt-Log, Backlog-Übersicht etc.).
+- **`abhaengig_von:`-Konflikt am Seed-Frontmatter → Union bilden.** Beide Seiten enthalten je eine oder mehrere `[[…]]`-Wikilink-Einträge in der `abhaengig_von:`-Liste; die Auflösung ist die Mengen-Vereinigung beider Listen, keine Seite wird verworfen. Begründung: `abhaengig_von` ist eine Menge, kein geordneter Konflikt-Punkt — ein Worker-Cross-Seed-Schreibzugriff (PLAT-035 Bündel 6) und ein paralleler manueller Edit am selben Seed sind semantisch beide richtig, und Vereinigung verletzt keine Spec. Doppelte Einträge nach Union entfernen (case-sensitive Vergleich der nackten Seed-Filename-Endung).
 - Commit.
 
 Auflösung im Entscheidungs-Protokoll des Zyklus dokumentieren:
