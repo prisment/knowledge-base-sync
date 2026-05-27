@@ -199,6 +199,7 @@ stufe:           spur              # spur | sprung | schritt
 klasse:          prozess           # security | qualitaet | feature | prozess | wartung   (PFLICHT)
 zugkraft:        jetzt             # jetzt | bald | irgendwann                            (PFLICHT)
 beruehrt:        ["_Betrieb/Backlog/", "_Betrieb/Verfassung/01_Spec-Format.md"]            # PFLICHT, Ordner-Ebene
+autonom_ziehbar: nein              # abgeleitet, nicht geurteilt: ja gdw. freigegebene Spec UND risikoklasse: sicher
 stand:           2026-05-25
 erzeugt_durch:   "…"
 abhaengig_von:                                       # optional
