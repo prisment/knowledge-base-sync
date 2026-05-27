@@ -6,7 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: qualitaet
 zugkraft: bald
-mission:         security-haertung-plattform
+mission: security-haertung-plattform
 stufe: spur
 beruehrt: ["pwa/pwa-api/", "langgraph/", "n8n/", "_Betrieb/"]
 stand: 2026-05-25

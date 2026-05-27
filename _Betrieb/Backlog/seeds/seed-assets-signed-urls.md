@@ -6,7 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: security
 zugkraft: irgendwann
-mission:         kunde-2
+mission: kunde-2
 stufe: sprung
 beruehrt: ["assets-Service (Traefik-Route)", "pwa_api Asset-Generator", "Mandanten-Bild-Pfade"]
 stand: 2026-05-26

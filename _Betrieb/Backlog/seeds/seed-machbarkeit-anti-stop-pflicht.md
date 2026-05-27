@@ -6,7 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: prozess
 zugkraft: bald
-mission:         framework
+mission: framework
 stufe: schritt
 beruehrt:
   - "_Betrieb/Verfassung/00_Iterationszyklus.md"

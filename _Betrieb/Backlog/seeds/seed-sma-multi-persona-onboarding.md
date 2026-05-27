@@ -6,7 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: feature
 zugkraft: bald
-mission:         live-gang
+mission: live-gang
 stufe: sprung
 beruehrt: ["langgraph/", "pwa/", "admin/admin_web/"]
 stand: 2026-05-25

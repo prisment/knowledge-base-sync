@@ -6,7 +6,7 @@ risikoklasse: kritisch
 status: offen
 klasse: prozess
 zugkraft: irgendwann
-mission:         ""
+mission: ""
 stufe: spur
 beruehrt: ["pwa/pwa-web", "pwa/pwa-api", "langgraph/*"]
 stand: 2026-05-27

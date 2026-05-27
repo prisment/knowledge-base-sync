@@ -6,7 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: qualitaet
 zugkraft: irgendwann
-mission:         ""
+mission: ""
 stufe: spur
 beruehrt: ["langgraph/content/", "langgraph/", "Plattform/Systemzustand/"]
 stand: 2026-05-25

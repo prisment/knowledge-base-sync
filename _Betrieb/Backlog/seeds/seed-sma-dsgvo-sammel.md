@@ -6,7 +6,7 @@ risikoklasse: kritisch
 status: offen
 klasse: security
 zugkraft: jetzt
-mission:         kunde-2
+mission: kunde-2
 stufe: spur
 beruehrt: ["langgraph/", "pwa/pwa-api/", "n8n/"]
 stand: 2026-05-25

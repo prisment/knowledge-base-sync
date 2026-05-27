@@ -6,7 +6,7 @@ risikoklasse: kritisch
 status: in_arbeit
 klasse: prozess
 zugkraft: bald
-mission:         framework
+mission: framework
 stufe: spur
 beruehrt: ["~/.claude-nightly/settings.json (über PLAT-002 nach /etc/claude/)", "_Betrieb/Skripte/renovate/", "_Betrieb/Skripte/nightly/check-base-image-drift.sh", "Gitea-Webhooks"]
 stand: 2026-05-26

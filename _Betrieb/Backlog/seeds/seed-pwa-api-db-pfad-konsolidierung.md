@@ -6,7 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: wartung
 zugkraft: irgendwann
-mission:         ""
+mission: ""
 stufe: spur
 beruehrt: ["pwa/pwa-api/app/db.py", "pwa/pwa-api/app/db_sync.py", "alle 6 db_sync-konsumierenden Routen (dashboard, plan, analytics, interview, posts, internal)"]
 stand: 2026-05-26

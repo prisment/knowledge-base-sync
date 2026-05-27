@@ -6,7 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: feature
 zugkraft: irgendwann
-mission:         ""
+mission: ""
 stufe: spur
 beruehrt: ["pwa/pwa-web/", "pwa/pwa-api/"]
 stand: 2026-05-25

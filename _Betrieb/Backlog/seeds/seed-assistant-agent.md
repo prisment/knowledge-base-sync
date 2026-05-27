@@ -6,7 +6,7 @@ risikoklasse: kritisch
 status: offen
 klasse: feature
 zugkraft: irgendwann
-mission:         ""
+mission: ""
 stufe: spur
 beruehrt: ["langgraph/", "n8n/"]
 stand: 2026-05-25

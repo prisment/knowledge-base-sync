@@ -6,7 +6,7 @@ risikoklasse: kritisch
 status: offen
 klasse: security
 zugkraft: bald
-mission:         security-haertung-plattform
+mission: security-haertung-plattform
 stufe: spur
 beruehrt: ["Cloudflare Zero Trust (Logpush)", "/opt/infrastructure/foundation/traefik/", "internal_postgres", "customer_postgres", "Log-Speicher (S3/lokal?)"]
 stand: 2026-05-26

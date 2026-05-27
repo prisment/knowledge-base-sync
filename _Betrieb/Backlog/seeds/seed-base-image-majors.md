@@ -6,7 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: wartung
 zugkraft: irgendwann
-mission:         security-haertung-plattform
+mission: security-haertung-plattform
 stufe: sprung
 beruehrt: ["pwa/pwa-web/Dockerfile", "admin/admin_web/Dockerfile", "langgraph/*/Dockerfile", "n8n/Dockerfile", "ollama/Dockerfile", "pwa/pwa-api/Dockerfile", "cf-alarm/Dockerfile"]
 stand: 2026-05-26

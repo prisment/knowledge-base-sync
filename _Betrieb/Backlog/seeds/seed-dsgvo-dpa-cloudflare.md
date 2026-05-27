@@ -6,7 +6,7 @@ risikoklasse: sicher
 status: offen
 klasse: prozess
 zugkraft: bald
-mission:         kunde-2
+mission: kunde-2
 stufe: schritt
 beruehrt: ["Cloudflare Account Settings", "Datenschutz-Doku (Prisment/Strategie?)"]
 stand: 2026-05-26
