@@ -62,6 +62,7 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-sma-multi-tenant-ux.md` | Multi-Tenant-UX: Tenant-Auswahl-Screen nach Login + sanfter Tenant-Switch | feature | bald | sicher | sprung | offen | - |
 | `seeds/seed-assets-signed-urls.md` | assets.prisment.de: Signed-URLs gegen ungewollte Verbreitung Mandanten-Bilder | security | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-sma-rag-pgvector-hybrid.md` | RAG-Endzustand: pgvector-Hybrid (Variante C) — wenn Voice-Material zu groß für direkten Prompt | qualitaet | irgendwann | sicher | spur | offen | - |
+| `seeds/seed-zero-downtime-pwa-agents.md` | PWA + Agents: Update ohne Memory-Verlust für offene Kundensitzungen | prozess | irgendwann | kritisch | spur | offen | PLAT-026_SPEC |
 | `seeds/seed-sma-prestashop-meta-audiences.md` | Webshop-Anbindung Prestashop → Meta Custom Audiences (Lookalike + Cold-Audience) | feature | irgendwann | kritisch | spur | offen | seed-sma-meta-api-integration |
 | `seeds/seed-sma-webauthn-passkeys.md` | WebAuthn / Passkeys als einheitlicher Login (Hybrid-Flow ablösen) | feature | irgendwann | sicher | spur | offen | - |
 | `seeds/seed-pwa-api-db-pfad-konsolidierung.md` | pwa-api: zwei parallele DB-Pfade konsolidieren (asyncpg + psycopg2 → einer) | wartung | irgendwann | sicher | spur | offen | - |
