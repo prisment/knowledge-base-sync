@@ -6,9 +6,15 @@ risikoklasse: sicher
 status: offen
 klasse: security
 zugkraft: bald
-mission: security-haertung-plattform
+mission: live-gang
 stufe: spur
-beruehrt: ["docker-compose.test.yml (neu)", "secrets/*_test.txt (neu)", "customer_postgres (neue Test-DB)", "Tailscale/Cloudflare-Reichweite", "Traefik-Routes test.app.prisment.de", "scripts/build_image.sh + promote_image.sh"]
+beruehrt:
+  - docker-compose.test.yml (neu)
+  - secrets/*_test.txt (neu)
+  - customer_postgres (neue Test-DB)
+  - Tailscale/Cloudflare-Reichweite
+  - Traefik-Routes test.app.prisment.de
+  - scripts/build_image.sh + promote_image.sh
 stand: 2026-05-26
 erzeugt_durch: "Chat-Architekt 2026-05-26 (Wunsch: Test-Bühne für Feature-Entwicklung wieder herstellen) — überschreibt die dünne Erst-Fassung aus Phase-7-Atomisierung HAERTUNGS_SPEC 7.6"
 abhaengig_von:
