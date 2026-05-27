@@ -14,6 +14,7 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | Datei | Titel | klasse | zugkraft | risikoklasse | stufe | status | abhängig von |
 |-------|-------|--------|----------|--------------|-------|--------|--------------|
 | `seeds/seed-error-sammler-security-checks.md` | Zentraler Error-Sammler + wiederkehrende Security-Checks-Schedule | qualitaet | bald | sicher | spur | offen | - |
+| `seeds/seed-machbarkeit-anti-stop-pflicht.md` | Machbarkeits-Format schärfen: Anti-Stop-Pflicht für Mensch-Schritte (kein versteckter Stop mitten in der Sequenz) | prozess | bald | sicher | schritt | offen | - |
 | `seeds/seed-feature-flag-zustand.md` | Feature-Flag als anerkannter Zustand: gebaut, aber nicht scharf | prozess | irgendwann | sicher | sprung | offen | - |
 
 ## Geltungsbereich: plattform
