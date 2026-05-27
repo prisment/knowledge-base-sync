@@ -832,6 +832,30 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E49 — PRIS-019 Plan-Abnahme + Pauschal-Freigaben (2026-05-27)
+
+**Auslöser:** Spec PRIS-019 (Data-Integrity-Architektur LangGraph-Agents) ist freigegeben, Plan-Abnahme inkl. Architekt-Vorgaben zu vier offenen Punkten. Autonomer Lauf gewünscht, ohne Schritt-für-Schritt-Rückfragen.
+
+**Entscheidung:**
+
+(1) **Phase 5 (Machbarkeit) parallel zu PLAT-031 erlaubt.** Machbarkeit schreibt keinen Code, kollidiert nicht mit Security-Worktree. Phase-6-Code-Bündel bleiben aber gesperrt, bis PLAT-031 in Phase 9 ist. (Inzwischen ist Security fertig — Wand fällt.)
+
+(2) **VoiceDB-Quelle: Default Postgres** mit Abweichungs-Erlaubnis nur bei hartem Grund. Begründung: PLAT-031 hat tenant-isolierte RLS in Postgres bereitgelegt; Gitea-Lesepfad wäre ein zweiter Datenpfad an der Isolation vorbei. Phase 5 prüft Postgres konkret; will sie abweichen → Spec-Abweichung, zurück in den Chat. Verworfen: Quelle in Phase 5 völlig offen lassen (würde ohne Richtung beginnen).
+
+(3) **Legacy-Strategie B2: Erkennung-mit-Abbruch, keine Migration.** Begründung: Migration würde Alt-Werte raten — genau das stille Mist-Ergebnis, das diese Spur abstellen soll. Bei einem Tester (Grubis-Weine) ist die Legacy-Menge winzig, Re-Run via Abbruch ist sauberer Pfad. Telemetrie aus B-Telemetry liefert die reale Zahl bevor B-Legacy-V6 gebaut wird; dreistellige Mengen → Rückmeldung. Verworfen: Migration (Aufwand für stille Werte-Raterei).
+
+(4) **Pauschal-Freigabe für PRIS-019:** docker-compose-Edits, Rebuilds, Container-Restarts der Agent-Services (interview, content, analytics, redaktionsplan) für den gesamten Zyklus freigegeben — Claude Code holt sie nicht pro Bündel nach. Synchroner Stopp nur bei Fall C, `sicherheitskritisch-akut`, Spec-Abweichung. Verworfen: pro-Bündel-Freigabe (würde Autonomie-Modus aushebeln).
+
+**Zwei Plan-Ergänzungen in die Spec aufgenommen:**
+
+(5) **F821-tenant_id-Bugs in B-SSOT eingelöst.** Die vier `# noqa: F821`-Marker in `update_boost_recommendation_status`, die PLAT-031 mit TODO an Integrity verwiesen hat, werden im SSOT-Bündel über das typisierte `SessionData`-Modell aufgelöst. Akzeptanzkriterium: kein `# noqa: F821` mehr, ruff-F clean. Verhindert, dass die Restschuld aus PLAT-031 hängen bleibt.
+
+(6) **Telemetrie-Sammelfenster vor B-Legacy-V6.** B-Telemetry läuft vor B-Legacy-V6 und sammelt während des Spur-Verlaufs reale V6-vs-Legacy-Run-Zahlen. So entscheidet B-Legacy-V6 auf Fakten statt Schätzung. Kein expliziter Stopp; das natürliche Zeitfenster zwischen den Bündeln reicht.
+
+**Kontextbindung:** (a) Falls Phase 5 von Default-Postgres oder Legacy-Abbruch abweichen will → Spec-Abweichung, zurück in den Chat. (b) Falls dreistellige Alt-Sessions in der Telemetrie auftauchen, vor B-Legacy-V6 Rückmeldung. (c) Pauschal-Freigaben gelten nur für PRIS-019; jede andere Spur braucht eigene Freigaben.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.
