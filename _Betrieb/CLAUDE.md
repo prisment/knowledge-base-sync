@@ -7,6 +7,7 @@ Verfassung (verbindlicher Rahmen, „nur nach oben"):
 - [Verfassung/03_Code-Standards.md](Verfassung/03_Code-Standards.md)
 - [Verfassung/04_Sicherheits-Prinzipien.md](Verfassung/04_Sicherheits-Prinzipien.md)
 - [Verfassung/05_Agent-Sicherheit.md](Verfassung/05_Agent-Sicherheit.md)
+- [Verfassung/06_Architekt-Protokoll.md](Verfassung/06_Architekt-Protokoll.md)
 
 Arbeitsdokument-Vorlagen:
 - [Templates/Dokument-Templates.md](Templates/Dokument-Templates.md) — Spec, Report, Abschluss-Doku.
