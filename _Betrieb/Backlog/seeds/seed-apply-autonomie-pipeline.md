@@ -39,6 +39,31 @@ und Punkt 4 (Renovate-Merge → Container-Rebuild) autonom.
   Auto-Rebuild nach menschlichem Merge.
 - n8n-Patch bleibt betreut wegen Workflow-DB-Migrations-Risiko.
 
+## Architekten-Vorgaben (eingebracht am 2026-05-27, Spec hat sich daran zu halten)
+
+- **Rebuilds laufen nachts, nicht tagsüber.** „07:31" als Rebuild-Trigger
+  ist explizit abgelehnt — kollidiert mit Geschäftszeit-Erreichbarkeit.
+  Lösungsraum für Q2:
+  - Renovate-Cron vorziehen auf z. B. **02:00** (vor allen Drift-Schreibern,
+    damit Auto-Merge bis 02:30 durch und 04:15-Drift-Skripte den neuen Stand
+    schon sehen). Webhook-Pfad entfällt dann.
+  - ODER Webhook-Pfad bleibt, schreibt aber nur einen **Apply-Marker** in
+    `~/.cache/pending-rebuilds/`, ein Nacht-Cron (z. B. **02:30**) arbeitet
+    die Marker ab.
+  - Geschäftszeit-Fenster `08:00–20:00` (oder konkreter, Architekt festlegen)
+    ist Apply-tabu — auch für Klasse-B-Custom-Build-Patch.
+- **Auto-Seed-Mechanik existiert bereits** (Schritt 2026-05-27,
+  `_Betrieb/Skripte/backlog/raise-seed.py`). Drift-Crons für n8n + Renovate-
+  Major-PRs lösen Seeds aus. **PLAT-026 schaltet zusätzlich:**
+  - nightly-LLM darf `raise-seed.py` aufrufen (Allowlist-Erweiterung) — für
+    OS-Klasse-1a-Befund + jeden Klasse-C-Befund den der LLM identifiziert.
+  - Steuerdatei `nacht-aufgaben.md` Pflicht-Hinweis pro Aufgabe: bei
+    Klasse-C-/Major-Befund **immer** zusätzlich `raise-seed.py` aufrufen,
+    nicht nur reporten.
+- **Reboot-Autonomie** ist NICHT Teil von PLAT-026 — eigener Folge-Seed
+  (Quiet-Hours-Disziplin, Pre-Check-Erweiterung um „kein Apply-Bündel
+  in den letzten 24h", Post-Reboot-Verify ist schon da).
+
 ## Offene Fragen (PLAT-026 Spec-Diskussion)
 
 ### Q1 — Renovate-Auto-Merge-Politik

@@ -164,6 +164,33 @@ Der einzige reale Befund heute war:
 
 ---
 
+## 8a. Auto-Seed bei Klasse C / Major (seit 2026-05-27)
+
+Der Architekt-Chat ist ein passiver Pull-Kanal — Reports und Mails werden
+nicht zuverlässig gelesen. **Aktive Push-Mechanik:** jeder Klasse-C-
+oder Major-Befund legt einen Seed im Backlog an, der bei der nächsten
+Planung sichtbar ist.
+
+**Helfer-Skript:** `_Betrieb/Skripte/backlog/raise-seed.py`
+
+**Dedup:** über das `trigger:`-Feld im Seed-Frontmatter. Solange ein
+Seed mit identischem Trigger `status: offen` trägt, bumpt jeder neue
+Befund nur `gesehen_am` und „Letzter Befund", **kein zweiter Seed**.
+
+**Trigger-Keys aktuell:**
+
+| Auslöser | Trigger-Key | Wer ruft auf |
+|---|---|---|
+| n8n Minor/Major-Drift | `n8n-minor-drift` / `n8n-major-drift` | `check-upstream-n8n.sh` (Cron 04:20) |
+| Renovate Major-PR | `renovate-major-<repo>-<nr>` | `render-renovate-status.sh` (Cron 04:30) |
+| OS-Klasse-1a-Update verfügbar | _(nach PLAT-026)_ | nightly-LLM via Allowlist-Eintrag |
+| Sonstige Klasse-C/Major-Befunde | freier Key | manuell oder nightly-LLM |
+
+Seeds heißen `seed-urgent-<slug>.md`, tragen `risikoklasse: kritisch`
+und `zugkraft: bald` (bzw. `dringend` bei Major). Der Pre-Commit-Hook
+(10_Kunden/-Wand, sha256-Konsistenz für Steuerdatei) greift wie für
+alle Repo-Commits.
+
 ## 9. Was offen ist
 
 - **PLAT-026** (Apply-Autonomie-Politik) — schaltet Auto-Merge in Renovate (oder Auto-Rebuild),
