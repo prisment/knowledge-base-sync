@@ -43,6 +43,8 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-base-image-majors.md` | Base-Image-Major-Sprünge: Node 20→22, Python 3.12→3.13, Alpine-Pin | wartung | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-base-image-versionen.md` | Base-Image-Versionen aktualisieren (Node-LTS, Python-Base, etc.) | wartung | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-dns-cache-resolved-hairpin.md` | systemd-resolved Cache: Origin-IP statt CF-Edge bei Hairpin-Aufrufen vom Server selbst | wartung | irgendwann | sicher | schritt | offen | - |
+| `seeds/seed-fastapi-starlette-cve-bump.md` | fastapi 0.115 → 0.136 Cross-Minor-Bump (schließt 3 starlette-CVEs) | security | spaeter | sicher | sprung | offen | - |
+| `seeds/seed-langchain-core-1x-bump.md` | langchain-core 0.3.x → 1.x Bump in langgraph-helpdesk | security | spaeter | sicher | sprung | offen | - |
 
 ## Geltungsbereich: prisment
 

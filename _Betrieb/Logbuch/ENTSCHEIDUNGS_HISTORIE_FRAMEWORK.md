@@ -822,11 +822,13 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 (8) **customer_postgres pwa_app-vs-agent_data-Mismatch nicht in dieser Spur.** Compose hat `POSTGRES_DB=pwa_app`, Doku + Code-Pattern (db.py) sagt `agent_data`. Bekannter Pre-PLAT-031-Drift (taucht im Logbuch E47 als Side-Befund auf). Init-Scripts sind DB-Name-agnostisch (`current_database()` + Schema-relative SQLs) und laufen mit beidem; der Name-Cut ist eigene Folge-Arbeit.
 
 **Restschulden, ehrlich notiert:**
-- Starlette-CVE-Trio (3 moderate): fastapi 0.115→0.136 Cross-Minor-Bump als eigene Folge-Spur (geringe Priorität — beide CVEs sind Form-/Header-DoS, kein Code-Exec).
-- langchain-core CVE-Trio (3 in helpdesk): braucht langchain-core 1.x mit langchain-anthropic-Bump zusammen. Folge-Spur.
+- Starlette-CVE-Trio (3 moderate): fastapi 0.115→0.136 Cross-Minor-Bump → Seed `seed-fastapi-starlette-cve-bump.md` (zugkraft: spaeter, Architekt-Urteil: Form-/Header-DoS hinter CF-WAF kein Schmerz).
+- langchain-core CVE-Trio (3 in helpdesk): braucht langchain-core 1.x mit langchain-anthropic-Bump zusammen → Seed `seed-langchain-core-1x-bump.md` (zugkraft: spaeter).
 - 4× F821 tenant_id-Bug in update_boost_recommendation_status: Übergabe an Data-Integrity-Spec (Folge-Zyklus), die die Pydantic-Modelle ohnehin überarbeitet.
 - customer_postgres ist heute leer → RLS faktisch noch nicht scharf; greift beim realen DB-Init (gekoppelt an Kunde #2 / Produktiv-DB-Initialisierung, eigener Anlass).
 - pwa-web npm ci braucht `--legacy-peer-deps` wegen nodemailer-Override; CI hat das Flag explizit. Folge: wenn next-auth-Stable v5 (non-beta) verfügbar wird, beide Constraints prüfen.
+
+**Negativ-Test der Gates (2026-05-27, nachgereicht auf Architekten-Bitte):** Commit `9475907` setzte fastapi in pwa-api absichtlich auf 0.115.0 zurück (bringt starlette 0.38.6 mit high CVE-2024-47874). CI-Run Task 114 ([`actions_log/admin/prisment-platform/72/114.log.zst`]) — Output enthält wörtlich: `Found 1 known vulnerability, ignored 2 in 1 package — starlette 0.38.6 CVE-2024-47874 0.40.0` und `❌ Failure - Main pip-audit (CVE blocks)` → `🏁 Job failed`. Damit ist der harte Fail nicht aus Konfig-Lesung abgeleitet, sondern in der Live-Pipeline bewiesen. Revert per `e3c68e0`. Spec-Akzeptanzkriterium Bündel 3 (Negativ-Fall) damit empirisch erfüllt.
 
 **Kontextbindung:** (a) Wenn nightly-Re-Audit in den nächsten 30 Tagen keine Mail an info@prisment.de erzeugt, ist die Mailer-Konfiguration empirisch bestätigt. (b) Wenn ein CVE-Update später `--ignore-vuln`-Einträge in `ci.yml` obsolet macht, bei dieser Gelegenheit Eintrag entfernen + dokumentieren (Hygiene). (c) Wenn pwa-Migrationen neue `public.X`-Tenant-Tabellen anlegen, ohne `_apply_tenant_rls(...)` aufzurufen, sieht der CI-Smoke das nicht — Drift-Risiko. Erwägen: Pre-merge-Check, der CREATE TABLE in public-Schema gegen vorhandene RLS-Policy prüft.
 
