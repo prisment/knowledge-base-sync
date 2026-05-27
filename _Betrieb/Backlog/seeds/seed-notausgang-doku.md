@@ -6,8 +6,9 @@ risikoklasse: sicher
 status: offen
 klasse: prozess
 zugkraft: bald
-stufe: schritt
+stufe: sprung
 beruehrt: ["Plattform/Systemzustand/Sicherheit/notausgang.md (neu)", "physische Notiz an sicherem Ort (außerhalb Repo)"]
+autonom_ziehbar: ja
 stand: 2026-05-26
 erzeugt_durch: "Phase-7-Atomisierung HAERTUNGS_SPEC 7.10"
 ---

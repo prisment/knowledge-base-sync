@@ -6,8 +6,9 @@ risikoklasse: sicher
 status: offen
 klasse: wartung
 zugkraft: bald
-stufe: schritt
+stufe: sprung
 beruehrt: ["/opt/infrastructure/environment_a/scripts/backlog/next-spec-id.py"]
+autonom_ziehbar: ja
 stand: 2026-05-26
 erzeugt_durch: "PLAT-030 Spec-Anlage — ID-Kollision mit untracked PLAT-029_SPEC_pg_hba_haerten.md aufgedeckt"
 ---

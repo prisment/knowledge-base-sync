@@ -6,8 +6,9 @@ risikoklasse: sicher
 status: offen
 klasse: wartung
 zugkraft: irgendwann
-stufe: schritt
+stufe: sprung
 beruehrt: ["/etc/systemd/resolved.conf", "evtl. Container-DNS-Konfig"]
+autonom_ziehbar: ja
 stand: 2026-05-26
 erzeugt_durch: "Phase-7-Atomisierung ROADMAP_cf_migration Phase-7-Backlog"
 ---
