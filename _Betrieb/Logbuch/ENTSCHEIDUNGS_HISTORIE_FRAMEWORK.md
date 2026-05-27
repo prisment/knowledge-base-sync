@@ -1076,3 +1076,19 @@ Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → W
 - Wenn Kanban-Option-A im Alltag zu umständlich wirkt (Mensch verschiebt Karten, nichts passiert maschinell), eigener Mini-Spur-Zyklus für eine bessere Brücke (z. B. Skript, das nach Kanban-Edit den Mensch-Intent als Vorschlag in den Chat hebt).
 - Wenn der Mensch nach drei Wochen das Dashboard nicht mehr öffnet, hat die Mensch-Sicht ihren Job nicht gemacht — Annahmen revidieren.
 >>>>>>> origin/main
+
+## E58 — Architekten-Protokoll als eigenes Verfassungs-Modul + Autonomie-Block stufengetrennt (ARCH-PROTO, 2026-05-28)
+
+**Warum:** Chat-Architekt (Claude Desktop via MCP) und Claude Code (CLI) brauchten eine klar geschriebene Schnittstelle — Pull-Pflichten, Schreib-Zonen, Frage-/Antwort-Block-Formate, Use Cases UC1–UC5. Bisher als verstreutes Erfahrungswissen unterwegs, jetzt verfassungsfest. Parallel hatte der Autonomie-Block in CLAUDE-global pauschal für alle Stufen „kein Nachfragen" gesagt — das konnte das neue Stufungs-Reasoning aus dem Identitäts-Abschnitt aushebeln.
+
+**Was entschieden:**
+- **Eigenständiges Modul statt Anhang in 00_Iterationszyklus.md.** Der Architekt hatte das selbst als Vote markiert; Modul 00 ist schon dicht genug. Datei trägt die Nummer **06**, nicht 04 wie im Brief vorgeschlagen — 04 (`Sicherheits-Prinzipien`) und 05 (`Agent-Sicherheit`) waren belegt. Cross-References im Modul und in `CLAUDE-global.md` zeigen entsprechend auf 06.
+- **Drei neue Verzeichnisse mit `.gitkeep`:** `_Betrieb/Architekt-Inbox/` (UC2-Fragen), `_Betrieb/Architekt-Drafts/` (Chat-Architekt-Schreibzone für Nicht-Specs), `_Archiv/Architekt-Entscheidungen/` (Frage-Datei + Antwort-Block nach Umsetzung gemeinsam archiviert).
+- **Autonomie-Block in `_Betrieb/CLAUDE-global.md` aufgeteilt:** Stufe Schritt bleibt „kein Nachfragen"; Stufe Sprung/Spur greift auf Architekten-Protokoll UC2 zurück, wenn ein deutlich besserer Weg auffällt oder die Anweisung intern widersprüchlich ist. Routinige Mehrstufigkeit ohne Gabelung läuft weiterhin still durch.
+- **Direkt auf `main` statt Worktree.** Architekt hat explizit „mach einfach einen Sprung" gesagt, Inhalt war vollständig spezifiziert (Spec-im-Chat-Mechanik analog). Globale `~/.claude/CLAUDE.md` selbst nicht angefasst — Sync ist Architekten-Hand.
+
+**Kontextbindung — Revisions-Trigger:**
+- Wenn das UC2-Inbox-Verfahren in den ersten Anwendungen mehr Reibung erzeugt als nutzt (z. B. Frage-Datei + Commit + Push für eine Ja/Nein-Frage), das Kurz-Format („=== FRAGE ===") als Default schärfen oder Inline-Chat-Frage für triviale Klärungen erlauben.
+- Wenn die Sitzungsbeginn-Stand-Meldung des Chat-Architekten als Lärm empfunden wird, auf Opt-in oder reduzierte Form (nur Commit-Hash + letzter Eintrag) reduzieren.
+- Wenn die Verfassungs-Nummerierung 06 thematisch stört (Architekten-Protokoll ist semantisch eher Kommunikations-Modul als Sicherheits-Folge), Umbenennung mit `git mv` plus Cross-Reference-Sweep.
+- Wenn UC4 (Spec-Korrektur durch Architekten während offenem Worktree) im ersten echten Fall am Rebase-Konflikt scheitert, Verfahren aus Skill `worktree-merge-konflikt` schärfen oder eigenen Sub-Use-Case ergänzen.

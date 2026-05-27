@@ -13,10 +13,11 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 
 Aktive Missionen aus `_Betrieb/Missionen/00_aktive-missionen.md`. Seeds ohne Mission stehen in den Geltungsbereich-Tabellen unten.
 
-### Mission: live-gang (8)
+### Mission: live-gang (9)
 
 | Datei | Titel | geltungsbereich | klasse | zugkraft | status |
 |-------|-------|-----------------|--------|----------|--------|
+| `seeds/seed-test-umgebung-neu-secrets.md` | Test-Umgebung wieder aufbauen: test.app.prisment.de neu — intern-only, eigene Secrets, eigene Test-DB | plattform | security | bald | offen |
 | `seeds/seed-data-integrity-agents.md` | Data-Integrity-Architektur für LangGraph-Agents (zentrale Datenpunkt-Definition + Verifikation + definierte Übergaben) | prisment | qualitaet | jetzt | erledigt |
 | `seeds/seed-sma-llm-kosten-pii.md` | LLM-Kosten-Tracking + PII-Anonymisierungs-Layer in Agent-Calls | prisment | qualitaet | bald | offen |
 | `seeds/seed-sma-push-subscription-hardening.md` | Push-Subscription-Hardening: Silent Re-Subscribe + Zero-Friction-Onboarding E2E | prisment | qualitaet | bald | offen |
@@ -43,7 +44,7 @@ Aktive Missionen aus `_Betrieb/Missionen/00_aktive-missionen.md`. Seeds ohne Mis
 | `seeds/seed-feature-flag-zustand.md` | Feature-Flag als anerkannter Zustand: gebaut, aber nicht scharf | alle | prozess | irgendwann | offen |
 | `seeds/seed-apply-autonomie-pipeline.md` | Apply-Autonomie-Politik: Custom-Build-Patch + Renovate-Merge-Rebuild nutzen die PLAT-002-Wand | plattform | prozess | bald | in_arbeit |
 
-### Mission: security-haertung-plattform (13)
+### Mission: security-haertung-plattform (12)
 
 | Datei | Titel | geltungsbereich | klasse | zugkraft | status |
 |-------|-------|-----------------|--------|----------|--------|
@@ -54,7 +55,6 @@ Aktive Missionen aus `_Betrieb/Missionen/00_aktive-missionen.md`. Seeds ohne Mis
 | `seeds/seed-logging-forensik-grundlage.md` | Logging/Forensik-Grundlage: CF-Access-Logs Logpush + Postgres log_connections + Traefik accessLog | plattform | security | bald | offen |
 | `seeds/seed-n8n-migration-2-21.md` | n8n-Migration 2.13.3 → aktuelle Upstream-Version (erster echter Pipeline-Lauf) | plattform | security | bald | offen |
 | `seeds/seed-pg-hba-local-haerten.md` | pg_hba.conf: local all all trust ersetzen (In-Prozess-Bypass schließen) | plattform | security | bald | offen |
-| `seeds/seed-test-umgebung-neu-secrets.md` | Test-Umgebung wieder aufbauen: test.app.prisment.de neu — intern-only, eigene Secrets, eigene Test-DB | plattform | security | bald | offen |
 | `seeds/seed-pwa-user-superuser-entzug.md` | pwa_user-Restschuld: SUPERUSER entziehen (impliziert noch BYPASSRLS) | plattform | qualitaet | bald | offen |
 | `seeds/seed-diun-rueckbau.md` | Diun zurückbauen, sobald nightly Stabilität bewiesen hat | plattform | wartung | irgendwann | offen |
 | `seeds/seed-base-image-majors.md` | Base-Image-Major-Sprünge: Node 20→22, Python 3.12→3.13, Alpine-Pin | plattform | wartung | irgendwann | offen |
@@ -79,7 +79,7 @@ Aktive Missionen aus `_Betrieb/Missionen/00_aktive-missionen.md`. Seeds ohne Mis
 | `seeds/seed-logging-forensik-grundlage.md` | Logging/Forensik-Grundlage: CF-Access-Logs Logpush + Postgres log_connections + Traefik accessLog | security-haertung-plattform | security | bald | kritisch | spur | offen | - |
 | `seeds/seed-n8n-migration-2-21.md` | n8n-Migration 2.13.3 → aktuelle Upstream-Version (erster echter Pipeline-Lauf) | security-haertung-plattform | security | bald | kritisch | sprung | offen | - |
 | `seeds/seed-pg-hba-local-haerten.md` | pg_hba.conf: local all all trust ersetzen (In-Prozess-Bypass schließen) | security-haertung-plattform | security | bald | sicherheitskritisch-akut | spur | offen | PLAT-029_SPEC_pg_hba_haerten |
-| `seeds/seed-test-umgebung-neu-secrets.md` | Test-Umgebung wieder aufbauen: test.app.prisment.de neu — intern-only, eigene Secrets, eigene Test-DB | security-haertung-plattform | security | bald | sicher | spur | offen | seed-code-security-checks, seed-data-integrity-agents |
+| `seeds/seed-test-umgebung-neu-secrets.md` | Test-Umgebung wieder aufbauen: test.app.prisment.de neu — intern-only, eigene Secrets, eigene Test-DB | live-gang | security | bald | sicher | spur | offen | seed-code-security-checks, seed-data-integrity-agents |
 | `seeds/seed-pwa-user-superuser-entzug.md` | pwa_user-Restschuld: SUPERUSER entziehen (impliziert noch BYPASSRLS) | security-haertung-plattform | qualitaet | bald | kritisch | schritt | offen | - |
 | `seeds/seed-apply-autonomie-pipeline.md` | Apply-Autonomie-Politik: Custom-Build-Patch + Renovate-Merge-Rebuild nutzen die PLAT-002-Wand | framework | prozess | bald | kritisch | spur | in_arbeit | PLAT-002_SPEC |
 | `seeds/seed-dsgvo-dpa-cloudflare.md` | DSGVO-Auftragsverarbeitungsvertrag mit Cloudflare unterzeichnen | kunde-2 | prozess | bald | sicher | schritt | offen | - |
