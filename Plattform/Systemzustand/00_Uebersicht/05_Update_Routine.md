@@ -191,12 +191,15 @@ und `zugkraft: bald` (bzw. `dringend` bei Major). Der Pre-Commit-Hook
 (10_Kunden/-Wand, sha256-Konsistenz für Steuerdatei) greift wie für
 alle Repo-Commits.
 
-## 9. Was offen ist
+## 9. Was offen ist (Stand 2026-05-27 nach PLAT-026)
 
-- **PLAT-026** (Apply-Autonomie-Politik) — schaltet Auto-Merge in Renovate (oder Auto-Rebuild),
-  freigegebene Allowlist-Stellen für Custom-Build-Patch-Apply, OS-Klasse-1b-Autonomie.
 - **n8n-Migration 2.13.3 → 2.21.x** — eigener Seed `seed-n8n-migration-2-21`.
-- **Reboot-Autonomie nach Quiet-Hours** — eigener Backlog-Eintrag nach PLAT-026.
-- **Helfer-Skript-Installation `nightly-system-status`** — als root: `sudo bash
-  /home/claude-deploy/git/knowledge-base/_Betrieb/Skripte/nightly/install-system-status-as-root.sh`
-  (kopiert nach `/usr/local/sbin/`, erweitert Allowlist, macht Trockenlauf).
+- **Reboot-Autonomie nach Quiet-Hours** — eigener Folge-Seed nach PLAT-026.
+- **PWA/Agents-Session-Preservation** — Folge-Seed `seed-zero-downtime-pwa-agents`
+  (Klasse C, nicht dringend, langgraph-Checkpointer macht State persistent).
+- **promote_image.sh service-name-Bug** für n8n + ollama-proxy — apply-pending-rebuilds.sh
+  umgeht ihn heute via manuellem `docker tag` + `compose up --force-recreate`.
+  Folge-Schritt: promote_image.sh erweitern um compose_service als optionalen 2. Arg.
+- **sign_nacht_aufgaben.sh worktree-relativ machen** — heute hardcoded auf
+  `/home/claude-deploy/git/knowledge-base/`. Im wt-Worktree muss manuell signiert
+  werden. Folge-Schritt.

@@ -3,7 +3,7 @@ typ: backlog_seed
 titel: "Apply-Autonomie-Politik: Custom-Build-Patch + Renovate-Merge-Rebuild nutzen die PLAT-002-Wand"
 geltungsbereich: plattform
 risikoklasse: kritisch
-status: offen
+status: in_arbeit
 klasse: prozess
 zugkraft: bald
 stufe: spur

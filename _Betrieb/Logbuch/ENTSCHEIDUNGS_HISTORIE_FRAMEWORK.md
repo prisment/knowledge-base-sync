@@ -893,3 +893,34 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.
+
+---
+
+## E51 — Apply-Autonomie-Pipeline mit Service-Registry als SSOT (PLAT-026, 2026-05-27)
+
+**Auslöser:** PLAT-002 (PreToolUse-Hook) hat die Sicherheits-Wand gebaut, PLAT-021 hat die Drift-Sicht etabliert — der Apply-Pfad selbst blieb aber betreut: Architekt klickt manuell oder beauftragt für jeden Build/Promote. Bei Solo-Architekt-Setup mit passivem Mail-Lese-Kanal entsteht Reibung. Architekten-Ziel: alles Patch/Minor automatisch außerhalb Geschäftszeiten (05:00–24:00), Major immer manuell.
+
+**Entschieden:**
+
+(1) **Service-Registry als JSON-SSOT statt YAML.** Generator-Skripte sind Python-Stdlib (kein PyYAML, weil CLAUDE.md `pip install` auf Host verbietet). JSON-Parsing ist `json.load`-Einzeiler; YAML hätte PyYAML als Dependency gebraucht. Schema-Doku als Markdown daneben.
+
+(2) **Verriegelung über `/var/lock/system-mutation.lock` mit Mixed-Group-Permission.** Backup läuft als root, Apply als claude-deploy. Lock-Datei wird `root:claude-deploy 0664` — beide schreiben. Alternativen: (a) Lock in /tmp (verloren nach Reboot — OK aber traditionsbruch), (b) Lock in $HOME/.cache (root könnte schreiben, aber semantisch verkehrt — System-Lock gehört in /var/lock). Gewählt: (a)-Pragmatismus + Mixed-Group via install-Skript.
+
+(3) **Mensch-Schritte als Bündel 0a/0b vor autonomer Sequenz, nicht eingestreut.** Aus PLAT-026-Spec-Diskussion erkanntes Anti-Pattern (siehe seed-machbarkeit-anti-stop-pflicht): wenn Mensch-Mitwirkung mitten in der Bündel-Liste sitzt, ist es versteckter Stop-Punkt. Architekten-Direktive PLAT-025 „kritisch ≠ stop" gilt — kritisch heißt Vorsichtsmaßnahmen (Backup, Health-Check, Rollback bereit), nicht Pause nach jedem Bündel.
+
+(4) **Hard-Cutoff 04:55 + Geschäftszeit-Schutz im Apply-Skript, nicht nur Cron.** Cron-Drift, Backup-Überlänge oder manueller Aufruf könnten Apply in Geschäftszeit drücken. Apply-Skripte prüfen Uhrzeit beim Start, brechen bei ≥04:55 ab + Auto-Seed. Belt-and-suspenders gegen Container-Restart vor Nutzern.
+
+(5) **Coverage-Audit nutzt vorhandene raise-seed-Mechanik, keine eigene Sichtbarkeits-Schicht.** Audit findet Lücken, ruft raise-seed.py, Backlog-Seed taucht in 00_UEBERSICHT.md auf. Architekt sieht ihn bei nächster Planung, ohne Reports zu lesen. Verworfen: zweite Mail-Pipeline für Audit-Befunde (Duplikat zu Renovate-γ, zusätzlicher Failure-Mode).
+
+(6) **Renovate-Auto-Merge mit stabilityDays:3 für Minor, 0 für Patch, never für Major.** stabilityDays-Fenster gibt CVE-Disclosures gegen die Update-Version Zeit zu erscheinen. 3 Tage ist Bauchgefühl-Default (Architekt-bestätigt). Verworfen: 7 Tage (zu langsam), 0 Tage für alles (zu riskant bei Minor).
+
+(7) **PWA/Agents-Session-Preservation ausgelagert als Folge-Seed, nicht in PLAT-026.** LangGraph-Checkpointer macht Agent-State persistent, Browser-JWT überlebt Restart. Restrisiko: aktiver Stream im Moment des Restart → Antwort bricht ab, manueller Reload. Wahrscheinlichkeit nachts 03:30–04:00 gering. Akzeptiert.
+
+(8) **Reboot-Autonomie ausgelagert als Folge-Seed, nicht in PLAT-026.** Braucht eigene Quiet-Hours-Disziplin + Pre-Check „kein Apply-Bündel in letzten 24h" + Post-Reboot-Verify (existiert schon). Eigener kleiner Zyklus nach PLAT-026 wirksam.
+
+**Restschulden, ehrlich notiert:**
+- `promote_image.sh` Service-Name-Bug für n8n + ollama-proxy (image-name ≠ compose-service): apply-pending-rebuilds.sh umgeht ihn via manuellem `docker tag` + `compose up --force-recreate`. Promote-Skript-Erweiterung um optionalen 2. Arg ist Folge-Schritt.
+- `sign_nacht_aufgaben.sh` hardcoded auf main-Pfad — im Worktree muss manuell signiert werden. Folge-Schritt.
+- Bündel 10/11 (E2E-Beweise: forcierter Drift + forcierter Build-Bruch) brauchen Nacht-Cycles nach Cron-Aktivierung. Werden erst nach Architekt-Mitwirkung gestartet, Auswertung am Morgen danach.
+
+**Kontextbindung:** (a) Wenn Coverage-Audit > 3 Lücken in einer Nacht meldet, ist die Apply-Routine zu pausieren — strukturell verdächtig (Registry verschoben, Generator kaputt). (b) Wenn Auto-Rollback für > 1 Service in einer Nacht feuert, ist Apply-Cron zu pausieren — vermutlich systematischer Build-Bruch. (c) Wenn pwa-* oder langgraph-*-Restart Nutzer-Streams bemerkbar reißt, Seed `seed-zero-downtime-pwa-agents` priorisieren. (d) Wenn Backup-Laufzeit Richtung 25 min wandert, Apply-Fenster-Verschiebung neu diskutieren.
