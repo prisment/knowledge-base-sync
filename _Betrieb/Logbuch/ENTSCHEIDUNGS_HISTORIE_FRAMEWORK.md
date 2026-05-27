@@ -890,6 +890,60 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E51 — Skalierungs-Härtung vor Mandant #2 abgeschlossen (PRIS-020, 2026-05-27)
+
+**Auslöser:** `seed-sma-skalierungs-haertung-mandant-2` — fünf technische Schulden (A4 Cron-Idempotency, A5 Per-Caller-Secrets, A6 API-Versionierung, A7 Indizes, A8 Pool-Konsolidierung) als Vorbereitung auf Mandant #2. Knüpft an E45 an („Eintrittskarte für Kunde #2 gestellt").
+
+**Entscheidung:** Spec PRIS-020 als Spur über 5 Bündel ausgeführt — alle Akzeptanzkriterien grün. A7 entfiel komplett (Indizes existieren bereits live, sogar in feinerer Partial-WHERE-Form). Vier substantielle Bündel umgesetzt:
+
+(1) **A4 sessions UNIQUE + Pre-Check mit Reaper.** Partial UNIQUE INDEX `(tenant_id, mode, ((started_at AT TIME ZONE 'UTC')::date)) WHERE status <> 'error'`. UTC-Cast war Pflicht für PostgreSQL IMMUTABLE-Anforderung. Reap-Schwelle 2h (Spec-Parameter) für `wip > 2h → error` schließt das „verwaister-wip blockiert permanent"-Problem strukturell auf der Status-Ebene über dem `error`-Fall. Idempotente 200-Response statt 409 für Cron-Doppel-Trigger.
+
+(2) **A5 Per-Caller-Secrets mit Doppellauf + Wrapper-Refactor + harter Drop-Beweis.** 7 Per-Caller-Secrets statt ein gemeinsames. Server-Mounts: alle 6 Server-Container mounten alle 7 Caller-Secrets für Inbound-Validation; n8n als pure Caller nur sein eigenes. Doppellauf: `X-Agent-Caller`-Header schaltet per_caller, Legacy als Fallback. Audit-Log mit `auth_path` + `caller_id` strukturiert.
+
+Substantielles Sub-Verfahren beim Drop, vom Architekten als Auflage gesetzt (Lehre aus E40): nicht 30 min „stille Beobachtung", sondern aktiver Beweis über alle 6 nicht-helpdesk Caller, dass jeder mind. 1× per_caller im Audit-Log auftaucht UND 0 legacy-Treffer. helpdesk strukturell aus dem Legacy-Risiko ausgeschlossen (kein auth-pflichtiger Outbound). 10 Trigger-Events, 10× per_caller über 6 distinct callers, 0× legacy.
+
+Mini-Erweiterung im Korridor: 8 Inline-Auth-Header-Bauten in pwa-api-Outbound durch zentralen `app/agent_auth._agent_headers()`-Wrapper ersetzt, um den Drop-Beweis von 8 unabhängigen Stellen auf 1 zu reduzieren. grep-Coverage auf 8 Stellen ist nicht laufzeit-vollständig; Wrapper macht aus „grep reicht nicht" ein „grep reicht" (1 Injection-Punkt).
+
+Negativ-Beweis nach Drop: alle 3 Legacy-Pfade liefern 403, per_caller funktioniert weiter.
+
+(3) **A6 `/api/v1/`-Prefix + 308-Redirect-Middleware.** Alle 17 Router auf `/api/v1/...`. Initial-Versuch mit catchall-Route produzierte Endlos-Loop; Middleware-Lösung sieht vollen Pfad. 308 statt 301 (methodenerhaltend). Caller-Migration: pwa-web, 6 LangGraph-Outbound-Stellen, 1 aktiver n8n-Workflow via API gepatcht. Pre-existing `v1_alias_middleware` vom 2026-05-14 entfernt — siehe E52 für die Reihenfolge-Lehre.
+
+(4) **A8 DB-Name `agent_data` + Common-Core-Extraktion + F821-Cleanup.** G1-Faktencheck zeigte: `pwa_app` existierte gar nicht — der PLAT-029-Side-Befund war Compose-toter-Wunsch, Cut = No-Op auf Datenebene. G2-Faktencheck zeigte: 4 `db_sync.py`-Kopien NICHT byte-identisch (5 divergente + 4 agent-only Funktionen). Architekten-Entscheidung Option C (Common-Core-Extraktion) statt A („interview gewinnt") oder B („Union", ändert content-Schreibverhalten ungewollt). shared/db_sync_common.py mit 34 byte-identischen Funktionen (`_tenant_conn` byte-identisch über alle 4 explizit verifiziert — kein PRIS-017-Loch). F821-Dead-Code gestrichen.
+
+G3 PgBouncer: 5/100 + 6/100 Backends → kein Druck, entfällt. Folge-Seed mit klarem Trigger (`>60 Backends`).
+
+**Restschulden, ehrlich notiert:**
+- **Bruch-Fenster 13:42–14:02 UTC** (20 min, A6-Router-Deploy vor Alias-Cleanup): empirisch folgenlos. Lehre als E52.
+- **write_session-Drift content vs. interview** (E50): bleibt bewusst stehen.
+- **Archivierter n8n-Workflow YRMUaRbrtsC40CWr**: Repo-Patch wirkungslos für DB-State-Reaktivierung. Folge-Seed `seed-n8n-archived-workflow-cleanup` mit TOT→löschen.
+- **F821-Cleanup-Verfahren via AST**: scripts müssen `ast.parse()` vor dem Schreiben validieren — Python 3.12.13 im Container lehnt em-dash/en-dash/→/← in docstrings ab.
+
+**Kontextbindung:** (a) Wenn Mandant #2 onboarded + 30 Tage ohne Auth-Fehler läuft → empirisch bestätigt. (b) Bei 60+/100 Backends → PgBouncer-Seed aktivieren. (c) Bei n8n-archiv-Reaktivierung → 403 (Legacy strukturell tot), Workflow muss erst auf Per-Caller updaten.
+
+---
+
+## E52 — Reihenfolge-Lehre: Alias-Cleanup gehört VOR den Router-Prefix-Cut (PRIS-020, 2026-05-27)
+
+**Auslöser:** Bei PRIS-020 A6-Deploy entstand ein 20-min Bruch-Fenster (13:42–14:02 UTC, Live-Traffic auf 404). Ursache: Router-Prefixe auf `/api/v1/...` umgestellt + 308-Redirect eingebaut + pwa-api promotet, BEVOR die pre-existing `v1_alias_middleware` (vom 2026-05-14, rewriting `/api/v1/X` → `/api/X`) entfernt wurde. In der Lücke: Alias rewriting `/api/v1/X` zu `/api/X` traf nicht mehr auf existierende Routes → 404. DB-Forensik empirisch folgenlos (sessions/approval_audit/material_spec_fallback_log alle 0 Einträge im Fenster), aber das ist Glück.
+
+**Entscheidung:** Reihenfolge-Lehre als generalisierbares Pattern: **bei jeder Prefix-Migration mit Alt-Alias gehört der Alias-Cleanup VOR den Router-Prefix-Cut**, nicht danach. Schwester-Pattern zu E40 (A3-Migration `onboarded_at`-Lücke, 12 Tage unentdeckt).
+
+**Verfahrens-Schritt für künftige Prefix-Migrationen:**
+1. **Erst:** existierenden Alt-Alias suchen + dokumentieren.
+2. **Dann:** Alt-Alias entfernen ODER Alt-Alias-Direction umkehren (von „Neu→Alt"-Rewrite zu „Alt→Neu"-Redirect), BEVOR die neuen Routen unter dem neuen Prefix live gehen.
+3. **Erst dann:** Router-Prefix-Cut.
+4. **Zuletzt:** Caller-Migration.
+
+In PRIS-020 A6 wäre die richtige Reihenfolge gewesen: (a) `v1_alias_middleware` zuerst entfernen, (b) Router-Prefixe auf `/api/v1/` mit neuer 308-Redirect-Middleware, (c) Caller-Migration. Stattdessen lief (b)+(c) vor (a).
+
+**Warum generalisierbar:** jede Codebase, die schon mal eine partielle Vorbereitung auf eine Prefix-Migration hatte (Schicht 1: Alias-Layer eingebaut, Schicht 2: Cut auf neue Prefixe noch nicht erfolgt) trägt diese Falle. Die Existenz des Alt-Alias ist KEIN Schutz beim Cut, sondern eine ZUSÄTZLICHE Bruchstelle wenn die Reihenfolge falsch ist.
+
+**Verzahnung mit E40:** beide Pattern sind „stiller Bruch durch falsche Reihenfolge". E40: stilles Versagen, bis das Feature gebraucht wird. E52: stilles Versagen während des Migrations-Fensters selbst. E40 ist gefährlicher (länger unentdeckt), E52 ist häufiger (jede Prefix-Migration ist potenziell betroffen).
+
+**Kontextbindung:** Wenn das Pattern ein zweites Mal in einem nicht-PRIS-020-Kontext auftritt, Verfassung 03 (Code-Standards) um konkrete Verfahrens-Regel ergänzen. Heute noch nicht in die Verfassung — Verfassung-Lockerung-Pattern aus PLAT-028-Skill-Lifecycle: erst beim dritten Auftreten bauen.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.

@@ -42,13 +42,13 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-base-image-versionen.md` | Base-Image-Versionen aktualisieren (Node-LTS, Python-Base, etc.) | wartung | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-fastapi-starlette-cve-bump.md` | fastapi 0.115 → 0.136 Cross-Minor-Bump (schließt 3 starlette-CVEs) | security | spaeter | sicher | sprung | offen | - |
 | `seeds/seed-langchain-core-1x-bump.md` | langchain-core 0.3.x → 1.x Bump in langgraph-helpdesk | security | spaeter | sicher | sprung | offen | - |
+| `seeds/seed-pgbouncer-customer-postgres-bei-druck.md` | PgBouncer vor customer_postgres — bei Connection-Druck einbauen | wartung | spaeter | kritisch | spur | offen | PRIS-020_ABSCHLUSS |
 
 ## Geltungsbereich: prisment
 
 | Datei | Titel | klasse | zugkraft | risikoklasse | stufe | status | abhängig von |
 |-------|-------|--------|----------|--------------|-------|--------|--------------|
 | `seeds/seed-sma-dsgvo-sammel.md` | DSGVO-Konformität SMA — Sammel-Spec vor erstem zahlenden Mandanten | security | jetzt | kritisch | spur | offen | - |
-| `seeds/seed-sma-skalierungs-haertung-mandant-2.md` | Skalierungs-Härtung vor Mandant #2 (Cron-Idempotency, Per-Caller-Secrets, API-Versionierung, Indizes, Pool-Konsolidierung) | qualitaet | jetzt | kritisch | spur | offen | - |
 | `seeds/seed-data-integrity-agents.md` | Data-Integrity-Architektur für LangGraph-Agents (zentrale Datenpunkt-Definition + Verifikation + definierte Übergaben) | qualitaet | jetzt | sicher | spur | erledigt | - |
 | `seeds/seed-sma-llm-kosten-pii.md` | LLM-Kosten-Tracking + PII-Anonymisierungs-Layer in Agent-Calls | qualitaet | bald | sicher | sprung | offen | - |
 | `seeds/seed-sma-push-subscription-hardening.md` | Push-Subscription-Hardening: Silent Re-Subscribe + Zero-Friction-Onboarding E2E | qualitaet | bald | sicher | sprung | offen | - |
@@ -70,6 +70,7 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 
 | Datei | Titel | klasse | zugkraft | risikoklasse | stufe | status | abhängig von |
 |-------|-------|--------|----------|--------------|-------|--------|--------------|
+| `seeds/seed-n8n-archived-workflow-cleanup.md` | Archivierter n8n-Workflow YRMUaRbrtsC40CWr aus DB löschen (Pre-PRIS-020-Auth) | wartung | bald | sicher | schritt | offen | PRIS-020_ABSCHLUSS |
 | `seeds/seed-assistant-agent.md` | Assistant-Agent: handelnder Agent an Geschäftsprozessen (eigenes Sicherheitsmodell) | feature | irgendwann | kritisch | spur | offen | - |
 
 ---
