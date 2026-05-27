@@ -31,9 +31,7 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-pwa-user-superuser-entzug.md` | pwa_user-Restschuld: SUPERUSER entziehen (impliziert noch BYPASSRLS) | qualitaet | bald | kritisch | schritt | offen | - |
 | `seeds/seed-apply-autonomie-pipeline.md` | Apply-Autonomie-Politik: Custom-Build-Patch + Renovate-Merge-Rebuild nutzen die PLAT-002-Wand | prozess | bald | kritisch | spur | in_arbeit | PLAT-002_SPEC |
 | `seeds/seed-dsgvo-dpa-cloudflare.md` | DSGVO-Auftragsverarbeitungsvertrag mit Cloudflare unterzeichnen | prozess | bald | sicher | schritt | offen | - |
-| `seeds/seed-notausgang-doku.md` | Notausgang-Doku: schriftliche Rescue-System- und Telefon-Tailscale-Prozedur | prozess | bald | sicher | sprung | offen | - |
 | `seeds/seed-n8n-execution-data-pruning.md` | n8n: EXECUTIONS_DATA_PRUNE aktivieren (3.8 GB DB durch ungebremstes execution_data) | wartung | bald | sicher | schritt | offen | - |
-| `seeds/seed-next-spec-id-working-tree.md` | next-spec-id: untracked Working-Tree-Specs einbeziehen, damit IDs nicht kollidieren | wartung | bald | sicher | sprung | offen | - |
 | `seeds/seed-cve-watchdog-regel-b.md` | Cloudflare WAF: CVE-2025-55182 Watchdog-Regel B mit gehärteter Expression | security | irgendwann | sicher | schritt | offen | - |
 | `seeds/seed-waf-owasp-block-modus.md` | Cloudflare WAF OWASP Core Ruleset von 'log' auf 'block' umstellen (nach Live-Tuning) | security | irgendwann | sicher | schritt | offen | - |
 | `seeds/seed-foundation-repo.md` | Foundation-Stack als zweites Git-Repo (Versionierung der Traefik/Foundation-Configs) | prozess | irgendwann | sicher | schritt | offen | - |
@@ -42,7 +40,6 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | `seeds/seed-diun-rueckbau.md` | Diun zurückbauen, sobald nightly Stabilität bewiesen hat | wartung | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-base-image-majors.md` | Base-Image-Major-Sprünge: Node 20→22, Python 3.12→3.13, Alpine-Pin | wartung | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-base-image-versionen.md` | Base-Image-Versionen aktualisieren (Node-LTS, Python-Base, etc.) | wartung | irgendwann | sicher | sprung | offen | - |
-| `seeds/seed-dns-cache-resolved-hairpin.md` | systemd-resolved Cache: Origin-IP statt CF-Edge bei Hairpin-Aufrufen vom Server selbst | wartung | irgendwann | sicher | sprung | offen | - |
 | `seeds/seed-fastapi-starlette-cve-bump.md` | fastapi 0.115 → 0.136 Cross-Minor-Bump (schließt 3 starlette-CVEs) | security | spaeter | sicher | sprung | offen | - |
 | `seeds/seed-langchain-core-1x-bump.md` | langchain-core 0.3.x → 1.x Bump in langgraph-helpdesk | security | spaeter | sicher | sprung | offen | - |
 

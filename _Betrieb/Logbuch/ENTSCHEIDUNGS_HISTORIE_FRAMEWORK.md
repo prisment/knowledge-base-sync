@@ -934,3 +934,29 @@ Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → W
 **Risikoklasse `kritisch` über Aspekt 3** (Branch-/Tree-/Auth-Topologie). Begründung explizit nicht weg-urteilbar: der Worker IST die Mechanik, mit der zukünftige Zyklen unbeaufsichtigt laufen. Dass er nur `sicher`-Specs zieht, senkt die Klasse der Bau-Spur nicht. Sieben Bündel, davon Bündel 5+6 kritisch (mit Pflicht-Vorsicht und Rollback-Anker `pre-worker-pilot`), 6b in zwei Sub-Bündel + ein sicherheitskritisch-akut-Verfassungs-Schritt (6b/Wortlaut) zerlegt nach Architekten-Auflage.
 
 **Kontextbindung — Revisions-Trigger:** (a) Wenn der Ketten-Kehraus im Pilot einen Anker falsch wegräumt (ein Folge-Glied wird dadurch fälschlich als „Vorgänger fehlt" klassifiziert), ist die δ-Wahl zu revidieren — entweder Rückfall auf α (Seed bleibt immer in `seeds/`) oder Worker-Erweiterung um Archiv-Lese-Fallback. Tag `pre-worker-pilot` als Ein-Befehl-Rückweg gesetzt (platform `0cd0360e83`, knowledge-base `beafd16cf4`). (b) Wenn die fail-safe Blocker-Erkennung im Pilot zu viele falsche Alarme produziert (Marker-Liste zu breit), nicht die Marker-Liste schrumpfen — sondern Pilot-Pause und Architekten-Entscheidung. Stille Drift schlägt False-Positive. (c) Wenn die Subprocess-Claude-Übergabe Stabilitätsprobleme zeigt (Session-Drift, Auth, Output-Kapazität), Eskalation an Architekten — das wäre Auth-Topologie-Frage, nicht Worker-internal-Fix. (d) `max_concurrent_human_sessions: 1` als Default ist Annahme; wenn Ratelimit im Pilot trägt, manuell hochsetzen — niemals stilles Hochsetzen durch den Worker selbst.
+
+## E53 — next-spec-id sieht Working-Tree (PLAT-036, 2026-05-27)
+
+**Auslöser:** Beim Anlegen von PLAT-030 hatte `next-spec-id PLAT` „029" geliefert, obwohl eine `PLAT-029_SPEC_pg_hba_haerten.md` bereits als untracked Datei lag (noch nicht committet) — Folge: manuelle Umnummerierung. Wird mit zunehmender Spec-Frequenz häufiger.
+
+**Entschieden:** `scripts/backlog/next-spec-id.py` zieht jetzt zusätzlich zu Commits/Branches/Commit-Messages auch untracked und (un)staged-modified Spec-Dateien aus allen aktiven Worktrees in den ID-Pool. Quellen pro Worktree: `git ls-files --others --exclude-standard`, `git diff --name-only`, `git diff --name-only --cached`. Worktree-Enumeration via `git worktree list --porcelain` (robust gegen neue Spuren — keine Hartcode-Liste).
+
+**Warum so:** Additive Quelle, kein Verhaltens-Rückbau, stdlib only — passt zum Sprung/sicher-Charakter der Spec. Auch `--cached` mit drin, weil „staged" semantisch dieselbe Lücke ist wie „modified": Datei existiert im Working-Tree, aber nicht im HEAD-Tree.
+
+**Verworfene Alternative:** Reservierungs-Marker / Lock-Datei gegen Race in derselben Sekunde — bleibt manueller Korrekturpfad (Spec-Nicht-Teil-Abschnitt). Schmälere Reibung, eigener Skill-Hinweis trägt den seltenen Fall.
+
+**Folge-Befund (nicht hier behoben):** Der bestehende Branch-/Tree-Scan über `\bPLAT-(\d+)\b` matcht Spec-IDs aus Datei-Pfaden wie `PLAT-036_SPEC_…md` nicht, weil `\b` zwischen Ziffer und `_` fehlt. Heute folgenlos, weil Commit-Messages und die neue Working-Tree-Quelle die Lücke füllen — wenn das je weh tut, eigener Seed.
+
+**Kontextbindung:** (a) Wenn nach Aktivierung des Workers (PLAT-035) das Skript häufiger parallel von zwei Tickern aufgerufen wird, könnte das Race-Fenster zwischen Aufruf und Commit messbar werden — dann den Marker-/Lock-Pfad neu denken. (b) Wenn die in-Erkenntnisse benannte Datei-Pfad-Regex-Schwäche eine Kollision im realen Lauf produziert, das Pflaster auf den Branch-/Tree-Scan ziehen — wäre derselbe Mechanismus auf eine zweite Quelle.
+
+## E54 — Notausgangs-Doku schriftlich (PLAT-037, 2026-05-27)
+
+**Auslöser:** Phase 0 verlangt zwei unabhängige Notausgangs-Pfade. Hetzner Rescue und Telefon-Tailscale sind beide getestet, aber nur als Erfahrungswissen im Kopf. Im Ernstfall (Notebook tot, Tailscale-Key abgelaufen, Lockdown-Bug) ist Google-Suche keine Option. Lückenschluss als `sprung`/`sicher`.
+
+**Entschieden:** Neue Datei `Plattform/Systemzustand/Sicherheit/notausgang.md`. Zwei nummerierte Pfade (A = Hetzner Rescue mit Robot-URL, Login, Disk-Mount + chroot-Sequenz, Erste-Hilfe-Befehle, Rückboot; B = Telefon-Tailscale mit App-Pfaden, Re-Auth, SSH-Client-Apps, Admin-Console-Re-Key inkl. Fallback zu Pfad A). Hinweis auf physische Off-Repo-Kopie als Blockquote ganz oben. Verweis in `Plattform/Systemzustand/00_Uebersicht/00_Bereich.md` ergänzt (Spec sprach von `00_Plattform.md` — Bestands-Datei trägt den Verweis).
+
+**Warum so:** Tiefe = konkrete Befehle (z. B. `tailscale up --authkey=…`, `mount /dev/md2 /mnt` + chroot-Block) statt Vendor-Doku-Verweis — sonst hilft die Doku unter Stress nicht. Disk-Pfade als anpassbares Beispiel markiert (sonst veraltet die Doku still, sobald sich das Layout ändert).
+
+**Restschulden:** (a) Physische Kopie liegt off-repo in Architekten-Hand, nicht in dieser Spec geschlossen — Pfad 0 ist erst dann voll wirksam. (b) Disk-Layout im Rescue-Beispiel (`/dev/md2`, `/dev/md1`) auf dem prisment-Server nicht selbst verifiziert — bei nächster echter Notübung am Robot abgleichen und ggf. Schritt-Edit nachziehen. (c) Hetzner-Konsolen-Zugang (KVM-over-IP) als dritter Pfad ist explizit Folge-Seed.
+
+**Kontextbindung:** (a) Wenn beim ersten echten Rescue-Lauf das tatsächliche Disk-Layout abweicht, die `mount`-Beispiele anpassen — keine Inventur-Pflicht, sondern Stresstest-Nachzug. (b) Wenn die Tailscale-Admin-Console-URL oder die Auth-Key-Generierung sich UI-mäßig ändert, dort minimal-invasiv updaten — Doku darf knapp bleiben.

@@ -1,7 +1,7 @@
 ---
 typ: uebersicht
 geltungsbereich: plattform
-stand: 2026-05-26
+stand: 2026-05-27
 zweck: "Schneller Einstieg in den Plattform-Bereich für Mensch und Chat-Architekt. Verdichtet den Detail-Stand, ersetzt ihn nicht."
 ---
 
@@ -111,6 +111,7 @@ Verfassung 03). Die folgenden Detail-Dokus sind die maßgebliche Quelle:
 
 Plus Querschnitts-Dokus:
 - [`network-topology.md`](../Geteilte-Dienste/network-topology.md) — Docker-Netze + Segmentierung
+- [`Netzwerk/dns-hairpin-cache.md`](../Netzwerk/dns-hairpin-cache.md) — systemd-resolved Hairpin-Diagnose + Lösungsvorschlag (PLAT-038, Anwendung off-spec)
 - [`gitea-tenant-struktur.md`](../Geteilte-Dienste/gitea-tenant-struktur.md) — Tenant-Repos in Gitea
 - [`backup-restore.md`](../Geteilte-Dienste/backup-restore.md) — Restic-Backup-Mechanik
 - [`Claude Code Service Dokumentation.md`](../Geteilte-Dienste/Claude%20Code%20Service%20Dokumentation.md) — Claude-Code-Setup
@@ -128,6 +129,7 @@ Plus Querschnitts-Dokus:
 | [`os-updates-runbook.md`](../Sicherheit/os-updates-runbook.md) + [`os-update-log.md`](../Sicherheit/os-update-log.md) | unattended-upgrades |
 | [`docker-update-log.md`](../Sicherheit/docker-update-log.md) | Container-Update-Verlauf |
 | [`pg_rollen_inventar.md`](../Sicherheit/pg_rollen_inventar.md) | Login-Rollen pro PG-Cluster (internal + customer) |
+| [`notausgang.md`](../Sicherheit/notausgang.md) | Notausgangs-Doku — Hetzner Rescue + Telefon-Tailscale (physische Kopie Pflicht) |
 
 ## Was sich gegenüber pre-CF-MIG geändert hat (Stand: Mai 2026)
 
