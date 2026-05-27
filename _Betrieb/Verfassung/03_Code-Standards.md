@@ -45,6 +45,63 @@ Tenant-Daten leben in `agent_data.public.*`, Auth/Membership in `agent_data.auth
 
 **Verifikation:** `customer/postgres/scripts/rls_smoke.sh` spinnt ephemere DB hoch, lädt Init-Scripts, prüft 7 Aspekte (Tenant-Isolation in beide Richtungen, admin-Cross-Tenant, E39-GRANTs, Cross-Tenant-Write-Block via WITH CHECK). Smoke ist Reproduzier-Punkt für Drift-Verdacht.
 
+## Data-Integrity: Agent-Übergabe-SSOT (PRIS-019, 2026-05-27)
+
+Datenpunkte, die zwischen LangGraph-Agents fließen, leben in **einer**
+Pydantic-Definition — `langgraph/shared/contracts.py`. Die Klasse `SessionData`
+ist die Quelle für die Interview→Content-Brücke (Felder gemäß PRIS-019-Spec
+A.1-Inventur); `AnalyticsPlanHints` für Analytics→Redaktionsplan;
+`AnalyticsModeLiteral` für den Analytics-`mode`-Parameter.
+
+**Verteilung der SSOT in die Agents:** Build-Contexts sind heute pro Agent
+(kein Mono-Image). Verteilung per `scripts/sync_shared_contracts.sh` —
+kopiert die kanonische Datei vor jedem Build in alle vier
+`langgraph/<agent>/app/contracts.py`. Diese Kopien sind **nicht** direkt zu
+editieren (Header trägt entsprechende Warnung). Der CI-Job
+`contracts-ssot` (`.gitea/workflows/ci.yml`) blockiert jeden Drift.
+
+**Eingangskonvertierung am SSOT, nicht im Caller:** JSONB/Array-Felder, die in
+der DB als `NULL` landen können (Migration ohne `DEFAULT`), werden über
+Pydantic-`field_validator(mode='before')` auf leere Defaults gemappt
+(`None → {}` / `None → []`). Konvertierungslogik liegt am Modell-Eingang,
+nicht in jedem `read_session`/`load_session_data`-Caller.
+
+**Runtime-Gate:** Konsumenten validieren Sessions hart gegen `SessionData`
+beim Laden (`content/app/tools.py:load_session_data` raised `ValueError` bei
+Pflichtfeld-/Typ-Verstoß). Stille Mist-Generierung aus unvollständigen Daten
+ist abgeschafft — sichtbarer Abbruch zwingt Re-Run.
+
+**Mode-Felder als Literal:** Analytics-`mode` (und künftige Enum-artige Felder)
+werden als `typing.Literal[...]` typisiert. Ein Tippfehler schlägt als
+`ValidationError` fehl, nicht als falscher Branch.
+
+**CI-Schema-Check (`scripts/check_contracts.py`):** drei Schichten,
+blockierend:
+1. Drift zwischen `shared/contracts.py` und Agent-Kopien.
+2. Fixture-Validation einer Beispiel-Session gegen `SessionData`.
+3. AST-Walk: jeder `session_data.get('KEY')` und
+   `state.session_data.get('KEY')` in den Agent-app/-Dirs muss zu einem Feld
+   im Modell passen. Dokumentierte Sonderfälle (DB-Legacy-Aliase wie `_wip`,
+   `created_at`, `topics`, `metadata`) leben in
+   `scripts/check_contracts.whitelist.txt` mit Begründungs-Kommentar.
+
+**Lesepfad-Eindeutigkeit:** Eine Quelle pro Datenpunkt. VoiceDB ist heute
+Postgres-only (PRIS-019 B5 schloss die Dual-Write-Asymmetrie). Routes in
+`gitea_client.read_md_file`/`append_md_file` mit `voicedb_md`-Erkennung leiten
+direkt nach Postgres, ohne Gitea-Fallback — bei DB-Fehler bricht der Lauf ab
+statt aus möglicherweise veralteter Zweitquelle zu lesen.
+
+**Telemetrie-Pflicht für strukturelle Pfad-Gabelungen:** Wenn Code zwischen
+zwei Pfaden unterscheidet (V6 vs. Legacy, neuer vs. alter Generator), wird
+das Auswahl-Ereignis geloggt (`[…/telemetry] PRIS-XXX has_X=… session=…
+tenant=…`). Damit ist in Prod sichtbar, welcher Pfad wie oft greift —
+unsichtbare Pfade sind unwartbar.
+
+**Legacy-Erkennung-mit-Abbruch, nicht Migration:** Wenn der neue Pfad nicht
+beliefert ist (V6-Daten fehlen), wird hart abgebrochen statt aus Alt-Daten zu
+generieren. Re-Run via neuem Pfad ist sauberer Fix; Migration alter Werte ist
+Raten und damit selbst eine Bruchstelle.
+
 ## Dependency-Pinning & Update-Pfad
 
 - **npm:** `package.json` mit `==`/exakten Versionen für direkte Deps; Lockfile zwingend committed. `overrides`-Feld ist legitimes Werkzeug bei transitiv-eingebrannten CVEs (postcss-via-next), aber mit Kommentar warum.

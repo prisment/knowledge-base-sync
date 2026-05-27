@@ -858,6 +858,38 @@ Markierung, nicht den Zeitpunkt des ursprünglichen Inhalts).
 
 ---
 
+## E50 — Data-Integrity-SSOT für LangGraph-Agents etabliert (PRIS-019, 2026-05-27)
+
+**Auslöser:** Faktensammlung Teil A zeigte 4 belegte Bruchstellen (B1 VoiceDB-Dual-Write, B2 voice_db_complete erst seit V6, B3 V6/Legacy ohne Telemetrie, B5 Analytics-mode als String) plus ungetypte Session-JSON-Übergabe zwischen Interview und Content. PLAT-031 hatte 4× F821-tenant_id-Bugs in `update_boost_recommendation_status` als Restschuld an Integrity übergeben.
+
+**Entscheidung:** Spec PRIS-019 als Spur über 7 Bündel autonom ausgeführt — alle Akzeptanzkriterien grün, kein Architekt-Eingriff unterwegs. Mehrere operative Gabelungen:
+
+(1) **SSOT-Distribution per Pre-build-Sync, nicht Docker-Build-Context-Umbau.** Build-Contexts sind pro Agent (`./langgraph/<agent>`); ein gemeinsames `langgraph/shared/` läge außerhalb. Alternativen: (a) Build-Contexts auf `./langgraph` heben + vier Dockerfiles ändern; (b) shared via pip-Package. Gewählt: `scripts/sync_shared_contracts.sh` kopiert `shared/contracts.py` in alle vier Agent-`app/contracts.py` vor jedem Build. Vorteil: minimal-invasiv, keine compose-/Dockerfile-Änderung. Drift-Risiko: gefangen vom CI-Check (`scripts/check_contracts.py` Schicht 1). Verworfen: (a) hätte vier Dockerfiles + compose berührt für rein strukturelle Verteilung; (b) hätte eigene Paketinfra gefordert.
+
+(2) **Eingangskonvertierung am SSOT-Modell, nicht in jedem Caller.** Reale Validation gegen `public.sessions` zeigte `extracted_material=NULL` in Legacy-Zeilen (Migration 021 ohne `DEFAULT '{}'`). Drei Lösungen evaluiert: (a) Modell auf `dict | None` lockern — verliert Typgarantie; (b) `read_session` macht `None→{}`-Konvertierung — versteckt Lücke im DB-Layer; (c) Pydantic-`field_validator(mode='before')` für die fünf JSONB/Array-Felder. Gewählt: (c). SSOT-Modell trägt die Eingangskonvertierung selbst; Konsumenten arbeiten mit garantierten Typen.
+
+(3) **Warn-Modus-Sammelfenster gegen reale DB, nicht 1–2 Live-Sessions abwarten.** Spec-Wortlaut „Warn-Modus 1–2 Läufe gegen Grubis-Weine, dann hart" wäre Echtzeit-Trigger. Bessere Verifikation: Cross-Tenant-Query gegen `public.sessions`, alle Sessions gegen Modell validieren, Lücken einsammeln, Modell härten — dann Hard-Fail. Genauer und schneller; deckte die `None`-Lücke aus (2) auf, die in Echtzeit-Sessions später hochgekommen wäre und das Gate gegen valide Daten ausgelöst hätte.
+
+(4) **F821-Auflösung via Parameter, kein DB-Lookup.** Funktion `update_boost_recommendation_status` ist heute Dead Code (null Aufrufer per grep). Zukünftige Caller bekommen `tenant_id` aus dem SSOT-`SessionData` mit. Alternative DB-Lookup (`SELECT tenant_id FROM boost_recommendations WHERE id=%s`) wäre Bequemlichkeit für hypothetische Future-Caller und kostet extra Query. Verworfen.
+
+(5) **AST-Walk im Konsumenten-Stil, nicht Set-Vergleich Produzent vs. Konsument.** Spec-Wortlaut „Produzent/Konsument-Konsistenz". Reine 2-Set-Heuristik wäre fragil (`setattr`, `dict(...)`, `getattr` etc. False-Positives). Gewählt: SSOT-Modell ist die Spec — jeder gelesene Field muss im Modell sein. Whitelist mit Begründungs-Kommentaren für DB-Legacy-Aliase (`_wip`, `created_at`, `topics`, `metadata`). Fängt die effektive Bruchstelle ohne False-Positive-Risiko; volle 2-Set-Heuristik bleibt als Erweiterung möglich, falls je nötig.
+
+(6) **B5 chirurgisch auf VoiceDB-Routes, andere md-Pfade unverändert.** Spec sprach explizit von VoiceDB. `gitea_client.read_md_file` bedient sessions/, editorial/, memory/ — die bleiben Gitea-basiert. Nur die `voicedb_md`-Route geht Postgres-only ohne Fallback. Verworfen: alle md-Pfade auf Postgres umstellen (Scope-Sprengung, ohne Spec-Mandat).
+
+(7) **Legacy-V6 hart, nicht weich.** Spec-Vorgabe Architekt: Erkennung-mit-Abbruch, keine Migration. DB-Inventur vor Bau zeigte 1/1 done-Session ist Legacy — unter Schwellwert (≥100 → Rückmeldung). Bündel direkt gebaut. Migration alter Werte wäre Raten und damit selbst eine Bruchstelle.
+
+(8) **B7 lokal verifiziert über Container, nicht Host-pip.** Pydantic ist auf dem Host nicht installiert (kein pip). Negativ-Tests (künstlicher Drift, künstlicher Field) lokal per `docker run --rm -v $PWD:/repo … langgraph-content:latest python3 scripts/check_contracts.py` durchgespielt. CI-Setup installiert pydantic via venv im Job — Standard-Pattern aus PLAT-031.
+
+**Restschulden, ehrlich notiert:**
+- Tote Gitea-`voice-db/*.md`-Dateien in Tenant-Repos: nach B5 ungenutzt, nicht gelöscht (Rollback-Hygiene). Cleanup-Seed wäre eigene Folge-Arbeit (Repo-Sauberkeit, kein Daten-Risiko).
+- Grubis-Weine-Sessions nicht in `public.sessions` sichtbar — Cross-Tenant-Query lieferte nur `test-mandant/hashtag-test-001`. Mögliche Erklärungen: Tester macht heute nur Interview/Onboarding (keine done-Sessions); oder läuft in anderer DB-Konfiguration. Falls B6-Gate beim ersten echten Run abbricht: Spur in Aktion, kein Bug.
+- Content's `write_session` schreibt V6-Felder in `metadata`-Catchall, Interview's in dedizierte Spalten (Migration 021). Asymmetrie nicht in B1 behoben (kein aktiver Caller in Content). Drift-Risiko real, sobald Content je `write_session` aufruft. Folge-Arbeit: Schreibroutine angleichen.
+- Volle Produzent/Konsument-AST-Heuristik (2-Set-Vergleich) ist nicht eingebaut. Heutiger Modell-zentrierter Check reicht für die belegten Bruchstellen.
+
+**Kontextbindung:** (a) Wenn in den nächsten 30 Tagen ein realer Content-Run gegen eine Legacy-Session läuft, fängt B6 ihn ab mit klarem Re-Run-Hinweis — kein Bug, die Spur in Aktion. (b) Wenn der nightly-CI-Lauf einen Drift in den `contracts.py`-Kopien meldet, ist das Pre-build-Sync nicht ausgeführt worden — `scripts/sync_shared_contracts.sh` reicht. (c) Wenn die DB-Migration eines Tages `extracted_material`/`material_specs_used` mit `DEFAULT '{}'::jsonb` nachzieht, dürfen die `field_validator`-Hooks am SSOT-Modell weg.
+
+---
+
 ## Format-Hinweis (für künftige Logbuch-Einträge)
 
 Jeder Eintrag: **Was war die Frage/der Auslöser → Was wurde entschieden → Warum (inkl. verworfener Alternativen) → ggf. Kontextbindung (wann neu zu bewerten).** Knapp, aber das "Warum" vollständig genug, dass man die Entscheidung nicht erneut diskutieren muss. Einträge werden nie geändert — wenn eine Entscheidung revidiert wird, kommt ein NEUER Eintrag, der auf den alten verweist.

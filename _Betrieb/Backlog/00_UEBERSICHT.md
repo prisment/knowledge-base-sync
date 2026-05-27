@@ -50,8 +50,8 @@ Sortierung: gruppiert nach `geltungsbereich`. Primär `zugkraft` (jetzt → bald
 | Datei | Titel | klasse | zugkraft | risikoklasse | stufe | status | abhängig von |
 |-------|-------|--------|----------|--------------|-------|--------|--------------|
 | `seeds/seed-sma-dsgvo-sammel.md` | DSGVO-Konformität SMA — Sammel-Spec vor erstem zahlenden Mandanten | security | jetzt | kritisch | spur | offen | - |
-| `seeds/seed-data-integrity-agents.md` | Data-Integrity-Architektur für LangGraph-Agents (zentrale Datenpunkt-Definition + Verifikation + definierte Übergaben) | qualitaet | jetzt | sicher | spur | offen | - |
 | `seeds/seed-sma-skalierungs-haertung-mandant-2.md` | Skalierungs-Härtung vor Mandant #2 (Cron-Idempotency, Per-Caller-Secrets, API-Versionierung, Indizes, Pool-Konsolidierung) | qualitaet | jetzt | kritisch | spur | offen | - |
+| `seeds/seed-data-integrity-agents.md` | Data-Integrity-Architektur für LangGraph-Agents (zentrale Datenpunkt-Definition + Verifikation + definierte Übergaben) | qualitaet | jetzt | sicher | spur | erledigt | - |
 | `seeds/seed-sma-llm-kosten-pii.md` | LLM-Kosten-Tracking + PII-Anonymisierungs-Layer in Agent-Calls | qualitaet | bald | sicher | sprung | offen | - |
 | `seeds/seed-sma-push-subscription-hardening.md` | Push-Subscription-Hardening: Silent Re-Subscribe + Zero-Friction-Onboarding E2E | qualitaet | bald | sicher | sprung | offen | - |
 | `seeds/seed-sma-voice-check-audit.md` | Voice-Check-Audit + Admin-Insights (Issues sichtbar machen statt verstecken) | qualitaet | bald | sicher | sprung | offen | - |

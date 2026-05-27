@@ -3,13 +3,14 @@ typ: backlog_seed
 titel: "Data-Integrity-Architektur für LangGraph-Agents (zentrale Datenpunkt-Definition + Verifikation + definierte Übergaben)"
 geltungsbereich: prisment
 risikoklasse: sicher
-status: offen
+status: erledigt
 klasse: qualitaet
 zugkraft: jetzt
 stufe: spur
 beruehrt: ["langgraph/", "n8n/"]
-stand: 2026-05-25
+stand: 2026-05-27
 erzeugt_durch: Chat-Architekt (Diskussion nach Security/Integrity-Woche)
+erledigt_durch: "[[Prisment/Archiv/PRIS-019/PRIS-019_ABSCHLUSS]]"
 ---
 
 ## Anlass
