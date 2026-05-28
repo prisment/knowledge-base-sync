@@ -8,13 +8,17 @@
 ## Rollen-Schnittstelle
 
 **Chat-Architekt:**
-- Liest knowledge-base live via Filesystem-MCP (immer aktuell durch
-  Pull-Strategie, siehe unten).
+- Liest knowledge-base live via Filesystem-MCP. Aktualität hängt vom
+  letzten Push des Architekten ab (siehe Pull/Push-Strategie unten).
 - Schreibt ausschließlich in zwei Pfad-Klassen:
   (a) Reguläre Spec-Pfade `<Geltungsbereich>/Specs/<ID>_SPEC.md`
       (nur Spec-Erstellung & Spec-Korrektur via Architekten-Entscheidung)
   (b) `_Betrieb/Architekt-Drafts/` (freier Schreibbereich, falls benötigt)
-- Committet und pusht eigene Schreiboperationen auf `main` via Git-MCP.
+- Committet eigene Schreiboperationen lokal auf `main` via Git-MCP.
+- **Push und Pull werden vom Architekten (Mensch) ausgeführt**, nicht vom
+  Chat-Architekten. Der offizielle `mcp-server-git` exponiert keine
+  Push/Pull-Tools (nur lokale Operationen). Diese Einschränkung ist
+  bewusst akzeptiert (Option A in der Setup-Diskussion).
 - Schreibt nie: Logbuch, Code, Compose-Dateien, Reports, Worktree-Branches.
 
 **Claude Code:**
@@ -23,25 +27,30 @@
 - Liest Architekt-Schreibungen aus `main` (pull → Worktree-Sync nach
   bestehender Verfassungs-Mechanik).
 
-## Pull-Strategie (Chat-Architekt)
+## Pull/Push-Strategie
 
-Der Chat-Architekt pulled vor jeder Operation, die aktuellen Repo-
-Stand benötigt — nicht bei jeder Nachricht.
+**Pull (vom Remote nach lokal):** Verantwortung des Architekten (Mensch).
+Der Chat-Architekt kann nicht selbst pullen (Git-MCP exponiert kein
+`git_pull`). Praktikabel: Obsidian-Git-Plugin mit Auto-Pull oder manueller
+`git pull` aus PowerShell, bevor der Architekt eine Nachricht in den Chat
+gibt, die einen frischen Repo-Stand voraussetzt.
 
-**Pull-Pflicht:**
-- Vor jeder Schreiboperation (Spec-Erstellung, Spec-Korrektur, Draft).
-- Vor jedem Commit.
-- Vor dem Lesen einer Architekt-Inbox-Datei (Use Case 2).
+**Push (von lokal zum Remote):** Verantwortung des Architekten. Nach jeder
+Chat-Architekt-Schreiboperation (Spec, Draft, Spec-Korrektur) meldet der
+Chat-Architekt im Chat „Commit liegt lokal auf `main`, bitte pushen." Der
+Architekt pusht aus PowerShell (`git push`) oder über das Obsidian-Git-Plugin.
+
+**Was der Chat-Architekt aktiv tut, wenn aktueller Stand wichtig ist:**
+- Vor dem Lesen einer Architekt-Inbox-Datei (UC2): den Architekten kurz
+  fragen, ob der Inbox-Stand frisch gepullt wurde.
 - Vor dem Lesen eines Report-Files, dessen Pfad Claude Code im
-  Terminal-Output genannt hat (Use Case 3).
-- Beim Sitzungsbeginn (vor der initialen Stand-Meldung).
-
-**Kein Pull:**
-- Bei reinen Chat-Antworten ohne Datei-Bezug.
-- Bei Klärungs-/Diskussions-Nachrichten ohne Repo-Aktion.
+  Terminal-Output genannt hat (UC3): analog.
+- Beim Sitzungsbeginn: liest direkt via MCP, ohne Pull-Erwartung — der
+  Architekt sollte vor Chat-Start einmal lokal gepullt haben.
 
 **Annahme:** Lokale Änderungen des Architekten (Obsidian-Edits) sind
-gepusht. Was nicht gepusht ist, ist für den Chat-Architekten unsichtbar.
+committet und gepusht. Was lokal uncommittet oder ungepusht liegt, ist
+für den Chat-Architekten unsichtbar.
 
 ## Use Cases
 
@@ -51,14 +60,18 @@ gepusht. Was nicht gepusht ist, ist für den Chat-Architekten unsichtbar.
 
 **Ablauf:**
 1. Diskussion und finale Fassung im Chat.
-2. Chat-Architekt: `git pull origin main` (Pull-Pflicht).
-3. Chat-Architekt: Skill `next-spec-id` aufrufen, ID holen.
+2. Architekt stellt sicher, dass lokal `git pull` aktuell ist (oder hat
+   ohnehin frisch gestartet).
+3. Chat-Architekt: ID-Vergabe nach Verfassungs-Schema (`<Kürzel>-NNN`,
+   siehe `01_Spec-Format.md`). Höchste vergebene ID im jeweiligen
+   Geltungsbereich + 1.
 4. Chat-Architekt: Schreibt `<Geltungsbereich>/Specs/<ID>_SPEC.md`
    nach Verfassungs-Spec-Template.
-5. Chat-Architekt: Commit mit Format
+5. Chat-Architekt: Lokaler Commit mit Format
    `[<ID>] Spec angelegt – <Titel>`.
-6. Chat-Architekt: Push auf `main`.
-7. Chat-Architekt meldet im Chat: „Spec `<ID>` ist auf `main`."
+6. Chat-Architekt meldet im Chat: „Spec `<ID>` liegt lokal auf `main`.
+   Bitte `git push`."
+7. Architekt pusht.
 
 **Bestehende Verfassungs-Regel `Spec-Erarbeitung im Chat-Dialog darf
 direkt auf main` (CLAUDE.md Z. 85–96) bleibt gültig und wird hier
@@ -115,11 +128,13 @@ Annahme hatte. Korrektur nötig.
 **Ablauf:**
 1. UC2 läuft bis Schritt 5 (Chat-Architekt antwortet).
 2. Chat-Architekt schreibt zusätzlich die Spec-Korrektur direkt in
-   `<...>/Specs/<ID>_SPEC.md` (Pull → Edit → Commit → Push).
+   `<...>/Specs/<ID>_SPEC.md` (Edit → lokaler Commit).
 3. Commit-Format: `[<ID>] Spec korrigiert – <Was geändert wurde>`.
-4. Antwort-Block enthält Hinweis: „Spec ist auf `main` aktualisiert,
+4. Chat-Architekt meldet: „Spec-Korrektur liegt lokal auf `main`,
+   bitte pushen." Architekt pusht.
+5. Antwort-Block enthält Hinweis: „Spec ist auf `main` aktualisiert,
    im Worktree nachziehen."
-5. Claude Code: Im Worktree `git fetch origin main` + `git rebase
+6. Claude Code: Im Worktree `git fetch origin main` + `git rebase
    origin/main` (oder Cherry-Pick je nach Konfliktlage), arbeitet weiter.
 
 **Konflikt-Behandlung:** Falls Claude Code im Worktree bereits an der
@@ -271,11 +286,12 @@ existieren (per `.gitkeep` versioniert, da sonst leer):
 ## Sitzungsbeginn-Routine (Chat-Architekt)
 
 Bei jedem neuen Chat:
-1. Pull auf knowledge-base.
-2. Lesen: Verfassung-Wurzel (`_Betrieb/Verfassung/`), übergreifendes
+1. Voraussetzung: Architekt hat lokal vorher gepullt (Obsidian-Git-Plugin
+   oder manuell). Chat-Architekt kann das nicht selbst auslösen.
+2. Lesen via MCP: Verfassung-Wurzel (`_Betrieb/Verfassung/`), übergreifendes
    Logbuch, für das Sitzungsthema relevante Systemzustände.
 3. Kurze, ungefragte Stand-Meldung an den Architekten: welche
-   Kern-Dateien gerade Stand X haben (Datum/Commit-Hash kurz),
+   Kern-Dateien gerade Stand X haben (Datum/letzte Commit-Message kurz),
    damit der Architekt erkennt, ob ein Zyklus seither weitergelaufen ist.
 4. Falls offene Architekt-Inbox-Dateien existieren: hinweisen.
 
