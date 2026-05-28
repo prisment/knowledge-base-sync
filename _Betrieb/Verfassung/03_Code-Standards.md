@@ -1,7 +1,7 @@
 ---
 typ: verfassung
 titel: "Code-Standards"
-stand: 2026-05-27
+stand: 2026-05-28
 aenderung: "nur nach oben, nur durch bewusste Freigabe"
 ---
 
@@ -58,6 +58,19 @@ Das ursprüngliche E39-Pattern hat zwei Tabellen-Klassen unterschieden (Tenant-D
 **Vor einer neuen RLS-Spec: klassifizieren.** Tenant-Daten / Tenant-Stammdaten / Brücken — die drei sind nicht austauschbar, jeder Patzer ist eine eigene Sicherheits-Lücke (Stammdaten ohne RLS = PLAT-044-Lücke, Brücke mit RLS = Login-Bruch, Tenant-Daten ohne RLS = Cross-Tenant-Leak).
 
 **Live-`admin_user`-GRANTs auf `public.tenants` müssen vorhanden sein** (PLAT-044-Befund 2026-05-28): in PLAT-031 wurden die GRANTs für `admin_user.public.tenants` versehentlich nie gesetzt, weil die Tabelle nicht als RLS-Ziel behandelt wurde. Folge: 4-6 Live-Code-Pfade (`pwa-api/scheduling/worker.py`, `pwa-api/routes/tenant_settings.py`, `pwa-api/routes/admin.py`, `langgraph/helpdesk/app/tools.py`), die `UPDATE tenants` als `admin_user` ausführen wollten, scheiterten still mit `permission denied`. PLAT-044 setzt die GRANTs in `05_grants.sql` und führt die Live-Aktivierung durch.
+
+## Test-/Dev-/Staging-Daten — Pseudonymisierungs-Werkzeug-Pflicht (PLAT-046, 2026-05-28)
+
+Test-/Dev-/Staging-Bühnen tragen nie un-pseudonymisierte Echtdaten. Wenn eine Bühne aus Live-Daten gefüttert wird, ist **Skill `test-data-pseudonymize`** (`.claude/skills/test-data-pseudonymize/SKILL.md`) Pflicht-Werkzeug — er trägt das Verfahren, die zweistufigen PII-Audit-Pattern und die Self-Test-Akzeptanz.
+
+**Mapping-Tabelle ist Architekten-Hand-Schlüssel** (Pseudonym-Wahl + Speicherort). Sie lebt **außerhalb des Repos** unter `/home/claude-deploy/<bühnen-name>-pseudonymization-mapping.json` mit perms `0600`. Auch außerhalb des knowledge-base-Vaults, sonst Klon-Risiko über Vault-Sync. Eine Beispiel-Datei mit Dummy-Werten (`*-pseudonymization-mapping.example.json`) darf im Repo liegen.
+
+**Pattern-Vorlagen** liegen in `prisment-platform/scripts/fixtures/`:
+- `pseudonymize_voicedb_snapshot.py` — Pseudonymisierungs-Skript (Mapping-basiert, längste-zuerst, idempotent + Selbsttest, neutral benannt nach Header-Trap-Lehre).
+- `pii_audit.py` — zweistufiges PII-Audit (bekannte Tokens + breite Pattern-Klassen).
+- `build_voicedb_snapshot.py` — Hochfahr-Pfad mit Fail-closed-Marker-Check (`-- PSEUDONYMIZED <Datum>`).
+
+Verfassungs-Anker für die Risikoklasse-Wirkung: `04_Sicherheits-Prinzipien.md`, Abschnitt „Echtdaten-Risikoklasse-Kopplung".
 
 ## Data-Integrity: Agent-Übergabe-SSOT (PRIS-019, 2026-05-27)
 

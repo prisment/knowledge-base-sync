@@ -1,7 +1,7 @@
 ---
 typ: verfassung
 titel: "Sicherheits-Prinzipien & nächtliche Autonomie"
-stand: 2026-05-23
+stand: 2026-05-28
 aenderung: "nur nach oben, nur durch bewusste Freigabe"
 ---
 
@@ -57,6 +57,18 @@ Cron startet als `claude-deploy` zur definierten Zeit einen **headless, nicht-in
 - Auslöser: Cloudflare-Webhook (von Claude Code via Cloudflare-API anzulegen; Plan: Pro) auf Security-/Anomalie-Events. Ergänzend kann der bestehende API-Token für aktives Prüfen genutzt werden.
 - **Erlaubte Reaktion: NUR alarmieren.** Eine E-Mail an den Menschen, die den Vorfall beschreibt UND eine konkrete Maßnahme zur Bestätigung anbietet („Soll ich Dienst X / Y sofort stoppen? Antworte zur Freigabe."). Kein autonomes Eingreifen.
 - **Verboten ohne Freigabe:** Dienste stoppen, Container isolieren, Topologie/Auth ändern. (Autonomes Eingreifen ist bewusst in ein separates späteres Projekt ausgelagert — eine automatische Stopp-Befugnis ist selbst ein Risiko: ein provozierter Fehlalarm würde sonst zum Denial-of-Service über die eigene Automatik.)
+
+## Echtdaten-Risikoklasse-Kopplung — Test-/Dev-/Staging-Bühnen (PLAT-046, 2026-05-28)
+
+**Datencharakter der Umgebung ist Faktum, nicht Wahl.** Welcher Datencharakter eine Bühne trägt — synthetisch / pseudonymisiert / Echtdaten-Klon / Live-direkt — gehört in Akt 1 (Sondierung) erhoben und in den Ist-Zustand der Spec aufgenommen. Nicht in Akt 2 (Spec-Verfassen) als Schreibtisch-Wahl gesetzt.
+
+**Echtdaten-Klon hebt die Risikoklasse.** Trägt eine Bühne Echtdaten-Klone — auch als Snapshot, auch nach Migration aus Live, auch hinter einem Auth-Tor — ist die Spec-Risikoklasse **mindestens `sicherheitskritisch-akut`**, bis Pseudonymisierung als Pflicht-Tor abgeschlossen ist. Kein Spielraum nach unten.
+
+**Erreichbarkeits-Ausweitung ist verboten vor abgeschlossenem Pseudonymisierungs-Pass.** Auth-Tor lockern, neue öffentliche Endpoints, zusätzliche Hostnamen — solange un-pseudonymisierte Echtdaten in der Bühne liegen, bleibt jede solche Änderung gesperrt. Eine Pseudonymisierung selbst hebt die Sperre nur unter Restrisiko-Bewertung (siehe Skill, Pattern (g)) — Branchen-Vokabular und strukturell re-identifizierbare Restdaten können die Erreichbarkeits-Ausweitung weiter blockieren.
+
+**Fail-closed-Marker im Snapshot.** Pseudonymisierte Snapshots tragen `-- PSEUDONYMIZED <YYYY-MM-DD>` als erste oder zweite Header-Zeile. Das **Hochfahr-Skript der Bühne** (z.B. `dev-start.sh`, `build_voicedb_snapshot.py`) prüft den Marker hart und **verweigert den Container-Start ohne Marker**. PreCheck-Wand früher als der Container-Lauf — nicht erst beim Selbsttest.
+
+**Werkzeug und Verfahren.** Skill `test-data-pseudonymize` (`.claude/skills/test-data-pseudonymize/SKILL.md`) trägt das How: vier-Schritte-Verfahren, sieben Pattern-Lehren aus PLAT-043 B-PSEUDO, Referenzen auf die Pattern-Skripte in `prisment-platform/scripts/fixtures/`. Mapping-Tabelle ist Architekten-Hand-Schlüssel und lebt außerhalb des Repos (auch außerhalb des knowledge-base-Vaults).
 
 ## Kontextbindung
 
