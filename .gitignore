@@ -1,8 +1,0 @@
-.obsidian/workspace.json
-.obsidian/workspace-mobile.json
-# Python build artifacts
-__pycache__/
-*.py[cod]
-*$py.class
-.pytest_cache/
-.CLAUDE.md.swp
