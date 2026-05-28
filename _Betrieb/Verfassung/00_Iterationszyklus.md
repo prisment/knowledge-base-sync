@@ -282,13 +282,13 @@ Unter `_Betrieb/Missionen/` lebt ein Kanban über die Seeds. Es zeigt nur den ec
 
 **`status:`-Werte und ihre Akt-Kopplung** (Claude Code schreibt sie automatisch, Silent-Whitelist — er erkennt nur den Akt-Zustand, urteilt nicht):
 
-| Status | Wann | Ausgelöst durch |
-|---|---|---|
-| `offen` | Seed liegt im Backlog, ungezogen | Default bei Anlage |
-| `in_arbeit` | Seed gezogen, Akt 1 startet | Beginn Sondierung |
-| `blockiert` | Stopp-Auslöser 1–4, Fall C, oder Blocker einer Abhängigkeitskette offen | Korridor-Stopp / eingefrorene Kette |
-| `review` | Akt-3-Ausführung fertig, wartet auf Mensch-Verifikation, die nur der Mensch leisten kann (reales Browser-Fenster, App-Verhalten, visuelle UI) | Übergabe ins Mensch-Review |
-| `abgeschlossen` | Verankerung komplett, Pflicht-Tore erfüllt | Akt-3-Abschluss |
+| Status          | Wann                                                                                                                                          | Ausgelöst durch                     |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| `offen`         | Seed liegt im Backlog, ungezogen                                                                                                              | Default bei Anlage                  |
+| `in_arbeit`     | Seed gezogen, Akt 1 startet                                                                                                                   | Beginn Sondierung                   |
+| `blockiert`     | Stopp-Auslöser 1–4, Fall C, oder Blocker einer Abhängigkeitskette offen                                                                       | Korridor-Stopp / eingefrorene Kette |
+| `review`        | Akt-3-Ausführung fertig, wartet auf Mensch-Verifikation, die nur der Mensch leisten kann (reales Browser-Fenster, App-Verhalten, visuelle UI) | Übergabe ins Mensch-Review          |
+| `abgeschlossen` | Verankerung komplett, Pflicht-Tore erfüllt                                                                                                    | Akt-3-Abschluss                     |
 
 `review` ist die saubere Trennung deiner Painpoints: Was Claude Code **selbst** verifizieren kann, prüft er und macht weiter (kein `review`-Stopp). `review` entsteht **nur**, wenn eine Verifikation übrig bleibt, die physisch ein Mensch leisten muss — dann ist es zugleich ein Auslöser-4-Fall.
 
