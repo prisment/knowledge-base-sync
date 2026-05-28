@@ -21,6 +21,7 @@ Die Arbeitsdokumente des Zyklus folgen einem modularen Standard: ein gemeinsamer
 3. **Front-Matter-Keys sind verbindlich identisch** über alle Dokumente. Immer `risikoklasse`, nie mal `risiko` mal `risk`. Neue Felder werden im Template ergänzt, nie ad-hoc.
 4. **Spec ist die Wahrheit; Report und Abschluss-Doku erben ihre `spec_id`.** Damit ist die Kette maschinell verkettbar.
 5. **`stufe` ist Pflichtfeld** in jeder Spec und Abschluss-Notiz. Sie wird beratend vorgeschlagen (Chat-Architekt/Claude Code), vom Menschen revidierbar, nie vom Menschen allein geraten (siehe `00_Iterationszyklus.md`).
+6. **Restschulden tragen ihre Belegstelle.** Restschuld-Formulierungen in Abschluss-Dokus nennen die konkrete Belegstelle (Datei, Zeile oder Code-Sub-Pfad) wie Akt-1-Fakten. Eine Restschuld ohne Belegstelle ist nicht abgeschlossen — sie ist eine zweite Erhebung, die im Folge-Zyklus nochmal gemacht werden muss. Belegquelle für die Regel: Logbuch E64 (PRIS-022 L4).
 
 ## Pflicht-Felder im Front Matter
 
