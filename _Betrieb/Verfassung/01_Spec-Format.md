@@ -1,7 +1,7 @@
 ---
 typ: verfassung
 titel: "Spec-, Report- & Abschluss-Format"
-stand: 2026-05-24
+stand: 2026-05-28
 aenderung: "nur nach oben, nur durch bewusste Freigabe"
 ---
 
@@ -10,8 +10,8 @@ aenderung: "nur nach oben, nur durch bewusste Freigabe"
 Die Arbeitsdokumente des Zyklus folgen einem modularen Standard: ein gemeinsamer YAML-Front-Matter-Header, plus typspezifischer Körper. Die vollständigen Vorlagen liegen in `_Betrieb/Templates/Dokument-Templates.md` — diese Verfassungsdatei legt die verbindlichen Regeln fest, das Template liefert die ausfüllbare Form.
 
 **Welche Dokumente entstehen, hängt von der Stufe ab** (siehe `00_Iterationszyklus.md`):
-- **Spur:** Faktensammlung + volle Spec + Machbarkeit + volle Abschluss-Doku.
-- **Sprung:** kombinierte Spec (Fakten/Soll inline) + kurze Abschluss-Notiz.
+- **Spur:** Sondierung + volle Spec + volle Abschluss-Doku. (Machbarkeit ist Teil der Sondierung, kein eigenes Dokument mehr.)
+- **Sprung:** kombinierte Spec (Fakten/Soll inline; **Claude Code schreibt sie selbst in Akt 1**) + kurze Abschluss-Notiz.
 - **Schritt:** kein Dokument, nur eine Zeile in `<Bereich>/Schritt-Log.md`.
 
 ## Verbindliche Regeln
@@ -70,12 +70,12 @@ Die Schärfung steht im Backlog als `seed-kritisch-schaerfen` (Sprung, jetzt) un
 
 ### Begriffstrennung — Spec-Risikoklasse vs. Bündel-Flag
 
-- **`risikoklasse:` im Spec-Front-Matter** ist die **Obergrenze** für die Bündel-Einstufung in Phase 5. Eine `kritisch`-Spec kann und soll `sicher`-Bündel enthalten; eine `sicher`-Spec kann nie kritische Bündel haben (Stufen-Inflation-Schutz; tauchen welche auf, ist die Spec falsch eingestuft und eskaliert).
-- **Pro-Bündel-`kritisch:`-Flag in der Machbarkeit (Phase 5)** ist die operative Wand, an der der Korridor synchron stoppt. Drei Werte wie die Spec-Risikoklasse.
+- **`risikoklasse:` im Spec-Front-Matter** ist die **Obergrenze** für die Bündel-Einstufung in Akt 1. Eine `kritisch`-Spec kann und soll `sicher`-Bündel enthalten; eine `sicher`-Spec kann nie kritische Bündel haben (Stufen-Inflation-Schutz; tauchen welche auf, ist die Spec falsch eingestuft und eskaliert).
+- **Pro-Bündel-`kritisch:`-Flag in der Sondierung (Akt 1)** ist die operative Wand, an der der Korridor synchron stoppt. Drei Werte wie die Spec-Risikoklasse.
 
-## Kritikalität pro Bündel (steuert Autonomie in Phase 6)
+## Kritikalität pro Bündel (steuert Autonomie in Akt 3)
 
-Damit Phase 6 autonom laufen kann (`00_Iterationszyklus.md`, Abschnitt „Autonome Ausführung im freigegebenen Korridor"), **setzt Claude Code in Phase 5 (Machbarkeit) pro Bündel verbindlich ein `kritisch:`-Flag** mit einem der drei Werte `sicher` / `kritisch` / `sicherheitskritisch-akut` — geprüft gegen die feste Liste unten.
+Damit Akt 3 autonom laufen kann (`00_Iterationszyklus.md`, Abschnitt „Akt 3 — Ausführung & Verankerung"), **setzt Claude Code in Akt 1 (Sondierung) pro Bündel verbindlich ein `kritisch:`-Flag** mit einem der drei Werte `sicher` / `kritisch` / `sicherheitskritisch-akut` — geprüft gegen die feste Liste unten.
 
 Die drei Werte steuern Autonomie und Vorsicht, nicht mehr „Stopp ja/nein aus Prinzip":
 
@@ -109,7 +109,7 @@ Test für die oberste Stufe: *Wirkt das Versagen schon im Verifikationsfenster l
 
 **Spec-Vermerk:** pro Nicht-Listen-Bündel nur `kritisch: sicher|kritisch|sicherheitskritisch-akut` + Halbsatz Begründung — nicht die ausformulierten Testfragen (die sind Werkzeug, nicht Lesestoff). Listen-Treffer brauchen keinen Halbsatz (die Liste IST die Begründung).
 
-**Die Liste lebt:** wächst per Phase-9-Pflicht-Tor (Mensch gibt frei, E3-konform), wenn ein Schaden eine fehlende Kategorie aufdeckt.
+**Die Liste lebt:** wächst per Akt-3-Pflicht-Tor (Mensch gibt frei, E3-konform), wenn ein Schaden eine fehlende Kategorie aufdeckt.
 
 ## Parallel-Lauf von Spuren
 
@@ -130,8 +130,8 @@ Drei Ausgabe-Klassen: ✓ `disjunkt` / ✗ `Schnittmenge zwischen Spuren` / ✗ 
 Aus dem Backlog ist nicht jeder Seed gleich gut maschinell ziehbar. Die Halde trennt das, was ohne Synchron-Stopp durchlaufen darf, vom Rest.
 
 - **`autonom_ziehbar: ja`** ist **abgeleitet, nicht geurteilt**: ein Seed steht auf `ja` gdw. (a) eine freigegebene Spec für ihn existiert UND (b) diese Spec `risikoklasse: sicher` trägt. Der Agent protokolliert den Zustand, er entscheidet ihn nicht. Die Mensch-Hoheit sitzt an den zwei Vorbedingungen — Spec-Freigabe und Risikoklasse-Einstufung —, nicht am Feld selbst. Die Ableitung ist sicher, weil **nur-nach-oben** gilt (Abschnitt „Risikoklasse `kritisch`" oben): ein Agent kann sich keine Spec selbst freigeben und keine `kritisch`-Spec auf `sicher` herunterstufen.
-- **Zeitpunkt der Ableitung:** Das Feld wird in **Phase 9** der jeweiligen Spec gesetzt — als Teil der ohnehin laufenden Abschluss-Bewegung des Agents, gemeinsam mit der Eintragung in `00_FREIGEGEBEN.md`. Kein separater Mechanismus, kein Skript.
-- **Phase-9-Pflicht — Seed-Status synchron setzen, Ketten-Kehraus beim letzten Glied.** Der abschließende Agent zieht in Phase 9 den `status:` des eigenen Seeds (Pfad via `seed:`-Backreference der Spec) auf `abgeschlossen` — im selben Commit wie die Spec-Status-Setzung. Ist der Seed Vorgänger einer noch offenen `abhaengig_von`-Kette, bleibt er als abgeschlossener Lese-Anker in `_Betrieb/Backlog/seeds/` stehen, damit die Worker-Vorgänger-Prüfung ihn an stabiler Stelle findet (ohne synchronen Status bliebe ein Folge-Glied ewig wartend, obwohl der Vorgänger durch ist). Schließt das letzte offene Glied einer Kette ab, wandern alle abgeschlossenen Seeds dieser Kette gemeinsam ins Archiv (`<Bereich>/Archiv/<spec_id-des-letzten-Glieds>/`) — ein Kehraus, ein Ordner pro Kette. Ein Seed ohne Folge-Glieder wandert unverändert sofort bei eigenem Phase-9.
+- **Zeitpunkt der Ableitung:** Das Feld wird in **Akt 3 (Verankerung)** der jeweiligen Spec gesetzt — als Teil der ohnehin laufenden Abschluss-Bewegung des Agents, gemeinsam mit der Eintragung in `00_FREIGEGEBEN.md`. Kein separater Mechanismus, kein Skript.
+- **Akt-3-Pflicht — Seed-Status synchron setzen, Ketten-Kehraus beim letzten Glied.** Der abschließende Agent zieht in Akt 3 den `status:` des eigenen Seeds (Pfad via `seed:`-Backreference der Spec) auf `abgeschlossen` — im selben Commit wie die Spec-Status-Setzung. Ist der Seed Vorgänger einer noch offenen `abhaengig_von`-Kette, bleibt er als abgeschlossener Lese-Anker in `_Betrieb/Backlog/seeds/` stehen, damit die Worker-Vorgänger-Prüfung ihn an stabiler Stelle findet (ohne synchronen Status bliebe ein Folge-Glied ewig wartend, obwohl der Vorgänger durch ist). Schließt das letzte offene Glied einer Kette ab, wandern alle abgeschlossenen Seeds dieser Kette gemeinsam ins Archiv (`<Bereich>/Archiv/<spec_id-des-letzten-Glieds>/`) — ein Kehraus, ein Ordner pro Kette. Ein Seed ohne Folge-Glieder wandert unverändert sofort beim eigenen Akt-3-Abschluss.
 - **Vollständiger Zyklus-Satz, Tool-Zuständigkeit.** Der Archiv-Move umfasst nicht nur den Seed, sondern den gesamten Zyklus-Satz: Spec, Abschluss-Notiz, Machbarkeit, Fakten, Deviation-Logs (soweit vorhanden). Zuständig ist allein das Kehraus-Tool `scripts/backlog/phase9_seed_archive.py` — der abschließende Agent lässt die Dateien im Arbeitsgedächtnis liegen, das Tool räumt. Bei Kettengliedern bleibt der vollständige Satz im Arbeitsgedächtnis liegen, bis das letzte offene Glied der Kette abschließt; dann wandern alle Sätze gemeinsam in einen Archiv-Ordner. Das Liegenlassen ist gewollt, kein Drift — ein voreiliger Einzel-Move risse einen Lese-Anker weg, den ein paralleler Zweig noch braucht.
 - **Halde-Datei `_Betrieb/Backlog/00_FREIGEGEBEN.md`** listet diese Seeds **handgepflegt-kettenbewusst**: unabhängige Stränge als getrennte Blöcke, innerhalb eines Blocks regelt das bestehende `abhaengig_von` die Reihenfolge. Reihenfolge = Priorität (vom Menschen gesetzt). Analog `00_HOT-FILES.md`: das Übersichts-Skript liest und überschreibt sie nicht.
 - **Blocker-Regel:** Ein Blocker — Stopp-Auslöser nach `00_Iterationszyklus.md`, Fall C, oder eine Abschluss-Notiz, die Nacharbeit fordert — **friert die betroffene Abhängigkeitskette ein**. Kein abhängiges Folge-Glied wird gezogen, solange der Blocker offen ist. Unabhängige Stränge in anderen Blöcken bleiben unberührt.
@@ -139,7 +139,7 @@ Aus dem Backlog ist nicht jeder Seed gleich gut maschinell ziehbar. Die Halde tr
 
 ## Bündelung gehört NICHT in die Spec
 
-Die Spec definiert das WAS (Ziel, Soll-Zustand, Akzeptanzkriterien). Die Bündelung/Arbeitsliste erarbeitet sich Claude Code selbst im Machbarkeits-Report — er kann Abhängigkeiten am echten System besser einschätzen. *(Beim Sprung: inline in der kombinierten Spec, knapp.)*
+Die Spec definiert das WAS (Ziel, Soll-Zustand, Akzeptanzkriterien). Die Bündelung/Arbeitsliste erarbeitet sich Claude Code selbst in der Sondierung (Akt 1) — er kann Abhängigkeiten am echten System besser einschätzen. *(Beim Sprung: inline in der kombinierten Spec, knapp.)*
 
 ## Backlog-Felder (Seeds)
 
@@ -159,13 +159,20 @@ Seeds in `_Betrieb/Backlog/seeds/` führen zusätzlich zu den allgemeinen Front-
 
 - **`beruehrt:`** — Liste der Pfade/Ordner, die der Seed bei Umsetzung anfasst. **Ordner-Ebene** (z. B. `langgraph/`, `pwa/`) — gröber, robuster, weniger Pflege als datei-genau. Bei unklarem Footprint leer/grob, wird beim Spec-Start präzisiert.
 
+- **`status:`** — `offen` | `in_arbeit` | `blockiert` | `review` | `abgeschlossen`. **Pflichtfeld.** Default `offen` bei Anlage. **Abgeleitet aus dem Akt-Zustand, nicht frei geurteilt** — Claude Code schreibt automatisch (Silent-Whitelist; Akt-Kopplung siehe `00_Iterationszyklus.md` Abschnitt „Seed-Status & Mission"). Werte:
+  - `offen` — Seed liegt im Backlog, ungezogen.
+  - `in_arbeit` — Seed gezogen, Akt 1 läuft oder Folgeakt.
+  - `blockiert` — Stopp-Auslöser 1–4 / Fall C / Blocker einer Abhängigkeitskette offen.
+  - `review` — Akt-3-Ausführung fertig, wartet auf Mensch-Verifikation, die nur der Mensch leisten kann (reales Browser-Fenster, App-Verhalten, visuelle UI).
+  - `abgeschlossen` — Verankerung komplett, Pflicht-Tore erfüllt (Endwert; konsistent mit Abschnitt „Autonome Halde").
+
 **Optionale Felder:**
 
 - **`autonom_ziehbar:`** — `ja` | `nein`. **Default `nein`** (Feld darf weggelassen werden). **Abgeleiteter Zustand, kein eigenes Urteil**: `ja` gdw. (a) eine freigegebene Spec für den Seed existiert UND (b) diese Spec `risikoklasse: sicher` trägt. Die Mensch-Hoheit sitzt an diesen zwei Vorbedingungen, nicht am Feld selbst. Bedeutung, Zeitpunkt und Halde-Regeln im Abschnitt „Autonome Halde" unten.
 
 - **`mission:`** — Kebab-case-Slug, der den Seed einer aktuell laufenden, missionalen Klammer zuordnet (z. B. `live-gang`, `kunde-2`, `framework`). Genau eine Mission pro Seed; leerer Wert (oder weggelassen) heißt „keine Mission". Wird im Obsidian-Dashboard zum Filtern und Bündeln genutzt; hat KEINEN Einfluss auf den Prozess. Liste der aktuell aktiven Missions-Slugs liegt in `_Betrieb/Missionen/00_aktive-missionen.md` (handgepflegt).
 
-**Vergabe-Mechanik** (für `klasse` / `zugkraft` / `beruehrt` / `mission`, analog `stufe`): Chat-Architekt/Claude Code schlägt mit Begründung vor, Mensch revidiert/gibt frei. Niemals vom Menschen allein geraten. (`autonom_ziehbar` fällt nicht hierunter — es wird abgeleitet, nicht vergeben.)
+**Vergabe-Mechanik** (für `klasse` / `zugkraft` / `beruehrt` / `mission`, analog `stufe`): Chat-Architekt/Claude Code schlägt mit Begründung vor, Mensch revidiert/gibt frei. Niemals vom Menschen allein geraten. (`status` und `autonom_ziehbar` fallen nicht hierunter — sie werden abgeleitet/fortgeschrieben, nicht beraten-vergeben.)
 
 **Sperrzone „Eigene Notizen":** Jeder Seed endet mit einer Sektion `## 📝 Eigene Notizen`. Diese Sektion ist Mensch-Sperrzone. Claude Code darf sie LESEN (Kontext für Entscheidungen), aber NIE überschreiben, löschen oder umformulieren. Bei Re-Writes oder Auto-Edits eines Seeds bleibt der Inhalt dieser Sektion byte-identisch erhalten. Tritt ein Konflikt auf (Seed-Re-Write würde die Sektion berühren), stoppt Claude Code synchron und fragt den Menschen. Stub-Form siehe `_Betrieb/Templates/Dokument-Templates.md` (Body-Schluss im Backlog-Seed-Abschnitt).
 
@@ -179,4 +186,4 @@ Jeder Geltungsbereich hat eine Datei `<Bereich>/Schritt-Log.md`. Claude Code hä
 | 2026-05-24 | <was, ein Satz> | <commit-hash> |
 ```
 
-Das ist das Sicherheitsnetz gegen „verschwunden in der Git-Historie": ein Schritt ist über Obsidian auffindbar, ohne dass er ein eigenes Arbeitsdokument oder einen Archiv-Eintrag erzeugt. Kein Logbuch, kein Abschluss, keine Phase 9.
+Das ist das Sicherheitsnetz gegen „verschwunden in der Git-Historie": ein Schritt ist über Obsidian auffindbar, ohne dass er ein eigenes Arbeitsdokument oder einen Archiv-Eintrag erzeugt. Kein Logbuch, kein Abschluss, keine Verankerung.

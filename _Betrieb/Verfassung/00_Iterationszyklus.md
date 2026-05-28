@@ -1,176 +1,232 @@
 ---
 typ: verfassung
 titel: "Iterationszyklus"
-stand: 2026-05-26
+stand: 2026-05-28
 aenderung: "nur nach oben (nie schlechter), nur durch bewusste Freigabe des Menschen"
 ---
 
 # 00 — Iterationszyklus
 
-Der verbindliche Arbeitsablauf für jeden Zyklus. Alle drei Akteure (Mensch, Chat-Architekt, Claude Code) kennen ihn, damit Phasen-Übergänge nicht jedes Mal neu erklärt werden müssen.
+Der verbindliche Arbeitsablauf für jeden Zyklus. Alle drei Akteure (Mensch, Chat-Architekt, Claude Code) kennen ihn.
+
+**Tragender Gedanke:** Der Zyklus folgt der Realität, nicht der Bürokratie. Wer am echten System sitzt (Claude Code), sondiert und führt aus. Wer den Gesamtüberblick hat (Mensch, beraten vom Chat-Architekt), legt fest. Daraus ergeben sich **drei Akte** statt einer langen Phasenkette — die alte 9-Phasen-Nummerierung ist abgelöst (Begründung: Logbuch-Eintrag zu dieser Umstellung).
+
+---
+
+## Die drei Akte
+
+| Akt | Wer | Was |
+|---|---|---|
+| **1 — Sondierung** | Claude Code, am echten System | Fakten + Machbarkeit + Bündelung + Stufen-/Kritikalitäts-Vorschlag in EINEM Durchgang |
+| **2 — Festlegung** | Mensch + Chat-Architekt (stufenabhängig), im Chat | Sondierung lesen → Spec formen + freigeben |
+| **3 — Ausführung & Verankerung** | Claude Code, am echten System | Autonom im Korridor abarbeiten → Doku synchronisieren → abschließen |
+
+Die **Stufe** (Spur / Sprung / Schritt) bestimmt, wie schwer jeder Akt wiegt und wer in Akt 2 beteiligt ist. Die Akte sind keine starren Schleusen: beim Schritt schrumpfen 1 und 2 auf null, beim Sprung verschmelzen sie.
+
+---
 
 ## Stufen (Prozess-Tiefe skaliert mit dem Vorhaben)
 
-Nicht jedes Vorhaben braucht denselben Prozess-Umfang. Es gibt drei Stufen, getrennt nach **Zeremonie-Bedarf**, nicht nach Thema. Die Stufe bestimmt, wie viele der neun Phasen durchlaufen werden und welche Dokumente entstehen.
+Nicht jedes Vorhaben braucht denselben Prozess-Umfang. Drei Stufen, getrennt nach **Zeremonie-Bedarf**, nicht nach Thema.
 
-| Stufe | Wofür | Dokumente | Phasen |
-|---|---|---|---|
-| **Spur** | Gestaltet Architektur, berührt Kundendaten/Auth/Netz-Topologie, oder Risikoklasse `kritisch`. Großes mit Wirkung über den Einzelfall hinaus. | Voll: Faktensammlung + Spec + Machbarkeit + Abschluss-Doku | alle 9 |
-| **Sprung** | Konkrete, abgegrenzte Aufgabe mit überschaubarem Risiko. Ein klar umrissener Bugfix, eine einzelne Feature-Erweiterung. | Verschlankt: kombinierte Spec (Fakten + Soll inline) + kurze Abschluss-Notiz | 1, 3*, 4, 6, 7, 9 |
-| **Schritt** | Trivial, reversibel, isoliert, in einem Rutsch erledigt. Typo, Doku-Update, ein Config-Wert, toter Ordner. | Keines. Eine Zeile in `<Bereich>/Schritt-Log.md` (automatisch, ohne Nachfrage). | 1, 6 |
-
-\*Beim Sprung verschmelzen Phase 2 (Fakten) und Phase 5 (Machbarkeit) in die Spec-Erstellung (Phase 3): Claude Code erhebt nötige Fakten und prüft Machbarkeit inline, die kombinierte Spec entsteht direkt darauf. Nur grobe Abweichungen gehen zurück in den Chat.
+| Stufe | Wofür | Akt 1 Sondierung | Akt 2 Festlegung | Dokumente |
+|---|---|---|---|---|
+| **Spur** | Gestaltet Architektur, berührt Kundendaten/Auth/Netz-Topologie, oder Risikoklasse `kritisch`/`sicherheitskritisch-akut`. Wirkung über den Einzelfall hinaus. | Voll, eigenes Sondierungs-Dokument | **Chat-Architekt formt die Spec** mit dem Menschen | Sondierung + volle Spec + volle Abschluss-Doku |
+| **Sprung** | Konkrete, abgegrenzte Aufgabe, überschaubares Risiko. Ein Bugfix, eine einzelne Feature-Erweiterung. | Sondierung **=** kombinierte Spec (Claude Code schreibt sie selbst) | **Kein Architekt by default** — nur bei gemeldeter Gabelung (UC2) | kombinierte Spec + kurze Abschluss-Notiz |
+| **Schritt** | Trivial, reversibel, isoliert, in einem Rutsch. Typo, Doku-Update, ein Config-Wert, toter Ordner. | entfällt | entfällt | Eine Zeile in `<Bereich>/Schritt-Log.md` (automatisch) |
 
 ### Einstufung gehört zur Beratung, nicht zur Alleinentscheidung des Menschen
 
-Die Stufe wird **nicht vom Menschen allein geraten**. Der Mensch kann den Aufwand oft nicht einschätzen — was leicht aussieht, hängt manchmal an viel. Daher:
+Die Stufe wird **nicht vom Menschen allein geraten**. Was leicht aussieht, hängt manchmal an viel.
 
-- Bei jedem Auslöser (Phase 1) schlagen **Chat-Architekt und/oder Claude Code die Stufe vor** — als Teil der Beratung, mit kurzer Begründung, was tatsächlich daran hängt.
-- Der Mensch kann die vorgeschlagene Stufe **revidieren**, trägt die Einschätzung aber nicht allein.
+- Bei jedem Auslöser schlägt **Claude Code (Akt 1) und/oder der Chat-Architekt die Stufe vor** — mit kurzer Begründung, was tatsächlich daran hängt.
+- Der Mensch **revidiert**, trägt die Einschätzung aber nicht allein.
 - Die Stufe steht als Pflichtfeld `stufe:` im Front Matter jeder Spec/Notiz (Format: `01_Spec-Format.md`).
 
 ### Keine Planungs-Ebene über der Spur (PLAT-022, E36)
 
-Es gibt genau drei Stufen — Spur, Sprung, Schritt. **Eine Spur IST das große Vorhaben.** Sie erhebt in Phase 2/5 alle Aspekte und formt in Phase 3 eine präzise Spec. Folge-Arbeit wird als Seed abgezweigt, nie als übergeordnetes Schirm-Dokument geführt. Der Begriff „Roadmap" ist als Framework-Artefakt abgeschafft. Strategie-/Produkt-Dokumente, die das Wort „Roadmap" inhaltlich verwenden (z. B. `Prisment/Systemzustand/Strategie/prisment_roadmap_businessplan.md`), sind davon ausgenommen — das ist nicht Framework-Ebene.
+Es gibt genau drei Stufen. **Eine Spur IST das große Vorhaben.** Folge-Arbeit wird als Seed abgezweigt, nie als übergeordnetes Schirm-Dokument geführt. Der Begriff „Roadmap" ist als Framework-Artefakt abgeschafft. Strategie-/Produkt-Dokumente, die das Wort inhaltlich verwenden (z. B. `Prisment/Systemzustand/Strategie/prisment_roadmap_businessplan.md`), sind ausgenommen — nicht Framework-Ebene.
 
 ### Harte Regel gegen Stufen-Inflation
 
-- **Risikoklasse `kritisch` und `sicherheitskritisch-akut` erzwingen immer Spur.** Beide können nie als Sprung oder Schritt gefahren werden — das schützt davor, Gefährliches aus Bequemlichkeit klein zu fahren. (Lücke ergänzt 2026-05-25 mit PLAT-012, aufgedeckt bei der Backlog-Migration über `seed-os-patching-broken`.)
-- Die Versuchung, sich alles als „Schritt" schönzureden, ist genau die menschliche Trägheit, vor der dieses Framework an mehreren Stellen warnt. Ehrliche Einstufung ist Disziplin, kein Formalismus.
+- **Risikoklasse `kritisch` und `sicherheitskritisch-akut` erzwingen immer Spur.** Beide können nie als Sprung oder Schritt gefahren werden — schützt davor, Gefährliches aus Bequemlichkeit klein zu fahren. (PLAT-012, aufgedeckt bei der Backlog-Migration über `seed-os-patching-broken`.)
+- Die Versuchung, sich alles als „Schritt" schönzureden, ist genau die menschliche Trägheit, vor der dieses Framework warnt. Ehrliche Einstufung ist Disziplin, kein Formalismus.
 
 ### Eskalation einer Stufe während des laufenden Vorhabens
 
 Öffnet sich während der Arbeit ein Fass (ein Sprung entpuppt sich als Spur, weil Kritisches aufkommt — wie in PLAT-001, wo der Q2-Echttest die Allowlist-Frage aufriss):
 
 - Chat-Architekt **und** Claude Code schlagen die Höherstufung **beratend vor** (nicht der Mensch muss es bemerken).
-- Bei Zustimmung des Menschen: **Stopp**, kurzer Vermerk im laufenden Dokument („hochgestuft von Sprung → Spur, weil …"), dann mit voller Zeremonie weiter.
-- Das ist kein Scheitern, sondern das System, das funktioniert. Verwandt mit dem Pausieren+Einschieben unten, aber ohne neuen Zyklus — dasselbe Vorhaben läuft auf höherer Stufe weiter.
-- Herunterstufung gibt es nicht automatisch. Wer einmal als Spur erkannt wurde, bleibt Spur.
+- Bei Zustimmung: **Stopp**, kurzer Vermerk im laufenden Dokument („hochgestuft von Sprung → Spur, weil …"), dann mit voller Zeremonie weiter. Konkret heißt das: das Vorhaben tritt zurück in Akt 2 mit Architekt-Beteiligung.
+- Das ist kein Scheitern, sondern das System, das funktioniert.
+- **Herunterstufung gibt es nicht automatisch.** Wer einmal als Spur erkannt wurde, bleibt Spur.
 
-## Die neun Phasen
+---
 
-1. **Auslöser** — Idee, Problem, Produktarbeit oder geplanter Prozess. **Hier wird die Stufe vorgeschlagen + festgelegt** (siehe oben).
-2. **Diskussion & Faktensammlung** — Chat-Architekt diskutiert die Lösung; Claude Code liefert Reports aus dem ECHTEN System (nie aus Annahme). Ergebnis: Faktensammlungs-Report (`report_art: fakten`). *(Spur. Beim Sprung: inline in Phase 3.)*
-3. **Spec-Erstellung** — Die Lösung wird in eine Spec geformt (Format: `01_Spec-Format.md`). Erstellt vom Chat-Architekt. *(Spur + Sprung.)*
-4. **Übergabe** — Spec geht via Claude Code ins Repo; Übergabe-Prompt an Claude Code. *(Spur + Sprung.)*
-5. **Machbarkeitsanalyse** — Claude Code prüft die Spec gegen die Realität und schreibt sich seine eigene Arbeitsliste/Bündelung (`report_art: machbarkeit`). **Pflicht bei der Bündelung:** jedes Bündel erhält einzeln ein `kritisch:`-Flag (`sicher` / `kritisch` / `sicherheitskritisch-akut`), geprüft gegen die Kritikalitäts-Liste in `01_Spec-Format.md`. Die Spec-weite `risikoklasse:` ist eine **Obergrenze** für diese Einstufung, ersetzt sie aber nicht — eine `kritisch`-Spec kann und soll `sicher`-Bündel enthalten. Nur-nach-oben gilt pro Bündel (E26). Grobe Abweichungen gehen zurück in den Chat. *(Spur. Beim Sprung: inline in Phase 3, nur Abweichungen zurück in den Chat.)*
-6. **Bundled Execution (autonom im freigegebenen Korridor)** — Arbeit in Bündeln, Bündelgröße risikoabhängig. Nach der Spec-Freigabe arbeitet Claude Code die Bündel **autonom im Korridor** ab (siehe Abschnitt „Autonome Ausführung im freigegebenen Korridor" unten). Er stoppt synchron nur an den zwei Pflicht-Stopps und bei einem der vier Stopp-Auslöser; sonst läuft er bis zum Entscheidungs-Protokoll durch. `kritisch`/`sicherheitskritisch-akut`-markierte Bündel bleiben synchrone Stopps. *(Alle Stufen. Beim Schritt: Claude Code führt direkt aus, committet, schreibt die Schritt-Log-Zeile.)*
-7. **Abschluss-Verifikation** — Abschluss-Doku gegen die Ziele der Spec prüfen, im Chat gegengecheckt. *(Spur: volle Abschluss-Doku. Sprung: kurze Abschluss-Notiz.)*
-8. **Retrospektive** — „Was nächstes Mal besser?" Auffangnetz für Optimierung (siehe `02_Rollen-Protokoll.md` → Optimierung passiert auch jederzeit, nicht nur hier). *(Spur. Sprung nur bei Bedarf.)*
-9. **Abschluss** — Wissen einarbeiten (siehe unten), commit, Arbeitsgedächtnis ins Archiv. *(Spur + Sprung.)*
+## Akt 1 — Sondierung (Claude Code, am echten System)
 
-## Autonome Ausführung im freigegebenen Korridor
+**Auslöser:** eine Idee, ein Problem, geplante Produktarbeit — oder ein **Backlog-Seed**, der gezogen wird.
 
-Nach der Freigabe der letzten gemeinsam erarbeiteten Phase (meist die Spec) arbeitet Claude Code autonom — aber innerhalb eines Korridors, dessen Wände die Freigabe gezogen hat. Verlässt er den Korridor, stoppt er, egal wie weit er ist.
+Claude Code erhebt in **einem** Durchgang am echten System und schreibt das Ergebnis in **ein** Dokument:
 
-**Abgrenzung zu E3 (nicht selbstoptimierend):** Dies weicht E3 NICHT auf. E3 verbietet, dass das System sich selbst verändert (Regeln/Verfassung) ohne Freigabe — das bleibt. Autonom ist nur die *Ausführung freigegebener Arbeit* innerhalb vom Menschen gezogener Grenzen, nie das Ziehen der Grenzen.
+- **Ist-Fakten** — bewiesen, nicht angenommen; jeder Fakt nennt seine Quelle (Befehl/Datei/Pfad).
+- **Machbarkeit** — geht das so? Was hängt dran? Was widerspricht der Idee?
+- **Bündelung / Arbeitsliste** — Claude Codes eigene Einteilung (er kennt die Abhängigkeiten am System besser).
+- **Stufen-Vorschlag** + pro Bündel ein **`kritisch:`-Flag** (`sicher` / `kritisch` / `sicherheitskritisch-akut`), geprüft gegen die feste Liste in `01_Spec-Format.md`.
 
-### Leitprinzip — Wohin/Wie
+**Das löst den alten Fakten↔Spec-Loop:** Fakten und Machbarkeit kommen **vor** der Spec, weil der, der sie erheben kann, zuerst dran ist. Keine nachgelagerte zweite Machbarkeitsrunde mehr.
 
-Der Mensch entscheidet das **Wohin** (Richtung, Wert, Strategie). Claude Code entscheidet das **Wie** (Technik, Implementierung, Methode). Reviews fließen entlang dieser Grenze: synchron nur beim Wohin, asynchron-informativ beim Wie. Bei Wohin-Fragen ist Claude Code strukturell unzuständig (ihm fehlt der Gesamtkontext von Geschäft und Leben) → da stoppt er. Das macht Stoppen vorhersehbar.
+**Seed-Re-Prüfung:** Wird ein Seed gezogen, IST die Sondierung die Aktualitäts-Prüfung am Zeitpunkt der Abarbeitung (der Seed kann Wochen alt sein). Sie passiert genau hier, einmal, nicht doppelt.
+
+**Wo das Dokument liegt:**
+- **Spur:** eigenes Sondierungs-Dokument im Arbeitsgedächtnis (`report_art: sondierung`, erbt später die `spec_id`).
+- **Sprung:** die Sondierung IST bereits die kombinierte Spec (Fakten/Soll inline) — Claude Code schreibt sie direkt als `<ID>_SPEC.md`.
+
+**Pflicht zur Lesbarkeit (Token-Schutz):** Jede Datei, die der Mensch oder der Chat-Architekt für Akt 2 braucht, wird **mit vollem Pfad** in der Übergabe benannt und liegt **auf `main` gepusht** (auch aus einem Worktree heraus — der relevante Stand muss auf `main`, sonst kann der Chat-Architekt ihn via MCP nicht lesen). **Verboten** ist, den Chat-Architekten suchen zu lassen: existiert-und-Pfad-genannt ist Pflicht. Ein Diff ist NICHT der Default-Beleg — der Chat-Architekt liest den Ist-Stand der Datei direkt via MCP. Diff nur, wenn der Mensch explizit „Änderung gegen vorher" sehen will.
+
+---
+
+## Akt 2 — Festlegung (im Chat, stufenabhängig)
+
+Der **Chat-Architekt** liest die Sondierung live via MCP und **erklärt sie dem Menschen** nach dem Beratungs-Rhythmus (`02_Rollen-Protokoll.md`: Was ist → wo es hakt → Vorschläge → Stopp → Prompt). Daraus wird **eine** Spec — direkt ins Repo, kein Übergabe-Tanz. Der Mensch entscheidet auf Basis der aufbereiteten Sondierung, nicht indem er die Rohdatei selbst durcharbeitet.
+
+### Wer formt die Spec
+
+- **Spur:** Der **Chat-Architekt** formt die Spec mit dem Menschen nach dem Beratungs-Rhythmus (`02_Rollen-Protokoll.md`) und schreibt sie nach `<Geltungsbereich>/Specs/<ID>_SPEC.md` (UC1, `06_Architekt-Protokoll.md`). Hier ist der Architekt **unverzichtbar** — Architektur-Entscheidungen brauchen den Gesamtüberblick.
+- **Sprung:** **Claude Code schreibt die Spec selbst** — sie ist mit der Sondierung identisch (kombinierte Spec). **Kein Chat-Architekt by default**, aber Claude Code **berät den Menschen direkt nach demselben Beratungs-Rhythmus** (`02_Rollen-Protokoll.md`: Was ist → wo es hakt → Vorschläge mit gekennzeichneter Empfehlung → Stopp → erst dann ausführen) — die Beratungspflicht hängt an der Rolle des Beratenden, nicht am Kanal. Nur wenn Claude Code auf eine echte Gabelung / Spec-Lücke / einen Konflikt stößt, der ein Wert-Urteil braucht, eskaliert er per UC2 an den Chat-Architekten. Das hält „kleine Themen" frei von Überberatung, ohne die Beratung selbst wegzulassen.
+- **Schritt:** kein Akt 2. Claude Code führt direkt aus.
+
+### Eine Spec-Fassung, kein Ping-Pong
+
+Die Spec sitzt auf der bereits erhobenen Sondierung. Es gibt **keine** nachgelagerte Machbarkeitsrunde, die eine zweite Spec-Überarbeitung auslöst. Stellt sich erst in Akt 3 heraus, dass die Spec so nicht funktioniert, ist das ein **Fall C** (Korridor-Bruch, siehe unten) — Stopp, zurück in Akt 2, EINE Korrektur. Kein endloser Abgleich-Loop.
+
+**Spec-Freigabe ist der erste der zwei zwingenden Stopps.** Hier steckt der Gesamtüberblick des Menschen.
+
+---
+
+## Akt 3 — Ausführung & Verankerung (Claude Code, am echten System)
+
+Nach Spec-Freigabe arbeitet Claude Code **autonom im Korridor**, dessen Wände die Freigabe gezogen hat. Verlässt er den Korridor, stoppt er.
+
+### Leitprinzip — Wohin / Wie (das Herz der Autonomie)
+
+Der Mensch entscheidet das **Wohin** (Richtung, Wert, Strategie). Claude Code entscheidet das **Wie** (Technik, Implementierung, Methode).
+
+**Positiv-Imperativ (NEU, gegen Übervorsicht):**
+> **Sagt die Spec WAS, ist das WIE Claude Codes Pflicht — nicht seine Bitte um Erlaubnis.** Was die Spec autorisiert und Claude Code technisch selbst ausführen kann, führt er selbst aus und vollständig durch. Eine `kritisch`-Einstufung ist ein Auftrag zur Vorsicht, **kein** Auftrag zur Rückdelegation an den Menschen.
+
+**Zwei verbotene Pseudo-Stopps (NEU, deine Painpoints als harte Negativ-Liste):**
+
+1. **Keine Einzelbefehl-Delegation.** Claude Code gibt dem Menschen **nicht** eine Liste einzelner Befehle (SQL, Shell) zum Selbst-Ausführen, wenn er sie selbst ausführen kann. Eine `kritisch`-DB-Operation, die die Spec deckt, führt er selbst aus (mit Backup + Verifikation), statt sie dem Menschen Befehl für Befehl vorzulegen. Der Mensch ist die **letzte** Instanz nur dort, wo Claude Code physisch nicht kann (Auslöser 4) — und dann als **fertiges Skript**, nie als Einzelbefehl-Sammlung.
+2. **Keine Schein-Verifikation zur Bestätigung.** Was Claude Code selbst prüfen kann (Health-Check, DB-Query-Ergebnis, Test grün), prüft er selbst und macht bei Grün weiter. Er legt das Ergebnis dem Menschen **nicht** als „ich habe geprüft, alles grün — darf ich weiter?" vor. Das ist ein Zeitfresser-Stopp, den die Umkehr-Logik verbietet. Verifikation, die ein Mensch leisten muss (reales Browser-Fenster, App-Verhalten, visuelle UI, manueller Funktionstest), bleibt Mensch-Sache — die delegiert Claude Code aktiv.
+
+Lackmustest pro Entscheidung: „Kann ich das selbst entscheiden, ohne das Wohin zu kennen, und ist es billig rückrollbar?" Zweimal ja → kein Stopp, **auch bei `kritisch`**.
 
 ### Drei Stufen der Sichtbarkeit
 
 1. **Stopp/Freigabe** (synchron, blockierend) — selten, nur Wohin + irreversibel.
-2. **Information** (asynchron, kein Veto) — Claude Code lief weiter, Mensch liest später. Information landet in **Doku / Commit / Log**, nicht in Zwischen-Chat-Statusberichten. Wenn der Mensch unterwegs etwas wissen muss, ist es Stopp Stufe 1, nicht Information.
-3. **Stille** (gar nichts im Chat) — **aktiv** für die feste Silent-Whitelist unten. Was geglückt-wie-geplant lief, erzeugt keinen Chat-Output; es landet nur in Doku/Commit/Log.
+2. **Information** (asynchron, kein Veto) — landet in **Doku / Commit / Log**, nicht in Zwischen-Chat-Statusberichten. Muss der Mensch unterwegs etwas wissen, ist es Stopp Stufe 1, nicht Information.
+3. **Stille** (gar nichts im Chat) — für die Silent-Whitelist unten.
 
-**Umkehr-Logik (tragender Satz):** Konformität ist die Default-Annahme. **Gemeldet wird die Abweichung, nicht die Einhaltung.** „Ich habe mich an die Spec gehalten" ist kein Output — das wird vorausgesetzt. Output entsteht nur, wo etwas *nicht* ging.
+**Umkehr-Logik (tragender Satz):** Konformität ist Default. **Gemeldet wird die Abweichung, nicht die Einhaltung.** „Ich habe mich an die Spec gehalten" ist kein Output. Output entsteht nur, wo etwas *nicht* ging.
 
-**Boden der Stille:** Stille gilt ausschließlich für Geglücktes-wie-geplant. Jedes Nicht-Können bricht sie sofort — Spec-Widerspruch → Fall C (Stopp); physisch-nicht-möglich → Mensch-Handlung (vorgezogen, oder bei Entdeckung im Lauf sofort gemeldet).
+**Boden der Stille:** Stille gilt nur für Geglücktes-wie-geplant. Jedes Nicht-Können bricht sie sofort — Spec-Widerspruch → Fall C (Stopp); physisch-nicht-möglich → Mensch-Handlung (vorgezogen oder bei Entdeckung sofort gemeldet).
 
 **Silent-Whitelist** (Claude Code prüft nur Zugehörigkeit, schätzt nicht ein):
 - Schritt-Log-Zeile schreiben
-- Archiv-Verschiebung (Phase 9)
+- Archiv-Verschiebung (Akt-3-Abschluss)
 - Übersicht-/SVG-Regenerierung (abgeleitete Ansicht)
 - Commit + Push reiner Doku-Änderungen
-- Phasenübergangs-Hausarbeit im Korridor (5→6, 6→7)
-- Spec↔Machbarkeit-Abgleich Fall A/B (Vermerk nur in Doku/Protokoll)
+- Aktinterne Hausarbeit im Korridor (Bündel-zu-Bündel-Übergang)
+- Spec↔Sondierung-Abgleich Fall A/B (Vermerk nur in Doku/Protokoll)
 - ausgeführte Befehle/SQL als Beleg (in Commit/Doku)
+- **selbst geleistete Verifikation, die grün ist** (Health-Check, Test, Query) — Beleg in Commit/Doku, kein Chat-Output
+- **Seed-`status:`-Fortschreibung entlang der Akte** (`offen` → `in_arbeit` → ggf. `blockiert`/`review` → `abgeschlossen`) — siehe „Seed-Status & Mission" unten
 
 ### Die Stopp-Auslöser
 
-Grundregel: Stopp nur, wenn eine Entscheidung **strategisch UND schwer reversibel** ist — oder wenn Claude Code physisch nicht weiterkann. Lackmustest: „Kann ich das selbst entscheiden, ohne das Wohin zu kennen, und ist es billig rückrollbar?" Zweimal ja → kein Stopp, **auch bei `kritisch`**.
+Grundregel: Stopp nur, wenn eine Entscheidung **strategisch UND schwer reversibel** ist — oder wenn Claude Code physisch nicht weiterkann.
 
 1. **Richtungs-Gabelung mit Wert-Urteil** — welcher Weg hängt vom Wohin ab; reine Technik-Wahl ist nie Stopp.
 2. **Schwer umkehrbar** — DB-Schema, Daten löschen, Außenwirkung, Geld.
 3. **Scope-Sprengung** — Sprung → Spur; Stopp + Eskalation.
-4. **Mensch muss physisch handeln** — sudo jenseits der NOPASSWD-Liste, UI-Klick, manueller Test, Vertragsklick, Snapshot-Anstoß. Das ist KEIN Wohin-Stopp, sondern ein Kann-nicht-Stopp; er wird vorgezogen (siehe „Vorgezogene Mensch-Handlungen").
+4. **Mensch muss physisch handeln** — sudo jenseits der NOPASSWD-Liste, UI-Klick, manueller/visueller Test, Vertragsklick, Snapshot-Anstoß. KEIN Wohin-Stopp, sondern ein Kann-nicht-Stopp; wird vorgezogen (siehe unten). **Mensch-Handlungen werden als fertiges Skript übergeben, nie als Einzelbefehl-Liste.**
 
-**Risikoklasse ist kein Stopp-Auslöser mehr.** `kritisch` löst keinen Stopp aus Prinzip aus — es verpflichtet zu Vorsichtsmaßnahmen während der Ausführung (Backup vorher, tiefe Verifikation, dokumentierter Restore-Pfad) und läuft dann autonom durch. Synchron gestoppt wird nur, wenn zusätzlich Auslöser 1–4 oder Fall C greift. Ausnahme: `sicherheitskritisch-akut` behält einen unbedingten Vor-Stopp (siehe Stufen-Staffelung + `01_Spec-Format.md`).
+**Risikoklasse ist kein Stopp-Auslöser.** `kritisch` löst keinen Stopp aus Prinzip aus — es verpflichtet zu Vorsichtsmaßnahmen während der Ausführung (Backup vorher, tiefe Verifikation, dokumentierter Restore-Pfad) und läuft dann autonom durch. Synchron gestoppt wird nur bei Auslöser 1–4 oder Fall C. Ausnahme: `sicherheitskritisch-akut` behält einen unbedingten Vor-Stopp.
 
 ### Vorgezogene Mensch-Handlungen
 
-Stopps des Typs „Mensch muss physisch handeln" (Auslöser 4) werden in Phase 5 gesammelt und **an den Anfang des Bündels bzw. der Serie gelegt** — als eine Liste „dafür brauche ich dich, bevor ich loslaufe" (inkl. etwaiger Pauschal-Freigaben, siehe unten). Der Mensch arbeitet sie in einem Rutsch ab, dann läuft Claude Code autonom durch. Wird eine solche Handlung erst im Lauf entdeckt (in Phase 5 nicht absehbar), **bricht sie die Stille sofort und wird gemeldet** — niemals still weggesteckt.
+Stopps des Typs „Mensch muss physisch handeln" (Auslöser 4) werden in Akt 1 gesammelt und **an den Anfang der Ausführung gelegt** — als eine Liste „dafür brauche ich dich, bevor ich loslaufe" (inkl. etwaiger Pauschal-Freigaben + fertiger Skripte). Der Mensch arbeitet sie in einem Rutsch ab, dann läuft Claude Code autonom durch. Erst im Lauf entdeckt → **bricht die Stille sofort, wird gemeldet** — nie still weggesteckt.
 
 ### Serien (gleichartige Operation auf mehreren Instanzen)
 
-Sind N Bündel dieselbe Operation auf N Instanzen (z. B. 5× Agent umschalten, 3× Cluster-Drop), fasst Claude Code sie in Phase 5 zu einer **Serie** zusammen statt zu N Einzelbündeln. Eine Serie hat: einen **Vor-Stopp** am Anfang (trägt alle vorgezogenen Mensch-Handlungen der Serie und — falls die Serie `sicherheitskritisch-akut` ist — die akut-Freigabe), einen **autonomen Durchlauf**, und **einen** Sektions-Bericht am Ende. Das Zusammenfassen ist Claude Codes Wie-Entscheidung; der Vor-Stopp ist die eine Mensch-Freigabe.
+Sind N Bündel dieselbe Operation auf N Instanzen (z. B. 5× Agent umschalten), fasst Claude Code sie in Akt 1 zu einer **Serie** zusammen statt zu N Einzelbündeln. Eine Serie hat: einen **Vor-Stopp** am Anfang (trägt alle vorgezogenen Mensch-Handlungen und — falls `sicherheitskritisch-akut` — die akut-Freigabe), einen **autonomen Durchlauf**, und **einen** Bericht am Ende.
 
 ### Korridor-Wand: Spec-Treue (Fall A/B/C)
 
-Treffen Fakten/Machbarkeit auf die Spec:
+Treffen Fakten beim Ausführen auf die Spec:
 - **A — bestätigen:** Autopilot bis zum Schluss.
-- **B — präzisieren** (kein Widerspruch, nur Detail): weiter, **still** — Vermerk nur im Protokoll, kein Chat-Output. Nur Fall C bricht durch.
-- **C — widersprechen / Hardstop:** **Stopp**, egal wann. Die Freigabe-Grundlage ist hinfällig; eine geänderte Spec ist eine Wohin-Frage → Mensch.
+- **B — präzisieren** (kein Widerspruch, nur Detail): weiter, **still** — Vermerk nur im Protokoll.
+- **C — widersprechen / Hardstop:** **Stopp**, egal wann. Die Freigabe-Grundlage ist hinfällig; eine geänderte Spec ist eine Wohin-Frage → Mensch. Zurück in Akt 2, EINE Korrektur, dann weiter.
 
-Lackmustest pro Phase: „Tue ich noch das, was die freigegebene Spec sagt — oder etwas, WEIL die Spec so nicht funktioniert?" Letzteres = Fall C = Stopp.
+Lackmustest: „Tue ich noch das, was die freigegebene Spec sagt — oder etwas, WEIL die Spec so nicht funktioniert?" Letzteres = Fall C = Stopp.
 
 ### Die zwei zwingenden Stopps
 
-1. **Spec-Freigabe** (vorne) — hier steckt der Gesamtüberblick des Menschen.
+1. **Spec-Freigabe** (Ende Akt 2) — hier steckt der Gesamtüberblick des Menschen.
 2. **Korridor-Bruch** (dynamisch, nur bei Fall C).
 
 ### Pauschal-Freigaben pro Zyklus
 
-Wiederkehrende, pro-Vorkommen-freigabepflichtige Operationen können am Zyklus-Anfang **pauschal** für den ganzen Zyklus freigegeben werden, statt bei jedem Vorkommen erneut zu stoppen. Pauschalierbar ist nur **Reversibles mit aus der Spec bekanntem Scope**: Compose-Edits, Container-Rebuilds, `environment_a`-Restarts. **Nie pauschalierbar** (bleibt Stopp pro Vorkommen, weil Auslöser 2): DB-Migration/Datenlöschung in Produktion, Traefik-/Foundation-/Netz-Konfiguration, Datei-Löschung außerhalb des `knowledge-base`-Repos. Die Pauschal-Freigabe gehört in den Vor-Stopp des Bündels/der Serie.
+Wiederkehrende, pro-Vorkommen-freigabepflichtige Operationen können am Anfang **pauschal** für den ganzen Zyklus freigegeben werden. Pauschalierbar ist nur **Reversibles mit aus der Spec bekanntem Scope**: Compose-Edits, Container-Rebuilds, `environment_a`-Restarts. **Nie pauschalierbar** (bleibt Stopp pro Vorkommen, Auslöser 2): DB-Migration/Datenlöschung in Produktion, Traefik-/Foundation-/Netz-Konfiguration, Datei-Löschung außerhalb `knowledge-base`. Gehört in den Vor-Stopp.
 
-Dazwischen kein synchroner Stopp **und keine Wie-Rückfragen im Chat**. Phasenübergänge (Phase 5→6, 6→7, 7→9) und Folge-Aufräumschritte, die sich zwingend aus dem Bündel ergeben (Archivierung, Status-Update, abhängige Schritt-Log-Einträge), gehören in den Korridor — werden durchgezogen, nicht erneut angefragt. Rückfragen sind nur an den definierten Wänden (Spec-Freigabe vorne, Fall-C-Hardstop dynamisch).
+Dazwischen kein synchroner Stopp **und keine Wie-Rückfragen im Chat**. Akt-interne Übergänge und Folge-Aufräumschritte (Archivierung, Status-Update, abhängige Schritt-Log-Einträge) gehören in den Korridor — werden durchgezogen, nicht erneut angefragt.
 
-**Insbesondere Phase 5 → Phase 6:** Liegt die Machbarkeit ohne grobe Abweichung vor (Fall A/B), geht Claude Code direkt in die Ausführung über — **keine „Machbarkeit freigeben?"-Rückfrage**. Synchron gestoppt wird nur an den beiden zwingenden Stopps, an einem der vier Stopp-Auslöser und — bei der Spur — an jedem als `sicherheitskritisch-akut` markierten Bündel. Eine **grobe Abweichung in der Machbarkeit IST ein Fall C** (die Spec funktioniert so nicht) und geht als solcher zurück in den Chat.
-
-### Stufen-Staffelung
+### Stufen-Staffelung der Autonomie
 
 - **Schritt:** autonom komplett (war nie Freigabe-Thema).
-- **Sprung:** Spec-Freigabe vorne (das bestehende „ein Stopp"), durchziehen, Protokoll hinten.
-- **Spur:** autonom durch `sicher`- UND `kritisch`-Bündel (`kritisch` = mit Vorsichtsmaßnahmen, kein Stopp aus Prinzip); synchroner Vor-Stopp nur an `sicherheitskritisch-akut`-Bündeln sowie bei jedem der Stopp-Auslöser 1–4 / Fall C.
+- **Sprung:** Spec-Freigabe vorne (bzw. autonom, wenn Claude Code die Spec selbst schreibt und keine Gabelung auftritt), durchziehen, Entscheidungs-Protokoll hinten.
+- **Spur:** autonom durch `sicher`- UND `kritisch`-Bündel (`kritisch` = mit Vorsichtsmaßnahmen, kein Stopp aus Prinzip); synchroner Vor-Stopp nur an `sicherheitskritisch-akut`-Bündeln sowie bei Stopp-Auslöser 1–4 / Fall C.
 
 ### Entscheidungs-Protokoll (Review-Format)
 
-Der Mensch reviewt Entscheidungen, nicht Code. **Der Chat-Output am Bündel-/Zyklus-Ende ist ausschließlich das Entscheidungs-Protokoll** — vier Punkte in dieser Reihenfolge:
+Der Mensch reviewt Entscheidungen, nicht Code. **Der Chat-/Terminal-Output am Bündel-/Zyklus-Ende ist ausschließlich das Entscheidungs-Protokoll** — vier Punkte:
 
-1. **Was ich gebaut habe** — ein Satz, das Ziel des Bündels.
-2. **Entscheidungen** — die Gabelungen, an denen ich nicht gestoppt habe, je eine Zeile: „X statt Y, weil …". Wenn keine echten Gabelungen, dann „keine" — nicht stillschweigend leer lassen.
+1. **Was ich gebaut habe** — ein Satz, das Ziel.
+2. **Entscheidungen** — die Gabelungen, an denen ich nicht gestoppt habe, je eine Zeile: „X statt Y, weil …". Keine echten Gabelungen → „keine".
 3. **Was du wissen solltest** — Information, kein Veto nötig.
-4. **Wo ich unsicher war** — der eigentliche Review-Fokus des Menschen (darf leer sein).
+4. **Wo ich unsicher war** — der eigentliche Review-Fokus (darf leer sein).
 
-**Inhaltlich, nicht referenzierend.** Die vier Punkte werden direkt im Chat ausgeschrieben — **keine „siehe Spec / siehe File / siehe Abschluss-Doku"-Verweise.** Der Mensch ist sowieso in der CLI, dort kommt das Schnellste an — wenn der Inhalt in der Datei steht und nicht im Chat, muss er Branch/File aufrufen für was, das in drei Sätzen im Chat stehen könnte. Belegmaterial (Akzeptanzkriterien-Häkchen, Diffs, Hash-Listen) bleibt weiter in der Datei; die **Substanz der Entscheidungen** und **die offenen Fragen** stehen im Chat-Text. Ausnahme nur für rein deskriptive Verweise („Details siehe `<Datei>` Z. 42–60") — und auch dort nicht ohne kurze Vorab-Substanz im Chat.
+**Inhaltlich, nicht referenzierend.** Direkt im Output ausgeschrieben — **keine „siehe Spec / siehe File"-Verweise.** Belegmaterial (Akzeptanzkriterien-Häkchen, Diffs, Hash-Listen, „was ich geprüft habe") bleibt in der Datei, NICHT im Review-Anker. Ausnahme nur für rein deskriptive Verweise („Details siehe `<Datei>` Z. 42–60") — auch dort nicht ohne kurze Vorab-Substanz.
 
-**Nicht in den Chat:** Akzeptanzkriterien-Häkchen, Phasen-Verifikations-Tabellen, Datei-Listen, Commit-Hash-Aufzählungen, „was ich geprüft habe"-Belege, Status-Updates pro Phase. Das ist Belegmaterial — gehört in Abschluss-Doku / Schritt-Log / Logbuch, nicht in den Review-Anker des Menschen. Der Mensch hat diese Belege eingerichtet, **damit er sie nicht lesen muss**.
+---
 
-Code-Diff und Doku-Diff bleiben verfügbar, sind aber Kür. Revision erfolgt geballt im Nachhinein (auf Branch billig), statt vorab häppchenweise freizugeben.
-
-## Lebenszyklus-Bewegung beim Abschluss (Phase 9)
+## Verankerung beim Abschluss (Teil von Akt 3)
 
 Von Claude Code vorgeschlagen, vom Menschen freigegeben:
+
 - Dauerhaft Gültiges wird in **Systemzustand** bzw. **Verfassung eingearbeitet** (eingearbeitet, nicht kopiert — bleibt EINE Quelle).
-- Das „Warum" wird als **Logbuch-Eintrag** verewigt (Format: siehe Logbuch). Das Logbuch ist **zentral** in `_Betrieb/Logbuch/` (siehe `02_Rollen-Protokoll.md` und Logbuch E24).
-- Der Rest (Specs, Reports, Deviation-Logs) wandert ins **Archiv**.
-- Hatte der Zyklus einen **Backlog-Seed als Auslöser**, wird in derselben Phase-9-Bewegung sein `status:` auf `abgeschlossen` gezogen. Ein Seed ohne Folge-Glieder wandert danach ins Archiv des Zyklus — **gemeinsam mit dem vollständigen Zyklus-Satz** (Spec, Abschluss-Notiz, Machbarkeit, Fakten, Deviation-Logs — soweit vorhanden); das Kehraus-Tool `scripts/backlog/phase9_seed_archive.py` ist allein zuständig, der abschließende Agent lässt die Dateien im Arbeitsgedächtnis liegen (Detail: `01_Spec-Format.md` Abschnitt „Autonome Halde"). Ein Seed, der Vorgänger einer noch offenen `abhaengig_von`-Kette ist, bleibt als abgeschlossener Lese-Anker in `seeds/` stehen; der gesamte Satz inkl. Spec wartet im Arbeitsgedächtnis, bis das letzte Glied der Kette abschließt — dann gehen alle Sätze gemeinsam in einen Archiv-Ordner. (Teil-abgearbeitet → bleibt im Backlog mit Hinweis-Block + Querverweis auf die Spec.)
-- **Doku-Ebene synchronisieren:** Detail-Doku (`<Bereich>/Systemzustand/<Topik>/`) gegen die realen Änderungen auf Ist-Stand bringen, dann die abgeleitete `<Bereich>/Systemzustand/00_Uebersicht/` nachziehen — Verweistabellen, SVGs, Architektur-Tabellen. Detail bleibt SSOT, Übersicht ist abgeleitete Ansicht; beide synchron. (Pflicht-Tor: siehe unten „Doku-Synchronität".)
-- **Skill-Kandidat-Erkennung:** Trat im Zyklus eine wiederholte Schleife auf (mehrfaches Raten-Scheitern-Neuversuchen an demselben technischen Verfahren), die ein fixiertes Verfahren verhindert hätte, schlägt Claude Code am Zyklus-Ende einen **Skill-Seed** vor (`klasse: prozess`, Kandidat benannt, Schleife als Anlass dokumentiert). **Erkennung und Vorschlag** sind automatisch; die **Anlage des Skills** erfolgt nie selbsttätig, sondern durch Architekten-Freigabe und über die E4-Schreibrichtung (Chat entwirft Inhalt, Claude Code schreibt). Ein Skill ist eine Leitplanke — „nie selbstoptimierend" (E3) gilt unverändert. Der Vorschlag steht im Entscheidungs-Protokoll des Abschlusses, nicht in einem separaten Kanal. (Schwester der Selbstverbesserungs-Regel in der globalen CLAUDE.md — gleiche Mechanik, gleicher Geist.)
-- Das Arbeitsgedächtnis ist danach leer für den nächsten Zyklus.
+- Das „Warum" wird als **Logbuch-Eintrag** verewigt, zentral in `_Betrieb/Logbuch/` (E24).
+- Der Rest (Specs, Sondierungen, Deviation-Logs) wandert ins **Archiv**.
+- Hatte der Zyklus einen **Backlog-Seed als Auslöser**, wird sein `status:` auf `abgeschlossen` gezogen (im selben Commit). Ketten-Kehraus beim letzten Glied — Mechanik unverändert (`01_Spec-Format.md`, „Autonome Halde"); das Kehraus-Tool `scripts/backlog/phase9_seed_archive.py` ist allein zuständig.
+- **Kontext-Hygiene:** Ist der Zyklus sauber geschlossen, schlägt Claude Code dem Architekten `/clear` vor und legt es in der CLI-Eingabe vor — Ausführung beim Menschen. Bei offenem Zustand (Stopp/Fall C/unbeantwortete Frage) NICHT.
 
-Beim **Sprung** ist Phase 9 schlanker: Abschluss-Notiz ins Archiv, Logbuch-Eintrag nur, wenn eine bewusste Entscheidung mit Warum gefallen ist. Beim **Schritt** entfällt Phase 9 ganz — die Schritt-Log-Zeile + Commit sind der Abschluss.
+Beim **Sprung** schlanker: Abschluss-Notiz ins Archiv, Logbuch-Eintrag nur bei einer bewussten Entscheidung mit Warum. Beim **Schritt** entfällt der Abschluss ganz — Schritt-Log-Zeile + Commit sind der Abschluss.
 
-**Kontext-Hygiene (Phase-9-Ende):** Ist der Zyklus sauber geschlossen (alle Pflicht-Tore erfüllt, kein offener Stopp), schlägt Claude Code dem Architekten `/clear` vor und legt es in der CLI-Eingabe vor — Ausführung bleibt beim Menschen, nie automatisch. Begründung im Vorschlag: dauerhaftes Wissen ist persistent im Repo (Systemzustand/Logbuch/Schritt-Log), die Session-Historie ist toter Kontext für den nächsten Zyklus. Bei offenem Zustand (Stopp/Fall C/unbeantwortete Frage) wird `/clear` NICHT vorgeschlagen.
+---
 
-## Pflicht-Tore (Strenge mit Notausgang)
+## Pflicht-Tor: Doku-Synchronität am Systemzustand (eigener, sichtbarer Punkt)
 
-- Ein Zyklus gilt nicht als abgeschlossen, bevor sein definierter Ausgang existiert (z. B. Logbuch-Eintrag bei einer Entscheidung). Claude Code WEIGERT sich, einen neuen Zyklus zu starten, wenn der alte nicht sauber geschlossen ist, und erinnert daran. *(Gilt für Spur + Sprung. Schritt hat keinen offenen Zustand.)*
-- **Breakout-Klappe:** Das Codewort `BREAKOUT` (oder `QUICK-FIX`) setzt den Prozess bewusst aus, PROTOKOLLIERT die Aussetzung und erinnert später ans Nachholen. Flexibilität bricht nie das System — sie wird aufgezeichnet.
-- **Autonomie-Klappe:** Stoppt Claude Code im Korridor an einem der vier Auslöser, ist das kein Abbruch, sondern Korridor-Funktion. Er legt das Entscheidungs-Protokoll des bis dahin Gelaufenen vor und benennt die offene Wohin-/Kritikalitäts-Frage. Nach Mensch-Entscheidung läuft der Korridor weiter.
-- **Doku-Synchronität (Phase 9):** Wenn ein Zyklus den **realen Systemzustand** eines Bereichs ändert — Container kommt/geht/wechselt Image, n8n-Workflow, Skript, `docker-compose.yml`, Auth-/Netz-Topologie, neue Komponente — ODER bestehende Detail-Doku unterhalb `<Bereich>/Systemzustand/**` (außerhalb `00_Uebersicht/`) umarbeitet, MUSS im selben Zyklus VOR dem Phase-9-Commit: **(a)** die betroffene Detail-Doku im `Systemzustand/` auf den neuen Ist-Stand gebracht werden (SSOT zuerst), **und (b)** die abgeleitete `00_Uebersicht/00_Bereich.md` (ggf. thematische Sub-Übersicht inkl. SVG) nachgezogen werden. Beide Ebenen sind Korridor-Wand: fehlt (a) oder (b) beim Phase-9-Abschluss = Fall C = synchroner Stopp. Begründete Ausnahme (Bereich bewusst undokumentiert, z. B. Intern leer) gehört in die Abschluss-Doku. *(Gilt für Spur, Sprung UND Schritt — sobald der reale Systemzustand berührt wird. Nur rein doku-interne Trivialitäten ohne System-Bezug, z. B. Typo-Fix, sind ausgenommen.)* Generalisiert das Backlog-Pflege-Muster („Übersicht im selben Commit", siehe unten) auf den Systemzustand — handgepflegt statt skript-generiert, gleicher Gedanke. Schwellenwerte:
+**Das ist die häufigste vergessene Pflicht — deshalb steht sie jetzt als eigener Akt-3-Abschnitt, nicht als Unterpunkt.**
+
+Wenn ein Zyklus den **realen Systemzustand** eines Bereichs ändert — Container kommt/geht/wechselt Image, n8n-Workflow, Skript, `docker-compose.yml`, Auth-/Netz-Topologie, Agent-Pipeline, neue Komponente — ODER bestehende Detail-Doku unterhalb `<Bereich>/Systemzustand/**` (außerhalb `00_Uebersicht/`) umarbeitet, MUSS **vor dem Abschluss-Commit**:
+
+**(a)** die betroffene **Detail-Doku** im `Systemzustand/` auf den neuen Ist-Stand gebracht werden (SSOT zuerst), **und**
+**(b)** die abgeleitete **`00_Uebersicht/00_Bereich.md`** (ggf. thematische Sub-Übersicht inkl. SVG) nachgezogen werden.
+
+Beide Ebenen sind Korridor-Wand: fehlt (a) oder (b) beim Abschluss = **Fall C = synchroner Stopp**. Begründete Ausnahme (Bereich bewusst undokumentiert) gehört in die Abschluss-Doku.
+
+*(Gilt für Spur, Sprung UND Schritt — sobald der reale Systemzustand berührt wird. Nur rein doku-interne Trivialitäten ohne System-Bezug, z. B. Typo-Fix, sind ausgenommen.)*
 
 | Reale Änderung im Bereich | Pflicht-Update Detail-Doku | Pflicht-Update Übersicht |
 |---|---|---|
@@ -182,29 +238,70 @@ Beim **Sprung** ist Phase 9 schlanker: Abschluss-Notiz ins Archiv, Logbuch-Eintr
 | Doku-Datei in `Systemzustand/<Topik>/` neu/gelöscht/umbenannt | (die Änderung selbst) | `00_Bereich.md` Detail-Quellen-Tabelle |
 | Reines Wording/Typo in Detail-Datei | (kein) | **kein** Pflicht-Update |
 
+---
+
+## Skill-Kandidat-Erkennung (Teil von Akt 3, Abschluss)
+
+Trat im Zyklus eine wiederholte Schleife auf (mehrfaches Raten-Scheitern-Neuversuchen an demselben technischen Verfahren), die ein fixiertes Verfahren verhindert hätte, schlägt Claude Code einen **Skill-Seed** vor (`klasse: prozess`, Kandidat benannt, Schleife dokumentiert). **Erkennung + Vorschlag** automatisch; die **Anlage** nie selbsttätig — durch Architekten-Freigabe, über die E4-Schreibrichtung (Chat entwirft, Claude Code schreibt). Steht im Entscheidungs-Protokoll, nicht in einem separaten Kanal.
+
+---
+
+## Pflicht-Tore (Strenge mit Notausgang)
+
+- Ein Zyklus gilt nicht als abgeschlossen, bevor sein definierter Ausgang existiert (z. B. Logbuch-Eintrag bei einer Entscheidung; Doku-Synchronität bei System-Berührung). Claude Code WEIGERT sich, einen neuen Zyklus zu starten, wenn der alte nicht sauber geschlossen ist. *(Spur + Sprung. Schritt hat keinen offenen Zustand.)*
+- **Breakout-Klappe:** Codewort `BREAKOUT` (oder `QUICK-FIX`) setzt den Prozess bewusst aus, PROTOKOLLIERT die Aussetzung, erinnert ans Nachholen. Flexibilität bricht nie das System — sie wird aufgezeichnet.
+- **Autonomie-Klappe:** Stoppt Claude Code im Korridor an einem der vier Auslöser, ist das kein Abbruch, sondern Korridor-Funktion. Er legt das Entscheidungs-Protokoll des bis dahin Gelaufenen vor und benennt die offene Wohin-/Kritikalitäts-Frage. Nach Mensch-Entscheidung läuft der Korridor weiter.
+- **Doku-Synchronität:** siehe eigener Abschnitt oben — Korridor-Wand, Fall C bei Fehlen.
+
+---
+
+## Abgrenzung zu E3 (nicht selbstoptimierend)
+
+Die Autonomie weicht E3 NICHT auf. E3 verbietet, dass das System sich selbst verändert (Regeln/Verfassung) ohne Freigabe — das bleibt. **Autonom ist nur die Ausführung freigegebener Arbeit innerhalb vom Menschen gezogener Grenzen, nie das Ziehen der Grenzen.** Die Verfassung und Claude Codes Leitplanken ändert weiterhin nur der Mensch per Freigabe.
+
+---
+
 ## Backlog-Pflege
 
 ### Harte Security-Regel
 
-**`security`-Seeds rutschen nicht ab.** Ein offener `security`-Seed ist per Definition mindestens `bald` — er darf nie auf `irgendwann` rutschen. `wartung`-Seeds sind nie `jetzt`, außer sie blockieren nachweislich etwas anderes. Beide Regeln gelten als **Default mit Begründungszwang**: Wer abweicht, schreibt eine Zeile ins Seed, warum.
-
-Mechanik wie bei „kritisch erzwingt Spur" (E23): Disziplin durch Default, nicht durch Sperre. Flexibilität bleibt, aber das Abweichen ist sichtbar.
+**`security`-Seeds rutschen nicht ab.** Ein offener `security`-Seed ist per Definition mindestens `bald` — nie `irgendwann`. `wartung`-Seeds sind nie `jetzt`, außer sie blockieren nachweislich etwas. Beide als **Default mit Begründungszwang**: Wer abweicht, schreibt eine Zeile ins Seed.
 
 ### Pflege-Routine — Übersicht im selben Commit
 
-`_Betrieb/Backlog/00_UEBERSICHT.md` + `.svg` sind ein Derivat der Seeds (Verfassung 03 SSOT). Sie werden vom Skript `scripts/backlog/generate_uebersicht.py` (im `prisment-platform` Repo) erzeugt.
+`_Betrieb/Backlog/00_UEBERSICHT.md` + `.svg` sind ein Derivat der Seeds (Verfassung 03 SSOT), erzeugt von `scripts/backlog/generate_uebersicht.py` (Repo `prisment-platform`).
 
-**Mutations-Punkte (Pflicht-Tor):** Wenn Claude Code einen Seed **anlegt** oder **archiviert**, läuft das Skript im **selben Commit** mit. Damit kann die Übersicht strukturell nicht veralten.
+**Mutations-Punkte (Pflicht-Tor):** Legt Claude Code einen Seed **an** oder **archiviert** einen, läuft das Skript im **selben Commit** mit. Damit kann die Übersicht strukturell nicht veralten. Gleiches Muster wie Doku-Synchronität oben.
 
-Das ist die Anwendung des Phase-9-Pflicht-Tors („Zyklus, der das System ändert, aktualisiert die abgeleitete Ansicht im selben Commit") auf den Backlog — kein neues Muster.
+Hot-Files werden handgepflegt in `_Betrieb/Backlog/00_HOT-FILES.md` — getrennt von der generierten Übersicht.
 
-Hot-Files (strang-übergreifend nur seriell anfassbare Pfade) werden handgepflegt in `_Betrieb/Backlog/00_HOT-FILES.md` — getrennt von der generierten Übersicht, damit das Skript handgepflegtes Wissen nicht überschreibt.
+### Seed-Status & Mission (laufende Pflege, Claude-Code-Hand)
+
+Unter `_Betrieb/Missionen/` lebt ein Kanban über die Seeds. Es zeigt nur den echten Stand, wenn `status:` und `mission:` der Seeds **laufend** gepflegt werden — nicht erst beim Abschluss. **Einzige Schreibhand ist Claude Code** (E4); der Mensch übersteuert nie per Datei, sondern weist Claude Code an.
+
+**`status:`-Werte und ihre Akt-Kopplung** (Claude Code schreibt sie automatisch, Silent-Whitelist — er erkennt nur den Akt-Zustand, urteilt nicht):
+
+| Status | Wann | Ausgelöst durch |
+|---|---|---|
+| `offen` | Seed liegt im Backlog, ungezogen | Default bei Anlage |
+| `in_arbeit` | Seed gezogen, Akt 1 startet | Beginn Sondierung |
+| `blockiert` | Stopp-Auslöser 1–4, Fall C, oder Blocker einer Abhängigkeitskette offen | Korridor-Stopp / eingefrorene Kette |
+| `review` | Akt-3-Ausführung fertig, wartet auf Mensch-Verifikation, die nur der Mensch leisten kann (reales Browser-Fenster, App-Verhalten, visuelle UI) | Übergabe ins Mensch-Review |
+| `abgeschlossen` | Verankerung komplett, Pflicht-Tore erfüllt | Akt-3-Abschluss |
+
+`review` ist die saubere Trennung deiner Painpoints: Was Claude Code **selbst** verifizieren kann, prüft er und macht weiter (kein `review`-Stopp). `review` entsteht **nur**, wenn eine Verifikation übrig bleibt, die physisch ein Mensch leisten muss — dann ist es zugleich ein Auslöser-4-Fall.
+
+**`mission:`** ordnet den Seed einer laufenden missionalen Klammer zu (Kebab-case-Slug, z. B. `live-gang`; Definition + Vergabe-Mechanik in `01_Spec-Format.md`). Claude Code setzt/ändert sie nach derselben Vorschlag-Mechanik wie `klasse`/`zugkraft` — schlägt vor, Mensch revidiert, Claude Code schreibt. Hat **keinen** Einfluss auf den Prozess, dient nur Filter/Bündelung im Kanban.
+
+Die `## 📝 Eigene Notizen`-Sektion des Seeds bleibt Mensch-Sperrzone (`01_Spec-Format.md`) — Status-/Mission-Fortschreibung lässt sie byte-identisch.
+
+---
 
 ## Zwischenprojekte (Abzweigungen)
 
 - Niemals „hineinwachsen" lassen. Stattdessen: laufenden Zyklus **pausieren**, Zwischenprojekt als eigenen Mini-Zyklus **einschieben**.
 - Pause erzeugt einen **Pause-Snapshot** (wo stehen wir, nächster Schritt, geltende Annahmen).
-- Wiederaufnahme erzwingt eine **Re-Sync-Prüfung** (Pflicht-Tor): Claude Code vergleicht Snapshot mit aktuellem Systemzustand und meldet, welche Schritte der pausierten Spec durch zwischenzeitliche Änderungen betroffen sind. Kein Weiterarbeiten vor Re-Sync.
-- Abzweigungen landen im zentralen **Backlog** (`_Betrieb/Backlog/`) mit Seed-Datei.
+- Wiederaufnahme erzwingt eine **Re-Sync-Prüfung** (Pflicht-Tor): Claude Code vergleicht Snapshot mit aktuellem Systemzustand und meldet betroffene Schritte. Kein Weiterarbeiten vor Re-Sync.
+- Abzweigungen landen im zentralen **Backlog** mit Seed-Datei.
 
-**Unterschied Eskalation ↔ Abzweigung:** Eskalation = *dasselbe* Vorhaben steigt in der Stufe (Sprung → Spur). Abzweigung = ein *anderes* Vorhaben drängt sich dazwischen → pausieren + einschieben.
+**Unterschied Eskalation ↔ Abzweigung:** Eskalation = *dasselbe* Vorhaben steigt in der Stufe. Abzweigung = ein *anderes* Vorhaben drängt sich dazwischen → pausieren + einschieben.

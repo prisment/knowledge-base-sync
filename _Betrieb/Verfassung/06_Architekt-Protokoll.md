@@ -1,3 +1,10 @@
+---
+typ: verfassung
+titel: "Architekt-Protokoll"
+stand: 2026-05-28
+aenderung: "nur nach oben, nur durch bewusste Freigabe"
+---
+
 # Architekt-Protokoll — Chat-Architekt ↔ Claude-Code-Kommunikation
 
 > Dieses Modul ergänzt den Iterationszyklus (00) um die Kommunikations-
@@ -54,9 +61,11 @@ für den Chat-Architekten unsichtbar.
 
 ## Use Cases
 
-### UC1 — Spec-Erstellung im Chat
+### UC1 — Spec-Erstellung im Chat (Spur-Pfad von Akt 2)
 
-**Trigger:** Architekt und Chat-Architekt erarbeiten gemeinsam eine Spec.
+**UC1 gilt für Stufe Spur.** Beim Sprung schreibt Claude Code die Spec selbst in Akt 1 (Sondierung = kombinierte Spec); der Chat-Architekt wird nur bei gemeldeter Gabelung (UC2) beteiligt — Claude Code berät den Menschen direkt nach dem Beratungs-Rhythmus aus `02_Rollen-Protokoll.md`.
+
+**Trigger:** Architekt und Chat-Architekt erarbeiten gemeinsam eine Spec (Spur, Akt 2).
 
 **Ablauf:**
 1. Diskussion und finale Fassung im Chat.
@@ -74,7 +83,7 @@ für den Chat-Architekten unsichtbar.
 7. Architekt pusht.
 
 **Bestehende Verfassungs-Regel `Spec-Erarbeitung im Chat-Dialog darf
-direkt auf main` (CLAUDE.md Z. 85–96) bleibt gültig und wird hier
+direkt auf main` (CLAUDE-global.md Z. 135–146) bleibt gültig und wird hier
 operationalisiert.**
 
 ### UC2 — Architekten-Frage von Claude Code
@@ -86,7 +95,7 @@ Spec-Lücke oder Konflikt, der Architekten-Entscheidung verlangt.
 1. Claude Code legt die Datei `_Betrieb/Architekt-Inbox/<ID>_FRAGE_<lfd-nr>.md`
    an, Inhalt im Frage-Block-Format (siehe unten).
 2. Claude Code: Commit + Push auf `main` (oder im aktuellen Worktree, je
-   nach Phase — siehe Sicherheits-Wand `10_Kunden/` und Worktree-Regeln
+   nach Akt — siehe Sicherheits-Wand `10_Kunden/` und Worktree-Regeln
    in CLAUDE.md).
 3. Claude Code: Gibt im Terminal die **Begleit-Meldung** aus (Format unten).
 4. Architekt: Pastet Terminal-Begleit-Meldung in Chat-Architekt.
@@ -185,7 +194,7 @@ oder Geltungsbereich-Logbuch.
 === ARCHITEKTEN-FRAGE ===
 Spec/Task: <ID + Titel>
 Stufe: <Sprung | Spur>
-Phase: <Phasen-Nr. aus Verfassung 00>
+Akt: <Akt-Nr. aus Verfassung 00>
 Datum: <YYYY-MM-DD>
 
 LAGE (2-4 Sätze):
@@ -233,7 +242,7 @@ Kontext: <1-2 Sätze, warum die Frage entsteht>
 === ARCHITEKTEN-FRAGE ===
 Spec/Task: <ID + Titel>
 Stufe: <Sprung | Spur>
-Phase: <Phase>
+Akt: <Akt>
 
 Worum es geht (2-3 Sätze Klartext):
 <Was passiert gerade. Warum bin ich an dieser Stelle. Was hängt
@@ -299,16 +308,17 @@ Bei jedem neuen Chat:
 Arbeitsgedächtnis sollte nicht mehr im Projekt-Wissen liegen, da es
 nun live gelesen wird — eine Quelle pro Datei.
 
-## Verhältnis zu CLAUDE.md
+## Verhältnis zu CLAUDE-global.md
 
-Diese Verfassungsregel ergänzt CLAUDE.md, ersetzt sie nicht. Konkret:
-- CLAUDE.md Z. 85–96 („Spec-Erarbeitung im Chat-Dialog darf direkt
-  auf `main`") bleibt gültig, wird hier in UC1 operationalisiert.
-- CLAUDE.md Z. 55–73 (Chat-Output-Form bei Stopps) gilt weiter für
-  Claude Codes Terminal-Output; UC2/UC3 ergänzen die Datei-Schicht.
-- CLAUDE.md Z. 277 (Autonomie ohne Rückfrage) bleibt gültig für Stufe
-  Schritt; für Sprung/Spur gilt der neue Identitäts-Abschnitt der
-  CLAUDE.md (Denk-Tiefe nach Stufe).
+Diese Verfassungsregel ergänzt `_Betrieb/CLAUDE-global.md` (via Symlink
+`~/.claude/CLAUDE.md`), ersetzt sie nicht. Konkret:
+- CLAUDE-global.md Z. 135–146 („Spec-Erarbeitung im Chat-Dialog darf
+  direkt auf `main`") bleibt gültig, wird hier in UC1 operationalisiert.
+- CLAUDE-global.md Z. 105–133 (Chat-Output-Form bei Stopps) gilt weiter
+  für Claude Codes Terminal-Output; UC2/UC3 ergänzen die Datei-Schicht.
+- CLAUDE-global.md Z. 325 ff. (Autonomie & Rückfragen) bleibt gültig
+  für Stufe Schritt; für Sprung/Spur gilt der Identitäts-Abschnitt
+  (Denk-Tiefe nach Stufe + Autonomie-Imperative).
 
 ## Verfassungs-Versionierung
 
