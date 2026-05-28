@@ -3,7 +3,7 @@ typ: backlog_seed
 titel: "Projekt-Wissen-Migration: GitHub-Sync auflösen, statische Verfassungs-Snapshots als Anker"
 geltungsbereich: intern
 risikoklasse: sicher
-status: offen
+status: abgeschlossen
 klasse: prozess
 zugkraft: bald
 mission: ""

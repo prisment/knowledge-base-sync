@@ -117,6 +117,7 @@ Aktive Missionen aus `_Betrieb/Missionen/00_aktive-missionen.md`. Seeds ohne Mis
 
 | Datei | Titel | mission | klasse | zugkraft | risikoklasse | stufe | status | abhängig von |
 |-------|-------|---------|--------|----------|--------------|-------|--------|--------------|
+| `seeds/seed-projekt-wissen-migration.md` | Projekt-Wissen-Migration: GitHub-Sync auflösen, statische Verfassungs-Snapshots als Anker | - | prozess | bald | sicher | schritt | abgeschlossen | - |
 | `seeds/seed-n8n-archived-workflow-cleanup.md` | Archivierter n8n-Workflow YRMUaRbrtsC40CWr aus DB löschen (Pre-PRIS-020-Auth) | - | wartung | bald | sicher | schritt | offen | PRIS-020_ABSCHLUSS |
 | `seeds/seed-assistant-agent.md` | Assistant-Agent: handelnder Agent an Geschäftsprozessen (eigenes Sicherheitsmodell) | - | feature | irgendwann | kritisch | spur | offen | - |
 

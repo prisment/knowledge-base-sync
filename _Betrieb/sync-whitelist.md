@@ -1,7 +1,7 @@
 ---
 typ: manifest
 titel: "Sync-Whitelist (GitHub → Projekt-Wissen)"
-stand: 2026-05-25
+stand: 2026-05-28
 gepflegt_von: "Claude Code"
 ---
 
@@ -11,49 +11,33 @@ Definiert, WAS via GitHub ins Projekt-Wissen des Chats gespiegelt wird. Whitelis
 
 ## Mechanik (wichtig)
 
-- GitHub-Sync ist KEIN Live-Zugriff. Es ist ein Import zu einem Zeitpunkt in den Projekt-Wissensspeicher; der Chat lädt diesen Speicher beim Sitzungsstart. Zwei Versatz-Stellen, kein lebender Draht.
-- Gespiegelt wird der **stabile Unterbau** (langsam alternd, Versatz verkraftbar). Die **flüchtige Arbeitsschicht** (Specs, Reports, Abschluss-Dokus des laufenden Zyklus) wird NICHT gespiegelt — sie kommt frisch über den Gesprächskanal (Claude Code nennt den Dateinamen, der Mensch bringt sie ein).
-- Der **Systemzustand insgesamt** wird NICHT gespiegelt (Volumen, Volatilität, Mandantennähe). Stattdessen leben in `<Bereich>/Systemzustand/00_Uebersicht/` kuratierte Übersichten (Einstieg `00_Bereich.md` + thematische Sub-Übersichten) — **alle MD-Dateien** dort gehen in den Sync, **SVGs bleiben lokal** (Chat-Architekt hat keine SVG-Sicht, die MDs tragen die Substanz textuell). Detail-Wissen unterhalb der Übersichten wird gezielt über den Gesprächskanal eingebracht (Claude Code nennt den Pfad).
-- Datenmenge bleibt klein → alle Geltungsbereiche werden mit ihren Übersichten gespiegelt. Fokus entsteht nicht durch selektives Laden, sondern durch das konkrete Problem + Claude Codes Prompt mit Dateinamen.
+- Seit MCP-Setup (INT-001, 2026-05-27) hat der Chat-Architekt Live-Zugriff aufs Repo via `prisment-knowledge` + `prisment-git`. Das Projekt-Wissen ist damit kein vollständiger Wissens-Spiegel mehr, sondern nur noch der **stabile Anker** (Verfassung), der auch bei MCP-Ausfall oder beim allerersten Lese-Zugriff sofort verfügbar sein muss.
+- Alles andere (Backlog, Templates, Logbuch, Systemzustand, Skills, CLAUDE.md-Dateien, Schritt-Logs) wird live via MCP gelesen — nicht mehr gespiegelt. Damit gibt es nur noch eine Wahrheits-Schicht.
+- Kundendaten und Secrets bleiben hart ausgeschlossen, unabhängig vom Projekt-Wissens-Sync.
 
-## Gespiegelt (stabiler Unterbau)
-
-```
-_Betrieb/CLAUDE.md
-_Betrieb/CLAUDE-global.md        # versionierte Kopie der globalen ~/.claude/CLAUDE.md (PLAT-025)
-_Betrieb/sync-whitelist.md       # diese Datei selbst (Kontroll-Manifest sichtbar im Chat)
-_Betrieb/Verfassung/**           # alle 6 Verfassungsdateien
-_Betrieb/Templates/**            # Dokument-Templates
-_Betrieb/Logbuch/**              # übergreifende Entscheidungs-Historie (E1–E14+)
-_Betrieb/Backlog/**              # zentraler Backlog + Seed-Dateien (Planungsüberblick)
-
-CLAUDE.md                        # Root-Wegweiser
-
-.claude/skills/**                # Claude-Code Skills (PLAT-028) — Quelle im Repo, Chat-Sicht
-
-Plattform/CLAUDE.md
-Plattform/Schritt-Log.md
-Plattform/Systemzustand/00_Uebersicht/*.md          # alle MD-Übersichten; SVGs bleiben lokal
-
-Prisment/CLAUDE.md
-Prisment/Schritt-Log.md
-Prisment/Systemzustand/00_Uebersicht/*.md
-
-Intern/CLAUDE.md
-Intern/Schritt-Log.md
-Intern/Systemzustand/00_Uebersicht/*.md
-```
-
-## NICHT gespiegelt
+## Gespiegelt (Verfassungs-Anker)
 
 ```
-**/Arbeitsgedaechtnis/**         # flüchtig → Gesprächskanal
-**/Archiv/**                     # abgeschlossen, nicht aktiv nötig
-**/Migration/**                  # zerstörungsfreier Migrations-Korridor, transient
+_Betrieb/Verfassung/**           # alle Verfassungs-Module (00–06)
+```
+
+## NICHT gespiegelt (live via MCP)
+
+```
+alles übrige im Repo
+```
+
+## Historisch gespiegelt, jetzt nur via MCP
+
+Vor INT-002 (2026-05-28) waren zusätzlich gespiegelt: `_Betrieb/CLAUDE.md`, `_Betrieb/CLAUDE-global.md`, `_Betrieb/sync-whitelist.md`, `_Betrieb/Templates/**`, `_Betrieb/Logbuch/**`, `_Betrieb/Backlog/**`, `CLAUDE.md` (Root), `.claude/skills/**`, alle Bereichs-`CLAUDE.md` + `Schritt-Log.md` + `Systemzustand/00_Uebersicht/*.md`. Mit MCP-Live-Zugriff redundant.
+
+## Hart ausgeschlossen (unabhängig vom Whitelist-Eintrag)
+
+```
 10_Kunden/**                     # personenbezogen/sensibel — NIE
 **/*.env, **/secrets/**, Tokens, Keys   # Secrets — NIE
 ```
 
 ## Aktualitäts-Sicherung
 
-Jede gespiegelte Datei trägt `stand:` im Front Matter. Der Chat nennt zu Sitzungsbeginn ungefragt die Stände der Kern-Dateien, damit der Mensch erkennt, ob ein Zyklus den Stand seither überholt hat.
+Die Verfassungs-Module tragen `stand:` im Front Matter. Der Chat nennt zu Sitzungsbeginn ungefragt die Stände, damit der Mensch erkennt, ob ein Zyklus den Stand seither überholt hat.
