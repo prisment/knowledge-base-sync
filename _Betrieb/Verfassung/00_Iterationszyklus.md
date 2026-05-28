@@ -92,7 +92,7 @@ Der **Chat-Architekt** liest die Sondierung live via MCP und **erklärt sie dem 
 
 ### Wer formt die Spec
 
-- **Spur:** Der **Chat-Architekt** formt die Spec mit dem Menschen nach dem Beratungs-Rhythmus (`02_Rollen-Protokoll.md`) und schreibt sie nach `<Geltungsbereich>/Specs/<ID>_SPEC.md` (UC1, `06_Architekt-Protokoll.md`). Hier ist der Architekt **unverzichtbar** — Architektur-Entscheidungen brauchen den Gesamtüberblick.
+- **Spur:** Der **Chat-Architekt** formt die Spec mit dem Menschen nach dem Beratungs-Rhythmus (`02_Rollen-Protokoll.md`) und schreibt sie nach `<Geltungsbereich>/Arbeitsgedaechtnis/<ID>_SPEC.md` (UC1, `06_Architekt-Protokoll.md`). Hier ist der Architekt **unverzichtbar** — Architektur-Entscheidungen brauchen den Gesamtüberblick.
 - **Sprung:** **Claude Code schreibt die Spec selbst** — sie ist mit der Sondierung identisch (kombinierte Spec). **Kein Chat-Architekt by default**, aber Claude Code **berät den Menschen direkt nach demselben Beratungs-Rhythmus** (`02_Rollen-Protokoll.md`: Was ist → wo es hakt → Vorschläge mit gekennzeichneter Empfehlung → Stopp → erst dann ausführen) — die Beratungspflicht hängt an der Rolle des Beratenden, nicht am Kanal. Nur wenn Claude Code auf eine echte Gabelung / Spec-Lücke / einen Konflikt stößt, der ein Wert-Urteil braucht, eskaliert er per UC2 an den Chat-Architekten. Das hält „kleine Themen" frei von Überberatung, ohne die Beratung selbst wegzulassen.
 - **Schritt:** kein Akt 2. Claude Code führt direkt aus.
 

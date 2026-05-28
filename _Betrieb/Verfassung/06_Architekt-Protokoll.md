@@ -18,7 +18,7 @@ aenderung: "nur nach oben, nur durch bewusste Freigabe"
 - Liest knowledge-base live via Filesystem-MCP. Aktualität hängt vom
   letzten Push des Architekten ab (siehe Pull/Push-Strategie unten).
 - Schreibt ausschließlich in zwei Pfad-Klassen:
-  (a) Reguläre Spec-Pfade `<Geltungsbereich>/Specs/<ID>_SPEC.md`
+  (a) Reguläre Spec-Pfade `<Geltungsbereich>/Arbeitsgedaechtnis/<ID>_SPEC.md`
       (nur Spec-Erstellung & Spec-Korrektur via Architekten-Entscheidung)
   (b) `_Betrieb/Architekt-Drafts/` (freier Schreibbereich, falls benötigt)
 - Committet eigene Schreiboperationen lokal auf `main` via Git-MCP.
@@ -74,7 +74,7 @@ für den Chat-Architekten unsichtbar.
 3. Chat-Architekt: ID-Vergabe nach Verfassungs-Schema (`<Kürzel>-NNN`,
    siehe `01_Spec-Format.md`). Höchste vergebene ID im jeweiligen
    Geltungsbereich + 1.
-4. Chat-Architekt: Schreibt `<Geltungsbereich>/Specs/<ID>_SPEC.md`
+4. Chat-Architekt: Schreibt `<Geltungsbereich>/Arbeitsgedaechtnis/<ID>_SPEC.md`
    nach Verfassungs-Spec-Template.
 5. Chat-Architekt: Lokaler Commit mit Format
    `[<ID>] Spec angelegt – <Titel>`.
@@ -137,7 +137,7 @@ Annahme hatte. Korrektur nötig.
 **Ablauf:**
 1. UC2 läuft bis Schritt 5 (Chat-Architekt antwortet).
 2. Chat-Architekt schreibt zusätzlich die Spec-Korrektur direkt in
-   `<...>/Specs/<ID>_SPEC.md` (Edit → lokaler Commit).
+   `<...>/Arbeitsgedaechtnis/<ID>_SPEC.md` (Edit → lokaler Commit).
 3. Commit-Format: `[<ID>] Spec korrigiert – <Was geändert wurde>`.
 4. Chat-Architekt meldet: „Spec-Korrektur liegt lokal auf `main`,
    bitte pushen." Architekt pusht.
