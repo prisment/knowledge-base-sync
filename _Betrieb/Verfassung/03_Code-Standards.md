@@ -45,6 +45,20 @@ Tenant-Daten leben in `agent_data.public.*`, Auth/Membership in `agent_data.auth
 
 **Verifikation:** `customer/postgres/scripts/rls_smoke.sh` spinnt ephemere DB hoch, lädt Init-Scripts, prüft 7 Aspekte (Tenant-Isolation in beide Richtungen, admin-Cross-Tenant, E39-GRANTs, Cross-Tenant-Write-Block via WITH CHECK). Smoke ist Reproduzier-Punkt für Drift-Verdacht.
 
+### Tenant-Tabellen-Klassifikation (PLAT-044, 2026-05-28)
+
+Das ursprüngliche E39-Pattern hat zwei Tabellen-Klassen unterschieden (Tenant-Daten mit RLS / `auth.tenant_memberships` als Brücke ohne RLS). PLAT-044 hat aufgedeckt, dass `public.tenants` strukturell eine **dritte** Klasse ist und in PLAT-031 fälschlich als Brücke behandelt wurde. Damit künftig keine Spec dasselbe Versehen wiederholt, gilt die folgende Klassifikation als verbindlich:
+
+| Kategorie | Beispiele | RLS | Filter-Spalte | GRANT-Engerung | Begründung |
+|---|---|---|---|---|---|
+| **Tenant-Daten** | `voicedb_entries`, `posts`, `sessions`, `topics`, `editorial_plans` | Pflicht (ENABLE + FORCE) | `tenant_id` | optional (RLS reicht) | Mandanten-Inhalte. RLS-Helper-Funktion `_apply_tenant_rls('public.X')` direkt anwendbar. |
+| **Tenant-Stammdaten** | `tenants` | Pflicht (ENABLE + FORCE), Filter via `id` | `id` (= Stammschlüssel = Tenant-Identifier) | optional, ABER Cross-Tenant-Hub-Rolle (`admin_user`) braucht **explizite GRANTs**, sonst stille permission-denied-Bugs | Tabelle, deren Primärschlüssel selbst die Tenant-ID ist. Helper-Funktion taugt NICHT direkt (sie hardcodet `tenant_id`-Spalte). Eigene `CREATE POLICY` mit `id`-Filter pflicht. |
+| **Brücken-Tabellen** | `auth.tenant_memberships` | **KEIN RLS** (Login-Pfad braucht ungefilterten Read über User-Tenant-Mappings, bevor User einen Tenant aktiviert) | n/a | **Pflicht** (E39): `nextauth_user` nur SELECT, `tenant_app_user` gar keine GRANTs (auch nicht SELECT — engster Stand) | Definiert Zugehörigkeits-Beziehung. RLS würde Login brechen, weil User vor Tenant-Aktivierung seine Membership lesen muss. |
+
+**Vor einer neuen RLS-Spec: klassifizieren.** Tenant-Daten / Tenant-Stammdaten / Brücken — die drei sind nicht austauschbar, jeder Patzer ist eine eigene Sicherheits-Lücke (Stammdaten ohne RLS = PLAT-044-Lücke, Brücke mit RLS = Login-Bruch, Tenant-Daten ohne RLS = Cross-Tenant-Leak).
+
+**Live-`admin_user`-GRANTs auf `public.tenants` müssen vorhanden sein** (PLAT-044-Befund 2026-05-28): in PLAT-031 wurden die GRANTs für `admin_user.public.tenants` versehentlich nie gesetzt, weil die Tabelle nicht als RLS-Ziel behandelt wurde. Folge: 4-6 Live-Code-Pfade (`pwa-api/scheduling/worker.py`, `pwa-api/routes/tenant_settings.py`, `pwa-api/routes/admin.py`, `langgraph/helpdesk/app/tools.py`), die `UPDATE tenants` als `admin_user` ausführen wollten, scheiterten still mit `permission denied`. PLAT-044 setzt die GRANTs in `05_grants.sql` und führt die Live-Aktivierung durch.
+
 ## Data-Integrity: Agent-Übergabe-SSOT (PRIS-019, 2026-05-27)
 
 Datenpunkte, die zwischen LangGraph-Agents fließen, leben in **einer**
