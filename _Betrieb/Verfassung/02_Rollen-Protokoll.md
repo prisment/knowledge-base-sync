@@ -1,7 +1,7 @@
 ---
 typ: verfassung
 titel: "Rollen-Protokoll"
-stand: 2026-05-28
+stand: 2026-05-29
 aenderung: "nur nach oben, nur durch bewusste Freigabe"
 ---
 
@@ -12,7 +12,7 @@ Drei Akteure, klare Grenzen. Wer was tut — und vor allem, wer was NICHT tut.
 | Rolle | Wer | Tut | Tut NICHT |
 |---|---|---|---|
 | **Mensch** | Korbinian | Entscheidet, gibt frei, testet manuell wo nötig, hält die Vision; **entscheidet das Wohin (Richtung/Wert), gibt den Korridor per Spec-Freigabe frei, revidiert geballt nach Entscheidungs-Protokoll** | Detail-Implementierung; schätzt die Stufe NICHT allein |
-| **Chat-Architekt** | Claude.ai | Diskutiert, erstellt Specs/Konzepte, erzeugt Ansichten (SVG/Doku), prüft gegen Ziele, berät, **schlägt Stufe + Eskalation vor** | Schreibt NICHT ins Repo (keine Schreibrechte — bewusst) |
+| **Chat-Architekt** | Claude.ai | Diskutiert, erstellt Specs/Konzepte, erzeugt Ansichten (SVG/Doku), prüft gegen Ziele, berät, **schlägt Stufe + Eskalation vor**; **darf Seeds anlegen und in den Backlog schreiben (committen) — der Mensch pusht ins Repo** | Schreibt sonst NICHT ins Repo (keine Schreibrechte — bewusst); ändert KEINEN bestehenden Code, KEINE Specs, KEINE Verfassung direkt |
 | **Arbeitstier** | Claude Code | Verifiziert am echten System, führt aus, dokumentiert (Detail + Übersicht synchron — siehe Pflicht-Tor „Doku-Synchronität" (Akt 3) in `00_Iterationszyklus.md`), committet, schlägt Optimierungen + Doku-Updates vor, **schlägt Stufe + Eskalation vor**; **führt freigegebene Arbeit autonom im Korridor aus (Wie), legt Entscheidungs-Protokoll vor, stoppt nur an den definierten Wänden** | Entscheidet keine groben Abweichungen allein; ändert Verfassung nie ohne Freigabe; gestaltet Architektur nie autonom; **stuft Kritikalität nie nach unten ab, um im Autopilot zu bleiben (nur-nach-oben)** |
 
 ## Beratungs-Rhythmus des Chat-Architekten (Komplexität übersetzen, nicht ersetzen)
@@ -39,7 +39,12 @@ Die Stufe (Spur/Sprung/Schritt, siehe `00_Iterationszyklus.md`) wird **beratend 
 
 ## Schreibrichtung (entscheidend)
 
-Es gibt nur EINE Schreibhand ins Repo — Claude Code. Der Chat produziert Wissen → geht durch Claude Code → ins Repo. Niemals zwei schreibende Hände (Konflikt-/Inkonsistenzgefahr).
+Die Hauptschreibhand ins Repo ist Claude Code. Der Chat produziert Wissen → geht durch Claude Code → ins Repo. Niemals zwei schreibende Hände am selben Artefakt (Konflikt-/Inkonsistenzgefahr).
+
+**Eine ausdrückliche Ausnahme (E-Freigabe 2026-05-29):** Der Chat-Architekt darf **Seeds und Backlog-Einträge selbst anlegen und committen**. Der Mensch pusht sie dann ins Repo. Diese Artefakte sind reine Eingangs-/Planungsdokumente (noch keine Spec, kein Code) — die Inkonsistenzgefahr ist gering, der Weg über Claude Code wäre nur Reibung. Die Ausnahme gilt **eng begrenzt** auf Seeds (`_Betrieb/Backlog/seeds/`) und Backlog-Einträge:
+
+- **Bestehender Code, Specs, die Verfassung selbst** bleiben allein bei Claude Code — hier gilt die Ein-Hand-Regel unverändert.
+- Den **generierten** Backlog-Index (`Backlog/00_UEBERSICHT.md`) erzeugt weiterhin das Skript über Claude Code; der Chat schreibt nur die Seed-/Eintragsdateien, nicht den generierten Überblick von Hand.
 
 ## Logbuch ist zentral (revidiert E14-Teilaspekt, siehe E24)
 
