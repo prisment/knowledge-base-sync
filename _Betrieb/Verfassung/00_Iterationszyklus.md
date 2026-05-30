@@ -47,6 +47,8 @@ Die Stufe wird **nicht vom Menschen allein geraten**. Was leicht aussieht, häng
 
 Es gibt genau drei Stufen. **Eine Spur IST das große Vorhaben.** Folge-Arbeit wird als Seed abgezweigt, nie als übergeordnetes Schirm-Dokument geführt. Der Begriff „Roadmap" ist als Framework-Artefakt abgeschafft. Strategie-/Produkt-Dokumente, die das Wort inhaltlich verwenden (z. B. `Prisment/Systemzustand/Strategie/prisment_roadmap_businessplan.md`), sind ausgenommen — nicht Framework-Ebene.
 
+**Die einzige erlaubte Ebene über der Spur ist das Projekt** (`07_Projekt-Orchestrierung.md`) — und das bleibt mit der Roadmap-Abschaffung vereinbar: Eine Roadmap bündelte *mehrere unabhängige Wohins* (verboten); ein Projekt hat **genau ein** maschinell prüfbares Akzeptanzkriterium, dem alle seine Seeds dienen. Ein-Ziel-Behälter erlaubt, Mehr-Ziel-Schirm nicht. Das Projekt ist zudem keine Stufe, sondern eine orthogonale Ebene — die „genau drei Stufen" gelten unverändert.
+
 ### Harte Regel gegen Stufen-Inflation
 
 - **Risikoklasse `kritisch` und `sicherheitskritisch-akut` erzwingen immer Spur.** Beide können nie als Sprung oder Schritt gefahren werden — schützt davor, Gefährliches aus Bequemlichkeit klein zu fahren. (PLAT-012, aufgedeckt bei der Backlog-Migration über `seed-os-patching-broken`.)
@@ -60,6 +62,8 @@ Es gibt genau drei Stufen. **Eine Spur IST das große Vorhaben.** Folge-Arbeit w
 - Bei Zustimmung: **Stopp**, kurzer Vermerk im laufenden Dokument („hochgestuft von Sprung → Spur, weil …"), dann mit voller Zeremonie weiter. Konkret heißt das: das Vorhaben tritt zurück in Akt 2 mit Architekt-Beteiligung.
 - Das ist kein Scheitern, sondern das System, das funktioniert.
 - **Herunterstufung gibt es nicht automatisch.** Wer einmal als Spur erkannt wurde, bleibt Spur.
+
+**Eskalations-Kette vollständig:** Schritt → Sprung → Spur → **Projekt**. Die letzte Stufe der Kette — Spur → Projekt — ist **keine vierte Stufe**, sondern der Übertritt auf die Projekt-**Ebene** (orthogonal zur Stufen-Achse): ein Vorhaben entpuppt sich als emergent-mehrspurig mit *einem fixen, maschinell prüfbaren Wohin*, das ein menschlich ratifizierter Abweichungs-Kontrakt + ein autonomer Orchestrator-Loop abwickelt. Mechanik, Kontrakt und Freigabe-Vollmacht: **`07_Projekt-Orchestrierung.md`**. Auch hier gilt nur-nach-oben.
 
 ---
 
