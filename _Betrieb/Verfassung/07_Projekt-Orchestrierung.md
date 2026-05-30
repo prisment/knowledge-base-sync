@@ -81,8 +81,21 @@ Vom Menschen in Akt 2 ratifiziert. Drei Pflichtteile:
   Verifikation, dokumentierter Restore-Pfad). Begründung: der ratifizierte
   Kontrakt IST der mensch-freigegebene Korridor, in dem die Regel aus 00/01
   („`kritisch` = autonom mit Vorsicht, kein Stopp aus Prinzip") gilt.
-- **`sicherheitskritisch-akut`, out-of-bounds und echte Wohin-Gabelungen
-  eskalieren immer** — unabhängig vom Urteil des Orchestrators.
+- **`sicherheitskritisch-akut` wird ZURÜCKGESTELLT, nicht der Loop gestoppt**
+  (Direktive 2026-05-30). Ein akut-Job hält den Lauf nicht an: der Orchestrator
+  stellt ihn ans Ende (Journal-Liste „ZURÜCKGESTELLT") und arbeitet alles
+  Nicht-akute, nicht von ihm Abhängige weiter ab. Erst wenn nur noch
+  Zurückgestelltes oder davon Abhängiges übrig ist, übergibt er an den Menschen.
+  So kommt das Projekt maximal weit, bevor der Mensch die akut-Reste übernimmt.
+- **out-of-bounds und echte Wohin-Gabelungen eskalieren weiterhin sofort** —
+  das sind *Richtungs*-Fragen, keine Gefahr; da muss der Mensch entscheiden.
+- **Der Orchestrator ist die Risikoklassen-Autorität.** Ein mechanischer Gate
+  (classify.py) ist nur **beratend** (Journal-Hinweis) — er stoppt und überstimmt
+  das Orchestrator-Urteil nicht. Begründung: das Urteil „akut oder nicht" liegt
+  beim denkenden Agenten; ein Schlüsselwort-Matcher erzeugt mehr Fehlalarme als
+  Sicherheit. Restrisiko (bewusst getragen): unterschätzt der Orchestrator einen
+  akut-Job, fängt ihn kein Mechanismus mehr ab — dafür stehen die ratifizierten
+  Out-of-bounds-Linien des Kontrakts + der Mensch am Journal.
 
 ## Emergente Seeds im Lauf
 
@@ -102,11 +115,14 @@ Vom Menschen in Akt 2 ratifiziert. Drei Pflichtteile:
 ## Eskalations-Trigger (→ Mensch)
 
 Der Orchestrator stoppt den Loop und meldet, wenn:
-1. eine Entscheidung out-of-bounds liegt oder `akut` klassifiziert,
+1. eine Entscheidung out-of-bounds liegt (akut allein stoppt NICHT mehr — es wird
+   zurückgestellt, siehe Freigabe-Vollmacht),
 2. die richtige Wahl vom Wohin abhängt statt von Technik (echte Gabelung),
 3. das Akzeptanzkriterium nur erreichbar wäre, indem das Wohin geändert wird,
 4. ein Seed nach `max_versuche` (Kontrakt) nicht lösbar ist,
-5. der Maschinen-Beweis eines Workers rot bleibt und kein in-bounds-Pfad greift.
+5. der Maschinen-Beweis eines Workers rot bleibt und kein in-bounds-Pfad greift,
+6. nur noch Zurückgestelltes (akut) oder davon Abhängiges übrig ist — dann ist
+   alles Mögliche getan, der Mensch übernimmt die akut-Reste.
 
 ## Erkennung: Ab wann ist es ein Projekt?
 
