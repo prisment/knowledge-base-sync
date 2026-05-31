@@ -74,6 +74,32 @@ Vom Menschen in Akt 2 ratifiziert. Drei Pflichtteile:
 2. **In-bounds (Wie — Orchestrator entscheidet autonom).**
 3. **Out-of-bounds (Wohin + `akut` — harter Stopp/Eskalation).**
 
+## Seed-Granularität in der Projekt-Sondierung (Token-Disziplin)
+
+Wie die Projekt-Sondierung (Akt 1) die Seeds schneidet, bestimmt maßgeblich den
+Token-Verbrauch des Laufs. Belegt am realen Lauf (PLAT-053, Beleg PRIS-045): der
+**Worker-Call ist der teure Posten**, und sein Kontext-Verbrauch wächst
+**überproportional mit der Turn-Zahl eines Calls** — mechanisch O(n²), weil jeder
+Turn den gewachsenen Verlauf desselben Calls mitschleppt (empirisch super-linear,
+durch Cache-Rabatt gedämpft). Einen langen Worker-Lauf in zwei kurze, je
+eigenständig beweisbare Läufe geschnitten senkt den teuersten Posten
+überproportional. Iterationen sind davon unberührt — jeder Call ist Kaltstart
+(cold-by-design).
+
+**Regel:** Seeds / Worker-Aufträge werden an **natürlichen Nahtstellen**
+geschnitten — jeder Seed eine in sich abgeschlossene, per `beweis_befehl`
+eigenständig beweisbare Einheit, mit dem Ziel **kurzer Worker-Läufe** (wenige Turns
+je Call).
+
+**Grenze gegen Über-Fragmentierung:** Worker sind cold-by-design und erinnern sich
+NICHT zwischen Seeds. Künstlich zu kleine, eng gekoppelte Seeds zwingen
+Folge-Worker, Vorwissen neu zu erarbeiten — das kostet Qualität UND Token. Also:
+**so klein wie in sich abschließbar + beweisbar, nicht kleiner.** Schnitt an
+logischen Nähten, nie willkürlich.
+
+**`max_iter` (Kontrakt-Parameter):** Die Projekt-Sondierung schätzt die Seed-Zahl;
+der Kontrakt setzt `max_iter = Schätzung + Puffer` statt pauschal 20.
+
 ## Freigabe-Vollmacht des Orchestrators (Option B)
 
 - **`sicher` und `kritisch` laufen autonom** unter Orchestrator-Freigabe.
