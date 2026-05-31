@@ -100,6 +100,64 @@ logischen Nähten, nie willkürlich.
 **`max_iter` (Kontrakt-Parameter):** Die Projekt-Sondierung schätzt die Seed-Zahl;
 der Kontrakt setzt `max_iter = Schätzung + Puffer` statt pauschal 20.
 
+## Projekt-Fakten-Register (der kalte Worker liest geteilte Befunde)
+
+Komplement zur Seed-Granularität: dort sinkt die Turn-Zahl *eines* Worker-Calls,
+hier die **Neu-Erkundung über Seeds hinweg**. Der Worker ist `cold-by-design` und
+liest nur seinen Übergabe-Prompt + `CLAUDE.md` — nie das Journal, nie fremde Reports.
+Ohne geteiltes Gedächtnis erkundet jeder Worker das Code-Areal von Null, auch wenn
+ein Vorgänger die Wurzel längst fand (belegt PRIS-046: ein reiner Merge-Sync-Retry
+brauchte 45 Turns für null neue Substanz).
+
+Das Register schließt diese Wand — **nicht** über das Journal: das Journal ist die
+verdichtete Orchestrator-Memory und wird jede Iteration komplett kalt gelesen;
+Root-Cause-Detail mit Index dort hinein verlagert den O(n²)-Schmerz vom Worker auf
+den Orchestrator. Distinkter Zweck → distinkte Datei (03, SSOT).
+
+### Das Artefakt: `<projekt_id>_FAKTEN.md`
+
+- **Ort:** neben dem Missions-Journal, `Plattform/Arbeitsgedaechtnis/<projekt_id>_FAKTEN.md`.
+- **Lebensdauer:** projekt-geschoppt, sterblich. Wandert bei der Verankerung über das
+  bestehende Kehraus (`phase9_seed_archive.py`, Glob `<id>_*.md`) automatisch ins
+  Archiv — kein Zusatzbau. Dauerhaft gültige Codebasis-Wahrheiten promotet der
+  **Mensch** bei der Verankerung in den Systemzustand (E3/Akt 3); das Register ist
+  Arbeits-Memory des Laufs, nicht die Dauer-Wahrheit.
+- **Format (HART — keine Empfehlung; sonst wird es ein zweites Logbuch und frisst die
+  gesparten Token zurück):**
+  - **Fakten only, keine Narrative.** Eine Zeile pro Befund.
+  - **Indexiert:** `[RC-NN] <KATEGORIE> <Befund> — <Wirkung/Konsequenz> @ <datei:zeile>`.
+  - **`datei:zeile` Pflicht** (oder Tabelle/Objekt-Pfad bei DB) — sonst kein gültiger Eintrag.
+  - **Vier Kategorien:** `ROOT-CAUSE` / `SHARED-ROOT` / `EXISTS-VERIFIED` / `GOTCHA`.
+  - Header kennzeichnet: kuratiert vom Loop, gelesen von jedem Worker, fakten-only,
+    stirbt mit dem Projekt-Archiv.
+
+### Schreibseite — Worker emittiert (Urteil), Loop hängt an (Mechanik)
+
+Der **Worker** entscheidet per Urteil, was ein durabler, seed-übergreifender Befund
+ist (nicht jeder Implementierungs-Schritt — nur, was einem Folge-Worker Erkundung
+spart), und emittiert ihn in seinem Report als `durable_facts: [{kategorie, befund,
+wirkung, ort}]`. Ein **deterministisches Loop-Tool** (kein LLM) liest nach jedem
+Worker-Lauf — **grün wie rot** (auch ein gescheiterter Versuch kann eine geteilte
+Wurzel/`GOTCHA` gefunden haben, die dem nächsten Worker Erkundung spart) — die
+`durable_facts`, entdoppelt gegen die bestehenden Einträge (Match über `befund`+`ort`),
+vergibt die nächste `RC-NN` und hängt Neues an das Register **auf `main`** an — vor dem
+nächsten Dispatch.
+
+> Nicht der Worker schreibt das Register, nicht der LLM-Orchestrator entdoppelt:
+> Schriebe der Worker im Worktree, erreichte der Eintrag den nächsten Worker erst
+> nach dem Phase-9-Merge — dieselbe Worktree↔`main`-Race, die in PRIS-046 die
+> Sync-Rots erzeugte. Der Loop operiert zwischen den Iterationen auf `main`
+> (single-threaded) → race-frei. Urteil beim Worker, Mechanik (Append/Dedupe/Index)
+> deterministisch.
+
+### Leseseite — Dispatch nennt das Register, CLAUDE.md erzwingt das Lesen
+
+Der Übergabe-Prompt nennt (a) den vollständigen Pfad zu `<projekt_id>_FAKTEN.md` und
+(b) die für diesen Seed relevanten `RC-NN` (oder „lies das ganze Register" — es ist
+klein). Existiert kein Register (erstes Projekt / erster Seed), entfällt der Block,
+nichts bricht. Die Always-on-Lese-Pflicht für kalte Worker steht in `CLAUDE.md` (die
+einzige Datei, die jeder kalte Worker garantiert liest).
+
 ## Freigabe-Vollmacht des Orchestrators (Option B)
 
 - **`sicher` und `kritisch` laufen autonom** unter Orchestrator-Freigabe.
