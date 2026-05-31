@@ -175,6 +175,23 @@ Abschluss-Report (Missions-Journal) und meldet per Mail. **Verankerung**
 der Mensch startet eine frische Session und gibt frei oder lässt einen Fall
 nach-sondieren.
 
+**Archiv-/Seed-Teil der Verankerung — deterministisch (PLAT-051 Schicht 1+2).**
+Der Mensch-ratifizierte Charakter bleibt; der *mechanische* Teil (Zyklus-Satz +
+projekt-gebundene Done-Seeds ins Archiv) läuft über ein deterministisches
+Werkzeug, damit er nicht still ausbleibt (wie bei PRIS-045, dem ersten
+Live-Lauf, geschehen — beide Archiv-Tools kannten den Projekt-Modus nicht):
+- **Skill `projekt-abschluss`** in der frischen Session — Ein-Befehlspfad:
+  `phase9_seed_archive.py <id>` (archiviert `<id>_*.md` + alle Seeds mit
+  Frontmatter `projekt: <id>` und `status: abgeschlossen`) + Übersicht-Regen
+  + Residuen-Re-Check.
+- **Bindung** Projekt ↔ Seed ist deterministisch das Seed-Frontmatter-Feld
+  `projekt: <id>`, **nicht** die `seed_set:`-Liste der PROJEKT-Datei — so
+  werden emergente, während des Laufs angelegte Seeds miterfasst, sofern sie
+  korrekt getaggt sind.
+- **Reminder:** Die `ziel_erreicht`-Mail des Orchestrators trägt eine
+  Archiv-Vorschau (projekt-fähiger `check_akt3_residuen.py`), sodass ein
+  unarchiviertes Projekt nie unsichtbar bleibt.
+
 ## Kontextbindung
 
 Gilt für den aktuellen Kontext (Solo-Gründer, Zeit als Engpass, Abo-Modell mit
