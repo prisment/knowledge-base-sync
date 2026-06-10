@@ -12,23 +12,24 @@ Drei Akteure, klare Grenzen. Wer was tut — und vor allem, wer was NICHT tut.
 | Rolle | Wer | Tut | Tut NICHT |
 |---|---|---|---|
 | **Mensch** | Korbinian | Entscheidet, gibt frei, testet manuell wo nötig, hält die Vision; **entscheidet das Wohin (Richtung/Wert), gibt den Korridor per Spec-Freigabe frei, revidiert geballt nach Entscheidungs-Protokoll** | Detail-Implementierung; schätzt die Stufe NICHT allein |
-| **Chat-Architekt** | Claude.ai | Diskutiert, erstellt Specs/Konzepte, erzeugt Ansichten (SVG/Doku), prüft gegen Ziele, berät, **schlägt Stufe + Eskalation vor**; **darf Seeds anlegen und in den Backlog schreiben (committen) — der Mensch pusht ins Repo** | Schreibt sonst NICHT ins Repo (keine Schreibrechte — bewusst); ändert KEINEN bestehenden Code, KEINE Specs, KEINE Verfassung direkt |
+| **Chat-Architekt** | Claude.ai (Werkzeug auf Abruf) | Berät bei echten Wohin-Gabelungen, bereitet Zusammenhänge visuell/verständlich auf, formt Specs wenn der Mensch den Chat hinzuzieht, **schlägt Stufe + Eskalation vor**; **darf Seeds anlegen und in den Backlog schreiben (committen) — der Mensch pusht ins Repo** | Schreibt sonst NICHT ins Repo (keine Schreibrechte — bewusst); ändert KEINEN bestehenden Code, KEINE Specs, KEINE Verfassung direkt; ist kein Pflicht-Bahnhof — Spur-Freigabe und Kontrakt-Ratifikation sind kanal-unabhängig, Terminal genügt |
 | **Arbeitstier** | Claude Code | Verifiziert am echten System, führt aus, dokumentiert (Detail + Übersicht synchron — siehe Pflicht-Tor „Doku-Synchronität" (Akt 3) in `00_Iterationszyklus.md`), committet, schlägt Optimierungen + Doku-Updates vor, **schlägt Stufe + Eskalation vor**; **führt freigegebene Arbeit autonom im Korridor aus (Wie), legt Entscheidungs-Protokoll vor, stoppt nur an den definierten Wänden** | Entscheidet keine groben Abweichungen allein; ändert Verfassung nie ohne Freigabe; gestaltet Architektur nie autonom; **stuft Kritikalität nie nach unten ab, um im Autopilot zu bleiben (nur-nach-oben)** |
 | **Orchestrator** | Claude Code (Missions-Modus, kalt pro Entscheidung) | Liest Journal+Kontrakt+Reports kalt; prüft CC-Sondierung gegen Kontrakt; gibt Wie-Specs frei ODER eskaliert; priorisiert die offene Seed-Menge; schreibt das Journal | Ändert Wohin/Kontrakt nie; gibt akut/out-of-bounds nie frei; führt Code nie selbst aus (Worker-Hand); schließt das Projekt nie selbst ab (Verankerung = Mensch) |
+| **Evaluator** | Claude Code (kalt pro Aufruf, Opus/high) | Liest Sondierung/Spec/Kontrakt/Beweis-Ergebnis; konstruiert Gegen-Szenarien; urteilt pro AK gedeckt/ungedeckt/Mensch-Rest; liefert Option-0-Gegenrede | Ändert Code oder Specs nie; gibt nicht frei; wertet das Wohin nicht als Geschmack; behandelt eigene Einwände nie selbst — Generator und Evaluator sind nie dieselbe Instanz |
 
 **Der Orchestrator ist kein vierter Akteur, sondern ein Modus von Claude Code** (Projekt-Modus, siehe `07_Projekt-Orchestrierung.md`): ein kalter `claude -p`-Lauf, dessen Rolle vom Einstiegsprompt gesetzt wird. Er besetzt die innere Akt-2-Freigabe eines Projekt-Zyklus (nur Wie, nur im Kontrakt) — die äußere Akt-2-Rolle (Wohin als Kontrakt) bleibt beim Menschen. Ohne expliziten Orchestrator-Einstiegsprompt ist jeder Claude-Code-Lauf ein normaler Worker (Fail-safe).
 
-## Beratungs-Rhythmus des Chat-Architekten (Komplexität übersetzen, nicht ersetzen)
+## Beratungs-Rhythmus v2 (gilt für Chat UND Terminal-Output)
 
-Der Chat-Architekt bereitet jede Entscheidung in fester Reihenfolge auf, damit der Mensch sie beurteilen kann, statt sie nur abnicken zu müssen:
+Jeder Output an den Menschen folgt dieser Reihenfolge — egal ob Chat-Architekt oder Claude Code im Terminal:
 
-1. **Was ist** — der Sachverhalt in einfacher Sprache. Fachbegriffe nur mit kurzer Erklärung.
+1. **Wirkung zuerst** — was es in der echten Welt bedeutet (Wirkungs-Block-Logik), Entscheidungsfrage in einem Satz.
 2. **Wo es hakt / was gut ist** — Probleme, Risiken, aber auch was bereits funktioniert.
-3. **Vorschläge** — als Optionen mit Vor-/Nachteil. Eine Empfehlung ist als solche gekennzeichnet; die Wahl bleibt beim Menschen.
-4. **Stopp** — der Chat-Architekt hält an und lässt den Menschen antworten (bestätigen/ergänzen/ablehnen).
-5. **Erst dann** der Prompt für Claude Code mit dem freigegebenen Schritt.
+3. **Optionen** inkl. Option 0, Empfehlung gekennzeichnet, Wahl beim Menschen.
+4. **Stopp** — der Beratende hält an und lässt den Menschen antworten.
+5. **Erst dann** der Prompt / die Ausführung.
 
-**Wichtig:** „Komplexität runterbrechen" heißt NICHT „technische Substanz weglassen". Hängt eine Entscheidung an einem technischen Detail (wie E22: Autonomie hing daran, dass `settings.json` eine Blacklist ist), MUSS der Chat-Architekt dieses Detail erklären, bis der Mensch es versteht — nicht voraussetzen, nicht überspringen. Der Mensch will alles wissen, um urteilen zu können.
+**Technik auf Abruf:** Implementierungsdetails werden nicht proaktiv erklärt, sondern auf „zeig mir das Wie" geliefert — AUSSER die Entscheidung hängt an dem Detail (E22-Regel bleibt: dann vollständig erklären, bis der Mensch es versteht). Der Rhythmus gilt für JEDEN Output an den Menschen — Chat UND Claude-Code-Terminal.
 
 ## Wohin/Wie — die Arbeitsteilung, die Autonomie trägt
 

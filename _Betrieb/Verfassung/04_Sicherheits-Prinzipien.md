@@ -70,6 +70,14 @@ Cron startet als `claude-deploy` zur definierten Zeit einen **headless, nicht-in
 
 **Werkzeug und Verfahren.** Skill `test-data-pseudonymize` (`.claude/skills/test-data-pseudonymize/SKILL.md`) trägt das How: vier-Schritte-Verfahren, sieben Pattern-Lehren aus PLAT-043 B-PSEUDO, Referenzen auf die Pattern-Skripte in `prisment-platform/scripts/fixtures/`. Mapping-Tabelle ist Architekten-Hand-Schlüssel und lebt außerhalb des Repos (auch außerhalb des knowledge-base-Vaults).
 
+## Betriebs-Queue (Monitoring-Befunde sind keine Seeds)
+
+Befunde aus Monitoring, Nightly-Läufen und CI (Image-Update verfügbar, Build rot, Patch ausstehend, Workflow-Fehler) werden in `_Betrieb/Betriebs-Queue/QUEUE.md` geschrieben — **nie als Seed-Dateien materialisiert**. Eintragsformat: Datum, Quelle, Objekt, Befund, Root-Cause-Gruppe, Status (`offen`/`erledigt`).
+
+**Dedupe-Pflicht** über Fingerprint (Quelle + Objekt): wiederholte Befunde aktualisieren den bestehenden Eintrag (Zähler + letztes Datum), statt neue Einträge zu erzeugen. Default-Einstufung von Queue-Arbeit: `sicher`/Routine — die Allowlist-Routinen aus diesem Modul bleiben der Ausführungsweg.
+
+**Eskalation Queue → Seed** nur durch Mensch oder CC-Vorschlag, wenn echte gestaltende Arbeit dahintersteht (dann ein Sammel-Seed pro Root-Cause, nicht ein Seed pro Symptom). Der Nightly-Lauf schreibt ausschließlich in die Queue + Morgen-Report — legt nie selbst Seeds an.
+
 ## Kontextbindung
 
 Diese Abwägungen gelten für den aktuellen Kontext (Solo-Gründer, Zeit als Engpass, keine/wenige zahlende Produktivkunden). Sobald Prisment zahlende Kunden mit SLA hat, sind nächtliche Autonomie und Alarm-/Eingriffsschwellen NEU zu bewerten.

@@ -63,7 +63,9 @@ für den Chat-Architekten unsichtbar.
 
 ### UC1 — Spec-Erstellung im Chat (Spur-Pfad von Akt 2)
 
-**UC1 gilt für Stufe Spur.** Beim Sprung schreibt Claude Code die Spec selbst in Akt 1 (Sondierung = kombinierte Spec); der Chat-Architekt wird nur bei gemeldeter Gabelung (UC2) beteiligt — Claude Code berät den Menschen direkt nach dem Beratungs-Rhythmus aus `02_Rollen-Protokoll.md`.
+**UC1 gilt, wenn der Mensch den Chat-Architekten hinzuzieht.** Es ist seit Framework v2 kein Pflicht-Pfad: Spur-Freigaben können vollständig im Claude-Code-Terminal erfolgen (Wirkungs-Block + Digest im Terminal, Mensch-Antwort dort). Der Chat-Architekt bleibt erste Wahl für Wohin-Gabelungen und visuelle Aufbereitung — aber der Kanal ist Mensch-Wahl, keine strukturelle Pflicht.
+
+Beim Sprung schreibt Claude Code die Spec selbst in Akt 1 (Sondierung = kombinierte Spec); der Chat-Architekt wird nur bei gemeldeter Gabelung (UC2) beteiligt — Claude Code berät den Menschen direkt nach dem Beratungs-Rhythmus aus `02_Rollen-Protokoll.md`.
 
 **Trigger:** Architekt und Chat-Architekt erarbeiten gemeinsam eine Spec (Spur, Akt 2).
 

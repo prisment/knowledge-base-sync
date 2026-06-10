@@ -88,6 +88,8 @@ Claude Code erhebt in **einem** Durchgang am echten System und schreibt das Erge
 
 **Pflicht zur Lesbarkeit (Token-Schutz):** Jede Datei, die der Mensch oder der Chat-Architekt für Akt 2 braucht, wird **mit vollem Pfad** in der Übergabe benannt und liegt **auf `main` gepusht** (auch aus einem Worktree heraus — der relevante Stand muss auf `main`, sonst kann der Chat-Architekt ihn via MCP nicht lesen). **Verboten** ist, den Chat-Architekten suchen zu lassen: existiert-und-Pfad-genannt ist Pflicht. Ein Diff ist NICHT der Default-Beleg — der Chat-Architekt liest den Ist-Stand der Datei direkt via MCP. Diff nur, wenn der Mensch explizit „Änderung gegen vorher" sehen will.
 
+**Option 0 (Pflicht).** Jede Sondierung enthält als erste Option die ernsthafte Gegenrede: nicht tun / anders lösen / streichen — mit dem stärksten Argument dafür, nicht dem schwächsten. Eine Sondierung ohne Option 0 ist unvollständig und darf nicht weitergereicht werden. Option 0 wird wie jede andere Option behandelt: Empfehlung kann auf sie fallen, die Wahl bleibt beim Menschen (bzw. beim Orchestrator im Projektkontrakt, wenn das Wohin unberührt bleibt).
+
 ---
 
 ## Akt 2 — Festlegung (im Chat, stufenabhängig)
@@ -99,6 +101,10 @@ Der **Chat-Architekt** liest die Sondierung live via MCP und **erklärt sie dem 
 - **Spur:** Der **Chat-Architekt** formt die Spec mit dem Menschen nach dem Beratungs-Rhythmus (`02_Rollen-Protokoll.md`) und schreibt sie nach `<Geltungsbereich>/Arbeitsgedaechtnis/<ID>_SPEC.md` (UC1, `06_Architekt-Protokoll.md`). Hier ist der Architekt **unverzichtbar** — Architektur-Entscheidungen brauchen den Gesamtüberblick.
 - **Sprung:** **Claude Code schreibt die Spec selbst** — sie ist mit der Sondierung identisch (kombinierte Spec). **Kein Chat-Architekt by default**, aber Claude Code **berät den Menschen direkt nach demselben Beratungs-Rhythmus** (`02_Rollen-Protokoll.md`: Was ist → wo es hakt → Vorschläge mit gekennzeichneter Empfehlung → Stopp → erst dann ausführen) — die Beratungspflicht hängt an der Rolle des Beratenden, nicht am Kanal. Nur wenn Claude Code auf eine echte Gabelung / Spec-Lücke / einen Konflikt stößt, der ein Wert-Urteil braucht, eskaliert er per UC2 an den Chat-Architekten. Das hält „kleine Themen" frei von Überberatung, ohne die Beratung selbst wegzulassen.
 - **Schritt:** kein Akt 2. Claude Code führt direkt aus.
+
+**Gesetzt statt verhandelt.** Stufe, Risikoklasse und Bündel-Kritikalität werden von Claude Code deterministisch gesetzt (feste Liste in `01_Spec-Format.md` + drei Aspekte) und im Entscheidungs-Digest unter Punkt 0 genannt — nicht im Dialog ausgehandelt. Der Mensch vetot bei Abweichungsbedarf. Nur-nach-oben gilt unverändert; echte Graubereiche (die zwei Testfragen aus 01 ohne klares Ergebnis) dürfen weiterhin als Frage vorgelegt werden. Die Beratung wird damit asynchron (Digest), nicht abgeschafft.
+
+**Kalter Evaluator (Pflicht-Pass für Sprung und Spur).** Bevor eine Spec dem Menschen zur Freigabe vorgelegt (Spur) oder autonom gestartet (Sprung) wird, läuft ein kalter Evaluator-Aufruf (eigene `claude -p`-Instanz, eigener Kontext, Modell Opus / effort high). Der schreibende Agent hat Einwände-Behandlungspflicht: jeder Evaluator-Einwand wird in der Spec-Sektion „Einwände & Behandlung" entweder eingearbeitet oder explizit widerlegt. Der Evaluator hat kein Veto (beratend) — aber eine Spec mit unbehandelten Einwänden ist nicht freigabefähig (Korridor-Wand). Selbst-Evaluation ersetzt den Pass nie (Generator ≠ Evaluator).
 
 ### Eine Spec-Fassung, kein Ping-Pong
 
@@ -196,6 +202,9 @@ Dazwischen kein synchroner Stopp **und keine Wie-Rückfragen im Chat**. Akt-inte
 
 Der Mensch reviewt Entscheidungen, nicht Code. **Der Chat-/Terminal-Output am Bündel-/Zyklus-Ende ist ausschließlich das Entscheidungs-Protokoll** — vier Punkte:
 
+Das Protokoll beginnt mit dem **Wirkungs-Block** (Format in `01_Spec-Format.md`) und führt als Punkt 0: **„Gesetzt ohne Rückfrage:"** — Stufe, Risikoklasse, Bündel-Flags, getroffene Wie-Entscheidungen in je einer Zeile. Veto-Punkt für den Menschen ist die Abschluss-Freigabe des Zyklus, nicht ein Stopp pro Setzung. Die vier inhaltlichen Punkte folgen dahinter:
+
+0. **Gesetzt ohne Rückfrage** — Stufe, Risikoklasse, Bündel-Flags, Wie-Entscheidungen.
 1. **Was ich gebaut habe** — ein Satz, das Ziel.
 2. **Entscheidungen** — die Gabelungen, an denen ich nicht gestoppt habe, je eine Zeile: „X statt Y, weil …". Keine echten Gabelungen → „keine".
 3. **Was du wissen solltest** — Information, kein Veto nötig.
@@ -267,6 +276,10 @@ Die Autonomie weicht E3 NICHT auf. E3 verbietet, dass das System sich selbst ver
 ---
 
 ## Backlog-Pflege
+
+### Nordstern-Regel
+
+**Genau eine aktive Mission trägt `nordstern: ja`** (in `_Betrieb/Missionen/00_aktive-missionen.md`, mit Ein-Satz-Definition des Zielzustands). Seeds außerhalb der Nordstern-Mission werden nicht gezogen, außer: (a) `klasse: security` mit `zugkraft: jetzt`, (b) ein Betriebs-Queue-Eintrag eskaliert nachweislich zu einem Blocker, (c) explizite Mensch-Anweisung. Neue Seeds ohne Nordstern-Bezug erhalten bei Anlage `status: eisbox` (Vorschlag durch den anlegenden Agenten, Mensch-Veto über Digest). Wechsel des Nordsterns ist Mensch-Entscheidung.
 
 ### Harte Security-Regel
 

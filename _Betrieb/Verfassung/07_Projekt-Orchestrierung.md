@@ -65,6 +65,22 @@ der Kontrakt; der Worker IST das bestehende Arbeitstier (02) + die eine Spec.
 `CLAUDE.md` trägt nur einen Zeiger + den Fail-safe „ohne expliziten
 Orchestrator-Prompt bist du ein normaler Worker" (siehe CLAUDE-global.md-Ergänzung).
 
+**Modell-Routing ist Teil des Aufruf-Vertrags, nie Selbstwahl des laufenden Agenten:**
+Worker = Sonnet / effort medium; Orchestrator = Opus / effort high; Evaluator = Opus / effort high.
+Telemetrie pro Aufruf (Modell, Effort, Turns, Tokens, Beweis-Status first-pass) wird im Token-Log mitgeschrieben.
+
+## Evaluator-Punkte im Projekt
+
+**Evaluator 1 — Beweis-Design (nach Akt 1, vor Ratifikation).** Kalter Aufruf (Opus/high) liest Sondierung + Kontrakt-Entwurf. Kern-Auftrag: konstruiere mindestens drei Szenarien, in denen alle vorgeschlagenen Beweise grün werden, obwohl das Wohin verletzt bleibt. Außerdem: Checkliste pro AK mit Urteil gedeckt / ungedeckt / nur-mit-Mensch-Rest-gedeckt + Option-0-Gegenrede. Die Sondierung erhält „Einwände & Behandlung" (per `01_Spec-Format.md`), bevor der Mensch ratifiziert. Evaluator 1 hat Wand-Charakter: unbehandelte Einwände blockieren die Ratifikation.
+
+**Evaluator 2 — Implikations-Prüfung (nach jedem grünen `beweis_befehl`, vor Seed-Abschluss).** Kalter Aufruf liest Worker-Report + Beweis-Skript + Diff (read-only; Stichproben am Artefakt erlaubt). Frage: Impliziert dieses Grün den AK — oder nur das, was der Autor geprüft hat? ROT-Urteil: Seed gilt nicht als abgeschlossen; Re-Dispatch mit den Einwänden im Auftrag. Zählung gegen `max_versuche`: Substanz-Mangel zählt, reiner Beweis-Design-Mangel zählt nicht. Evaluator 2 ist beratend mit Wand-Charakter: ROT stoppt den Seed-Abschluss, nie den Gesamt-Loop.
+
+## Eskalations-Batching & gebatchte Mensch-Gates
+
+**Eine Mail pro Lauf** (plus Start-Bestätigung, falls konfiguriert). Eskalationen, die den Loop nicht blockieren (z. B. ausstehende Promotes, auf die kein offener Seed wartet), wandern in die Journal-Sektion „GESAMMELT (Lauf-Ende)" und werden mit der End-Eskalation / dem Abschluss-Report übergeben. Sofort-Mail nur, wenn der Loop nichts mehr dispatchen kann (Blocker) oder eine out-of-bounds-/Wohin-Frage ansteht.
+
+**Mensch-Gates werden bei der Kontrakt-Ratifikation enumeriert** (Liste „dafür brauche ich dich") und gebatcht terminiert — Default: ein Block am Lauf-Ende (E2E + Promotes + Abschluss-Freigabe); an den Anfang nur, was den ersten Dispatch blockiert. Das operationalisiert „Vorgezogene Mensch-Handlungen" (00) für den Projekt-Modus.
+
 ## Abweichungs-Kontrakt (Herz der Sicherheit)
 
 Vom Menschen in Akt 2 ratifiziert. Drei Pflichtteile:
@@ -73,6 +89,11 @@ Vom Menschen in Akt 2 ratifiziert. Drei Pflichtteile:
    Orchestrator „Ziel erreicht".
 2. **In-bounds (Wie — Orchestrator entscheidet autonom).**
 3. **Out-of-bounds (Wohin + `akut` — harter Stopp/Eskalation).**
+
+**Pflicht-Frontmatter:** `ziel_repo: knowledge-base` oder `ziel_repo: prisment-platform`
+ist Pflichtzeile im Kontrakt. Fehlt sie, eskaliert der Loop beim ersten Seed-Dispatch
+(kein stiller Default mehr — PLAT-058 B4 / E-13). Alle laufenden Kontrakts
+prüfen und nachpflegen.
 
 ## Seed-Granularität in der Projekt-Sondierung (Token-Disziplin)
 

@@ -143,6 +143,22 @@ Aus dem Backlog ist nicht jeder Seed gleich gut maschinell ziehbar. Die Halde tr
 - **Blocker-Regel:** Ein Blocker — Stopp-Auslöser nach `00_Iterationszyklus.md`, Fall C, oder eine Abschluss-Notiz, die Nacharbeit fordert — **friert die betroffene Abhängigkeitskette ein**. Kein abhängiges Folge-Glied wird gezogen, solange der Blocker offen ist. Unabhängige Stränge in anderen Blöcken bleiben unberührt.
 - **Abgrenzung:** Die Halde definiert nur das „Was ist ziehbar". Die **Worker-/Loop-Mechanik** (wer zieht, wann, wie viele parallel, Lock-File etc.) ist **nicht Teil dieser Regel** und wird als eigene Spur gebaut.
 
+## Pflicht-Sektionen in Spec, Sondierung und Abschluss-Doku
+
+### Wirkungs-Block (`## Wirkung`)
+
+**`## Wirkung (für den Architekten)`** ist Pflichtsektion in jeder Spec, Sondierung und Abschluss-Doku — vom schreibenden Agenten für den Menschen formuliert (nie generiert oder transkludiert), maximal 6 Sätze, vier Punkte:
+1. Was sich in der echten Welt ändert (Kunde / Geld / Risiko / Zeit).
+2. Was passiert, wenn wir es nicht tun.
+3. Was schiefgehen kann + Rückweg.
+4. Die Entscheidungsfrage in einem Satz — oder „keine; nur Veto möglich".
+
+Fachbegriffe nur, wenn die Entscheidung an ihnen hängt — dann mit Halbsatz-Erklärung. **Korridor-Wand: Fehlt der Block, ist das Dokument nicht freigabefähig (Fall C).**
+
+### Einwände & Behandlung (`## Einwände & Behandlung`)
+
+Nach jedem Evaluator-Pass ist **`## Einwände & Behandlung`** Pflichtsektion in Spec und kombinierter Spec. Format: Tabelle mit Spalten Einwand | eingearbeitet/verworfen | ein Satz Begründung. Kein Evaluator-Pass gelaufen → Sektion entfällt (aber erst nach abgeschlossenem Pass eintragen, nicht weglassen). Ein unbehandelter Evaluator-Einwand ohne Tabelleneintrag ist ein unvollständiges Dokument.
+
 ## Bündelung gehört NICHT in die Spec
 
 Die Spec definiert das WAS (Ziel, Soll-Zustand, Akzeptanzkriterien). Die Bündelung/Arbeitsliste erarbeitet sich Claude Code selbst in der Sondierung (Akt 1) — er kann Abhängigkeiten am echten System besser einschätzen. *(Beim Sprung: inline in der kombinierten Spec, knapp.)*
@@ -165,8 +181,9 @@ Seeds in `_Betrieb/Backlog/seeds/` führen zusätzlich zu den allgemeinen Front-
 
 - **`beruehrt:`** — Liste der Pfade/Ordner, die der Seed bei Umsetzung anfasst. **Ordner-Ebene** (z. B. `langgraph/`, `pwa/`) — gröber, robuster, weniger Pflege als datei-genau. Bei unklarem Footprint leer/grob, wird beim Spec-Start präzisiert.
 
-- **`status:`** — `offen` | `in_arbeit` | `blockiert` | `review` | `abgeschlossen`. **Pflichtfeld.** Default `offen` bei Anlage. **Abgeleitet aus dem Akt-Zustand, nicht frei geurteilt** — Claude Code schreibt automatisch (Silent-Whitelist; Akt-Kopplung siehe `00_Iterationszyklus.md` Abschnitt „Seed-Status & Mission"). Werte:
+- **`status:`** — `offen` | `eisbox` | `in_arbeit` | `blockiert` | `review` | `abgeschlossen`. **Pflichtfeld.** Default `offen` bei Anlage. **Abgeleitet aus dem Akt-Zustand, nicht frei geurteilt** — Claude Code schreibt automatisch (Silent-Whitelist; Akt-Kopplung siehe `00_Iterationszyklus.md` Abschnitt „Seed-Status & Mission"). Werte:
   - `offen` — Seed liegt im Backlog, ungezogen.
+  - `eisbox` — anerkannt und aufbewahrt, aber außerhalb des Tagesgeschäfts: zahlt nicht auf den aktiven Nordstern ein und ist nicht `security`+`jetzt`. Eisbox-Seeds erscheinen in der generierten Übersicht nur als eingeklappte Titelliste am Ende und als eigene Kanban-Spalte. Rückholung: Mensch-Entscheidung, vorgeschlagen u. a. vom wöchentlichen Richtungs-Review. Übergang `offen ↔ eisbox` ist beidseitig erlaubt — der einzige Status ohne Nur-vorwärts-Logik.
   - `in_arbeit` — Seed gezogen, Akt 1 läuft oder Folgeakt.
   - `blockiert` — Stopp-Auslöser 1–4 / Fall C / Blocker einer Abhängigkeitskette offen.
   - `review` — Akt-3-Ausführung fertig, wartet auf Mensch-Verifikation, die nur der Mensch leisten kann (reales Browser-Fenster, App-Verhalten, visuelle UI).
