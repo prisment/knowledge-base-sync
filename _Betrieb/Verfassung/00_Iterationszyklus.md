@@ -222,7 +222,14 @@ Von Claude Code vorgeschlagen, vom Menschen freigegeben:
 - Das „Warum" wird als **Logbuch-Eintrag** verewigt, zentral in `_Betrieb/Logbuch/` (E24).
 - Der Rest (Specs, Sondierungen, Deviation-Logs) wandert ins **Archiv**.
 - Hatte der Zyklus einen **Backlog-Seed als Auslöser**, wird sein `status:` auf `abgeschlossen` gezogen (im selben Commit). Ketten-Kehraus beim letzten Glied — Mechanik unverändert (`01_Spec-Format.md`, „Autonome Halde"); das Kehraus-Tool `scripts/backlog/phase9_seed_archive.py` ist allein zuständig. Das Tool greift auch bei Specs ohne Seed-Backreference oder mit bereits archiviertem Seed — dann archiviert es nur den Zyklus-Satz (PLAT-047 B047-1).
-- **Eigencheck-Pflicht am Akt-3-Ende (PLAT-047, 2026-05-28).** Vor dem finalen Abschluss-Commit ruft Claude Code `python3 scripts/backlog/check_akt3_residuen.py` auf. Exit 0 = sauber, Exit 1 = es liegen abgeschlossene Zyklus-Sätze im Arbeitsgedächtnis und müssen im selben Commit per `phase9_seed_archive.py <spec_id>` oder `git mv` ins Archiv. Exit 0 ist Voraussetzung für den Abschluss-Commit. Hintergrund: Tool-Lücke beim Kehraus konnte still No-op laufen; der Eigencheck schließt das nachweispflichtig.
+- **Pflicht-Tor: Arbeitsgedächtnis leer vor dem Abschluss-Commit (seit 2026-06-10).** Alle `<Bereich>/Arbeitsgedaechtnis/<ID>_*`-Dateien des abgeschlossenen Zyklus wandern **im selben Commit** wie der `status: abgeschlossen`-Eintrag (oder als direkt folgender Commit) ins Archiv:
+  ```
+  python3 scripts/backlog/phase9_seed_archive.py <spec_id>
+  # oder manuell:
+  git mv <Bereich>/Arbeitsgedaechtnis/<ID>_* <Bereich>/Archiv/<ID>/
+  ```
+  Analog zur Backlog-Pflege und Doku-Synchronität: ein abgeschlossener Zyklus mit Rückständen im Arbeitsgedächtnis gilt als **nicht abgeschlossen**.
+- **Eigencheck-Pflicht am Akt-3-Ende (PLAT-047, 2026-05-28).** Vor dem finalen Abschluss-Commit ruft Claude Code `python3 scripts/backlog/check_akt3_residuen.py` auf. Exit 0 = sauber, Exit 1 = es liegen abgeschlossene Zyklus-Sätze im Arbeitsgedächtnis und müssen im selben Commit per `phase9_seed_archive.py <spec_id>` oder `git mv` ins Archiv. **Exit 0 ist Voraussetzung für den Abschluss-Commit** — das Tor ist werkzeuggestützt erzwungen. Hintergrund: Tool-Lücke beim Kehraus konnte still No-op laufen; der Eigencheck schließt das nachweispflichtig.
 - **Kontext-Hygiene:** Ist der Zyklus sauber geschlossen, schlägt Claude Code dem Architekten `/clear` vor und legt es in der CLI-Eingabe vor — Ausführung beim Menschen. Bei offenem Zustand (Stopp/Fall C/unbeantwortete Frage) NICHT.
 
 Beim **Sprung** schlanker: Abschluss-Notiz ins Archiv, Logbuch-Eintrag nur bei einer bewussten Entscheidung mit Warum. Beim **Schritt** entfällt der Abschluss ganz — Schritt-Log-Zeile + Commit sind der Abschluss.
