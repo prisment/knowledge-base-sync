@@ -250,6 +250,22 @@ Live-Lauf, geschehen — beide Archiv-Tools kannten den Projekt-Modus nicht):
   Archiv-Vorschau (projekt-fähiger `check_akt3_residuen.py`), sodass ein
   unarchiviertes Projekt nie unsichtbar bleibt.
 
+**Verankerungs-Freigabe-Tor (PLAT-056).** Die Verankerungs-Freigabe eines
+Projekts ist gesperrt, solange ein Seed mit `projekt: <id>` und
+(`status ≠ abgeschlossen` **oder** `risikoklasse: sicherheitskritisch-akut`)
+offen ist. `phase9_seed_archive.py` prüft dies deterministisch über den
+geteilten Rechner `projekt_obligationen.py` und **verweigert die Freigabe hart**
+(Exit 1, fail-closed) mit Auflistung der offenen Obligationen — analog zur
+`check_akt3_residuen.py`-Wand für Archiv-Residuen, nur für die Obligationen-
+Bedingung und orthogonal dazu. „Ziel erreicht" und „abgeschlossen" sind damit
+auf Mechanik-Ebene unverwechselbar getrennt (der zweimalige Fehlschluss bei
+PRIS-045/046). Mensch-Ratifikation bleibt (E3); das Tor verhindert nur, dass
+eine Freigabe an offenen Obligationen vorbei erteilt wird — der Mensch löst die
+Obligation (Status setzen / bewusst reklassifizieren) und verankert dann.
+**Voraussetzung:** `projekt: <id>` ist die einzige deterministische Projekt-
+Bindung; ein loop-emergenter Seed ohne `projekt:` wird vom pre-commit-Hook
+abgewiesen (PLAT-056 B0, `check_projekt_tag.py`).
+
 ## Kontextbindung
 
 Gilt für den aktuellen Kontext (Solo-Gründer, Zeit als Engpass, Abo-Modell mit
