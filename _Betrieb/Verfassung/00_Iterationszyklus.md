@@ -59,7 +59,7 @@ Es gibt genau drei Stufen. **Eine Spur IST das große Vorhaben.** Folge-Arbeit w
 Öffnet sich während der Arbeit ein Fass (ein Sprung entpuppt sich als Spur, weil Kritisches aufkommt — wie in PLAT-001, wo der Q2-Echttest die Allowlist-Frage aufriss):
 
 - Chat-Architekt **und** Claude Code schlagen die Höherstufung **beratend vor** (nicht der Mensch muss es bemerken).
-- Bei Zustimmung: **Stopp**, kurzer Vermerk im laufenden Dokument („hochgestuft von Sprung → Spur, weil …"), dann mit voller Zeremonie weiter. Konkret heißt das: das Vorhaben tritt zurück in Akt 2 mit Architekt-Beteiligung.
+- Bei Zustimmung: **Stopp**, kurzer Vermerk im laufenden Dokument („hochgestuft von Sprung → Spur, weil …"), dann mit voller Zeremonie weiter. Konkret heißt das: das Vorhaben tritt zurück in Akt 2 mit voller Spur-Zeremonie (Mensch gibt nach Wirkungs-Block frei; Chat-Architekt auf Abruf).
 - Das ist kein Scheitern, sondern das System, das funktioniert.
 - **Herunterstufung gibt es nicht automatisch.** Wer einmal als Spur erkannt wurde, bleibt Spur.
 
