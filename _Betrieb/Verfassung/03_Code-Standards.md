@@ -17,7 +17,6 @@ Konsequenz: `.py`-Dateien, n8n-Workflow-JSONs, Shell-Skripte und Ähnliches werd
 
 Jede Information existiert genau einmal. Ansichten (SVG-Übersichten, Zusammenfassungen) werden aus der einen Quelle ABGELEITET, nie als zweite Quelle gepflegt. Eine veraltete Doku ist schlimmer als keine, weil man ihr vertraut.
 
-Auch die kuratierten Mensch-Views (PLAT-056) sind solche Ableitungen: die generierten HTML-Sichten in `_Betrieb/Ansichten/` (Mission, Projekt-Spec, Projektabschluss) ziehen ihre Fakten deterministisch aus Seeds, Missions-Journal und Projekt-Sondierung — nie händisch editiert. Sicherheitskritische Fakten (Abschluss-Status, Obligationen-Zähler) trägt die Skript-Schicht; aufgesattelte LLM-Prosa ist Kuration, nie Status-Quelle. Werkzeuge + Quellen-Tabelle: `_Betrieb/Ansichten/README.md`.
 
 ## Standards-Platzhalter (wachsen mit der Arbeit)
 
