@@ -69,11 +69,15 @@ Orchestrator-Prompt bist du ein normaler Worker" (siehe CLAUDE-global.md-Ergänz
 Worker = Sonnet / effort medium; Orchestrator = Opus / effort high; Evaluator = Opus / effort high.
 Telemetrie pro Aufruf (Modell, Effort, Turns, Tokens, Beweis-Status first-pass) wird im Token-Log mitgeschrieben.
 
+Worker können `advisor()` aufrufen für substanzielle Entscheidungen — analog zur interaktiven Arbeitsweise. Das Tool ist harness-seitig in allen CC-Sessions verfügbar.
+
 ## Evaluator-Punkte im Projekt
 
 **Evaluator 1 — Beweis-Design (nach Akt 1, vor Ratifikation).** Kalter Aufruf (Opus/high) liest Sondierung + Kontrakt-Entwurf. Kern-Auftrag: konstruiere mindestens drei Szenarien, in denen alle vorgeschlagenen Beweise grün werden, obwohl das Wohin verletzt bleibt. Außerdem: Checkliste pro AK mit Urteil gedeckt / ungedeckt / nur-mit-Mensch-Rest-gedeckt + Option-0-Gegenrede. Die Sondierung erhält „Einwände & Behandlung" (per `01_Spec-Format.md`), bevor der Mensch ratifiziert. Evaluator 1 hat Wand-Charakter: unbehandelte Einwände blockieren die Ratifikation.
 
 **Evaluator 2 — Implikations-Prüfung (nach jedem grünen `beweis_befehl`, vor Seed-Abschluss).** Kalter Aufruf liest Worker-Report + Beweis-Skript + Diff (read-only; Stichproben am Artefakt erlaubt). Frage: Impliziert dieses Grün den AK — oder nur das, was der Autor geprüft hat? ROT-Urteil: Seed gilt nicht als abgeschlossen; Re-Dispatch mit den Einwänden im Auftrag. Zählung gegen `max_versuche`: Substanz-Mangel zählt, reiner Beweis-Design-Mangel zählt nicht. Evaluator 2 ist beratend mit Wand-Charakter: ROT stoppt den Seed-Abschluss, nie den Gesamt-Loop.
+
+**Evaluator 3 — spontane Seeds (vor Worker-Dispatch).** Kalter Loop-seitiger Gate (baugleich zu 1/2). Greift **nur für spontane Seeds** — Seeds in `planned_seeds` (durch Evaluator 1 vor Projekt-Start gedeckt) überspringen das Gate. Maximal `MAX_EVAL3=2` Läufe: Runde 1 = voller Pass; Runde 2 = Recheck nur bei ≥1 BLOCKIEREND in Runde 1. FREIGABE/Recheck-BESTANDEN → Dispatch. RICHTUNGSWECHSEL_PFLICHT → sofortige Mensch-Eskalation. REWORK mit STRUKTURELL → Eskalation (Architektur-Eingriff, kein Auto-Dispatch). Fehlt `planned_seeds` im Kontrakt → Gate inaktiv (Opt-in-Design).
 
 ## Eskalations-Batching & gebatchte Mensch-Gates
 
@@ -208,6 +212,8 @@ einzige Datei, die jeder kalte Worker garantiert liest).
   am Ende seines Laufs einen Seed im Seed-Set des Projekts an (`projekt:`-getaggt),
   mit Risikoklasse-Vorschlag. Der nächste kalte Orchestrator findet ihn und
   priorisiert.
+- Emergente Seeds, die der Orchestrator zur Abarbeitung freigibt, durchlaufen Evaluator 3
+  (sofern `planned_seeds` im Kontrakt definiert ist), bevor der Worker dispatcht wird.
 - **Sicherheit ohne Mensch-Ratifikation der Klasse:** Es gilt **nur-nach-oben** —
   ein emergenter Seed kann nicht heruntergestuft werden. `kritisch`/`akut`-Vorschlag
   → automatische Eskalation (der Orchestrator gibt `akut` ohnehin nicht frei).
