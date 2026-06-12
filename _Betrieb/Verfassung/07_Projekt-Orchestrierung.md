@@ -83,6 +83,8 @@ Worker können `advisor()` aufrufen für substanzielle Entscheidungen — analog
 
 Evaluator 2 ist beratend mit Wand-Charakter: ROT/SPEC_AMBIGUITAET stoppen den Seed-Abschluss, nie den Gesamt-Loop.
 
+**Ausnahme: `seed_typ: verifikation` (PLAT-070 B5).** Verifikations-Seeds (reine Test-Schreibung ohne Feature-Code) können im Kontrakt als `seed_typ: verifikation` markiert werden. Für solche Seeds entfällt Evaluator 2; das Gate ist stattdessen: (1) `beweis_befehl` exit 0, (2) Assertions-Count ≥ 1 (keine assertions-losen Tests), (3) vollständiger Worker-Report mit `status: fertig`. Merge-Freigabe ohne EVAL_2-Pass. **Nur-nach-oben-Prinzip:** Ein `seed_typ: verifikation`-Seed darf nachträglich keine Feature-Arbeit aufnehmen — ändert sich der Seed-Inhalt in Richtung Feature-Code, gilt wieder der volle EVAL_2-Pfad. Mensch-Sichtprüfung bei Verankerung.
+
 **Evaluator 3 — spontane Seeds (vor Worker-Dispatch).** Kalter Loop-seitiger Gate (baugleich zu 1/2). Greift **nur für spontane Seeds** — Seeds in `planned_seeds` (durch Evaluator 1 vor Projekt-Start gedeckt) überspringen das Gate. Maximal `MAX_EVAL3=2` Läufe: Runde 1 = voller Pass; Runde 2 = Recheck nur bei ≥1 BLOCKIEREND in Runde 1. FREIGABE/Recheck-BESTANDEN → Dispatch. RICHTUNGSWECHSEL_PFLICHT → sofortige Mensch-Eskalation. REWORK mit STRUKTURELL → Eskalation (Architektur-Eingriff, kein Auto-Dispatch). Fehlt `planned_seeds` im Kontrakt → Gate inaktiv (Opt-in-Design).
 
 ## Eskalations-Batching & gebatchte Mensch-Gates
