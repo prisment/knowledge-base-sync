@@ -75,7 +75,13 @@ Worker können `advisor()` aufrufen für substanzielle Entscheidungen — analog
 
 **Evaluator 1 — Beweis-Design (nach Akt 1, vor Ratifikation).** Kalter Aufruf (Opus/high) liest Sondierung + Kontrakt-Entwurf. Kern-Auftrag: konstruiere mindestens drei Szenarien, in denen alle vorgeschlagenen Beweise grün werden, obwohl das Wohin verletzt bleibt. Außerdem: Checkliste pro AK mit Urteil gedeckt / ungedeckt / nur-mit-Mensch-Rest-gedeckt + Option-0-Gegenrede. Die Sondierung erhält „Einwände & Behandlung" (per `01_Spec-Format.md`), bevor der Mensch ratifiziert. Evaluator 1 hat Wand-Charakter: unbehandelte Einwände blockieren die Ratifikation.
 
-**Evaluator 2 — Implikations-Prüfung (nach jedem grünen `beweis_befehl`, vor Seed-Abschluss).** Kalter Aufruf liest Worker-Report + Beweis-Skript + Diff (read-only; Stichproben am Artefakt erlaubt). Frage: Impliziert dieses Grün den AK — oder nur das, was der Autor geprüft hat? ROT-Urteil: Seed gilt nicht als abgeschlossen; Re-Dispatch mit den Einwänden im Auftrag. Zählung gegen `max_versuche`: Substanz-Mangel zählt, reiner Beweis-Design-Mangel zählt nicht. Evaluator 2 ist beratend mit Wand-Charakter: ROT stoppt den Seed-Abschluss, nie den Gesamt-Loop.
+**Evaluator 2 — Implikations-Prüfung (nach jedem grünen `beweis_befehl`, vor Seed-Abschluss).** Kalter Aufruf liest Worker-Report + Beweis-Skript + Diff (read-only; Stichproben am Artefakt erlaubt). Frage: Impliziert dieses Grün den AK — oder nur das, was der Autor geprüft hat? Drei Urteile:
+
+- **ROT**: Seed gilt nicht als abgeschlossen; Re-Dispatch mit den `ungedeckt:`-Einwänden im Auftrag. Worker-Branch persistiert über Retries (kein Reset auf origin/main) — Worker setzt auf seinem letzten Commit auf. Zählung gegen `max_eval2_redispatch` (Default 2): Substanz-Mangel zählt, Beweis-Design-Mangel nicht.
+- **GRUEN**: Beweis impliziert AK vollständig → Merge freigegeben.
+- **SPEC_AMBIGUITAET**: Die Lücke ist kein Code-Problem — der Worker kann sie ohne Spec-Interpretation nicht schließen. Abgrenzungskriterium: „Kann der Worker die Lücke durch Code/Tests fixen ohne die Spec neu zu deuten? Nein → SPEC_AMBIGUITAET." Pflichtfeld `KLAERUNGSFRAGE:` im Evaluator-Output. Zählt **nicht** gegen `max_versuche` — Eskalation ist sofort und direkt mit der Klärungsfrage.
+
+Evaluator 2 ist beratend mit Wand-Charakter: ROT/SPEC_AMBIGUITAET stoppen den Seed-Abschluss, nie den Gesamt-Loop.
 
 **Evaluator 3 — spontane Seeds (vor Worker-Dispatch).** Kalter Loop-seitiger Gate (baugleich zu 1/2). Greift **nur für spontane Seeds** — Seeds in `planned_seeds` (durch Evaluator 1 vor Projekt-Start gedeckt) überspringen das Gate. Maximal `MAX_EVAL3=2` Läufe: Runde 1 = voller Pass; Runde 2 = Recheck nur bei ≥1 BLOCKIEREND in Runde 1. FREIGABE/Recheck-BESTANDEN → Dispatch. RICHTUNGSWECHSEL_PFLICHT → sofortige Mensch-Eskalation. REWORK mit STRUKTURELL → Eskalation (Architektur-Eingriff, kein Auto-Dispatch). Fehlt `planned_seeds` im Kontrakt → Gate inaktiv (Opt-in-Design).
 
