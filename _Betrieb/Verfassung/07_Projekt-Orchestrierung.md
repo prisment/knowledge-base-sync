@@ -245,7 +245,7 @@ Der Orchestrator stoppt den Loop und meldet, wenn:
 
 ## Erkennung: Ab wann ist es ein Projekt?
 
-Beratend vorgeschlagen (CC/Chat-Architekt), vom Menschen ratifiziert — wie `stufe`.
+Beratend vorgeschlagen (CC/Desktop-Architekt), vom Menschen ratifiziert — wie `stufe`.
 Zwei Einstiege: (a) Seed wird als `typ: projekt` geboren; (b) **Eskalation
 Spur→Projekt** im Lauf (analog Sprung→Spur, nur-nach-oben). Kette:
 Schritt→Sprung→Spur→**Projekt**.

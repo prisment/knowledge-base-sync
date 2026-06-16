@@ -25,7 +25,7 @@ Die Arbeitsdokumente des Zyklus folgen einem modularen Standard: ein gemeinsamer
 2. **Bewiesen, nicht angenommen.** Jeder Ist-Fakt in einem Report nennt seine Quelle (Befehl/Datei/Pfad).
 3. **Front-Matter-Keys sind verbindlich identisch** über alle Dokumente. Immer `risikoklasse`, nie mal `risiko` mal `risk`. Neue Felder werden im Template ergänzt, nie ad-hoc.
 4. **Spec ist die Wahrheit; Report und Abschluss-Doku erben ihre `spec_id`.** Damit ist die Kette maschinell verkettbar.
-5. **`stufe` ist Pflichtfeld** in jeder Spec und Abschluss-Notiz. Sie wird beratend vorgeschlagen (Chat-Architekt/Claude Code), vom Menschen revidierbar, nie vom Menschen allein geraten (siehe `00_Iterationszyklus.md`).
+5. **`stufe` ist Pflichtfeld** in jeder Spec und Abschluss-Notiz. Sie wird beratend vorgeschlagen (Desktop-Architekt/Claude Code), vom Menschen revidierbar, nie vom Menschen allein geraten (siehe `00_Iterationszyklus.md`).
 6. **Restschulden tragen ihre Belegstelle.** Restschuld-Formulierungen in Abschluss-Dokus nennen die konkrete Belegstelle (Datei, Zeile oder Code-Sub-Pfad) wie Akt-1-Fakten. Eine Restschuld ohne Belegstelle ist nicht abgeschlossen — sie ist eine zweite Erhebung, die im Folge-Zyklus nochmal gemacht werden muss. Belegquelle für die Regel: Logbuch E64 (PRIS-022 L4).
 
 ## Pflicht-Felder im Front Matter
@@ -201,7 +201,7 @@ Seeds in `_Betrieb/Backlog/seeds/` führen zusätzlich zu den allgemeinen Front-
 
   **Pfad-Konvention für Spec-Dateien:** Specs landen immer als flache Dateien im Arbeitsgedächtnis des zuständigen Bereichs — NIEMALS in einem eigenen Unterordner im Bereichs-Root. Korrekt: `Plattform/Arbeitsgedaechtnis/PLAT-NNN_SPEC_*.md` bzw. `Prisment/Arbeitsgedaechtnis/PRIS-NNN_SPEC_*.md`. Falsch: `Prisment/PRIS-NNN/PRIS-NNN_SPEC.md`. Unterordner im Bereichs-Root sind ausschließlich dem Archiv (`Plattform/Archiv/PLAT-NNN/`) vorbehalten.
 
-**Vergabe-Mechanik** (für `klasse` / `zugkraft` / `beruehrt` / `mission`, analog `stufe`): Chat-Architekt/Claude Code schlägt mit Begründung vor, Mensch revidiert/gibt frei. Niemals vom Menschen allein geraten. (`status` und `autonom_ziehbar` fallen nicht hierunter — sie werden abgeleitet/fortgeschrieben, nicht beraten-vergeben.)
+**Vergabe-Mechanik** (für `klasse` / `zugkraft` / `beruehrt` / `mission`, analog `stufe`): Desktop-Architekt/Claude Code schlägt mit Begründung vor, Mensch revidiert/gibt frei. Niemals vom Menschen allein geraten. (`status` und `autonom_ziehbar` fallen nicht hierunter — sie werden abgeleitet/fortgeschrieben, nicht beraten-vergeben.)
 
 **Sperrzone „Eigene Notizen":** Jeder Seed endet mit einer Sektion `## 📝 Eigene Notizen`. Diese Sektion ist Mensch-Sperrzone. Claude Code darf sie LESEN (Kontext für Entscheidungen), aber NIE überschreiben, löschen oder umformulieren. Bei Re-Writes oder Auto-Edits eines Seeds bleibt der Inhalt dieser Sektion byte-identisch erhalten. Tritt ein Konflikt auf (Seed-Re-Write würde die Sektion berühren), stoppt Claude Code synchron und fragt den Menschen. Stub-Form siehe `_Betrieb/Templates/Dokument-Templates.md` (Body-Schluss im Backlog-Seed-Abschnitt).
 

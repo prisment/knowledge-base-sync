@@ -7,9 +7,9 @@ aenderung: "nur nach oben (nie schlechter), nur durch bewusste Freigabe des Mens
 
 # 00 — Iterationszyklus
 
-Der verbindliche Arbeitsablauf für jeden Zyklus. Alle drei Akteure (Mensch, Chat-Architekt, Claude Code) kennen ihn.
+Der verbindliche Arbeitsablauf für jeden Zyklus. Alle drei Akteure (Mensch, Desktop-Architekt, Claude Code) kennen ihn.
 
-**Tragender Gedanke:** Der Zyklus folgt der Realität, nicht der Bürokratie. Wer am echten System sitzt (Claude Code), sondiert und führt aus. Wer den Gesamtüberblick hat (Mensch, beraten vom Chat-Architekt), legt fest. Daraus ergeben sich **drei Akte** statt einer langen Phasenkette — die alte 9-Phasen-Nummerierung ist abgelöst (Begründung: Logbuch-Eintrag zu dieser Umstellung).
+**Tragender Gedanke:** Der Zyklus folgt der Realität, nicht der Bürokratie. Wer am echten System sitzt (Claude Code), sondiert und führt aus. Wer den Gesamtüberblick hat (Mensch, beraten vom Desktop-Architekt), legt fest. Daraus ergeben sich **drei Akte** statt einer langen Phasenkette — die alte 9-Phasen-Nummerierung ist abgelöst (Begründung: Logbuch-Eintrag zu dieser Umstellung).
 
 ---
 
@@ -18,7 +18,7 @@ Der verbindliche Arbeitsablauf für jeden Zyklus. Alle drei Akteure (Mensch, Cha
 | Akt | Wer | Was |
 |---|---|---|
 | **1 — Sondierung** | Claude Code, am echten System | Fakten + Machbarkeit + Bündelung + Stufen-/Kritikalitäts-Vorschlag in EINEM Durchgang |
-| **2 — Festlegung** | Mensch (Chat-Architekt auf Abruf), Kanal stufenabhängig | Spec entsteht (Sprung/Spur: Claude Code schreibt sie, Evaluator-geprüft) → Mensch gibt frei |
+| **2 — Festlegung** | Mensch (Desktop-Architekt auf Abruf), Kanal stufenabhängig | Spec entsteht (Sprung/Spur: Claude Code schreibt sie, Evaluator-geprüft) → Mensch gibt frei |
 | **3 — Ausführung & Verankerung** | Claude Code, am echten System | Autonom im Korridor abarbeiten → Doku synchronisieren → abschließen |
 
 Die **Stufe** (Spur / Sprung / Schritt) bestimmt, wie schwer jeder Akt wiegt und wer in Akt 2 beteiligt ist. Die Akte sind keine starren Schleusen: beim Schritt schrumpfen 1 und 2 auf null, beim Sprung verschmelzen sie.
@@ -31,7 +31,7 @@ Nicht jedes Vorhaben braucht denselben Prozess-Umfang. Drei Stufen, getrennt nac
 
 | Stufe | Wofür | Akt 1 Sondierung | Akt 2 Festlegung | Dokumente |
 |---|---|---|---|---|
-| **Spur** | Gestaltet Architektur, berührt Kundendaten/Auth/Netz-Topologie, oder Risikoklasse `kritisch`/`sicherheitskritisch-akut`. Wirkung über den Einzelfall hinaus. | Voll, eigenes Sondierungs-Dokument | Claude Code schreibt die Spec (Wirkungs-Block); kalter Evaluator prüft; **Mensch gibt frei** (Terminal genügt). Chat-Architekt auf Abruf bei Wohin-Gabelung / visueller Aufbereitung | Sondierung + volle Spec + volle Abschluss-Doku |
+| **Spur** | Gestaltet Architektur, berührt Kundendaten/Auth/Netz-Topologie, oder Risikoklasse `kritisch`/`sicherheitskritisch-akut`. Wirkung über den Einzelfall hinaus. | Voll, eigenes Sondierungs-Dokument | Claude Code schreibt die Spec (Wirkungs-Block); kalter Evaluator prüft; **Mensch gibt frei** (Terminal genügt). Desktop-Architekt auf Abruf bei Wohin-Gabelung / visueller Aufbereitung | Sondierung + volle Spec + volle Abschluss-Doku |
 | **Sprung** | Konkrete, abgegrenzte Aufgabe, überschaubares Risiko. Ein Bugfix, eine einzelne Feature-Erweiterung. | Sondierung **=** kombinierte Spec (Claude Code schreibt sie selbst) | **Kein Architekt by default** — nur bei gemeldeter Wohin-Gabelung | kombinierte Spec + kurze Abschluss-Notiz |
 | **Schritt** | Trivial, reversibel, isoliert, in einem Rutsch. Typo, Doku-Update, ein Config-Wert, toter Ordner. | entfällt | entfällt | Eine Zeile in `<Bereich>/Schritt-Log.md` (automatisch) |
 
@@ -39,7 +39,7 @@ Nicht jedes Vorhaben braucht denselben Prozess-Umfang. Drei Stufen, getrennt nac
 
 Die Stufe wird **nicht vom Menschen allein geraten**. Was leicht aussieht, hängt manchmal an viel.
 
-- Bei jedem Auslöser schlägt **Claude Code (Akt 1) und/oder der Chat-Architekt die Stufe vor** — mit kurzer Begründung, was tatsächlich daran hängt.
+- Bei jedem Auslöser schlägt **Claude Code (Akt 1) und/oder der Desktop-Architekt die Stufe vor** — mit kurzer Begründung, was tatsächlich daran hängt.
 - Der Mensch **revidiert**, trägt die Einschätzung aber nicht allein.
 - Die Stufe steht als Pflichtfeld `stufe:` im Front Matter jeder Spec/Notiz (Format: `01_Spec-Format.md`).
 
@@ -58,8 +58,8 @@ Es gibt genau drei Stufen. **Eine Spur IST das große Vorhaben.** Folge-Arbeit w
 
 Öffnet sich während der Arbeit ein Fass (ein Sprung entpuppt sich als Spur, weil Kritisches aufkommt — wie in PLAT-001, wo der Q2-Echttest die Allowlist-Frage aufriss):
 
-- Chat-Architekt **und** Claude Code schlagen die Höherstufung **beratend vor** (nicht der Mensch muss es bemerken).
-- Bei Zustimmung: **Stopp**, kurzer Vermerk im laufenden Dokument („hochgestuft von Sprung → Spur, weil …"), dann mit voller Zeremonie weiter. Konkret heißt das: das Vorhaben tritt zurück in Akt 2 mit voller Spur-Zeremonie (Mensch gibt nach Wirkungs-Block frei; Chat-Architekt auf Abruf).
+- Desktop-Architekt **und** Claude Code schlagen die Höherstufung **beratend vor** (nicht der Mensch muss es bemerken).
+- Bei Zustimmung: **Stopp**, kurzer Vermerk im laufenden Dokument („hochgestuft von Sprung → Spur, weil …"), dann mit voller Zeremonie weiter. Konkret heißt das: das Vorhaben tritt zurück in Akt 2 mit voller Spur-Zeremonie (Mensch gibt nach Wirkungs-Block frei; Desktop-Architekt auf Abruf).
 - Das ist kein Scheitern, sondern das System, das funktioniert.
 - **Herunterstufung gibt es nicht automatisch.** Wer einmal als Spur erkannt wurde, bleibt Spur.
 
@@ -86,7 +86,7 @@ Claude Code erhebt in **einem** Durchgang am echten System und schreibt das Erge
 - **Spur:** eigenes Sondierungs-Dokument im Arbeitsgedächtnis (`report_art: sondierung`, erbt später die `spec_id`).
 - **Sprung:** die Sondierung IST bereits die kombinierte Spec (Fakten/Soll inline) — Claude Code schreibt sie direkt als `<ID>_SPEC.md`.
 
-**Pflicht zur Lesbarkeit (Token-Schutz):** Jede Datei, die der Mensch oder der Chat-Architekt für Akt 2 braucht, wird **mit vollem Pfad** in der Übergabe benannt und liegt **auf `main` gepusht** (auch aus einem Worktree heraus — der relevante Stand muss auf `main`, sonst kann der Chat-Architekt ihn via MCP nicht lesen). **Verboten** ist, den Chat-Architekten suchen zu lassen: existiert-und-Pfad-genannt ist Pflicht. Ein Diff ist NICHT der Default-Beleg — der Chat-Architekt liest den Ist-Stand der Datei direkt via MCP. Diff nur, wenn der Mensch explizit „Änderung gegen vorher" sehen will.
+**Pflicht zur Lesbarkeit (Token-Schutz):** Jede Datei, die der Mensch oder der Desktop-Architekt für Akt 2 braucht, wird **mit vollem Pfad** in der Übergabe benannt und liegt **auf `main` gepusht** (auch aus einem Worktree heraus — der relevante Stand muss auf `main`, sonst sieht ihn der Desktop-Architekt nicht: die Worktree-Branches des Arbeitstiers liest er nur per `git fetch`, das Arbeits-Dateisystem teilt er nicht). **Verboten** ist, den Desktop-Architekten suchen zu lassen: existiert-und-Pfad-genannt ist Pflicht. Ein Diff ist NICHT der Default-Beleg — der Desktop-Architekt liest den Ist-Stand der Datei direkt aus seinem lokalen Clone. Diff nur, wenn der Mensch explizit „Änderung gegen vorher" sehen will.
 
 **Option 0 (Pflicht).** Jede Sondierung enthält als erste Option die ernsthafte Gegenrede: nicht tun / anders lösen / streichen — mit dem stärksten Argument dafür, nicht dem schwächsten. Eine Sondierung ohne Option 0 ist unvollständig und darf nicht weitergereicht werden. Option 0 wird wie jede andere Option behandelt: Empfehlung kann auf sie fallen, die Wahl bleibt beim Menschen (bzw. beim Orchestrator im Projektkontrakt, wenn das Wohin unberührt bleibt).
 
@@ -94,12 +94,12 @@ Claude Code erhebt in **einem** Durchgang am echten System und schreibt das Erge
 
 ## Akt 2 — Festlegung (im Chat, stufenabhängig)
 
-Aus der Sondierung wird **eine** Spec, freigegeben vom Menschen — direkt ins Repo, kein Übergabe-Tanz. Im Regelfall schreibt **Claude Code** die Spec am System und legt sie mit Wirkungs-Block + Digest vor (Terminal genügt); der kalte Evaluator prüft sie vorher. Zieht der Mensch den **Chat-Architekten** hinzu — erste Wahl bei Wohin-Gabelungen und für visuelle Aufbereitung —, liest dieser die Sondierung live via MCP und erklärt sie nach dem Beratungs-Rhythmus (`02_Rollen-Protokoll.md`: Wirkung → wo es hakt → Optionen → Stopp → Prompt). So oder so entscheidet der Mensch auf Basis des aufbereiteten Wirkungs-Blocks, nicht indem er die Rohdatei selbst durcharbeitet.
+Aus der Sondierung wird **eine** Spec, freigegeben vom Menschen — direkt ins Repo, kein Übergabe-Tanz. Im Regelfall schreibt **Claude Code** die Spec am System und legt sie mit Wirkungs-Block + Digest vor (Terminal genügt); der kalte Evaluator prüft sie vorher. Zieht der Mensch den **Desktop-Architekten** hinzu — erste Wahl bei Wohin-Gabelungen und für visuelle Aufbereitung —, liest dieser die Sondierung direkt im Repo und erklärt sie nach dem Beratungs-Rhythmus (`02_Rollen-Protokoll.md`: Wirkung → wo es hakt → Optionen → Stopp → Prompt). So oder so entscheidet der Mensch auf Basis des aufbereiteten Wirkungs-Blocks, nicht indem er die Rohdatei selbst durcharbeitet.
 
 ### Wer formt die Spec
 
-- **Spur:** **Claude Code schreibt die Spec** am System (auf der Sondierung aufsitzend, mit Wirkungs-Block) nach `<Geltungsbereich>/Arbeitsgedaechtnis/<ID>_SPEC.md`; der kalte Evaluator prüft die Spec-Qualität (Pflicht-Pass). **Der Mensch gibt frei** auf Basis des Wirkungs-Blocks — Terminal genügt. Der **Chat-Architekt ist auf Abruf, kein Pflicht-Bahnhof** (`02`/`06`): Der Mensch zieht ihn bei einer echten Wohin-Gabelung oder für visuelle Aufbereitung hinzu — dann formt der Architekt die Spec mit (UC1). Der Gesamtüberblick, den eine Architektur-Entscheidung braucht, ist durch den Wirkungs-Block, den Evaluator-Pass und die jederzeitige Chat-Option gesichert, nicht durch einen Pflicht-Kanal.
-- **Sprung:** **Claude Code schreibt die Spec selbst** — sie ist mit der Sondierung identisch (kombinierte Spec). **Kein Chat-Architekt by default**, aber Claude Code **berät den Menschen direkt nach demselben Beratungs-Rhythmus** (`02_Rollen-Protokoll.md`: Was ist → wo es hakt → Vorschläge mit gekennzeichneter Empfehlung → Stopp → erst dann ausführen) — die Beratungspflicht hängt an der Rolle des Beratenden, nicht am Kanal. Nur wenn Claude Code auf eine echte Gabelung / Spec-Lücke / einen Konflikt stößt, der ein Wert-Urteil braucht, eskaliert er per UC2 an den Chat-Architekten. Das hält „kleine Themen" frei von Überberatung, ohne die Beratung selbst wegzulassen.
+- **Spur:** **Claude Code schreibt die Spec** am System (auf der Sondierung aufsitzend, mit Wirkungs-Block) nach `<Geltungsbereich>/Arbeitsgedaechtnis/<ID>_SPEC.md`; der kalte Evaluator prüft die Spec-Qualität (Pflicht-Pass). **Der Mensch gibt frei** auf Basis des Wirkungs-Blocks — Terminal genügt. Der **Desktop-Architekt ist auf Abruf, kein Pflicht-Bahnhof** (`02_Rollen-Protokoll.md`): Der Mensch zieht ihn bei einer echten Wohin-Gabelung oder für visuelle Aufbereitung hinzu — dann formt der Architekt die Spec mit. Der Gesamtüberblick, den eine Architektur-Entscheidung braucht, ist durch den Wirkungs-Block, den Evaluator-Pass und die jederzeitige Chat-Option gesichert, nicht durch einen Pflicht-Kanal.
+- **Sprung:** **Claude Code schreibt die Spec selbst** — sie ist mit der Sondierung identisch (kombinierte Spec). **Kein Desktop-Architekt by default**, aber Claude Code **berät den Menschen direkt nach demselben Beratungs-Rhythmus** (`02_Rollen-Protokoll.md`: Was ist → wo es hakt → Vorschläge mit gekennzeichneter Empfehlung → Stopp → erst dann ausführen) — die Beratungspflicht hängt an der Rolle des Beratenden, nicht am Kanal. Nur wenn Claude Code auf eine echte Gabelung / Spec-Lücke / einen Konflikt stößt, der ein Wert-Urteil braucht, eskaliert er an den Desktop-Architekten (gemeldete Wohin-Gabelung). Das hält „kleine Themen" frei von Überberatung, ohne die Beratung selbst wegzulassen.
 - **Schritt:** kein Akt 2. Claude Code führt direkt aus.
 
 **Gesetzt statt verhandelt.** Stufe, Risikoklasse und Bündel-Kritikalität werden von Claude Code deterministisch gesetzt (feste Liste in `01_Spec-Format.md` + drei Aspekte) und im Entscheidungs-Digest unter Punkt 0 genannt — nicht im Dialog ausgehandelt. Der Mensch vetot bei Abweichungsbedarf. Nur-nach-oben gilt unverändert; echte Graubereiche (die zwei Testfragen aus 01 ohne klares Ergebnis) dürfen weiterhin als Frage vorgelegt werden. Die Beratung wird damit asynchron (Digest), nicht abgeschafft.
