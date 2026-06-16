@@ -32,7 +32,7 @@ Nicht jedes Vorhaben braucht denselben Prozess-Umfang. Drei Stufen, getrennt nac
 | Stufe | Wofür | Akt 1 Sondierung | Akt 2 Festlegung | Dokumente |
 |---|---|---|---|---|
 | **Spur** | Gestaltet Architektur, berührt Kundendaten/Auth/Netz-Topologie, oder Risikoklasse `kritisch`/`sicherheitskritisch-akut`. Wirkung über den Einzelfall hinaus. | Voll, eigenes Sondierungs-Dokument | Claude Code schreibt die Spec (Wirkungs-Block); kalter Evaluator prüft; **Mensch gibt frei** (Terminal genügt). Chat-Architekt auf Abruf bei Wohin-Gabelung / visueller Aufbereitung | Sondierung + volle Spec + volle Abschluss-Doku |
-| **Sprung** | Konkrete, abgegrenzte Aufgabe, überschaubares Risiko. Ein Bugfix, eine einzelne Feature-Erweiterung. | Sondierung **=** kombinierte Spec (Claude Code schreibt sie selbst) | **Kein Architekt by default** — nur bei gemeldeter Gabelung (UC2) | kombinierte Spec + kurze Abschluss-Notiz |
+| **Sprung** | Konkrete, abgegrenzte Aufgabe, überschaubares Risiko. Ein Bugfix, eine einzelne Feature-Erweiterung. | Sondierung **=** kombinierte Spec (Claude Code schreibt sie selbst) | **Kein Architekt by default** — nur bei gemeldeter Wohin-Gabelung | kombinierte Spec + kurze Abschluss-Notiz |
 | **Schritt** | Trivial, reversibel, isoliert, in einem Rutsch. Typo, Doku-Update, ein Config-Wert, toter Ordner. | entfällt | entfällt | Eine Zeile in `<Bereich>/Schritt-Log.md` (automatisch) |
 
 ### Einstufung gehört zur Beratung, nicht zur Alleinentscheidung des Menschen
