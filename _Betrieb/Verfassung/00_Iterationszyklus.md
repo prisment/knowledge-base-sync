@@ -90,6 +90,16 @@ Claude Code erhebt in **einem** Durchgang am echten System und schreibt das Erge
 
 **Option 0 (Pflicht).** Jede Sondierung enthält als erste Option die ernsthafte Gegenrede: nicht tun / anders lösen / streichen — mit dem stärksten Argument dafür, nicht dem schwächsten. Eine Sondierung ohne Option 0 ist unvollständig und darf nicht weitergereicht werden. Option 0 wird wie jede andere Option behandelt: Empfehlung kann auf sie fallen, die Wahl bleibt beim Menschen (bzw. beim Orchestrator im Projektkontrakt, wenn das Wohin unberührt bleibt).
 
+### Fakten-Erhebung via Subagent (Kontext-Schutz)
+
+Die **read-lastige Erhebung** in Akt 1 läuft über einen read-only Subagenten (`Explore`), **nicht** im Hauptkontext. Das gilt für: Ist-Fakten am echten System (Datei-Reads, grep, Container-/DB-/Service-Stand), Logbuch-/Backlog-/Doku-Recherche, Code-Exploration im Worktree. Dasselbe Muster greift für read-lastige **Verifikations-Sweeps in Akt 3** (Konsistenz über viele Dateien/Services) — der Sweep wird delegiert, die Entscheidung daraus bleibt im Ausführungs-Thread.
+
+**Grund:** Der Hauptkontext bleibt frei für das Urteil und wird nicht mitten in der Sondierung weg-compactet — der heutige eigentliche Qualitätsverlust. Die Trennung ist Hand/Kopf: der Subagent erhebt (Hand), der Hauptthread urteilt (Kopf).
+
+**Quell-Verankerungs-Wand:** Der Subagent liefert das Ergebnis im **Fakten-Register-Format** — jeder Fakt trägt `datei:zeile` bzw. Befehl/Ausgabe, nie als Prosa-Zusammenfassung. So bleibt „bewiesen, nicht angenommen" gewahrt und der Hauptthread kann jeden urteils-kritischen Fakt gezielt nachprüfen. Der Hauptthread behandelt das Digest wie ein Projekt-Fakten-Register (vgl. CLAUDE-global „Fakten-Register lesen"). Den auslösenden **Seed / die Spec liest der Hauptthread selbst** (klein, Urteils-Anker); der Subagent bekommt den Erhebungs-Auftrag und darf den Pfad mitlesen.
+
+**Was nie delegiert wird (Kopf, nicht Hand):** Machbarkeits-Urteil, Bündelung, Stufen-/Kritikalitäts-Setzung, Option 0, die Spec-Synthese und jedes Wohin. Der kalte Evaluator und `advisor()` bleiben eigene Instanzen (Generator ≠ Evaluator) — sie werden hierdurch nicht ersetzt. „Am echten System" ist gewahrt: der Subagent läuft am selben System, er ist Claude Codes Hand, keine Auslagerung.
+
 ---
 
 ## Akt 2 — Festlegung (im Chat, stufenabhängig)
