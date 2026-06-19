@@ -53,6 +53,16 @@ Die Trennung läuft jetzt über den **Ort**:
 
 **Das eine Tor bleibt:** Die Verfassung ändert sich nur durch **bewusste Mensch-Freigabe** (E3, „nie selbstoptimierend"). Beide Hände dürfen Verfassungs-Edits *vorschlagen und schreiben*; ratifiziert wird nur vom Menschen. Der generierte Backlog-Index (`Backlog/00_UEBERSICHT.md`) bleibt Skript-erzeugt (nicht von Hand), siehe `00_Iterationszyklus.md` „Backlog-Pflege".
 
+### Code-Repo: Architekt liest fetch-only, Subagent-only (PLAT-088)
+
+PLAT-083 (beide Hände schreiben überall) gilt für die **Wissens-Ebene** (`main`/knowledge-base). Für das **Code-Repo `prisment-platform`** gilt ein bewusster Carve-out — die getrennten Welten bleiben, wo es zählt:
+
+- Der **Desktop-Architekt** hat einen **fetch-only** Klon (`C:\Users\korbi\Documents\git\prisment-platform`, Push-URL deaktiviert) — eine **Capability-Wand**, keine Disziplin-Regel. Er liest Code **nur über read-only Subagenten** (`Explore`), nie in den Haupt-Kontext (Hand/Kopf, Verfassung 00 Akt 1 „Fakten-Erhebung via Subagent").
+- Architekt-Code-Reads sind **statische Orientierung** (wie gebaut / wo liegt X / passt ein Ansatz), **nie „bewiesen am echten System"** — dieses Label bleibt dem Arbeitstier, das als Einziges am laufenden System sitzt. Der Subagent zieht bei Bedarf `git pull` vorweg (gegen Drift; der Klon ist git-Stand, nicht Laufzeit-Stand).
+- **Code schreiben/testen/deployen** und **Live-System-Sondierung** bleiben **Arbeitstier** — durch Physik (anderer Rechner) und durch fetch-only verdoppelt.
+
+Begründung: Die Wand, die die Overview-Rolle des Architekten schützt, ist „sitzt nicht am laufenden System, deployed nicht" — die bleibt physisch bestehen. Geöffnet wird nur die ungefährliche statische Lese-Capability, um die Sondierungsschleife bei code-nahen Strategiefragen zu sparen (Auslöser: PLAT-088).
+
 ## Logbuch ist zentral (revidiert E14-Teilaspekt, siehe E24)
 
 Das Logbuch existiert **genau einmal, zentral** in `_Betrieb/Logbuch/`. Es gibt KEINE bereichseigenen Logbücher. Jeder Logbuch-Eintrag — auch bereichsspezifische Betriebsentscheidungen (z. B. E19 Postgres, E20 Docker) — wird zentral geführt. Begründung im Logbuch-Eintrag E24 (gelebte Praxis schlägt die ursprünglich gedachte Verteilung; ein Ort, ein Stand, triviale Quervernetzung; bei Team-Wachstum später splittbar).
