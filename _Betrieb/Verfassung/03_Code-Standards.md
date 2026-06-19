@@ -22,6 +22,17 @@ Jede Information existiert genau einmal. Ansichten (SVG-Übersichten, Zusammenfa
 
 Konkrete Code-Vorgaben (Test-Strategie, CI/CD, Data-Integrity, Tenant-Isolation) werden aus den realen Zyklen heraus eingearbeitet — beginnend mit dem Security-Refactor (RLS + Tenant-Isolation) und der Data-Integrity-Pipeline. Bis dahin gilt diese Datei als Platzhalter, der nach jedem relevanten Zyklus über Phase 9 wächst (nie nach unten).
 
+## Destruktive Operationen: kein Error-Suppress (PLAT-085, 2026-06-19)
+
+Destruktive, schwer rückrollbare Operationen (Repo-/Branch-Löschung, `DELETE`
+gegen die Gitea-API, `rm -rf`, DB-DROP, Force-Push) werden **nie** mit
+`2>/dev/null`, `|| true` oder `|| :` maskiert. Der unterdrückte Fehler verbarg
+am 2026-06-12 eine versehentliche Repo-Löschung ganze 33 Minuten lang (die Session
+hielt ihren `curl -X DELETE …/repos/…` für einen Token-Cleanup und sah keinen
+Fehler) — der Schaden blieb danach ~1 Woche unbemerkt. Regel: bei destruktiven
+Befehlen Exit-Code **prüfen und sichtbar machen**, nicht verschlucken. Lesende/
+idempotente Befehle dürfen weiter `2>/dev/null` nutzen.
+
 ## Security-Gates im CI (PLAT-031, 2026-05-27)
 
 Jeder Commit/PR/nightly auf `prisment-platform` durchläuft folgende blockierende Gates (`.gitea/workflows/ci.yml`, Gitea-Actions, ein internal_gitea_runner):
