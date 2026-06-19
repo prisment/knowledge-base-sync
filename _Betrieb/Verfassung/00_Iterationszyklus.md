@@ -80,6 +80,16 @@ Claude Code erhebt in **einem** Durchgang am echten System und schreibt das Erge
 
 **Das löst den alten Fakten↔Spec-Loop:** Fakten und Machbarkeit kommen **vor** der Spec, weil der, der sie erheben kann, zuerst dran ist. Keine nachgelagerte zweite Machbarkeitsrunde mehr.
 
+### Auftrag festhalten (wörtlich) — der Maßstab
+
+Löst ein **Mensch-Briefing** eine Spur aus, hält der Desktop-Architekt (oder CC) den Auftrag **wörtlich und nummeriert** fest — in den Worten des Menschen, nicht schon in die Lösung umgedeutet — und holt eine **Ein-Zeilen-Bestätigung** („ist das dein Auftrag?"). Erst danach wird sondiert. Dieser eingefrorene Auftrag ist der Maßstab der späteren Deckungstabelle (`01_Spec-Format.md`, „Auftrags-Treue") und das Einzige, was der Mensch zur Freigabe zwingend lesen muss.
+
+**Warum vorne:** Wird der Auftrag erst nach der Sondierung rekonstruiert, misst sich die Spec an dem, was machbar war, statt an dem, was verlangt wurde — genau die stille Scope-Amputation, gegen die diese Wand steht. Präzedenz PRIS-094: der mündliche Auftrag („CC soll sondieren, welche Fragen aus den echten Daten Sinn machen; für alle Aktionen entwickeln; jede Frage ruft ein Fokus-Menü") schrumpfte in der Spec unbemerkt auf eine fest einprogrammierte Liste + Menüs für zwei Aktionen — professionell aufbereitet, deshalb durchgewunken.
+
+Bei **Seed-Auslöser ohne frisches Briefing** IST der Seed-Text (Soll/Absicht) der Auftrag; eine gesonderte Bestätigung entfällt.
+
+**Generativer Auftrag → Methode, nie Liste.** Verlangt der Mensch etwas, das aus echten Daten *entstehen* soll („sondiere, welche X Sinn machen"), ist der Liefergegenstand die **Methode**, die X erzeugt — nie eine handverlesene Stichprobe. Ersetzt die Sondierung sie still durch eine statische Liste, ist das eine Wohin-Amputation (Stopp-Auslöser 1).
+
 **Seed-Re-Prüfung:** Wird ein Seed gezogen, IST die Sondierung die Aktualitäts-Prüfung am Zeitpunkt der Abarbeitung (der Seed kann Wochen alt sein). Sie passiert genau hier, einmal, nicht doppelt.
 
 **Wo das Dokument liegt:**
@@ -115,6 +125,16 @@ Aus der Sondierung wird **eine** Spec, freigegeben vom Menschen — direkt ins R
 **Gesetzt statt verhandelt.** Stufe, Risikoklasse und Bündel-Kritikalität werden von Claude Code deterministisch gesetzt (feste Liste in `01_Spec-Format.md` + drei Aspekte) und im Entscheidungs-Digest unter Punkt 0 genannt — nicht im Dialog ausgehandelt. Der Mensch vetot bei Abweichungsbedarf. Nur-nach-oben gilt unverändert; echte Graubereiche (die zwei Testfragen aus 01 ohne klares Ergebnis) dürfen weiterhin als Frage vorgelegt werden. Die Beratung wird damit asynchron (Digest), nicht abgeschafft.
 
 **Kalter Evaluator (Pflicht-Pass für Sprung und Spur).** Bevor eine Spec dem Menschen zur Freigabe vorgelegt (Spur) oder autonom gestartet (Sprung) wird, läuft ein kalter Evaluator-Aufruf (eigene `claude -p`-Instanz, eigener Kontext, Modell Opus / effort high). Der schreibende Agent hat Einwände-Behandlungspflicht: jeder Evaluator-Einwand wird in der Spec-Sektion „Einwände & Behandlung" entweder eingearbeitet oder explizit widerlegt. Der Evaluator hat kein Veto (beratend) — aber eine Spec mit unbehandelten Einwänden ist nicht freigabefähig (Korridor-Wand). Selbst-Evaluation ersetzt den Pass nie (Generator ≠ Evaluator).
+
+### Auftrags-Treue ist das Mensch-Tor
+
+Die Spec trägt als **erste Sektion** den Auftrags-Treue-Block: den wörtlichen Auftrag + die Deckungstabelle (✅ voll / 🟡 teilweise / ❌ nicht / ↪️ ersetzt, pro Punkt; Format `01_Spec-Format.md`). **Das ist die Sektion, die der Mensch zur Freigabe liest — nicht die Spec-Prosa.** Sein Tor schrumpft auf: Deckungstabelle prüfen und jedes 🟡/❌/↪️ freigeben oder vetoen.
+
+- Durchweg ✅ → die Spec deckt den Auftrag; Freigabe ist Formsache.
+- Jedes 🟡/❌/↪️ ist eine **Wohin-Entscheidung** → ausdrückliche Mensch-Freigabe (Restscope bewusst akzeptiert) oder Veto. Ohne diese Freigabe läuft die Spec **nicht** autonom an.
+- Der **kalte Evaluator** bekommt den Auftrag mitgeliefert (er steht in Sektion 1 der Spec) und prüft als **erste Pflichtprüfung** die Deckung: jeder nicht-✅-Punkt ohne ausdrückliche Freigabe ist mindestens [STRUKTURELL]; ein still durch eine Liste ersetzter generativer Auftrag ist [BLOCKIEREND].
+
+So muss der Mensch nie die ganze Spec lesen, um sicher zu sein, dass sie sein Vorhaben trifft — der Maßstab reist mit und wird von zwei Seiten geprüft (Evaluator kalt, Mensch am Tor). Restrisiko bleibt: das Tor verhindert die *Amputation* vor dem Bau, garantiert aber keine fehlerfreie Bau-Umsetzung — dafür bleibt die AK-Verifikation in Akt 3 (jeder Auftragspunkt trägt ein AK).
 
 ### Eine Spec-Fassung, kein Ping-Pong
 

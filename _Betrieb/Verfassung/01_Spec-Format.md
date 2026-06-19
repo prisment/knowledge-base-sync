@@ -44,6 +44,8 @@ Zusätzlich zu den bestehenden Feldern:
 
 Beispiel: `PRIS-014`, `PLAT-003`. Schritte erhalten KEINE ID (sie leben nur in `Schritt-Log.md` + Commit).
 
+**Eine ID = genau eine Spec.** Zwei unzusammenhängende Vorhaben bekommen nie dieselbe ID. Sonst kollidieren ihre Zyklus-Artefakte auf dem Dateinamen — `<ID>_EVAL_<n>.md`, `<ID>_RECHECK.md`, Abschluss-Doku — und der Evaluator-Pass des einen überschreibt den des anderen. (Präzedenz PRIS-094: zwei Specs unter einer ID → die EVAL-Datei der Analytics-Spec verdrängte die der Fokus-First-Spec, deren kalter Pass damit faktisch nie lief.) Folgt aus „ein Behälter = genau ein Wohin" (`00_Iterationszyklus.md`). Vor jeder neuen Spec gilt der `next-spec-id`-Skill als Pflicht — nie raten.
+
 ## Akzeptanzkriterien skalieren mit Risikoklasse
 
 Kriterien sind prüfbare Zustände, keine Tätigkeiten. WIE geprüft wird, ist Claude Codes operative Sache.
@@ -144,6 +146,27 @@ Aus dem Backlog ist nicht jeder Seed gleich gut maschinell ziehbar. Die Halde tr
 - **Abgrenzung:** Die Halde definiert nur das „Was ist ziehbar". Die **Worker-/Loop-Mechanik** (wer zieht, wann, wie viele parallel, Lock-File etc.) ist **nicht Teil dieser Regel** und wird als eigene Spur gebaut.
 
 ## Pflicht-Sektionen in Spec, Sondierung und Abschluss-Doku
+
+### Auftrags-Treue (`## Auftrags-Treue`) — nur Spur
+
+**Pflicht- und ERSTE Sektion jeder Spur-Spec — noch vor dem Wirkungs-Block.** Sie hält den Maßstab fest, gegen den die Spec geprüft wird: was der Mensch wörtlich verlangt hat, und wie weit diese Spec es deckt. Sie ist das **einzige**, was der Mensch zur Freigabe zwingend lesen muss (`00_Iterationszyklus.md`, Akt 2 „Auftrags-Treue ist das Mensch-Tor").
+
+Zwei Teile:
+
+1. **`### Auftrag (wörtlich, vom TT.MM.)`** — der Auftrag des Menschen, **nummeriert, in seinen Worten**, nicht in die Lösung umgedeutet. Aufgenommen beim Briefing (Akt 1, „Auftrag festhalten"), vom Menschen in einer Zeile bestätigt. Bei **Seed-Auslöser ohne frisches Briefing** IST der Seed-Text (Soll/Absicht) der Auftrag.
+2. **`### Deckung`** — pro Auftragspunkt genau ein Urteil:
+   - **✅ voll** — die Spec liefert den Punkt vollständig.
+   - **🟡 teilweise** — + Halbsatz, *was fehlt*.
+   - **❌ nicht** — + Halbsatz, *warum*.
+   - **↪️ bewusst ersetzt durch …** — der Auftrag wird anders gelöst als verlangt.
+
+**Korridor-Wand:** Fehlt der Block bei einer Spur, ist die Spec nicht freigabefähig (Fall C) — wie der Wirkungs-Block.
+
+**Non-✅ = Wohin-Tor.** Jeder Punkt, der nicht ✅ ist (🟡/❌/↪️), ist eine **Wohin-Entscheidung** und braucht die ausdrückliche Freigabe des Menschen — er gibt sie (Restscope bewusst akzeptiert) oder vetot. Eine Spec, deren Deckung nicht durchweg ✅ oder ausdrücklich freigegeben ist, läuft **nicht** autonom in Akt 3 an.
+
+**Generativen Auftrag nie still durch eine Liste ersetzen.** Verlangt der Auftrag etwas, das aus echten Daten *entstehen* soll („sondiere, welche X Sinn machen"), ist der Liefergegenstand die **Methode, die X erzeugt** — nie eine handverlesene Stichprobe. Eine statische Liste an Stelle einer generativen Anforderung ist immer ↪️ (Wohin-Amputation), nie ✅. (Präzedenz: PRIS-094, wo „aus echten Daten sondieren" still zu 6 fest einprogrammierten Sätzen wurde.)
+
+**AK-Rückverfolgbarkeit:** Jeder ✅-/🟡-Auftragspunkt trägt **mindestens ein Akzeptanzkriterium**, das ihn prüft — so trifft die Akt-3-Verifikation den Auftrag, nicht nur die Spec. Ein Auftragspunkt ohne zugehöriges AK ist eine Deckungslücke.
 
 ### Wirkungs-Block (`## Wirkung`)
 
