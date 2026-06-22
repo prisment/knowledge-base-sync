@@ -63,6 +63,20 @@ PLAT-083 (beide Hände schreiben überall) gilt für die **Wissens-Ebene** (`mai
 
 Begründung: Die Wand, die die Overview-Rolle des Architekten schützt, ist „sitzt nicht am laufenden System, deployed nicht" — die bleibt physisch bestehen. Geöffnet wird nur die ungefährliche statische Lese-Capability, um die Sondierungsschleife bei code-nahen Strategiefragen zu sparen (Auslöser: PLAT-088).
 
+### Push-Eigentum nach Autorschaft auf der Wissens-Ebene (PLAT-094)
+
+PLAT-083 (oben) gibt beiden Händen vollen kb-Push. Das ist um eine Eigentums-Klausel zu schärfen, damit nebenläufige Hände sich beim Landen nicht ins Gehege kommen:
+
+**Jede schreibende Hand (Arbeitstier/Ubuntu, Desktop-Architekt/Windows, Mensch über Obsidian) pusht NUR ihre EIGENEN Commits.** Niemand landet die offenen (`ahead N`) Commits einer anderen Hand. Sieht eine Hand auf einem kb-Clone `ahead N`-Commits, die sie NICHT selbst authored hat, landet sie diese NIE per `format-patch`/Push — sie wartet und verifiziert, dass der **Inhalt auf origin** ankommt (die authorende Hand pusht ihr Eigenes; auto-pull reconciled; `ahead N` ist transient).
+
+**Klarstellung — die Regel heißt NICHT „CC pusht nie".** CC (und jede Hand) pusht ihr eigenes Geschriebenes sehr wohl selbst; der volle kb-Push beider Hände aus PLAT-083 (Z. 46/49) bleibt unangetastet. Die Regel betrifft AUSSCHLIESSLICH fremde, nicht selbst-authored `ahead-N`-Commits: Eigentum nach Autorschaft — jede Hand landet ihr Eigenes, niemand reißt fremde offene Commits an sich. Die Obsidian-Auto-Backup ist dabei nur **eine** schreibende Hand, nicht „Eigentümerin des Push-Pfads".
+
+**Misch-Stand.** Stehen eigene UND fremde Commits gleichzeitig `ahead`: die Regel trennt nach Autorschaft, nicht pauschal — eigene werden gepusht, fremde nicht angefasst. Im Zweifel pusht die Hand nur explizit selbst-authored Commits.
+
+**Wenn der fremde Inhalt nicht erscheint (Abbruch-/Eskalations-Kante).** Kommt der fremde Inhalt trotz `git pull` und angemessener Wartezeit nicht auf origin an und scheint genuin gestrandet (authorende Hand offline / Mensch pusht tagelang nicht), wird er **an den Menschen gemeldet** (Chat / `status: review`) — **niemals** selbst gelandet. Das nimmt die „gestrandet oder transient?"-Diskretion heraus, an der PLAT-092 hing.
+
+Auslöser: PLAT-092 (CC hielt zwei mensch-authored Doktrin-Commits für gestrandet und setzte zur manuellen Landung an; die Auto-Backup hatte sie nebenläufig schon gelandet → Beinahe-Duplikat). Operative Spiegelung für den Cockpit-Betrieb: `.claude/skills/cockpit/SKILL.md`.
+
 ## Logbuch ist zentral (revidiert E14-Teilaspekt, siehe E24)
 
 Das Logbuch existiert **genau einmal, zentral** in `_Betrieb/Logbuch/`. Es gibt KEINE bereichseigenen Logbücher. Jeder Logbuch-Eintrag — auch bereichsspezifische Betriebsentscheidungen (z. B. E19 Postgres, E20 Docker) — wird zentral geführt. Begründung im Logbuch-Eintrag E24 (gelebte Praxis schlägt die ursprünglich gedachte Verteilung; ein Ort, ein Stand, triviale Quervernetzung; bei Team-Wachstum später splittbar).
