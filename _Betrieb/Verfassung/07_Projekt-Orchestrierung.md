@@ -183,6 +183,18 @@ nächsten Dispatch.
 > (single-threaded) → race-frei. Urteil beim Worker, Mechanik (Append/Dedupe/Index)
 > deterministisch.
 
+**Erzwungene Integrations-Invariante (PLAT-103).** „Single-threaded `main`" ist im
+autonomen Mehr-Loop-Betrieb keine bloße Annahme mehr, sondern eine maschinell
+erzwungene Invariante: jede integrations-kritische Sektion — FAKTEN-Append,
+Übersicht-Regen, Hot-File-Edit, Landen, Nightly-Residuum-Commit — nimmt einen
+globalen `integration`-Singleton-Lease (`claim.py acquire --scope-kind integration`,
+Leitstand-Claim-Ledger). Nie zwei integration-Halter gleichzeitig live; der Lease
+umschließt nur die kurze kritische Sektion (nie den Build), wartet bounded und heilt
+nach `ttl` einen abgestürzten Halter acquire-zeitig selbst. So kann der parallele
+Mehr-Loop-Betrieb die single-threaded-`main`-Garantie nicht mehr versehentlich
+verletzen. Erzwingend nur bei scharfem Enforcement-Schalter; Default-aus = heutiges
+Verhalten.
+
 ### Leseseite — Dispatch nennt das Register, CLAUDE.md erzwingt das Lesen
 
 Der Übergabe-Prompt nennt (a) den vollständigen Pfad zu `<projekt_id>_FAKTEN.md` und

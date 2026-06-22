@@ -31,7 +31,7 @@ Nicht jedes Vorhaben braucht denselben Prozess-Umfang. Drei Stufen, getrennt nac
 
 | Stufe | Wofür | Akt 1 Sondierung | Akt 2 Festlegung | Dokumente |
 |---|---|---|---|---|
-| **Spur** | Gestaltet Architektur, berührt Kundendaten/Auth/Netz-Topologie, oder Risikoklasse `kritisch`/`sicherheitskritisch-akut`. Wirkung über den Einzelfall hinaus. | Voll, eigenes Sondierungs-Dokument | Claude Code schreibt die Spec (Wirkungs-Block); kalter Evaluator prüft; **Mensch gibt frei** (Terminal genügt). Desktop-Architekt auf Abruf bei Wohin-Gabelung / visueller Aufbereitung | Sondierung + volle Spec + volle Abschluss-Doku |
+| **Spur** | Gestaltet Architektur, berührt Kundendaten/Auth/Netz-Topologie, oder Risikoklasse `kritisch`/`sicherheitskritisch-akut`. Wirkung über den Einzelfall hinaus. | Voll, eigenes Sondierungs-Dokument | Claude Code schreibt die Spec (Wirkungs-Block); kalter Evaluator prüft; Desktop-Architekt legt die **visuelle Zusammenhangs-Vorlage** vor (Pflicht, live — siehe „Verständnis-Tor" in Akt 2) und ist auf Abruf bei Wohin-Gabelung; **Mensch gibt frei** | Sondierung + volle Spec + volle Abschluss-Doku |
 | **Sprung** | Konkrete, abgegrenzte Aufgabe, überschaubares Risiko. Ein Bugfix, eine einzelne Feature-Erweiterung. | Sondierung **=** kombinierte Spec (Claude Code schreibt sie selbst) | **Kein Architekt by default** — nur bei gemeldeter Wohin-Gabelung | kombinierte Spec + kurze Abschluss-Notiz |
 | **Schritt** | Trivial, reversibel, isoliert, in einem Rutsch. Typo, Doku-Update, ein Config-Wert, toter Ordner. | entfällt | entfällt | Eine Zeile in `<Bereich>/Schritt-Log.md` (automatisch) |
 
@@ -114,11 +114,11 @@ Die **read-lastige Erhebung** in Akt 1 läuft über einen read-only Subagenten (
 
 ## Akt 2 — Festlegung (im Chat, stufenabhängig)
 
-Aus der Sondierung wird **eine** Spec, freigegeben vom Menschen — direkt ins Repo, kein Übergabe-Tanz. Im Regelfall schreibt **Claude Code** die Spec am System und legt sie mit Wirkungs-Block + Digest vor (Terminal genügt); der kalte Evaluator prüft sie vorher. Zieht der Mensch den **Desktop-Architekten** hinzu — erste Wahl bei Wohin-Gabelungen und für visuelle Aufbereitung —, liest dieser die Sondierung direkt im Repo und erklärt sie nach dem Beratungs-Rhythmus (`02_Rollen-Protokoll.md`: Wirkung → wo es hakt → Optionen → Stopp → Prompt). So oder so entscheidet der Mensch auf Basis des aufbereiteten Wirkungs-Blocks, nicht indem er die Rohdatei selbst durcharbeitet.
+Aus der Sondierung wird **eine** Spec, freigegeben vom Menschen — direkt ins Repo, kein Übergabe-Tanz. Im Regelfall schreibt **Claude Code** die Spec am System und legt sie mit Wirkungs-Block + Digest vor; der kalte Evaluator prüft sie vorher. Bei einer **Spur** legt der **Desktop-Architekt** zur Freigabe zwingend die **visuelle Zusammenhangs-Vorlage** vor (Verständnis-Tor, unten); für das *Mitformen* der Spec ist er auf Abruf (erste Wahl bei Wohin-Gabelungen). Er liest die Sondierung direkt im Repo und erklärt sie nach dem Beratungs-Rhythmus (`02_Rollen-Protokoll.md`: Wirkung → wo es hakt → Optionen → Stopp → Prompt). So oder so entscheidet der Mensch auf Basis des aufbereiteten Wirkungs-Blocks, nicht indem er die Rohdatei selbst durcharbeitet.
 
 ### Wer formt die Spec
 
-- **Spur:** **Claude Code schreibt die Spec** am System (auf der Sondierung aufsitzend, mit Wirkungs-Block) nach `<Geltungsbereich>/Arbeitsgedaechtnis/<ID>_SPEC.md`; der kalte Evaluator prüft die Spec-Qualität (Pflicht-Pass). **Der Mensch gibt frei** auf Basis des Wirkungs-Blocks — Terminal genügt. Der **Desktop-Architekt ist auf Abruf, kein Pflicht-Bahnhof** (`02_Rollen-Protokoll.md`): Der Mensch zieht ihn bei einer echten Wohin-Gabelung oder für visuelle Aufbereitung hinzu — dann formt der Architekt die Spec mit. Der Gesamtüberblick, den eine Architektur-Entscheidung braucht, ist durch den Wirkungs-Block, den Evaluator-Pass und die jederzeitige Chat-Option gesichert, nicht durch einen Pflicht-Kanal.
+- **Spur:** **Claude Code schreibt die Spec** am System (auf der Sondierung aufsitzend, mit Wirkungs-Block) nach `<Geltungsbereich>/Arbeitsgedaechtnis/<ID>_SPEC.md`; der kalte Evaluator prüft die Spec-Qualität (Pflicht-Pass). **Der Mensch gibt frei** auf Basis des Wirkungs-Blocks **und der visuellen Zusammenhangs-Vorlage** (Verständnis-Tor, unten). Der **Desktop-Architekt ist auf Abruf** für das *Mitformen* der Spec — bei einer echten Wohin-Gabelung zieht der Mensch ihn hinzu, dann formt der Architekt die Spec mit. **Pflicht** ist dagegen die visuelle Zusammenhangs-Vorlage zur Freigabe (Verständnis-Tor). Der Gesamtüberblick, den eine Architektur-Entscheidung braucht, ist durch den Wirkungs-Block, das Verständnis-Tor, den Evaluator-Pass und die jederzeitige Chat-Option gesichert.
 - **Sprung:** **Claude Code schreibt die Spec selbst** — sie ist mit der Sondierung identisch (kombinierte Spec). **Kein Desktop-Architekt by default**, aber Claude Code **berät den Menschen direkt nach demselben Beratungs-Rhythmus** (`02_Rollen-Protokoll.md`: Was ist → wo es hakt → Vorschläge mit gekennzeichneter Empfehlung → Stopp → erst dann ausführen) — die Beratungspflicht hängt an der Rolle des Beratenden, nicht am Kanal. Nur wenn Claude Code auf eine echte Gabelung / Spec-Lücke / einen Konflikt stößt, der ein Wert-Urteil braucht, eskaliert er an den Desktop-Architekten (gemeldete Wohin-Gabelung). Das hält „kleine Themen" frei von Überberatung, ohne die Beratung selbst wegzulassen.
 - **Schritt:** kein Akt 2. Claude Code führt direkt aus.
 
@@ -135,6 +135,17 @@ Die Spec trägt als **erste Sektion** den Auftrags-Treue-Block: den wörtlichen 
 - Der **kalte Evaluator** bekommt den Auftrag mitgeliefert (er steht in Sektion 1 der Spec) und prüft als **erste Pflichtprüfung** die Deckung: jeder nicht-✅-Punkt ohne ausdrückliche Freigabe ist mindestens [STRUKTURELL]; ein still durch eine Liste ersetzter generativer Auftrag ist [BLOCKIEREND].
 
 So muss der Mensch nie die ganze Spec lesen, um sicher zu sein, dass sie sein Vorhaben trifft — der Maßstab reist mit und wird von zwei Seiten geprüft (Evaluator kalt, Mensch am Tor). Restrisiko bleibt: das Tor verhindert die *Amputation* vor dem Bau, garantiert aber keine fehlerfreie Bau-Umsetzung — dafür bleibt die AK-Verifikation in Akt 3 (jeder Auftragspunkt trägt ein AK).
+
+### Verständnis-Tor: visuelle Zusammenhangs-Vorlage (Pflicht bei Spur)
+
+Bevor der Mensch eine **Spur**-Spec freigibt, legt der **Desktop-Architekt** die Zusammenhänge **live und in Menschensprache** vor — kein Ersatz für den Wirkungs-Block, sondern sein Verständnis-Unterbau:
+
+- **Ein Bild** — Diagramm/Skizze, die zeigt, *wie die Teile zusammenhängen* (was hängt an was, was ändert sich wo). **Live gerendert, nicht versioniert** — es muss nicht ins Repo, es muss verstanden werden.
+- **Klartext-Erklärung** — in einfachen Worten, was die Spec real bewirkt und warum die Teile so zusammenspielen. Fachbegriff nur mit Halbsatz-Erklärung.
+
+Erst **nach** dieser Vorlage entscheidet der Mensch. Der Freigabe-**Akt** selbst (Ja/Veto) bleibt eine Mensch-Zeile; die **Vorlage davor ist Pflicht**. Damit ist die visuelle Aufbereitung von „auf Abruf" auf **Pflicht-Schritt der Spur-Freigabe** gehoben (Auslöser: der Mensch verstand technisch-komplexe Specs am Freigabe-Tor wiederholt nicht). **Konsequenz, bewusst akzeptiert:** Eine Spur kann nicht mehr rein im Terminal durchgewunken werden — die Vorlage läuft über den Architekten-Chat.
+
+*Gilt nur für **Spur**. Sprung und Schritt bleiben unberührt: dort schreibt Claude Code die Spec selbst und berät nach dem Beratungs-Rhythmus, ohne erzwungene visuelle Vorlage.*
 
 ### Eine Spec-Fassung, kein Ping-Pong
 
@@ -191,6 +202,7 @@ Grundregel: Stopp nur, wenn eine Entscheidung **strategisch UND schwer reversibe
 2. **Schwer umkehrbar** — DB-Schema, Daten löschen, Außenwirkung, Geld.
 3. **Scope-Sprengung** — Sprung → Spur; Stopp + Eskalation.
 4. **Mensch muss physisch handeln** — sudo jenseits der NOPASSWD-Liste, UI-Klick, manueller/visueller Test, Vertragsklick, Snapshot-Anstoß. KEIN Wohin-Stopp, sondern ein Kann-nicht-Stopp; wird vorgezogen (siehe unten). **Mensch-Handlungen werden als fertiges Skript übergeben, nie als Einzelbefehl-Liste.**
+5. **Scope-Kollision mit laufendem Loop** (PLAT-103) — maschinell erkannt, nicht eigengeschätzt. Will ein Dispatch/Loop einen Scope anfahren (Seed/Spec, datei-genaue Globs oder Hot-File), der von einem lebenden Claim eines anderen Loops gehalten wird, scheitert der `claim.py acquire` mit exit≠0. Das ist ein Kann-nicht-Stopp wie 4 (zwei Hände an derselben Datei = stiller `main`-Merge-Schaden), kein Wohin-Stopp: disjunkte Arbeit läuft ungebremst weiter. Mechanik: Leitstand-Claim-Ledger (`_Betrieb/Skripte/cockpit/claim.py`), erzwingend nur bei scharfem Enforcement-Schalter. Im autonomen Mehr-Loop-Betrieb ersetzt diese Kollisions-Sperre die alte E34-Selbstdisziplin (siehe `01_Spec-Format.md`).
 
 **Risikoklasse ist kein Stopp-Auslöser.** `kritisch` löst keinen Stopp aus Prinzip aus — es verpflichtet zu Vorsichtsmaßnahmen während der Ausführung (Backup vorher, tiefe Verifikation, dokumentierter Restore-Pfad) und läuft dann autonom durch. Synchron gestoppt wird nur bei Auslöser 1–4 oder Fall C. Ausnahme: `sicherheitskritisch-akut` behält einen unbedingten Vor-Stopp.
 
