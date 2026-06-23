@@ -19,6 +19,22 @@ ohne Fundstelle. Der Kanon ist *forward-erzwingend*: `maschinell`-markierte Eint
 Vorwärts-Wächter scharf gestellt — ein Check pro Folge-Fix, der den Rückfall nach dem Fix
 verhindert.
 
+## Woher neue Einträge kommen (Rückwärts- UND Vorwärts-Ernte)
+
+Das Register wächst aus zwei Quellen — „nur nach oben, über Phase 9":
+
+- **Rückwärts-Ernte:** ein kalter Audit/eine Sondierung erntet bestehende belegte Mängel als
+  Kandidaten (so entstanden K-01…K-08 aus PLAT-109). Pflicht-Ausgabe-Sektion `## Kanon-Saat`
+  im Sondierungs-Template.
+- **Vorwärts-Ernte (laufende Zyklen):** Deckt **irgendein** Zyklus künftig einen fehlenden
+  oder zu schwachen Standard auf — per Audit/Sondierung, per belegtem Test-Abnahme-Defekt
+  (Verfassung 08) oder beim Akt-3-Abschluss einer normalen Spec — ist die **Triage in dieses
+  Register Pflicht**: aufgenommen als `K-NN` **oder** mit Grund verworfen, **kein stilles
+  Übergehen**. Maßstab „Standard-würdig": der Befund ist *wiederholbar*.
+
+Die verbindliche Regel dazu lebt in **Verfassung 00**, Abschnitt „Vorwärts-Ernte in den
+Standards-Kanon" (SSOT — hier nur der Verweis). *(Schleife verankert mit PLAT-112.)*
+
 ## Eintrags-Format (verbindlich)
 
 Jeder Standard trägt **genau diese fünf Felder** — keine Format-Erfindung beim Anhängen:

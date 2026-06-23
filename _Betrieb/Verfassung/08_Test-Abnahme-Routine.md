@@ -59,6 +59,13 @@ Architekt findet → **präziser Defekt-Bericht** (Trace, Konsole, Network, exak
 Worker fixt **+ legt einen Regressions-Check an** → `:test` neu → Architekt re-testet nur die
 gefallenen AKs + Smoke. Minuten/Runde. **Jeder gefundene Bug wird ein dauerhaftes AK.**
 
+**Deckt ein Defekt einen *allgemeinen* Standard-Mangel auf** (nicht nur einen lokalen Bug,
+sondern etwas Wiederholbares — es könnte in einem anderen Dienst/Zyklus erneut auftreten), wird
+er zusätzlich in den **Standards-Kanon** vorwärts-geerntet: Pflicht-Triage `aufgenommen K-NN /
+verworfen-mit-Grund` in [`03a_Standards-Kanon.md`](03a_Standards-Kanon.md). Die Regel lebt in
+Verfassung 00, Abschnitt „Vorwärts-Ernte in den Standards-Kanon" (hier nur der Pointer — kein
+Duplikat).
+
 ## Kadenz
 
 - **Pro Feature** vor Promote — Pflicht.
