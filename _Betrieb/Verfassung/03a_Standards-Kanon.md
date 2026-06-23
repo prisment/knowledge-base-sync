@@ -71,6 +71,7 @@ Jeder Standard trägt **genau diese fünf Felder** — keine Format-Erfindung be
 | K-06 | Beobachtbarkeit | Klasse-A/B-Dienst hat Healthcheck + JSON-Logs; ein Fehler-Aggregat existiert | PLAT-109 §(f), ~50% Healthcheck, keine Aggregation | Tor + Urteil (Ziel Spec 6) |
 | K-07 | Beobachtbarkeit | Kein Service-Drift: compose == running == registry | PLAT-109 §(g), 22/26/29-Spreizung | maschinell (Ziel Spec 6) |
 | K-08 | API | Mutierende Endpunkte idempotent oder explizit als nicht-idempotent markiert | PLAT-109 §(c), Idempotenz punktuell (`mark_onboarded`) | Urteil/Review |
+| K-09 | Auslieferung | Worker-gebaute Windows-Ziel-`.ps1` werden **UTF-8-mit-BOM** kodiert und setzen **`$ErrorActionPreference='Continue'`** (PS 5.1 liest BOM-loses UTF-8 als ANSI → Parse-Fehler; `EAP='Stop'` macht git-stderr + `Write-Error` terminierend → `Write-Error→exit N`-Muster kollabiert auf Exit 1) | PLAT-111 Fix-Loop, 2 Windows-only-Defekte in der Architekt-Windows-Abnahme; nur durch Windows-Review-Tor fangbar (Worker hat kein pwsh) | Tor (Architekt-Windows-Review-Tor; git-land.ps1 regression-guarded via `_Betrieb/Skripte/architekt/tests/test_git_land_encoding.sh`) |
 
 > **K-04** ist der einzige Eintrag mit einem heute real laufenden Check — im **Warn-Modus**,
 > nicht scharf (PLAT-110 B4, `check_container_haertung.py`, `kanon_ref: K-04`). Der genaue
