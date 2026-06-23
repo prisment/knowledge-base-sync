@@ -22,6 +22,10 @@ Jede Information existiert genau einmal. Ansichten (SVG-Übersichten, Zusammenfa
 
 Konkrete Code-Vorgaben (Test-Strategie, CI/CD, Data-Integrity, Tenant-Isolation) werden aus den realen Zyklen heraus eingearbeitet — beginnend mit dem Security-Refactor (RLS + Tenant-Isolation) und der Data-Integrity-Pipeline. Bis dahin gilt diese Datei als Platzhalter, der nach jedem relevanten Zyklus über Phase 9 wächst (nie nach unten).
 
+### → Lebendes Register: [`03a_Standards-Kanon.md`](03a_Standards-Kanon.md) (PLAT-110)
+
+Der konkrete Träger dieses Platzhalters ist die Schwester-Datei **[`03a_Standards-Kanon.md`](03a_Standards-Kanon.md)** — ein lebendes Register belegter Standards (Format je Eintrag: `ID · Schicht · Regel · Herkunft · Enforcement-Modus`). Sie wächst „über Phase 9, nur nach oben" durch Rückwärts-Ernte aus den Zyklen; `maschinell`-Einträge werden über den CI-Check-Runner (`prisment-platform/scripts/canon/run_canon_checks.py`) als Vorwärts-Wächter scharf gestellt. Die selten geänderte Regel-Kerndatei (diese hier) bleibt dabei stabil. Etabliert mit PLAT-110 (Fundament-Härtung 1/6).
+
 ## Destruktive Operationen: kein Error-Suppress (PLAT-085, 2026-06-19)
 
 Destruktive, schwer rückrollbare Operationen (Repo-/Branch-Löschung, `DELETE`
