@@ -1,9 +1,9 @@
 ---
 typ: verfassung
 titel: "Test-Abnahme-Routine — das Tor vor dem Kunden"
-stand: 2026-06-21
+stand: 2026-06-24
 aenderung: "nur nach oben, nur durch bewusste Freigabe"
-quelle: "[[PLAT-090]]"
+quelle: "[[PLAT-090]], [[PRIS-114]]"
 ---
 
 # 08 — Test-Abnahme-Routine
@@ -46,7 +46,13 @@ FB-Cross-Post-Hälfte (prüfte nur Vorhandenes) + ein Zweit-Thema, das erst nach
 
 ## Das Prüf-Instrument passt sich dem Feature-Typ an
 
-- **UI, Chrome-sichtbar** → Chrome-Lauf (DOM, Screenshot, Network, Konsole, Session).
+- **PWA-E2E (Klicks/Flows/DOM/Network)** → seit PRIS-114, weil deterministisch herstellbar,
+  **Playwright im autonomen Ubuntu-Lauf** (headless, dev-CF-Bypass), nicht mehr Architekt-Chrome.
+  Rollen: der **Worker** fährt die Flows und produziert die Artefakte (Screenshots/Traces/Asserts);
+  der **Architekt** prüft **Soll-Treue** (Spec+AKs, Review vor dem Test) und **sichtet die Beweise**;
+  **Chrome-Live / Real-Gerät** ist Mensch-Tor (echtes Rendering, finale Abnahme).
+  **Anti-false-green:** „Playwright grün" ≠ „visuell abgenommen" — der grüne Lauf deckt Verhalten/DOM/
+  Flows, nie das ästhetische Urteil, und ersetzt das visuelle Mensch-Tor nicht.
 - **Nicht-UI** (Backend / Pipeline / Agent / n8n / Config) → Backend-Belege.
   *Durchgearbeitetes Beispiel — ein n8n-Workflow-Feature:* das AK ist nicht „Workflow aktiv",
   sondern **n8n-Execution-Status `success`** + die **erwartete Ziel-DB-Row existiert**
