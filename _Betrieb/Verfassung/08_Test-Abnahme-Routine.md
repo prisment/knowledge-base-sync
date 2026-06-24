@@ -28,6 +28,22 @@ Hintergrund-Wahrheits-Check.** UI-grün allein zählt nie — dort verstecken si
 Fehler (Pilot [[PRIS-097]]: „Post nicht gefunden" war ein maskierter HTTP-500; ein Post ging
 live, aber ohne Hashtags — beides UI-grün).
 
+## Drittes Prinzip — Vollständigkeit & Frische (PRIS-114)
+
+Zwei Belege je AK genügen **nicht**, wenn die *erwartete Menge* nicht gegengezählt ist und die
+UI nicht *nach Reload* gegen das Backend abgeglichen wurde. Abwesenheits- und Timing-Fehler
+verstecken sich genau dort. Herkunft: Agent-Lauf 2026-06-24 übersah die nie generierte
+FB-Cross-Post-Hälfte (prüfte nur Vorhandenes) + ein Zweit-Thema, das erst nach Reload erschien.
+
+- **Vollständigkeit:** Grün erfordert einen **Existenz-/Count-Assert gegen ein Soll-Inventar**,
+  nicht eine Stichprobe. „Ein Exemplar gesehen" ≠ „alle da". (Werkzeug: `XP-ASSERT`,
+  `scripts/test/xp_assert.sh`.)
+- **Frische:** Bei Listen-/Sichtbarkeits-Aussagen ist die UI **nach Reload** gegen das Backend
+  abzugleichen (`RR-STEP`). „X fehlt" gilt nie aus der UI allein.
+- **Soll-getrieben:** Eingang jeder Agent-Abnahme ist das Feature-Soll-Inventar
+  (`Prisment/Systemzustand/Test/Agent-Test_A-Feature-Inventar.md`); ein Flow ohne Soll-Eintrag
+  ist „nicht abgedeckt", nie grün. Strategie-Satz: `Agent-Test_A..D` ebd.
+
 ## Das Prüf-Instrument passt sich dem Feature-Typ an
 
 - **UI, Chrome-sichtbar** → Chrome-Lauf (DOM, Screenshot, Network, Konsole, Session).
