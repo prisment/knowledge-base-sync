@@ -183,17 +183,17 @@ nächsten Dispatch.
 > (single-threaded) → race-frei. Urteil beim Worker, Mechanik (Append/Dedupe/Index)
 > deterministisch.
 
-**Erzwungene Integrations-Invariante (PLAT-103).** „Single-threaded `main`" ist im
-autonomen Mehr-Loop-Betrieb keine bloße Annahme mehr, sondern eine maschinell
-erzwungene Invariante: jede integrations-kritische Sektion — FAKTEN-Append,
-Übersicht-Regen, Hot-File-Edit, Landen, Nightly-Residuum-Commit — nimmt einen
-globalen `integration`-Singleton-Lease (`claim.py acquire --scope-kind integration`,
-Leitstand-Claim-Ledger). Nie zwei integration-Halter gleichzeitig live; der Lease
-umschließt nur die kurze kritische Sektion (nie den Build), wartet bounded und heilt
-nach `ttl` einen abgestürzten Halter acquire-zeitig selbst. So kann der parallele
-Mehr-Loop-Betrieb die single-threaded-`main`-Garantie nicht mehr versehentlich
-verletzen. Erzwingend nur bei scharfem Enforcement-Schalter; Default-aus = heutiges
-Verhalten.
+**Single-threaded-`main`-Garantie (Stand PLAT-132).** „Single-threaded `main`" ruht auf
+zwei strukturellen Wänden, nicht auf einem Claim-Lease: (a) der Orchestrator-Loop selbst
+ist single-threaded (er dispatcht sequenziell, ein integrations-kritischer Schritt nach
+dem anderen); (b) parallel arbeitende Hände (interaktive Subagenten, Worker) sitzen in
+**isolierten Worktrees** und landen auf `main` über git, das einen non-fast-forward-Push
+**ablehnt** (Rebase erzwungen) — Force-Push ist geblockt (PLAT-085). So kann keine zwei
+Hände `main` versehentlich überschreiben; Same-File-Kollisionen werden als Merge-Konflikt
+sichtbar. SSOT: `Plattform/Systemzustand/parallel-agent-schutz.md`. *(Die frühere
+maschinell-erzwungene Integrations-Invariante via `claim.py acquire --scope-kind
+integration` (PLAT-103) war Default-aus und nie in `orchestrate.sh` verdrahtet; sie ist
+mit dem Cockpit/Windows-Transport stillgelegt — PLAT-132.)*
 
 ### Leseseite — Dispatch nennt das Register, CLAUDE.md erzwingt das Lesen
 
