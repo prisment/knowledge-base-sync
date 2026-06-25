@@ -48,9 +48,15 @@ FB-Cross-Post-Hälfte (prüfte nur Vorhandenes) + ein Zweit-Thema, das erst nach
 
 - **PWA-E2E (Klicks/Flows/DOM/Network)** → seit PRIS-114, weil deterministisch herstellbar,
   **Playwright im autonomen Ubuntu-Lauf** (headless, dev-CF-Bypass), nicht mehr Architekt-Chrome.
-  Rollen: der **Worker** fährt die Flows und produziert die Artefakte (Screenshots/Traces/Asserts);
+  Rollen: der **Worker** (Subagent am Host, PLAT-130 — Chrome-in-Windows ist entfallen) fährt die Flows
+  und produziert die Artefakte (Screenshots/Traces/Asserts);
   der **Architekt** prüft **Soll-Treue** (Spec+AKs, Review vor dem Test) und **sichtet die Beweise**;
-  **Chrome-Live / Real-Gerät** ist Mensch-Tor (echtes Rendering, finale Abnahme).
+  **Real-Gerät / Mensch-Augen am Handy** ist Mensch-Tor (echtes Rendering, finale Abnahme).
+  Die Selbsttest-Rolle ist **verdrahtet** (PLAT-131/B6): der Worker fährt `pw_smoke.mjs`
+  (`scripts/test/`, host-direkt) und das **hartes Worker-Tor** gilt — die deterministischen Checks
+  (Baseline-Delta = 0 Console-Errors, 0 App-4xx/5xx, DOM-Asserts) müssen grün sein vor `status: review`.
+  Was er nicht deterministisch belegen kann, bleibt expliziter **Mensch-Augen-AK** (`status: review`) —
+  nie still als „grün" geführt. Bedienung: Skill `live-abnahme` + `scripts/test/PW-SMOKE.md`.
   **Anti-false-green:** „Playwright grün" ≠ „visuell abgenommen" — der grüne Lauf deckt Verhalten/DOM/
   Flows, nie das ästhetische Urteil, und ersetzt das visuelle Mensch-Tor nicht.
 - **Nicht-UI** (Backend / Pipeline / Agent / n8n / Config) → Backend-Belege.
