@@ -57,7 +57,7 @@ Die Trennung läuft jetzt über den **Ort**:
 
 PLAT-083 (beide Hände schreiben überall) gilt für die **Wissens-Ebene** (`main`/knowledge-base). Für das **Code-Repo `prisment-platform`** gilt ein bewusster Carve-out — die Rollen-Trennung bleibt, wo es zählt:
 
-- Der **Architekt** liest Code **nur über read-only Subagenten** (`Explore`), nie in den Haupt-Kontext (Hand/Kopf, Verfassung 00 Akt 1 „Fakten-Erhebung via Subagent"). Da er am selben Host sitzt, ist das eine **Disziplin-Regel**, keine physische Capability-Wand.
+- Der **Architekt** liest Code **nur über read-only Subagenten** (`erhebung` für Orientierung/Sweeps; `sondierung` für die urteils-tragende Erhebung), nie in den Haupt-Kontext (Hand/Kopf, Verfassung 00 Akt 1 „Fakten-Erhebung via Subagent"). Da er am selben Host sitzt, ist das eine **Disziplin-Regel**, keine physische Capability-Wand.
 - Architekt-Code-Reads sind **statische Orientierung** (wie gebaut / wo liegt X / passt ein Ansatz), **nie „bewiesen am echten System"** — dieses Label bleibt dem Arbeitstier, das als Einziges am laufenden System operiert. Der Subagent zieht bei Bedarf `git pull` vorweg (gegen Drift).
 - **Code schreiben/testen/deployen** und **Live-System-Sondierung** bleiben **Arbeitstier** — durch Rollen-Disziplin gesichert.
 

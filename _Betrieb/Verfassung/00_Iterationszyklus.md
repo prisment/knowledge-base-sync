@@ -102,7 +102,7 @@ Bei **Seed-Auslöser ohne frisches Briefing** IST der Seed-Text (Soll/Absicht) d
 
 ### Fakten-Erhebung via Subagent (Kontext-Schutz)
 
-Die **read-lastige Erhebung** in Akt 1 läuft über einen read-only Subagenten (`Explore`), **nicht** im Hauptkontext. Das gilt für: Ist-Fakten am echten System (Datei-Reads, grep, Container-/DB-/Service-Stand), Logbuch-/Backlog-/Doku-Recherche, Code-Exploration im Worktree. Dasselbe Muster greift für read-lastige **Verifikations-Sweeps in Akt 3** (Konsistenz über viele Dateien/Services) — der Sweep wird delegiert, die Entscheidung daraus bleibt im Ausführungs-Thread.
+Die **read-lastige Erhebung** in Akt 1 läuft über einen read-only Subagenten (`erhebung` für breite Orientierung/Sweeps auf Sonnet-Boden; `sondierung` für die urteils-tragende Akt-1-Erhebung, die direkt die Spec-Synthese speist, auf Opus), **nicht** im Hauptkontext. Das gilt für: Ist-Fakten am echten System (Datei-Reads, grep, Container-/DB-/Service-Stand), Logbuch-/Backlog-/Doku-Recherche, Code-Exploration im Worktree. Dasselbe Muster greift für read-lastige **Verifikations-Sweeps in Akt 3** (Konsistenz über viele Dateien/Services) — der Sweep wird delegiert, die Entscheidung daraus bleibt im Ausführungs-Thread. Subagenten laufen per Default **im Vordergrund** (Stabilität vor Parallelität); `run_in_background` ist bewusst **nicht** der Default (Korbinian-Ruling 2026-06-25: Poller-Instabilität + hängende Hintergrund-Agents lösen keine Completion-Notification aus).
 
 **Grund:** Der Hauptkontext bleibt frei für das Urteil und wird nicht mitten in der Sondierung weg-compactet — der heutige eigentliche Qualitätsverlust. Die Trennung ist Hand/Kopf: der Subagent erhebt (Hand), der Hauptthread urteilt (Kopf).
 
@@ -158,6 +158,8 @@ Die Spec sitzt auf der bereits erhobenen Sondierung. Es gibt **keine** nachgelag
 ## Akt 3 — Ausführung & Verankerung (Claude Code, am echten System)
 
 Nach Spec-Freigabe arbeitet Claude Code **autonom im Korridor**, dessen Wände die Freigabe gezogen hat. Verlässt er den Korridor, stoppt er.
+
+**Bau = Worker (Rollen-Grenze an der Akt-2→Akt-3-Schwelle).** Akt 2 schreibt der Architekt selbst (Spec, auf `main`). Mit der Spec-Freigabe **kippt die Rolle**: substantiellen Akt-3-Bau (Code schreiben, Features implementieren, mehrteilige Umbauten) delegiert der Architekt an einen **Worker-Subagenten** (`worker`, prove-then-merge im Worktree) — er ist Architekt, nicht Arbeitstier. **Carve-out:** triviale/reversible/isolierte **Stufe-Schritt**-Arbeit, Bugfixes, Doku-Updates und Config-Edits baut er direkt (kein Worker-Overhead für Kleinkram). Der Auslöser dieser Grenze: das „ich baue"-Momentum aus der Spec-Phase darf nicht über die Schwelle mitgenommen werden (PLAT-138).
 
 ### Leitprinzip — Wohin / Wie (das Herz der Autonomie)
 
