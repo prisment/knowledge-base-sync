@@ -131,22 +131,47 @@ er findet die blinden Flecken, die die AKs grün und das Feature trotzdem kaputt
 - Regressions-Suite (AK-Katalog) wächst mit jedem Bug. Zeitgesteuerter Dauer-Smoke erst bei
   belegtem Drift.
 
-## Maschinelles Tor (nicht disziplinabhängig)
+## Vor-Promote-Stop-Tor (PLAT-144, in-session Erzwingung)
 
-Das Tor wird **erzwungen**, nicht der Disziplin überlassen: ein **Promote-Hook** verweigert
-`:latest`-Promote eines `:test`-Images, solange das Run-Log keinen grünen Lauf mit **genau
-dem `image.revision`-Commit-SHA** des Builds trägt. Umgehung nur **laut + auditierbar**
-(Pflicht-Begründung + Spur). So lässt kein alter Grün-Eintrag ein ungetestetes Feature durch.
+**Schichten-Modell (Defense-in-depth):**
 
-**Prüfer-Tor (parallel, PLAT-142).** Der Hybrid-Tor-Auslöser ist **maschinell ablesbar**, nicht
-Ermessens-Prosa: Pflicht, wenn die Feature-/Spec-Frontmatter `risikoklasse: kritisch` **oder**
-das Flag `kundensichtbar: true` trägt — der Run-Log-Eintrag stempelt diesen Auslöser mit. Das
-Run-Log-Schema bekommt dafür ein Feld **`pruefer_pass`** (`gruen` / `—` / `skip:<grund>`). Der
-Promote-Hook (`promote_image.sh`) prüft parallel zum SHA-Match: trägt der gematchte Grün-Eintrag
-den Auslöser (`risikoklasse: kritisch` ∨ `kundensichtbar: true`), **verweigert** er `:latest`
-ohne `pruefer_pass: gruen` (Umgehung nur laut+auditierbar via `PROMOTE_SKIP_PRUEFER=1` +
-`PROMOTE_SKIP_PRUEFER_GRUND`). **Unterhalb** der Flags bleibt der Prüfer-Pass ehrlich
-**Architekt-Ermessen** (Disziplin, kein Tor) — so deklariert, nicht still erzwungen.
+1. **Stop-Tor (in-session)** — eine Session, die einen kundensichtbaren (`cv`) Build
+   verantwortet hat, kann nicht als erledigt enden, solange kein kalter Pruefer-Pass
+   (`pruefer_pass:gruen`) ODER ein expliziter lauter Skip in das Run-Log geschrieben wurde.
+   Greift VOR dem Promote, ohne dass der Mensch eine neue Session starten muss.
+2. **Promote-Tor (terminal Backstop)** — `promote_image.sh` verweigert `:latest`-Flip
+   ohne gruenen Run-Log-Eintrag (Schicht A) und ohne `pruefer_pass:gruen` (Schicht B).
+3. **SessionStart-Erinnerung** — beim naechsten Session-Start wird ein armed cv-`:test`-Zustand
+   sichtbar (faengt verpasste Stops und Fortsetzungs-Sessions).
+
+**Maschineller cv-Ausloeser:** Der Stop-Hook (`kb/.claude/hooks/pruefer-gate-stop.py`) erkennt
+einen cv-Build aus dem Session-Transcript — Signal: Bash-Aufruf mit `build_image.sh` **und**
+einem cv-Image-Namen oder cv-Context-Dir. Die cv-Image-Allowlist ist SSOT in
+`_Betrieb/Skripte/pruefer-gate/cv_images.json` (pwa-web, pwa-api, langgraph-*, admin-web).
+
+**Disarm-Wege:** `pruefer_stamp.py <img> <rev> gruen --report <pfad>` (nach echtem Pruefer-Pass)
+ODER `pruefer_stamp.py <img> <rev> skip --grund '<text>'` (lauter Skip, auditierbar).
+
+**Fail-open (kein Total-Lockout):** Interne Gate-Fehler geben `allow`, schreiben aber eine
+persistente Zeile in `Prisment/Systemzustand/Test/pruefer-gate.log`. Der SessionStart-Selfcheck
+meldet einen kaputten Gate beim naechsten Start.
+
+## Maschinelles Tor (nicht disziplinabhaengig)
+
+Das Tor wird **erzwungen**, nicht der Disziplin ueberlassen: ein **Promote-Hook** verweigert
+`:latest`-Promote eines `:test`-Images, solange das Run-Log keinen gruenen Lauf mit **genau
+dem `image.revision`-Commit-SHA** des Builds traegt. Umgehung nur **laut + auditierbar**
+(Pflicht-Begruendung + Spur). So laesst kein alter Gruen-Eintrag ein ungetestetes Feature durch.
+
+**Pruefer-Tor (parallel, PLAT-142 + PLAT-144).** Der Ausloeser ist **maschinell ablesbar**:
+Pflicht, wenn die Feature-/Spec-Frontmatter `risikoklasse: kritisch` **oder** `kundensichtbar: true`
+traegt — **oder** das Image in der cv-Allowlist steht (`_Betrieb/Skripte/pruefer-gate/cv_images.json`,
+PLAT-144). Die cv-Allowlist-Ableitung gilt unabhaengig von run-log-Feldern: ein spec-loser,
+aber abgenommener Build wird trotzdem geblockt, wenn das Image kundensichtbar ist.
+Das Run-Log-Schema traegt ein Feld **`pruefer_pass`** (`gruen` / `skip:<grund>`).
+Umgehung nur laut+auditierbar via `PROMOTE_SKIP_PRUEFER=1 + PROMOTE_SKIP_PRUEFER_GRUND`.
+**Unterhalb** der Flags und der cv-Allowlist bleibt der Pruefer-Pass ehrlich
+**Architekt-Ermessen** (Disziplin, kein Tor).
 
 ## Verfahren & Artefakte
 
