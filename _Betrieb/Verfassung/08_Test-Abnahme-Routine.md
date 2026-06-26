@@ -92,7 +92,37 @@ sondern etwas Wiederholbares — es könnte in einem anderen Dienst/Zyklus erneu
 er zusätzlich in den **Standards-Kanon** vorwärts-geerntet: Pflicht-Triage `aufgenommen K-NN /
 verworfen-mit-Grund` in [`03a_Standards-Kanon.md`](03a_Standards-Kanon.md). Die Regel lebt in
 Verfassung 00, Abschnitt „Vorwärts-Ernte in den Standards-Kanon" (hier nur der Pointer — kein
-Duplikat).
+Duplikat). **Auch ein bestätigter Befund des kalten Prüfers** (s.u.) ist eine **zusätzliche
+Quelle** dieser Schleife — er läuft durch dieselbe Triage `aufgenommen K-NN / verworfen-mit-Grund`,
+**kein** zweites Register, **kein** neues 03a-Feld.
+
+## Kalter Prüfer-Pass (adversariale Laufzeit-Verifikation außerhalb der AKs)
+
+Nach dem Worker-Selbstbeweis — und **nachdem der Worker nach dev deployt hat** — ruft der
+Architekt risiko-gestaffelt den **kalten Prüfer** (`pruefer`, Opus/high,
+[`.claude/agents/pruefer.md`](../../.claude/agents/pruefer.md)) auf. Er teilt den Denkrahmen
+des Bauenden **nicht** (Kälte) und **beschießt das laufende System**, statt es zu bestätigen —
+er findet die blinden Flecken, die die AKs grün und das Feature trotzdem kaputt ließen.
+
+- **Verhältnis zu `pw_smoke` (kein Doppeltest):** Der Worker fährt `pw_smoke.mjs` / die
+  Flow-Skripte für **seine** AKs — bestätigend, Happy-Path, hartes Tor. Der Prüfer re-fährt
+  diese AK-Flows **nie**; er erfindet **neue** Szenarien **außerhalb der AKs** (Grenzwert,
+  Fehler-State, Doppelklick, abgebrochener Fluss, Idempotenz, Rechte-Grenze, Latenz) auf
+  denselben `pw_lib.mjs`-Primitiven. Schnitt **nach Absicht, nicht nach Werkzeug**.
+- **Multi-instrument, nicht nur UI:** für Nicht-UI prüft er Hintergrund-Wahrheit (psql-Row,
+  n8n-Execution `success`, API/HTTP, Trace) — wie jede Abnahme hier.
+- **Konfidenz-klassifiziert:** jeder Fund `sicherer-bug` / `fragwürdig` / `scope-frage`; gegen
+  ein sauberes Feature **null `sicherer-bug`**, Rauschrate beziffert (Oracle-/Rausch-Disziplin).
+- **Zusätzliche Prisment-Linse:** er liest die `Urteil`-Einträge des Standards-Kanons (03a) und
+  leitet je eine Angriffs-Frage ab — er **schreibt** nicht in 03a.
+- **Write-confined:** der Prüfer liefert einen **Report, keine Commits** — ein
+  PreToolUse-Confinement (`.claude/hooks/pruefer-confinement.py`) erzwingt, dass er nie an
+  Source schreibt (Good-Faith-Guardrail auf `isolation: worktree`, kein adversarieller Sandbox).
+- **Architekt triagiert; Worker-Fix-Loop nur bei bestätigten Defekten.**
+- **Hybrid-Tor (Kosten-Deckel):** **Pflicht-Tor** für kundensichtbare UI-Flows + alles
+  `kritisch` (maschinell erzwungen, s. „Maschinelles Tor"); **darunter** (Schritt/Bugfix/Doku)
+  ehrlich **Architekt-Ermessen** (Disziplin, kein Tor). So ist er nicht genau dann skippbar,
+  wenn er am nötigsten ist; die Opus-Kosten bleiben gedeckelt.
 
 ## Kadenz
 
@@ -107,6 +137,16 @@ Das Tor wird **erzwungen**, nicht der Disziplin überlassen: ein **Promote-Hook*
 `:latest`-Promote eines `:test`-Images, solange das Run-Log keinen grünen Lauf mit **genau
 dem `image.revision`-Commit-SHA** des Builds trägt. Umgehung nur **laut + auditierbar**
 (Pflicht-Begründung + Spur). So lässt kein alter Grün-Eintrag ein ungetestetes Feature durch.
+
+**Prüfer-Tor (parallel, PLAT-142).** Der Hybrid-Tor-Auslöser ist **maschinell ablesbar**, nicht
+Ermessens-Prosa: Pflicht, wenn die Feature-/Spec-Frontmatter `risikoklasse: kritisch` **oder**
+das Flag `kundensichtbar: true` trägt — der Run-Log-Eintrag stempelt diesen Auslöser mit. Das
+Run-Log-Schema bekommt dafür ein Feld **`pruefer_pass`** (`gruen` / `—` / `skip:<grund>`). Der
+Promote-Hook (`promote_image.sh`) prüft parallel zum SHA-Match: trägt der gematchte Grün-Eintrag
+den Auslöser (`risikoklasse: kritisch` ∨ `kundensichtbar: true`), **verweigert** er `:latest`
+ohne `pruefer_pass: gruen` (Umgehung nur laut+auditierbar via `PROMOTE_SKIP_PRUEFER=1` +
+`PROMOTE_SKIP_PRUEFER_GRUND`). **Unterhalb** der Flags bleibt der Prüfer-Pass ehrlich
+**Architekt-Ermessen** (Disziplin, kein Tor) — so deklariert, nicht still erzwungen.
 
 ## Verfahren & Artefakte
 
