@@ -120,6 +120,9 @@ er findet die blinden Flecken, die die AKs grün und das Feature trotzdem kaputt
 - **Write-confined:** der Prüfer liefert einen **Report, keine Commits** — ein
   PreToolUse-Confinement (`.claude/hooks/pruefer-confinement.py`) erzwingt, dass er nie an
   Source schreibt (Good-Faith-Guardrail auf `isolation: worktree`, kein adversarieller Sandbox).
+- **Rolle B — Ausführung vs. Urteil:** Der Prüfer führt die Laufzeit-Tests aus und liefert einen
+  Report. Der Architekt **löst** den Prüfer aus, **liest** den Report, **urteilt** die Befunde und
+  **löst** den `gruen`-Stamp (via `pruefer_stamp.py gruen`) aus — er klickt die Tests nicht selbst.
 - **Architekt triagiert; Worker-Fix-Loop nur bei bestätigten Defekten.**
 - **Hybrid-Tor (Kosten-Deckel):** **Pflicht-Tor** für kundensichtbare UI-Flows + alles
   `kritisch` (maschinell erzwungen, s. „Maschinelles Tor"); **darunter** (Schritt/Bugfix/Doku)
@@ -178,5 +181,10 @@ Umgehung nur laut+auditierbar via `PROMOTE_SKIP_PRUEFER=1 + PROMOTE_SKIP_PRUEFER
 ## Verfahren & Artefakte
 
 - **Ausführung:** Skill [`live-abnahme`](../../.claude/skills/live-abnahme/SKILL.md).
+- **Laufzeit-Test-Ausführung → Worker/Prüfer (Rolle B, PLAT-157):** Playwright-Läufe, pw_smoke-Runs
+  und alle Laufzeit-Test-Skripte laufen im Worker- oder Prüfer-Subagenten, **nicht** im Architekten-
+  Kontext. Der Architekt löst den Subagenten aus, liest seine Artefakte (Screenshots/Traces/Report)
+  und urteilt die Soll-Treue. Das Gate B (`.claude/hooks/runtime-test-confinement.py`) erzwingt
+  dies maschinell für den Architekten-Kontext.
 - **Test-Logbuch:** `Prisment/Systemzustand/Test/` — AK-Katalog (Master) + `run-log.jsonl`.
 - **Herkunft/Begründung:** [[PLAT-090]], Pilot [[PRIS-097]].

@@ -34,6 +34,14 @@ Zusätzlich zu den bestehenden Feldern:
 
 - **`stufe:`** — `spur` | `sprung` | `schritt`. Pflicht. Bestimmt Prozess-Tiefe.
 - **`art:`** — OPTIONALES Etikett zur Kategorie: `feature` | `bugfix` | `recherche` | `prozess` | `wartung` (oder weitere nach Bedarf). **Rein zum Filtern/Wiederfinden — hat KEINEN Einfluss auf den Prozess.** Die Stufe steuert den Prozess, nicht die Art. Ein Bugfix kann Schritt oder Spur sein; die `art` sagt nichts über den Aufwand.
+- **`laufzeit_ausfuehrer:`** — `worker` | `pruefer`. `architekt` ist nie gültig — Laufzeit-Tests
+  führt der Architekt nie selbst aus (Rolle B, PLAT-157 Gate A). Zwei Trigger-Stufen:
+  - **HART (grep-bar, Pflicht-Tor):** Trägt die Spec `kundensichtbar: true`, MUSS dieses Feld
+    vorhanden und gültig sein. Fehlt es oder ist der Wert ungültig → Evaluator-Pass meldet
+    [STRUKTURELL]. Deterministisch prüfbar: zwei Frontmatter-Felder, kein LLM-Urteil nötig.
+  - **WEICH (Urteil):** Bei Specs mit Laufzeit-Test-AKs ohne `kundensichtbar: true` prüft der
+    Evaluator per Urteil — meldet [STRUKTURELL] wenn `architekt` gesetzt oder Laufzeit-Test-AK
+    ohne erkennbaren Ausführer vorliegt.
 
 ## ID-Schema
 
