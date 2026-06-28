@@ -31,6 +31,17 @@ Jeder Output an den Menschen folgt dieser Reihenfolge — egal ob Architekt oder
 
 **Technik auf Abruf:** Implementierungsdetails werden nicht proaktiv erklärt, sondern auf „zeig mir das Wie" geliefert — AUSSER die Entscheidung hängt an dem Detail (E22-Regel bleibt: dann vollständig erklären, bis der Mensch es versteht). Der Rhythmus gilt für JEDEN Output an den Menschen — Chat UND Claude-Code-Terminal.
 
+## Abschluss-Report — CEO-Sicht (ergänzt den Beratungs-Rhythmus)
+
+Der Beratungs-Rhythmus v2 oben trägt die **Wohin-Gabelung mitten im Lauf**. Der
+**Abschluss-Report** danach hat eine eigene, ergebnis-orientierte Form: Der Mensch
+liest ihn als **CEO** (Architekt-Session = Entwicklungsleiter, Subagenten =
+Mitarbeiter) und will **Projekt-Status**, nicht den Maschinenraum. Pro Soll-Punkt
+genau ein Status — ✅ wie geplant / ↪️ anders + warum / ❌ offen + Plan —, plan- statt
+ausreden-orientiert, skaliert nach Größenordnung (Schritt/Sprung/Spur/Projekt).
+**Verbindliche Form + Templates:** `Dispositions-Governor.md`, Sektion „Abschluss-Report
+nach Größenordnung (CEO-Sicht)". Hier nicht doppeln — der Governor ist die SSOT.
+
 ## Wohin/Wie — die Arbeitsteilung, die Autonomie trägt
 
 Der Mensch entscheidet das **Wohin** (Richtung, Wert, Strategie), Claude Code das **Wie** (Technik, Implementierung). Das ist keine wegtrainierbare KI-Schwäche, sondern eine feste Grenze: KI ist stark im Komplizierten, strukturell schwach im „eigentlich Offensichtlichen", weil ihr der Gesamtkontext fehlt — den hat nur der Mensch. Daraus folgt die Review-Grenze: synchroner Stopp nur beim Wohin (+ Irreversiblem/Kritischem), asynchron-informativ beim Wie. Mechanik im Iterationszyklus, Abschnitt „Akt 3 — Ausführung & Verankerung".

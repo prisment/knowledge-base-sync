@@ -256,6 +256,8 @@ Das Protokoll beginnt mit dem **Wirkungs-Block** (Format in `01_Spec-Format.md`)
 
 **Inhaltlich, nicht referenzierend.** Direkt im Output ausgeschrieben — **keine „siehe Spec / siehe File"-Verweise.** Belegmaterial (Akzeptanzkriterien-Häkchen, Diffs, Hash-Listen, „was ich geprüft habe") bleibt in der Datei, NICHT im Review-Anker. Ausnahme nur für rein deskriptive Verweise („Details siehe `<Datei>` Z. 42–60") — auch dort nicht ohne kurze Vorab-Substanz.
 
+**Eine Gestalt, nicht zwei.** Die vier Punkte oben sind die **Mindest-Substanz** des Reviews; die **Gestalt** des Outputs richtet sich nach dem **Abschluss-Report nach Größenordnung (CEO-Sicht)** im [`Dispositions-Governor.md`](../Dispositions-Governor.md) — Ergebnis zuerst, pro Soll-Punkt ✅/↪️/❌, skaliert Schritt/Sprung/Spur/Projekt. Die Punkte 0+2 (Gesetzt ohne Rückfrage / Entscheidungen) sind im Soll-Status und unter „was dich braucht" aufgehoben, Punkt 4 (Unsicher) am Schluss. Das „ausschließlich" oben grenzt gegen Datei-Verweise und Maschinenraum ab — es schreibt keine zweite, konkurrierende Form vor.
+
 ---
 
 ## Verankerung beim Abschluss (Teil von Akt 3)
