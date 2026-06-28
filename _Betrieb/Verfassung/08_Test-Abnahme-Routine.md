@@ -69,6 +69,8 @@ Das Instrument wechselt, die AK-Disziplin und das Logbuch bleiben.
 
 ## Zwei Bühnen
 
+> **Bühnen-Topologie + dev/test-Namensregel:** siehe `Plattform/Systemzustand/Infrastruktur/buehnen-bild.md` (SSOT)
+
 - **dev (isoliert, test_db):** der schnelle, **autonome** Lauf — alles, was kein echtes
   Außen-System braucht. Frisch pro Lauf.
 - **Live-Wegwerf:** nur für **irreversible Außen-Schritte** (echter Publish/Versand), die
