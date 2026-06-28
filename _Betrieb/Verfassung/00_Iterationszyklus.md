@@ -159,7 +159,7 @@ Die Spec sitzt auf der bereits erhobenen Sondierung. Es gibt **keine** nachgelag
 
 Nach Spec-Freigabe arbeitet Claude Code **autonom im Korridor**, dessen Wände die Freigabe gezogen hat. Verlässt er den Korridor, stoppt er.
 
-**Bau = Worker (Rollen-Grenze an der Akt-2→Akt-3-Schwelle).** Akt 2 schreibt der Architekt selbst (Spec, auf `main`). Mit der Spec-Freigabe **kippt die Rolle**: substantiellen Akt-3-Bau (Code schreiben, Features implementieren, mehrteilige Umbauten) delegiert der Architekt an einen **Worker-Subagenten** (`worker`, prove-then-merge im Worktree) — er ist Architekt, nicht Arbeitstier. **Carve-out:** triviale/reversible/isolierte **Stufe-Schritt**-Arbeit, Bugfixes, Doku-Updates und Config-Edits baut er direkt (kein Worker-Overhead für Kleinkram). Der Auslöser dieser Grenze: das „ich baue"-Momentum aus der Spec-Phase darf nicht über die Schwelle mitgenommen werden (PLAT-138).
+**Bau = Worker (Rollen-Grenze an der Akt-2→Akt-3-Schwelle).** Akt 2 schreibt der Architekt selbst (Spec, auf `main`). Mit der Spec-Freigabe **kippt die Rolle**: substantiellen Akt-3-Bau (Code schreiben, Features implementieren, mehrteilige Umbauten) delegiert der Architekt an einen **Worker-Subagenten** (`worker`, prove-then-merge im Worktree) — er ist Architekt, nicht Arbeitstier. **Carve-out:** triviale/reversible/isolierte **Stufe-Schritt**-Arbeit, Bugfixes, Doku-Updates und Config-Edits baut er direkt (kein Worker-Overhead für Kleinkram). Der Auslöser dieser Grenze: das „ich baue"-Momentum aus der Spec-Phase darf nicht über die Schwelle mitgenommen werden (PLAT-138). **Es ist auch messbar Geld:** Datei-Mutation im Hauptkontext erzeugt file-history-snapshots (~8–13 % der gemessenen Session-Kosten, PLAT-147-Spike-Analyse) — der Worker baut in eigenem Kontext, main sieht nur den Beweis-Report.
 
 ### Leitprinzip — Wohin / Wie (das Herz der Autonomie)
 
@@ -287,7 +287,7 @@ Beim **Sprung** schlanker: Abschluss-Notiz ins Archiv, Logbuch-Eintrag nur bei e
 
 **Das ist die häufigste vergessene Pflicht — deshalb steht sie jetzt als eigener Akt-3-Abschnitt, nicht als Unterpunkt.**
 
-Wenn ein Zyklus den **realen Systemzustand** eines Bereichs ändert — Container kommt/geht/wechselt Image, n8n-Workflow, Skript, `docker-compose.yml`, Auth-/Netz-Topologie, Agent-Pipeline, neue Komponente — ODER bestehende Detail-Doku unterhalb `<Bereich>/Systemzustand/**` (außerhalb `00_Uebersicht/`) umarbeitet, MUSS **vor dem Abschluss-Commit**:
+Wenn ein Zyklus den **realen Systemzustand** eines Bereichs ändert — Container kommt/geht/wechselt Image, Skript, `docker-compose.yml`, Auth-/Netz-Topologie, Agent-Pipeline, neue Komponente — ODER bestehende Detail-Doku unterhalb `<Bereich>/Systemzustand/**` (außerhalb `00_Uebersicht/`) umarbeitet, MUSS **vor dem Abschluss-Commit**:
 
 **(a)** die betroffene **Detail-Doku** im `Systemzustand/` auf den neuen Ist-Stand gebracht werden (SSOT zuerst), **und**
 **(b)** die abgeleitete **`00_Uebersicht/00_Bereich.md`** (ggf. thematische Sub-Übersicht inkl. SVG) nachgezogen werden.
@@ -299,7 +299,6 @@ Beide Ebenen sind Korridor-Wand: fehlt (a) oder (b) beim Abschluss = **Fall C = 
 | Reale Änderung im Bereich | Pflicht-Update Detail-Doku | Pflicht-Update Übersicht |
 |---|---|---|
 | Container kommt/geht / Image-Wechsel | Detail-Doku im betroffenen Topik | Sub-Übersicht + ggf. Architektur-SVG |
-| Neuer/entfallener n8n-Workflow | Workflow-Doku im Topik | Onboarding-/Operative-Doku-Übersicht |
 | Agent-Pipeline-Änderung | Detail-Doku Agent/Pipeline | Agenten-Sub-Übersicht + SVG |
 | Pricing/Strategie-Change | Detail-Doku Strategie | Strategie-Sub-Übersicht |
 | Auth/Sicherheit-Topologie-Change | Detail-Doku Sicherheit | Architektur-SVG |

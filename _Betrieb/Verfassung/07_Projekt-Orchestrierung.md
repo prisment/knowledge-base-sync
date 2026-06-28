@@ -19,10 +19,7 @@ innerhalb eines vom Menschen ratifizierten **Abweichungs-Kontrakts**.
 Zeremonie-Tiefe *einer* Einheit. Das Projekt ist eine **Ebene darüber**,
 orthogonal. Arbeit *im* Projekt behält ihre Stufe.
 
-**Abgrenzung zur abgeschafften Roadmap (E36):** Eine Roadmap bündelte *mehrere
-unabhängige Wohins* zum Scheduling — verboten. Ein Projekt hat **genau ein
-Akzeptanzkriterium**; alle seine Seeds dienen diesem einen Ziel. Das ist der
-Unterscheider. Ein-Ziel-Behälter ist erlaubt, Mehr-Ziel-Schirm nicht.
+**Abgrenzung zur abgeschafften Roadmap (E36):** Siehe `00_Iterationszyklus.md`, Abschnitt „Keine Planungs-Ebene über der Spur“. Kurzform: Roadmap = mehrere unabhängige Wohins (verboten); Projekt = genau ein Ziel, dem alle Seeds dienen.
 
 **Hierarchie:** Mission (loser Filter-Slug, keine Prozess-Wirkung) > **Projekt**
 (ein fixes Wohin, prozess-tragend) > Seeds > Specs.
@@ -183,14 +180,7 @@ nächsten Dispatch.
 > (single-threaded) → race-frei. Urteil beim Worker, Mechanik (Append/Dedupe/Index)
 > deterministisch.
 
-**Single-threaded-`main`-Garantie (Stand PLAT-132).** „Single-threaded `main`" ruht auf
-zwei strukturellen Wänden, nicht auf einem Claim-Lease: (a) der Orchestrator-Loop selbst
-ist single-threaded (er dispatcht sequenziell, ein integrations-kritischer Schritt nach
-dem anderen); (b) parallel arbeitende Hände (interaktive Subagenten, Worker) sitzen in
-**isolierten Worktrees** und landen auf `main` über git, das einen non-fast-forward-Push
-**ablehnt** (Rebase erzwungen) — Force-Push ist geblockt (PLAT-085). So kann keine zwei
-Hände `main` versehentlich überschreiben; Same-File-Kollisionen werden als Merge-Konflikt
-sichtbar. SSOT: `Plattform/Systemzustand/parallel-agent-schutz.md`. *(Die frühere
+**Single-threaded-`main`-Garantie (Stand PLAT-132).** Der Orchestrator-Loop ist single-threaded: er dispatcht sequenziell, kein paralleler Dispatch auf dieselbe `main`-Linie. Den strukturellen Kollisions-Schutz für parallel arbeitende Hände (Worktree-Isolation + non-fast-forward-git + Force-Push-Sperre PLAT-085) trägt `01_Spec-Format.md` (Abschnitt „Kollisions-Schutz“); SSOT: `Plattform/Systemzustand/parallel-agent-schutz.md`. *(Die frühere
 maschinell-erzwungene Integrations-Invariante via `claim.py acquire --scope-kind
 integration` (PLAT-103) war Default-aus und nie in `orchestrate.sh` verdrahtet; sie ist
 mit dem Cockpit/Windows-Transport stillgelegt — PLAT-132.)*

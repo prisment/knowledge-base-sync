@@ -13,7 +13,7 @@ quelle: "[[PLAT-090]], [[PRIS-114]]"
 **Nichts erreicht den Kunden, das nicht vorher auf dev/test mit belegtem Nachweis
 abgenommen wurde.** Der Kundentermin ist eine Vorführung funktionierender Software, nie
 ein Test. Gilt für **jedes** Feature und **jede** Änderung — UI, Backend, Pipeline, Agent,
-n8n, Config. (Herkunft: drei misslungene Live-Tests vor dem ersten Kunden; [[PLAT-090]].)
+Config. (Herkunft: drei misslungene Live-Tests vor dem ersten Kunden; [[PLAT-090]].)
 
 ## Definition of Done (erweitert)
 
@@ -59,11 +59,11 @@ FB-Cross-Post-Hälfte (prüfte nur Vorhandenes) + ein Zweit-Thema, das erst nach
   nie still als „grün" geführt. Bedienung: Skill `live-abnahme` + `scripts/test/PW-SMOKE.md`.
   **Anti-false-green:** „Playwright grün" ≠ „visuell abgenommen" — der grüne Lauf deckt Verhalten/DOM/
   Flows, nie das ästhetische Urteil, und ersetzt das visuelle Mensch-Tor nicht.
-- **Nicht-UI** (Backend / Pipeline / Agent / n8n / Config) → Backend-Belege.
-  *Durchgearbeitetes Beispiel — ein n8n-Workflow-Feature:* das AK ist nicht „Workflow aktiv",
-  sondern **n8n-Execution-Status `success`** + die **erwartete Ziel-DB-Row existiert**
-  (psql-Query) + **Trace/Log ohne Error**. „Deploy ok" ist hier so wenig hinreichend wie
-  „UI grün" bei einem Klick-Feature.
+- **Nicht-UI** (Backend / Pipeline / Agent / Config) → Backend-Belege.
+  *Durchgearbeitetes Beispiel — eine Agent-Pipeline:* das AK ist nicht „Pipeline läuft durch“,
+  sondern **die erwartete DB-Row existiert** (psql-Query) + **Trace/Log ohne Error** + **API-Antwort mit
+  erwartetem Inhalt**. „Deploy ok“ ist hier so wenig hinreichend wie
+  „UI grün“ bei einem Klick-Feature.
 
 Das Instrument wechselt, die AK-Disziplin und das Logbuch bleiben.
 
@@ -110,7 +110,7 @@ er findet die blinden Flecken, die die AKs grün und das Feature trotzdem kaputt
   Fehler-State, Doppelklick, abgebrochener Fluss, Idempotenz, Rechte-Grenze, Latenz) auf
   denselben `pw_lib.mjs`-Primitiven. Schnitt **nach Absicht, nicht nach Werkzeug**.
 - **Multi-instrument, nicht nur UI:** für Nicht-UI prüft er Hintergrund-Wahrheit (psql-Row,
-  n8n-Execution `success`, API/HTTP, Trace) — wie jede Abnahme hier.
+  API/HTTP, Trace) — wie jede Abnahme hier.
 - **Konfidenz-klassifiziert:** jeder Fund `sicherer-bug` / `fragwürdig` / `scope-frage`; gegen
   ein sauberes Feature **null `sicherer-bug`**, Rauschrate beziffert (Oracle-/Rausch-Disziplin).
 - **Zusätzliche Prisment-Linse:** er liest die `Urteil`-Einträge des Standards-Kanons (03a) und
