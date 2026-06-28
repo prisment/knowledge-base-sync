@@ -110,6 +110,40 @@ Die **read-lastige Erhebung** in Akt 1 läuft über einen read-only Subagenten (
 
 **Was nie delegiert wird (Kopf, nicht Hand):** Machbarkeits-Urteil, Bündelung, Stufen-/Kritikalitäts-Setzung, Option 0, die Spec-Synthese und jedes Wohin. Der kalte Evaluator und `advisor()` bleiben eigene Instanzen (Generator ≠ Evaluator) — sie werden hierdurch nicht ersetzt. „Am echten System" ist gewahrt: der Subagent läuft am selben System, er ist Claude Codes Hand, keine Auslagerung.
 
+*Diese Akt-1-Regel ist der **Akt-1-Spezialfall** der run-übergreifenden **Offload-Disziplin — Main = Urteils-Faden (PLAT-152)**; siehe dort für das Leitprinzip über den ganzen Lauf.*
+
+---
+
+## Offload-Disziplin — Main = Urteils-Faden (PLAT-152)
+
+*Run-übergreifendes Leitprinzip — gilt über **alle drei Akte**, nicht nur Akt 1. Physisch hier verankert, weil es die zwei akt-gebundenen Einzelregeln „Fakten-Erhebung via Subagent" (Akt 1, oben) und „Bau = Worker" (Akt 3, unten) als **eine** Disziplin klammert; jene bleiben als Spezialfälle gültig.*
+
+**Das Prinzip.** Der Hauptthread (Main) trägt nur den **Urteils-Faden**. Bei langen autonomen Läufen bleibt der Lauf auf *einen* Auftrag, aber die Main-Turns bleiben *kurz*: jeder thematische Block aus Lesen / Suchen / Messen / mechanischer Ausführung wandert in einen Subagenten, der ein kompaktes Digest zurückgibt.
+- *Bleibt im Main:* Entscheidung, Synthese, jedes Wohin, das Verifikations-**Verdikt**, das Lesen des auslösenden Auftrags / Seed / der Spec (Urteils-Anker).
+- *Geht raus (Subagent → Digest):* jeder thematische Block aus Lesen großer Dokumente, Suchen/grep-Sweeps, Messen (Transkript-/Log-Analyse), mechanischer Ausführung nach fixer Regel.
+
+**Die Schwelle.** Prinzip oben **plus** ein numerischer Backstop fürs Lesen: *Ein Read / Tool-Result, das du **nicht** als Urteils-Anker brauchst und das grob **> ~150 Zeilen / ~6 KB roh** ist → Subagent.* Die Urteils-Anker-Klausel schlägt den Größen-Backstop (ein großer Read, gegen den du urteilst — die Spec, der Kern-Seed — bleibt im Main trotz Größe).
+- **Boden (Über-Offload ist die einzige echte Verlust-Mode):** triviale Einzel-Fakt-Lookups (ein Pfad, eine Zeile, eine Zahl) bleiben **inline** — der Dispatch-+-Digest-Roundtrip kostet sonst mehr als die Inline-Arbeit.
+
+**Die Kosten-Begründung (knapp, belegt — der Turn-Kanal führt).** Der größte Kosten-Hebel ist `cache_read` (~48 % der $, **quadratisch mit der Lauf-Länge**). Offload greift ihn **primär über den Turn-Kanal** an: ein ausgelagerter N-Turn-Block kollabiert im Main auf ~1 Dispatch-Turn — jeder entfernte Turn entfernt ein Re-Read des *ganzen* wachsenden Kontexts, greift also plausibel den quadratischen Term selbst. **Ehrlich: diese Magnitude ist nicht separat vermessen** (PLAT-149 maß sie nicht) — die Mess-Methode steht in der Beleg-Notiz, die Senkung selbst ist Wochen-Wirkung über künftige Läufe. Der **Größen-Kanal** (ein großer Read fällt nie in den Main, wird nie re-ge-cacht) wirkt **zusätzlich**, ist aber der **kleinere** — er ist Mitnahme, nicht der Haupt-Hebel. **Tiefen-Skalierung:** der Offload-Wert wächst mit der Lauf-Tiefe (ein Read bei Turn 180 spart ein Re-Read über 180 Turns) — deshalb ist Offload *das* Werkzeug für lange Läufe. Beleg + Zahlen: [`Plattform/Systemzustand/Effizienz/offload-disziplin-hundefutter-2026-06-28.md`](../../Plattform/Systemzustand/Effizienz/offload-disziplin-hundefutter-2026-06-28.md).
+
+**§3-Brücke (Scheinwiderspruch auflösen).** Der PLAT-149-Maßnahmen-Plan (Sektion „Spike-Verursacher") schreibt: *„der ‚read-heavy → Subagent'-Hebel ist der kleinste (0,3–5 %)"* — und **das stimmt** für den Größen-Kanal. Es ist trotzdem **kein** Widerspruch: §3 maß den *einmaligen* `tool_result`-`cache_write`-**Spike** eines Reads, der in den Main fällt (klein), **nicht** den Turn-Kanal — das `cache_read`-Wachstum unter der separaten Kategorie „Session-Länge" (die großen ~48 %). Der Haupt-Hebel dieser Disziplin ist der Turn-Kanal, eine von §3 nicht vermessene Kostenstelle. Den kleinen Größen-Kanal nimmt PLAT-152 mit, behauptet ihn aber nicht als den großen.
+
+**Durchsetzung: reine Doktrin, kein Hook.** Offload ist *Agent*-Selbstdisziplin (was lagere ich aus) — eine andere Oberfläche als die Statusline, die *Mensch*-Sicht ist (wann schneidet Korbinian den Chat). Kein Nudge-Hook, keine Statusline-Änderung — konsistent mit der bewussten H1-Nudge-Hook-Ablehnung (PLAT-149: „Sicht statt Zwang").
+
+**Autonom-Variante (unbeaufsichtigte lange Läufe).** Es reicht „Main = Urteil" + die bestehenden Verfassung-07-Checkpoints — **kein** neuer Apparat. Geschnitten / gecheckpointet wird ein Lauf nur, wenn (a) das Wohin echt gabelt (Mensch nötig) oder (b) der Auftrag separierbar ist (dann war es nie *ein* Auftrag). **Klarstellung gegen Maskierung:** Offload ersetzt **nicht** das Splitten — ein separierbarer Auftrag wird weiter geschnitten, egal wie schlank der Main ist. Der schlanke Main verbilligt nur den *legitim langen* Ein-Auftrag-Lauf; er macht aus zwei Aufträgen keinen.
+
+**Worked Example (illustrativ — zeigt die Schwelle an konkreten Fällen).** Vier Fälle aus der Hundefutter-Analyse des PLAT-149-Bau-Chats:
+
+| # | Fall | Urteil | Warum |
+|---|---|---|---|
+| 1 | 58-KB-Doku (~1090 Z.) per WebFetch, nur ~10 Schema-Felder gebraucht | **raus** | `recherche`-Subagent liefert 10-Zeilen-Digest; die 58 KB fallen nie in den Main, kein Re-Read über alle Folge-Turns. |
+| 2 | Einzel-Fakt-Lookup (ein Pfad, eine Zeile) | **bleibt inline** | Boden: der Dispatch-+-Digest-Roundtrip kostet mehr als die Inline-Arbeit. Die Regel produziert *nicht* „alles raus". |
+| 3 | 6-Turn-Mess-Block (11-MB-Transkript finden, Marker finden, Analyzer schreiben/iterieren) | **raus** | Ein Subagent („miss Korrelation X in Session Y, gib Verdikt + Zahlen"); das 11-MB-Transkript berührt den Main nie. |
+| 4 | **Kollisionsfall:** großer Read (> 150 Z.), der aber **Urteils-Anker** ist (der auslösende Seed, die Spec, das Kern-Dokument, gegen das du urteilst) | **bleibt im Main** trotz Größe | Die Urteils-Anker-Klausel schlägt den Größen-Backstop — du musst direkt am Original urteilen, ein Digest würde den Anker verfälschen. |
+
+**Mechanik für „Urteil bleibt, Ausführung geht".** Mechanische Ausführung mit deterministischem Korrektheits-Anteil (CLAUDE.md-Chirurgie, Massen-Refactor nach fixer Regel, Block-für-Block-Schnitt) läuft über das Muster im Skill [`gated-execution`](../../.claude/skills/gated-execution/SKILL.md): Disposition + deterministischen Verifizierer im Main bauen → Worker führt aus + liefert mechanische Evidenz → **das Verifikations-Verdikt rendert der Main**. Worker-allein-durch-Byte-Diff-gaten ist unsicher (siehe Skill).
+
 ---
 
 ## Akt 2 — Festlegung (im Chat, stufenabhängig)
@@ -159,7 +193,7 @@ Die Spec sitzt auf der bereits erhobenen Sondierung. Es gibt **keine** nachgelag
 
 Nach Spec-Freigabe arbeitet Claude Code **autonom im Korridor**, dessen Wände die Freigabe gezogen hat. Verlässt er den Korridor, stoppt er.
 
-**Bau = Worker (Rollen-Grenze an der Akt-2→Akt-3-Schwelle).** Akt 2 schreibt der Architekt selbst (Spec, auf `main`). Mit der Spec-Freigabe **kippt die Rolle**: substantiellen Akt-3-Bau (Code schreiben, Features implementieren, mehrteilige Umbauten) delegiert der Architekt an einen **Worker-Subagenten** (`worker`, prove-then-merge im Worktree) — er ist Architekt, nicht Arbeitstier. **Carve-out:** triviale/reversible/isolierte **Stufe-Schritt**-Arbeit, Bugfixes, Doku-Updates und Config-Edits baut er direkt (kein Worker-Overhead für Kleinkram). Der Auslöser dieser Grenze: das „ich baue"-Momentum aus der Spec-Phase darf nicht über die Schwelle mitgenommen werden (PLAT-138). **Es ist auch messbar Geld:** Datei-Mutation im Hauptkontext erzeugt file-history-snapshots (~8–13 % der gemessenen Session-Kosten, PLAT-147-Spike-Analyse) — der Worker baut in eigenem Kontext, main sieht nur den Beweis-Report.
+**Bau = Worker (Rollen-Grenze an der Akt-2→Akt-3-Schwelle).** Akt 2 schreibt der Architekt selbst (Spec, auf `main`). Mit der Spec-Freigabe **kippt die Rolle**: substantiellen Akt-3-Bau (Code schreiben, Features implementieren, mehrteilige Umbauten) delegiert der Architekt an einen **Worker-Subagenten** (`worker`, prove-then-merge im Worktree) — er ist Architekt, nicht Arbeitstier. **Carve-out:** triviale/reversible/isolierte **Stufe-Schritt**-Arbeit, Bugfixes, Doku-Updates und Config-Edits baut er direkt (kein Worker-Overhead für Kleinkram). Der Auslöser dieser Grenze: das „ich baue"-Momentum aus der Spec-Phase darf nicht über die Schwelle mitgenommen werden (PLAT-138). **Es ist auch messbar Geld:** Datei-Mutation im Hauptkontext erzeugt file-history-snapshots (~8–13 % der gemessenen Session-Kosten, PLAT-147-Spike-Analyse) — der Worker baut in eigenem Kontext, main sieht nur den Beweis-Report. *Dies ist der **Akt-3-Spezialfall** der run-übergreifenden Offload-Disziplin — Main = Urteils-Faden (PLAT-152, oben); siehe dort.* **Mechanisch + Korrektheits-Urteil:** ist die Ausführung mechanisch, trägt aber einen deterministischen Korrektheits-Anteil (CLAUDE.md-Chirurgie, Massen-Refactor nach fixer Regel), läuft sie über den Skill [`gated-execution`](../../.claude/skills/gated-execution/SKILL.md) — Verifizierer im Main, Ausführung am Worker, Verdikt bleibt im Main.
 
 ### Leitprinzip — Wohin / Wie (das Herz der Autonomie)
 
