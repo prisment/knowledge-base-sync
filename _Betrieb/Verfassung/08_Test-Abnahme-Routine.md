@@ -120,6 +120,18 @@ er findet die blinden Flecken, die die AKs grün und das Feature trotzdem kaputt
 - **Write-confined:** der Prüfer liefert einen **Report, keine Commits** — ein
   PreToolUse-Confinement (`.claude/hooks/pruefer-confinement.py`) erzwingt, dass er nie an
   Source schreibt (Good-Faith-Guardrail auf `isolation: worktree`, kein adversarieller Sandbox).
+- **Inkrementeller Salvage-Report (PLAT-161):** Der Prüfer schreibt seinen Report
+  **inkrementell (append-only)** auf einen stabilen Salvage-Pfad (`/var/tmp/pruefer-report-<sid>.md`
+  oder einen vom Architekten benannten Pfad). Jeder bestätigte Befund wird sofort angehängt —
+  nicht erst am Ende. Die letzte nicht-leere Zeile eines fertigen Reports lautet exakt
+  `STATUS: ABGESCHLOSSEN`. Ein Teil-Report (toter Lauf) endet auf einer Befund-/LAUFEND-Zeile.
+- **`gruen`-Stempel verlangt Abschluss-Marker (PLAT-161, fail-closed):** `pruefer_stamp.py gruen`
+  akzeptiert nur Reports, deren **letzte nicht-leere Zeile** exakt `STATUS: ABGESCHLOSSEN` lautet.
+  Ein Teil-Report disarmt das Tor nie — auch wenn er ≥ 400 Bytes und ≥ 8 nicht-leere Zeilen hat.
+- **Prüfer stirbt mitten im Lauf:** Teil-Report bleibt erhalten (Salvage-Pfad, append-only). Der
+  Architekt birgt die vorhandenen Befunde, re-dispatcht den Prüfer (hängt verlustfrei an, da
+  append) ODER skippt laut (`pruefer_stamp.py skip --grund`). Die `gruen`-Stempel-Verweigerung
+  ist kein Datenverlust — die bereits erhobenen Befunde stehen im Salvage-Pfad.
 - **Rolle B — Ausführung vs. Urteil:** Der Prüfer führt die Laufzeit-Tests aus und liefert einen
   Report. Der Architekt **löst** den Prüfer aus, **liest** den Report, **urteilt** die Befunde und
   **löst** den `gruen`-Stamp (via `pruefer_stamp.py gruen`) aus — er klickt die Tests nicht selbst.
