@@ -129,6 +129,26 @@ er findet die blinden Flecken, die die AKs grün und das Feature trotzdem kaputt
   ehrlich **Architekt-Ermessen** (Disziplin, kein Tor). So ist er nicht genau dann skippbar,
   wenn er am nötigsten ist; die Opus-Kosten bleiben gedeckelt.
 
+### Oracle-Typ-Routing — welches Instrument je AK (PLAT-160)
+
+Jedes AK trägt einen **Oracle-Typ**; er bestimmt, *wer* es prüfen kann:
+
+- **Maschinen-Oracle** (DB-Row, n8n-Execution `success`, Network ohne 5xx, Trace, DOM-Assertion,
+  Contract-Grep): läuft durch den **vollen Prüfer-/Abnahme-Rhythmus oben — unverändert, vital.**
+  Hier wird nichts gespart.
+- **Nur-Mensch-Oracle** (visuelle Treue gg. Design-Frames, echter-Finger-Touch, ästhetisches
+  Urteil): die Maschinerie kann es **strukturell nicht** prüfen (kein Visual-Diff existiert; Touch
+  ist Mensch-Augen-AK). Solche AK werden **gebündelt ans Bogen-Ende** gezogen und in **einem**
+  Mensch-Tor (wenige Klicks, schneller Vorschau-Link) abgenommen — **kein** Prüfer-/CI-Rigor wird
+  darauf verschwendet (mehr Maschinen-Rigor dort = null Ertrag, nur Loop-Latenz; PRIS-121-Lehre).
+  Der Worker sammelt sie als `status: review`-Liste, statt Eigen-Runden zu verbrennen.
+
+**Abgrenzung (kein stiller cv-Promote):** „kein Maschinen-Rigor auf Nur-Mensch-Oracle" lockert
+**nicht** das Vor-Promote-Stop-Tor. Ein kundensichtbarer Build braucht weiterhin Prüfer-grün auf
+seinen Maschinen-Oracle-AK **oder** einen **lauten Skip** (`pruefer_stamp.py skip --grund`) **plus**
+den Promote-Gate-SHA-Match (s. „Maschinelles Tor" / PLAT-144). Das Routing entlastet nur das
+einzelne Nur-Mensch-AK, nicht das Tor.
+
 ## Kadenz
 
 - **Pro Feature** vor Promote — Pflicht.
