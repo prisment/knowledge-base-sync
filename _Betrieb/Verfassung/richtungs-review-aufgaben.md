@@ -45,6 +45,11 @@ formuliert hat?
 Schau in die Eisbox-Sektion der Übersicht. Welcher Seed verdient jetzt Aufmerksamkeit
 (Nordstern hat sich verändert, Abhängigkeit wurde erfüllt)? Welcher ist definitiv
 nie-wieder-aktuell und sollte archiviert werden?
+**Zwei-Reviews-Regel (seit Eisbox-Purge 2026-07-02):** Ein Eisbox-Seed, den zwei
+Reviews in Folge niemand vermisst oder zieht, fliegt — Eisbox ist Durchgangslager,
+kein Endlager. Führe dafür Buch: Nenne pro Eisbox-Seed, ob er diese Woche einen
+Zieh-Grund hatte; was schon im letzten Review keinen hatte, kommt auf die explizite
+**Streichliste** (der Mensch entscheidet en bloc, du löschst nichts selbst).
 
 **5. Ehrlicher Nordstern-Fortschritt**
 Was blockiert den aktuellen Nordstern diese Woche wirklich? Nicht die offizielle
