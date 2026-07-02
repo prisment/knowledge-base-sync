@@ -1,7 +1,7 @@
 ---
 typ: verfassung
 titel: "Standards-Kanon (lebendes Register zu 03 Code-Standards)"
-stand: 2026-06-23
+stand: 2026-07-02
 aenderung: "nur nach oben, nur durch bewusste Freigabe"
 ---
 
@@ -74,13 +74,18 @@ Jeder Standard trägt **genau diese fünf Felder** — keine Format-Erfindung be
 | K-09 ⊘ | Auslieferung | **[stillgelegt PLAT-132]** Worker-gebaute Windows-Ziel-`.ps1` werden **UTF-8-mit-BOM** kodiert und setzen **`$ErrorActionPreference='Continue'`** (PS 5.1 liest BOM-loses UTF-8 als ANSI → Parse-Fehler) | PLAT-111 Fix-Loop, 2 Windows-only-Defekte. **Gegenstandslos seit PLAT-132:** Desktop-Architekt tot, kein Windows-`.ps1`-Bau-Pfad mehr; `git-land.ps1` + sein Encoding-Regressions-Guard archiviert. Reaktiviert sich nur, falls je wieder ein Worker Windows-`.ps1` baut | — (stillgelegt; historischer Anker) |
 | K-10 | Auslieferung | Skripte, die in **mehr als einem Wurzel-Kontext** laufen können (on-host *und* CI-Checkout), leiten die Repo-Wurzel **aus der Umgebung ab** (`GITHUB_WORKSPACE` → `git rev-parse --show-toplevel` → skript-relativ) statt einen absoluten Host-Pfad zu hardcoden | PLAT-123 Sondierung (`## Kanon-Saat`); `scripts/sync_shared_contracts.sh:15` `REPO_ROOT=/opt/infrastructure/environment_a` hart → brach im act-runner-Checkout (`/workspace/...`). Die konkrete Fundstelle wurde durch PLAT-123 (Wand D) gegenstandslos, das *Muster* ist wiederholbar (jedes geteilte Sync-/Build-/Helfer-Skript) | Urteil (Code-Review); optional maschinell per grep-Lint auf `REPO_ROOT=…/opt/…`-Hardcodes in `scripts/**` |
 | K-11 | Auslieferung/Frontend | Vollbild-Overlays (Onboarding-Spotlight, Tour, Modal) tragen `pointer-events: none` an jedem durchlässigen Root-Layer, sonst schlucken sie Klick/Scroll unsichtbar über dem eigentlichen UI | PRIS-078 CoachMark: „Editor-Scroll-Bug" war eine unsichtbare Vollbild-CoachMark ohne `pointer-events:none` am Root (memory `project_coachmark_touch_trap`); erst messen, dann fixen | Urteil (Review) |
-| K-12 | API/Auslieferung | Binär-Uploads (Audio/Foto) gehen als **base64-JSON**, nicht `multipart/form-data` — Cloudflare blockt Binär-multipart mit „Just-a-moment"-403 | PRIS-047/CF-Befund: multipart→403, Fix Audio/Foto als base64-JSON (memory `project_cloudflare_blocks_binary_multipart`) | Urteil (Review) |
+| K-12 | API/Auslieferung | **[Workaround-Standard]** Binär-Uploads (Audio/Foto) gehen als **base64-JSON**, nicht `multipart/form-data` — Cloudflare blockt Binär-multipart mit „Just-a-moment"-403. Gilt nur, **solange** die CF-WAF Binär-multipart blockt; der korrekte Dauer-Fix ist eine CF-WAF-Ausnahme für die Upload-Endpunkte (base64 ≈ +33 % Payload) — fällt die CF-Blockade, entfällt der Standard | PRIS-047/CF-Befund: multipart→403, Fix Audio/Foto als base64-JSON (memory `project_cloudflare_blocks_binary_multipart`); Workaround-Label PLAT-166 | Urteil (Review) |
 | K-13 | Daten | DB-Migrationen/Objekt-Referenzen **pinnen das Schema explizit** (`schema.table`, `GRANT USAGE ON SCHEMA`) statt sich auf `search_path` zu verlassen — CI-Bootstrap-`search_path` (auth,public) weicht vom Live-Default (public) ab → „relation does not exist" | PLAT-127 (search_path CI-ephemer vs. Live) + PLAT-133 (`relation users does not exist` = fehlendes `USAGE ON SCHEMA auth`; memory `project_dev_login_schema_usage`, `project_plat127_searchpath_ci_ephemer`) | Urteil (Review) |
 | K-14 | API/Daten | One-shot-Zustandsmarker (Onboarding-Schritt, „vorgezogen", Versand-Flag) werden **idempotent** gesetzt — nie bei jedem Start/Aufruf re-gefeuert | PRIS-099 Interview-Timing: Marker `interview_vorgezogen` feuerte bei jedem Start statt einmalig (memory `project_pris099_interview_timing`) | Urteil (Review) |
 | K-15 | Beobachtbarkeit/API | Operationen, die >10 s dauern können, bekommen einen **Fortschritts-/Poll-Pfad** (Status-GET) statt eines einzelnen blockierenden Requests — Browser/Proxy brechen die Verbindung bei ~13–20 s ab, obwohl das Backend noch 200 liefert | PWA „KI-Verbindungsfehler": pwa_api 200, Browser bricht bei 13–20 s; Fix paralleles GET /posts-Pollen (memory `project_pwa_ki_verbindungsfehler`) | Urteil (Review) |
+| K-16 | Auslieferung | Direkte Dependencies sind **exakt gepinnt** (pip `==`, npm exakte Version — kein `^`/`~`/Range) in allen getrackten `requirements.txt` und `package.json`; Floor-Constraints (`>=`) nur mit `# canon-floor: <CVE/Grund>`-Kommentar | Canon-Review PLAT-166 (2026-07-02): `langgraph/content/requirements.txt` 7×`>=` und `admin/admin_web/package.json` `^`-Ranges trotz 03-Pinning-Standard (seit 2026-05-28) — Review-Modus nachweislich unzureichend, Regel grep-bar | maschinell (`check_deps_pinned.py`, Warn-Modus) |
 
-> **K-04** ist der einzige Eintrag mit einem heute real laufenden Check — im **Warn-Modus**,
-> nicht scharf (PLAT-110 B4, `check_container_haertung.py`, `kanon_ref: K-04`). Der genaue
+> **Real laufende Checks (Stand PLAT-166, 2026-07-02):** der Runner führt **vier** Checks —
+> K-01 `rls-failclosed`, K-04 `container-haertung` (PLAT-110 B4, `check_container_haertung.py`),
+> PRIS-118 `posts-tenant-filter` und K-16 `deps-pinned`. **K-01 und `posts-tenant-filter`
+> laufen scharf** im CI-Job `canon-k01-rls-scharf` (`CANON_SCHARF: K-01,posts-tenant-filter`)
+> gegen das committete Schema; K-01 zusätzlich nightly im Warn-Modus gegen die Live-DB
+> (`rls_failclosed_nightly.sh`, PLAT-135). K-04 und K-16 laufen im Warn-Modus. Der genaue
 > Schärfe-Zustand kommt aus `run_canon_checks.py --report`, nicht aus dieser Tabelle.
 >
 > **K-03/K-04 sind dokumentiert, nicht gefixt** — die harte Grenze von PLAT-110 (keine

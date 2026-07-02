@@ -1,7 +1,7 @@
 ---
 typ: verfassung
 titel: "Code-Standards"
-stand: 2026-05-28
+stand: 2026-07-02
 aenderung: "nur nach oben, nur durch bewusste Freigabe"
 ---
 
@@ -43,7 +43,7 @@ Jeder Commit/PR/nightly auf `prisment-platform` durchläuft folgende blockierend
 
 - **`npm audit --audit-level=moderate`** für `pwa/pwa-web` + `admin/admin_web`. Bei moderate-CVE: Fail. Fix-Pfad: gezielte Paket-Anhebung (nie `npm audit fix --force` — Major-Downgrades brechen alles), ggf. `overrides`-Feld in package.json gegen transitive Pins.
 - **`pip-audit -r requirements.txt --strict --vulnerability-service osv`** für die 5 LangGraph-Agents + pwa-api. Bei beliebigem CVE: Fail. Bewusste Ausnahmen via `--ignore-vuln <ID>` direkt in `ci.yml` mit einzeiliger Begründung (verhindert „magisches" Wegklicken).
-- **ESLint (`next lint --max-warnings=0`)** für beide Next-Projekte. `.eslintrc.json` erbt `next/core-web-vitals`. Kosmetische Regeln, die ganzes Bestands-JSX brechen würden, dürfen per Rule-Override deaktiviert werden — Security-relevante Regeln bleiben hart.
+- **ESLint (direkter Aufruf `eslint . --max-warnings=0`)** für beide Next-Projekte — nicht `next lint` (deprecated seit Next 15, **entfernt in Next 16**; Umstellung PLAT-166). `.eslintrc.json` erbt `next/core-web-vitals`. ESLint 8 ist EOL — die Migration auf ESLint 9 + Flat Config ist eine eigene Folge-Spec (PLAT-166 P2), bis dahin bleibt 8.x exakt gepinnt. Kosmetische Regeln, die ganzes Bestands-JSX brechen würden, dürfen per Rule-Override deaktiviert werden — Security-relevante Regeln bleiben hart.
 - **Ruff (`ruff check`)** für alle Python-Pakete. Starter-Set in `pyproject.toml` ist nur `F` (Pyflakes/echte Bugs). Style-Regeln (`E`/`W`) wachsen iterativ ein, wenn die Diskussion dazu reif ist. Pre-existing Verstöße werden per-Zeile `# noqa: <CODE> — TODO …` markiert, NIE global disabled.
 
 **Nightly:** Derselbe Workflow läuft per `cron: '0 4 * * *'` gegen `main` — fängt neu bekannt gewordene CVEs in bereits-gemergten Deps. Fail-Notification per Gitea-Mailer an `info@prisment.de`.
