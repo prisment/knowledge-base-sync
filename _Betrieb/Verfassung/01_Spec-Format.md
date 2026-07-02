@@ -123,7 +123,7 @@ Test für die oberste Stufe: *Wirkt das Versagen schon im Verifikationsfenster l
 
 **Nur-nach-oben:** Claude Code und der Mensch dürfen nur **hoch**stufen. Ein Listen-Treffer kann nicht weggeurteilt werden. (Korrespondiert mit dem „Tut NICHT" des Arbeitstiers in `02_Rollen-Protokoll.md`: „stuft Kritikalität nie nach unten ab, um im Autopilot zu bleiben".)
 
-**Spec-Vermerk:** pro Nicht-Listen-Bündel nur `kritisch: sicher|kritisch|sicherheitskritisch-akut` + Halbsatz Begründung — nicht die ausformulierten Testfragen (die sind Werkzeug, nicht Lesestoff). Listen-Treffer brauchen keinen Halbsatz (die Liste IST die Begründung).
+**Spec-Vermerk:** pro Nicht-Listen-Bündel nur `kritisch: sicher|kritisch|sicherheitskritisch-akut` + Halbsatz Begründung — nicht die ausformulierten Testfragen (die sind Werkzeug, nicht Lesestoff). Listen-Treffer brauchen keinen Halbsatz (die Liste IST die Begründung). **Zusätzlich trägt jedes Bündel einen `abhaengig_von:`-Vermerk** (Bündel-IDs oder `—`; Abschnitt „Bündel-Parallelität innerhalb eines Auftrags" unten) — er macht in Akt 3 den parallelen Worker-Dispatch unabhängiger Bündel ablesbar.
 
 **Die Liste lebt:** wächst per Akt-3-Pflicht-Tor (Mensch gibt frei, E3-konform), wenn ein Schaden eine fehlende Kategorie aufdeckt.
 
@@ -144,6 +144,14 @@ python3 /opt/infrastructure/environment_a/scripts/backlog/check_parallel.py <pfa
 Drei Ausgabe-Klassen: ✓ `disjunkt` / ✗ `Schnittmenge zwischen Spuren` / ✗ `Hot-File-Treffer`. Bleibt als interaktives Werkzeug nützlich; den **harten** Kollisions-Schutz trägt jetzt die strukturelle Worktree-Isolation + git-non-ff-Ablehnung (`parallel-agent-schutz.md`), nicht mehr ein Claim-acquire.
 
 **`10_Kunden/`-Schutz bleibt technische Wand:** Der pre-commit-Hook im knowledge-base-Repo lehnt jeden Commit auf einem `wt/*`-Branch ab, der Dateien unter `10_Kunden/` berührt. Mandantendaten gehören nur auf `main`. Override `--no-verify` nur in begründeten Ausnahmen + Logbuch-Notiz. Begründung: das ist Datenschutz/Datenintegrität, nicht Mengen-Steuerung — bleibt deshalb hart.
+
+### Bündel-Parallelität innerhalb eines Auftrags (Mensch-Freigabe 2026-07-02)
+
+Der Abschnitt oben regelt parallele **Spuren** (mehrere Specs/Sessions). Zusätzlich gilt **innerhalb** eines Auftrags — Scope: die **interaktive Architekt-Session**; der autonome Orchestrator-Loop bleibt single-threaded (Verfassung 07 „Single-threaded-`main`-Garantie"):
+
+- **`abhaengig_von:`-Vermerk pro Bündel (Pflicht, Akt 1).** Neben dem `kritisch:`-Flag setzt Claude Code in der Sondierung pro Bündel verbindlich `abhaengig_von: <Bündel-IDs>` oder `abhaengig_von: —` (gleiche Schreibweise wie das Seed-Feld, aber anderer Scope: zeigt auf Bündel-IDs **desselben** Auftrags, nie auf Seed-IDs; entfällt bei Ein-Bündel-Aufträgen). Der Vermerk macht Unabhängigkeit **explizit lesbar**, statt sie dem Akt-3-Ausführenden zur Laufzeit zu überlassen — Modelle, die Unabhängigkeit schwächer selbst erkennen, lesen sie hier ab statt zu raten. Maßstab beim Setzen: braucht B das *Ergebnis* von A (Daten, Dateien, Reihenfolge, geteilter Zustand)? Im Zweifel konservativ setzen — seriell ist der sichere Default, Parallelität die belegte Ausnahme. **Fehlt der Vermerk** (Alt-Sondierung von vor dieser Regel): als „unbekannt" lesen → seriell, nie als „keine Abhängigkeit".
+- **Nutzung in Akt 3:** Bündel ohne gegenseitige Abhängigkeit UND mit disjunkten Datei-Scopes soll der Architekt **parallel an Worker dispatchen** — in einem Turn, im Vordergrund (Mechanik + Zuverlässigkeits-Rahmen: CLAUDE-global, Sektion „Subagenten", Absatz „Parallel-Dispatch unabhängiger Subagenten"). Maßstab für „disjunkt" ist `check_parallel.py` (✓ disjunkt, kein Hot-File-Treffer, Werkzeug s. o.); logische Kopplung (gemeinsamer Import, geteilte Config) zählt als nicht disjunkt. Schreibende Parallel-Worker arbeiten in eigenen Worktrees (Kollisions-Schutz oben).
+- **Grenzen:** Die Blocker-Regel (Halde, unten) gilt unverändert — ein Blocker friert seine Abhängigkeitskette ein, unabhängige Stränge laufen weiter. Ein `sicherheitskritisch-akut`-Bündel läuft **nie** parallel zu anderer Arbeit: der Vor-Stopp ist ein synchroner Punkt, und das Verifikationsfenster darf nicht durch parallele Effekte verunreinigt werden.
 
 ### Autonome Halde (freigegebene sicher-Specs)
 

@@ -168,6 +168,35 @@ einzelne Nur-Mensch-AK, nicht das Tor.
 - Regressions-Suite (AK-Katalog) wächst mit jedem Bug. Zeitgesteuerter Dauer-Smoke erst bei
   belegtem Drift.
 
+## Promote-Topologie — merge-then-prove (PLAT-165)
+
+**Leitbild:** Der Worker-Selbsttest (Zwei-Belege auf dev) bleibt VOR dem Merge — nur die kalte
+institutionelle Prüfung (Prüfer-Pass) und der Promote wandern dahinter. Merge nach `main` **ist**
+die Kandidatur: der Abnahme-Kandidat wird per `build_image.sh --kandidat` aus dem main-Checkout
+auf `origin/main`-Stand gebaut (main-HEAD), nicht mehr aus einem Worktree-/Sibling-SHA.
+
+**Akzeptierter Trade-off:** Der Kandidat trägt alle bereits gemergten Sibling-Deltas desselben
+Images mit („Kollateral-Promote") — gewollte Semantik, kein Loch: der kalte Prüfer prüft den
+**integrierten** Stand, der live geht, statt eines Worktree-Stands, der mit den Siblings nie
+zusammen lief. Damit das Mitfahren nie still passiert, zeigt `promote_image.sh` das mitfahrende
+Delta laut an (Mitfahr-Transparenz: `git log <live-rev>..<rev>` + Commit-Anzahl im Run-Log).
+
+**Fehlermode + Rückweg:** Fällt der kalte Prüfer NACH dem Merge rot aus, ist der Rückweg der
+**Revert-/Fix-forward-Commit auf main** — billig, denn `main` ≠ `live`: live läuft unverändert
+weiter. Blockiert ist dabei nur der neue Kandidat des betroffenen Images; `promote_image.sh`
+verlangt einen geprüften main-SHA, der **Descendant der laufenden Live-Revision** ist (Guard A/B),
+**nicht** zwingend main-HEAD — bereits grün geprüfte, ältere Kandidaten (auch anderer Images)
+bleiben promotebar. Ein defekter main-HEAD friert also nicht alle Spuren ein.
+
+**WIP-Verhaltensregel (max. 2 gleichzeitige cv-Spuren):** höchstens zwei kundensichtbare
+Bau-Spuren laufen parallel; eine dritte wartet. Verhaltensregel, kein Gate — keine neue
+Maschinerie, nur Selbst-Disziplin gegen Bühnen-Contention.
+
+**Tor-Gesundheits-Regel:** Die Umgehungsquote jedes Tors (Prüfer-Skip, Promote-Override) wird
+quartalsweise gemessen (`tor_gesundheit.py`). Überschreitet sie **>20 %**, wird das Tor
+**redesignt oder abgeschafft** — nicht ermahnt. Ein Tor, das die Mehrheit umgeht, misst Rauschen
+statt Sicherheit.
+
 ## Vor-Promote-Stop-Tor (PLAT-144, in-session Erzwingung)
 
 **Schichten-Modell (Defense-in-depth):**
@@ -181,10 +210,13 @@ einzelne Nur-Mensch-AK, nicht das Tor.
 3. **SessionStart-Erinnerung** — beim naechsten Session-Start wird ein armed cv-`:test`-Zustand
    sichtbar (faengt verpasste Stops und Fortsetzungs-Sessions).
 
-**Maschineller cv-Ausloeser:** Der Stop-Hook (`kb/.claude/hooks/pruefer-gate-stop.py`) erkennt
-einen cv-Build aus dem Session-Transcript — Signal: Bash-Aufruf mit `build_image.sh` **und**
-einem cv-Image-Namen oder cv-Context-Dir. Die cv-Image-Allowlist ist SSOT in
-`_Betrieb/Skripte/pruefer-gate/cv_images.json` (pwa-web, pwa-api, langgraph-*, admin-web).
+**Maschineller cv-Ausloeser (PLAT-165: nur Kandidat-Build armt):** Der Stop-Hook
+(`kb/.claude/hooks/pruefer-gate-stop.py`) erkennt einen Kandidat-Build aus dem Session-Transcript
+— Signal: Bash-Aufruf mit `build_image.sh --kandidat` **und** einem cv-Image-Namen oder
+cv-Context-Dir. Die cv-Image-Allowlist ist SSOT in `_Betrieb/Skripte/pruefer-gate/cv_images.json`
+(pwa-web, pwa-api, langgraph-*, admin-web). Ein gewöhnlicher (nicht-Kandidat) Iterations-Build im
+Worktree armt **nicht** — er schreibt gar keinen `armed`-Event (B1/B3); nur der
+Abnahme-Kandidat von main-HEAD tut das.
 
 **Disarm-Wege:** `pruefer_stamp.py <img> <rev> gruen --report <pfad>` (nach echtem Pruefer-Pass)
 ODER `pruefer_stamp.py <img> <rev> skip --grund '<text>'` (lauter Skip, auditierbar).
