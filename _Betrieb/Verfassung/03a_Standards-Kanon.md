@@ -73,14 +73,17 @@ Jeder Standard trägt **genau diese fünf Felder** — keine Format-Erfindung be
 | K-13 | Daten | DB-Migrationen/Objekt-Referenzen **pinnen das Schema explizit** (`schema.table`, `GRANT USAGE ON SCHEMA`) statt sich auf `search_path` zu verlassen — CI-Bootstrap-`search_path` (auth,public) weicht vom Live-Default (public) ab → „relation does not exist" | PLAT-127 (search_path CI-ephemer vs. Live) + PLAT-133 (`relation users does not exist` = fehlendes `USAGE ON SCHEMA auth`; memory `project_dev_login_schema_usage`, `project_plat127_searchpath_ci_ephemer`) | Urteil (Review) |
 | K-14 | API/Daten | One-shot-Zustandsmarker (Onboarding-Schritt, „vorgezogen", Versand-Flag) werden **idempotent** gesetzt — nie bei jedem Start/Aufruf re-gefeuert | PRIS-099 Interview-Timing: Marker `interview_vorgezogen` feuerte bei jedem Start statt einmalig (memory `project_pris099_interview_timing`) | Urteil (Review) |
 | K-15 | Beobachtbarkeit/API | Operationen, die >10 s dauern können, bekommen einen **Fortschritts-/Poll-Pfad** (Status-GET) statt eines einzelnen blockierenden Requests — Browser/Proxy brechen die Verbindung bei ~13–20 s ab, obwohl das Backend noch 200 liefert | PWA „KI-Verbindungsfehler": pwa_api 200, Browser bricht bei 13–20 s; Fix paralleles GET /posts-Pollen (memory `project_pwa_ki_verbindungsfehler`) | Urteil (Review) |
-| K-16 | Auslieferung | Direkte Dependencies sind **exakt gepinnt** (pip `==`, npm exakte Version — kein `^`/`~`/Range) in allen getrackten `requirements.txt` und `package.json`; Floor-Constraints (`>=`) nur mit `# canon-floor: <CVE/Grund>`-Kommentar | Canon-Review PLAT-166 (2026-07-02): `langgraph/content/requirements.txt` 7×`>=` und `admin/admin_web/package.json` `^`-Ranges trotz 03-Pinning-Standard (seit 2026-05-28) — Review-Modus nachweislich unzureichend, Regel grep-bar | maschinell (`check_deps_pinned.py`, Warn-Modus) |
+| K-16 | Auslieferung | Direkte Dependencies sind **exakt gepinnt** (pip `==`, npm exakte Version — kein `^`/`~`/Range) in allen getrackten `requirements.txt` und `package.json`; Floor-Constraints (`>=`) nur mit `# canon-floor: <CVE/Grund>`-Kommentar. **Seit PLAT-169 zusätzlich:** jeder pip-Dockerfile-Service trägt ein kompiliertes `requirements.lock` (uv, transitive Menge exakt, `source-sha256`-Header), synchron zur `requirements.txt` | Canon-Review PLAT-166 (2026-07-02): `langgraph/content/requirements.txt` 7×`>=` und `admin/admin_web/package.json` `^`-Ranges trotz 03-Pinning-Standard (seit 2026-05-28) — Review-Modus nachweislich unzureichend, Regel grep-bar; Lock-Erweiterung PLAT-169 (transitive Deps waren ungepinnt, Audit≠Image) | maschinell (`check_deps_pinned.py` Warn-Modus; Lock-Sync: `check_lock_sync.py` — CI-blockierend in `audit-python`, Canon-Runner Warn-Modus) |
 
-> **Real laufende Checks (Stand PLAT-166, 2026-07-02):** der Runner führt **vier** Checks —
+> **Real laufende Checks (Stand PLAT-169, 2026-07-02):** der Runner führt **fünf** Checks —
 > K-01 `rls-failclosed`, K-04 `container-haertung` (PLAT-110 B4, `check_container_haertung.py`),
-> PRIS-118 `posts-tenant-filter` und K-16 `deps-pinned`. **K-01 und `posts-tenant-filter`
+> PRIS-118 `posts-tenant-filter`, K-16 `deps-pinned` und K-16 `lock-sync`
+> (`check_lock_sync.py`, PLAT-169). **K-01 und `posts-tenant-filter`
 > laufen scharf** im CI-Job `canon-k01-rls-scharf` (`CANON_SCHARF: K-01,posts-tenant-filter`)
 > gegen das committete Schema; K-01 zusätzlich nightly im Warn-Modus gegen die Live-DB
-> (`rls_failclosed_nightly.sh`, PLAT-135). K-04 und K-16 laufen im Warn-Modus. Der genaue
+> (`rls_failclosed_nightly.sh`, PLAT-135). K-04, K-16 `deps-pinned` und K-16 `lock-sync` laufen
+> im Canon-Runner im Warn-Modus — `lock-sync` blockt zusätzlich hart als eigener Step im
+> CI-Gate-Job `audit-python` (vor pip-audit). Der genaue
 > Schärfe-Zustand kommt aus `run_canon_checks.py --report`, nicht aus dieser Tabelle.
 >
 > **K-03/K-04 sind dokumentiert, nicht gefixt** — die harte Grenze von PLAT-110 (keine
