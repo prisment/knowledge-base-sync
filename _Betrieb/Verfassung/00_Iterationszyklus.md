@@ -2,7 +2,7 @@
 typ: verfassung
 titel: "Iterationszyklus"
 stand: 2026-06-11
-aenderung: "nur nach oben (nie schlechter), nur durch bewusste Freigabe des Menschen"
+aenderung: "nur nach oben = Qualität, nicht Volumen; Streichung einer toten Regel mit Mensch-Freigabe ist eine Verbesserung"
 ---
 
 # 00 — Iterationszyklus
@@ -10,8 +10,6 @@ aenderung: "nur nach oben (nie schlechter), nur durch bewusste Freigabe des Mens
 Der verbindliche Arbeitsablauf für jeden Zyklus. Alle drei Akteure (Mensch, **Architekt** [der Claude-Agent am Host, der berät und das Wohin setzt — seit PLAT-130 keine getrennte Windows-Maschine mehr], **Claude Code** [die ausführende Hand am System, als Worker-Subagent oder Haupt-Session]) kennen ihn.
 
 **Tragender Gedanke:** Der Zyklus folgt der Realität, nicht der Bürokratie. Wer am echten System sitzt (Claude Code), sondiert und führt aus. Wer den Gesamtüberblick hat (Mensch, beraten vom Architekt), legt fest. Daraus ergeben sich **drei Akte** statt einer langen Phasenkette — die alte 9-Phasen-Nummerierung ist abgelöst (Begründung: Logbuch-Eintrag zu dieser Umstellung).
-
----
 
 ## Die drei Akte
 
@@ -23,8 +21,6 @@ Der verbindliche Arbeitsablauf für jeden Zyklus. Alle drei Akteure (Mensch, **A
 
 Die **Stufe** (Spur / Sprung / Schritt) bestimmt, wie schwer jeder Akt wiegt und wer in Akt 2 beteiligt ist. Die Akte sind keine starren Schleusen: beim Schritt schrumpfen 1 und 2 auf null, beim Sprung verschmelzen sie.
 
----
-
 ## Stufen (Prozess-Tiefe skaliert mit dem Vorhaben)
 
 Nicht jedes Vorhaben braucht denselben Prozess-Umfang. Drei Stufen, getrennt nach **Zeremonie-Bedarf**, nicht nach Thema.
@@ -35,28 +31,21 @@ Nicht jedes Vorhaben braucht denselben Prozess-Umfang. Drei Stufen, getrennt nac
 | **Sprung** | Konkrete, abgegrenzte Aufgabe, überschaubares Risiko. Ein Bugfix, eine einzelne Feature-Erweiterung. | Sondierung **=** kombinierte Spec (Claude Code schreibt sie selbst) | **Kein Architekt by default** — nur bei gemeldeter Wohin-Gabelung | kombinierte Spec + kurze Abschluss-Notiz |
 | **Schritt** | Trivial, reversibel, isoliert, in einem Rutsch. Typo, Doku-Update, ein Config-Wert, toter Ordner. | entfällt | entfällt | Eine Zeile in `<Bereich>/Schritt-Log.md` (automatisch) |
 
-### Einstufung gehört zur Beratung, nicht zur Alleinentscheidung des Menschen
-
-Die Stufe wird **nicht vom Menschen allein geraten**. Was leicht aussieht, hängt manchmal an viel.
+**Einstufung gehört zur Beratung, nicht zur Alleinentscheidung des Menschen.** Die Stufe wird **nicht vom Menschen allein geraten**. Was leicht aussieht, hängt manchmal an viel.
 
 - Bei jedem Auslöser schlägt **Claude Code (Akt 1) und/oder der Architekt die Stufe vor** — mit kurzer Begründung, was tatsächlich daran hängt.
 - Der Mensch **revidiert**, trägt die Einschätzung aber nicht allein.
 - Die Stufe steht als Pflichtfeld `stufe:` im Front Matter jeder Spec/Notiz (Format: `01_Spec-Format.md`).
 
-### Keine Planungs-Ebene über der Spur (PLAT-022, E36)
-
-Es gibt genau drei Stufen. **Eine Spur IST das große Vorhaben.** Folge-Arbeit wird als Seed abgezweigt, nie als übergeordnetes Schirm-Dokument geführt. Der Begriff „Roadmap" ist als Framework-Artefakt abgeschafft. Strategie-/Produkt-Dokumente, die das Wort inhaltlich verwenden (z. B. `Prisment/Systemzustand/Strategie/prisment_roadmap_businessplan.md`), sind ausgenommen — nicht Framework-Ebene.
+**Keine Planungs-Ebene über der Spur (PLAT-022, E36).** Es gibt genau drei Stufen. **Eine Spur IST das große Vorhaben.** Folge-Arbeit wird als Seed abgezweigt, nie als übergeordnetes Schirm-Dokument geführt. Der Begriff „Roadmap" ist als Framework-Artefakt abgeschafft. Strategie-/Produkt-Dokumente, die das Wort inhaltlich verwenden (z. B. `Prisment/Systemzustand/Strategie/prisment_roadmap_businessplan.md`), sind ausgenommen — nicht Framework-Ebene.
 
 **Die einzige erlaubte Ebene über der Spur ist das Projekt** (`07_Projekt-Orchestrierung.md`) — und das bleibt mit der Roadmap-Abschaffung vereinbar: Eine Roadmap bündelte *mehrere unabhängige Wohins* (verboten); ein Projekt hat **genau ein** maschinell prüfbares Akzeptanzkriterium, dem alle seine Seeds dienen. Ein-Ziel-Behälter erlaubt, Mehr-Ziel-Schirm nicht. Das Projekt ist zudem keine Stufe, sondern eine orthogonale Ebene — die „genau drei Stufen" gelten unverändert.
 
-### Harte Regel gegen Stufen-Inflation
-
+**Harte Regel gegen Stufen-Inflation:**
 - **Risikoklasse `kritisch` und `sicherheitskritisch-akut` erzwingen immer Spur.** Beide können nie als Sprung oder Schritt gefahren werden — schützt davor, Gefährliches aus Bequemlichkeit klein zu fahren. (PLAT-012, aufgedeckt bei der Backlog-Migration über `seed-os-patching-broken`.)
 - Die Versuchung, sich alles als „Schritt" schönzureden, ist genau die menschliche Trägheit, vor der dieses Framework warnt. Ehrliche Einstufung ist Disziplin, kein Formalismus.
 
-### Eskalation einer Stufe während des laufenden Vorhabens
-
-Öffnet sich während der Arbeit ein Fass (ein Sprung entpuppt sich als Spur, weil Kritisches aufkommt — wie in PLAT-001, wo der Q2-Echttest die Allowlist-Frage aufriss):
+**Eskalation einer Stufe während des laufenden Vorhabens.** Öffnet sich während der Arbeit ein Fass (ein Sprung entpuppt sich als Spur, weil Kritisches aufkommt — wie in PLAT-001, wo der Q2-Echttest die Allowlist-Frage aufriss):
 
 - Architekt **und** Claude Code schlagen die Höherstufung **beratend vor** (nicht der Mensch muss es bemerken).
 - Bei Zustimmung: **Stopp**, kurzer Vermerk im laufenden Dokument („hochgestuft von Sprung → Spur, weil …"), dann mit voller Zeremonie weiter. Konkret heißt das: das Vorhaben tritt zurück in Akt 2 mit voller Spur-Zeremonie (Mensch gibt nach Wirkungs-Block frei; Architekt auf Abruf).
@@ -64,8 +53,6 @@ Es gibt genau drei Stufen. **Eine Spur IST das große Vorhaben.** Folge-Arbeit w
 - **Herunterstufung gibt es nicht automatisch.** Wer einmal als Spur erkannt wurde, bleibt Spur.
 
 **Eskalations-Kette vollständig:** Schritt → Sprung → Spur → **Projekt**. Die letzte Stufe der Kette — Spur → Projekt — ist **keine vierte Stufe**, sondern der Übertritt auf die Projekt-**Ebene** (orthogonal zur Stufen-Achse): ein Vorhaben entpuppt sich als emergent-mehrspurig mit *einem fixen, maschinell prüfbaren Wohin*, das ein menschlich ratifizierter Abweichungs-Kontrakt + ein autonomer Orchestrator-Loop abwickelt. Mechanik, Kontrakt und Freigabe-Vollmacht: **`07_Projekt-Orchestrierung.md`**. Auch hier gilt nur-nach-oben.
-
----
 
 ## Akt 1 — Sondierung (Claude Code, am echten System)
 
@@ -94,27 +81,21 @@ Bei **Seed-Auslöser ohne frisches Briefing** IST der Seed-Text (Soll/Absicht) d
 
 **Pre-flight: `antritts-pruefung` nach Auftrags-Lektüre (PLAT-154 Mech 1).** Nach dem Lesen des Auftrags/Seeds — analog zum `git pull` beim Session-Start — fährt jede Session die Skill `antritts-pruefung`. Sie prüft Kollision, Doppelarbeit, Vorbedingung und Sinnhaftigkeit gegen die tatsächlich lebenden Parallel-Spuren beider Repos (kb + env_a) und rendert ein GO / STOP / VORSICHT-Verdikt. Skript: `_Betrieb/Skripte/backlog/antritts_check.py`. Fail-open: bei Discovery-Fehler → GO.
 
-**Wo das Dokument liegt:**
-- **Spur:** eigenes Sondierungs-Dokument im Arbeitsgedächtnis (`report_art: sondierung`, erbt später die `spec_id`).
-- **Sprung:** die Sondierung IST bereits die kombinierte Spec (Fakten/Soll inline) — Claude Code schreibt sie direkt als `<ID>_SPEC.md`.
+**Wo das Dokument liegt:** Spur → eigenes Sondierungs-Dokument im Arbeitsgedächtnis (`report_art: sondierung`, erbt später `spec_id`). Sprung → die Sondierung IST die kombinierte Spec, direkt als `<ID>_SPEC.md`.
 
-**Pflicht zur Lesbarkeit (Token-Schutz):** Jede Datei, die der Mensch oder der Architekt für Akt 2 braucht, wird **mit vollem Pfad** benannt. Der Architekt am Host **teilt das Dateisystem** mit den Subagent-Worktrees (seit PLAT-130) — er liest den Ist-Stand direkt, der alte Windows-Zwang „muss erst auf `main`, sonst sieht's der Architekt nicht" ist aufgehoben. Was der **Mensch** zur Freigabe braucht, gehört weiter **auf `main` gepusht** (er liest über Obsidian/Repo), ebenso die durablen Stände der persistenten Schicht. **Verboten** bleibt, suchen zu lassen: existiert-und-Pfad-genannt ist Pflicht. Ein Diff ist NICHT der Default-Beleg — der Ist-Stand der Datei wird direkt gelesen. Diff nur, wenn der Mensch explizit „Änderung gegen vorher" sehen will.
+**Pflicht zur Lesbarkeit (Token-Schutz):** Jede Datei, die Mensch/Architekt für Akt 2 brauchen, wird **mit vollem Pfad** benannt, nie zum Suchen freigegeben. Was der Mensch zur Freigabe braucht, bleibt auf `main` gepusht. Ein Diff ist NICHT der Default-Beleg — Ist-Stand wird direkt gelesen.
 
-**Option 0 (Pflicht).** Jede Sondierung enthält als erste Option die ernsthafte Gegenrede: nicht tun / anders lösen / streichen — mit dem stärksten Argument dafür, nicht dem schwächsten. Eine Sondierung ohne Option 0 ist unvollständig und darf nicht weitergereicht werden. Option 0 wird wie jede andere Option behandelt: Empfehlung kann auf sie fallen, die Wahl bleibt beim Menschen (bzw. beim Orchestrator im Projektkontrakt, wenn das Wohin unberührt bleibt).
+**Option 0 (Pflicht).** Jede Sondierung enthält als erste Option die ernsthafte Gegenrede: nicht tun / anders lösen / streichen — mit dem stärksten Argument dafür. Ohne Option 0 ist eine Sondierung unvollständig und nicht weiterreichbar. Empfehlung kann auf Option 0 fallen; die Wahl bleibt beim Menschen.
 
-### Fakten-Erhebung via Subagent (Kontext-Schutz)
+### Fakten-Erhebung via Subagent (Akt-1-Spezialfall der Offload-Disziplin, s. u.)
 
-Die **read-lastige Erhebung** in Akt 1 läuft über einen read-only Subagenten (`erhebung` für breite Orientierung/Sweeps auf Sonnet-Boden; `sondierung` für die urteils-tragende Akt-1-Erhebung, die direkt die Spec-Synthese speist, auf Opus), **nicht** im Hauptkontext. Das gilt für: Ist-Fakten am echten System (Datei-Reads, grep, Container-/DB-/Service-Stand), Logbuch-/Backlog-/Doku-Recherche, Code-Exploration im Worktree. Dasselbe Muster greift für read-lastige **Verifikations-Sweeps in Akt 3** (Konsistenz über viele Dateien/Services) — der Sweep wird delegiert, die Entscheidung daraus bleibt im Ausführungs-Thread. Subagenten laufen per Default **im Vordergrund** (Stabilität vor Parallelität); `run_in_background` ist bewusst **nicht** der Default (Korbinian-Ruling 2026-06-25: Poller-Instabilität + hängende Hintergrund-Agents lösen keine Completion-Notification aus). **Eng gefasste Ausnahme (PLAT-143, 2026-06-26):** `run_in_background` ist erlaubt **nur**, wenn ≥2 Agents parallel laufen (max ~4), ein schnellerer einen vor-Dispatch benannten, allein aus dessen Ergebnis lauffähigen Folgeschritt gatet (asymmetrische Abhängigkeit), ein unabhängiger Sentinel-Timer (`Bash`, `sleep N`) als Detektions-Arm mitläuft, **und** eine über `sleep N` hinaus ausbleibende Notification als hung-Verdacht aktiv nachgefasst statt still durchlaufen wird. Der *hung-Modus ist ungetestet* — die Regel ist Versicherung, kein Fix. Sonst Vordergrund. Voller Wortlaut + Beleg: CLAUDE-global, Abschnitt Subagenten.
+Die **read-lastige Erhebung** in Akt 1 läuft über einen read-only Subagenten (`erhebung` für Orientierung/Sweeps, Sonnet; `sondierung` für die urteils-tragende Erhebung, die direkt die Spec-Synthese speist, Opus), **nicht** im Hauptkontext — Ist-Fakten, Logbuch-/Backlog-Recherche, Code-Exploration. Dasselbe Muster gilt für read-lastige Verifikations-Sweeps in Akt 3. Subagenten laufen per Default **im Vordergrund**; die enge `run_in_background`-Ausnahme (PLAT-143) + Fail-safe bei hung-Verdacht: voller Wortlaut CLAUDE-global „Subagenten".
 
-**Grund:** Der Hauptkontext bleibt frei für das Urteil und wird nicht mitten in der Sondierung weg-compactet — der heutige eigentliche Qualitätsverlust. Die Trennung ist Hand/Kopf: der Subagent erhebt (Hand), der Hauptthread urteilt (Kopf).
+**Grund (Hand/Kopf):** Der Hauptthread bleibt frei fürs Urteil und wird nicht mitten in der Sondierung weg-compactet — der Subagent erhebt (Hand), der Hauptthread urteilt (Kopf).
 
-**Quell-Verankerungs-Wand:** Der Subagent liefert das Ergebnis im **Fakten-Register-Format** — jeder Fakt trägt `datei:zeile` bzw. Befehl/Ausgabe, nie als Prosa-Zusammenfassung. So bleibt „bewiesen, nicht angenommen" gewahrt und der Hauptthread kann jeden urteils-kritischen Fakt gezielt nachprüfen. Der Hauptthread behandelt das Digest wie ein Projekt-Fakten-Register (vgl. CLAUDE-global „Fakten-Register lesen"). Den auslösenden **Seed / die Spec liest der Hauptthread selbst** (klein, Urteils-Anker); der Subagent bekommt den Erhebungs-Auftrag und darf den Pfad mitlesen.
+**Quell-Verankerungs-Wand:** Der Subagent liefert `datei:zeile`-belegte Fakten, nie Prosa — der Hauptthread prüft jeden urteils-kritischen Fakt nach. Den auslösenden Seed/die Spec liest der Hauptthread selbst (Urteils-Anker).
 
-**Was nie delegiert wird (Kopf, nicht Hand):** Machbarkeits-Urteil, Bündelung, Stufen-/Kritikalitäts-Setzung, Option 0, die Spec-Synthese und jedes Wohin. Der kalte Evaluator und `advisor()` bleiben eigene Instanzen (Generator ≠ Evaluator) — sie werden hierdurch nicht ersetzt. „Am echten System" ist gewahrt: der Subagent läuft am selben System, er ist Claude Codes Hand, keine Auslagerung.
-
-*Diese Akt-1-Regel ist der **Akt-1-Spezialfall** der run-übergreifenden **Offload-Disziplin — Main = Urteils-Faden (PLAT-152)**; siehe dort für das Leitprinzip über den ganzen Lauf.*
-
----
+**Was nie delegiert wird:** Machbarkeits-Urteil, Bündelung, Stufen-/Kritikalitäts-Setzung, Option 0, Spec-Synthese, jedes Wohin. Evaluator und `advisor()` bleiben eigene Instanzen (Generator ≠ Evaluator).
 
 ## Offload-Disziplin — Main = Urteils-Faden (PLAT-152)
 
@@ -130,27 +111,11 @@ Die **read-lastige Erhebung** in Akt 1 läuft über einen read-only Subagenten (
 **Die Bündel-Regel (Turn-Kanal, nicht nur Größe).** Die Schwelle oben zielt auf den *einzelnen* großen Read; der Turn-Kanal trifft aber auch **N kleine**: mehrere read-heavy, **bündelbare** Sondier-Schritte, die *eine* Frage erheben (Verdrahtung einer Test-Bühne, Env-Handling über mehrere Container, Lokalisierung einer Logik über mehrere Dateien, eine Reihe Orientierungs-Reads für einen Bau / eine Entscheidung), gehören in **einen** Erhebungs-Dispatch (`erhebung`; `sondierung`, wenn die Recon urteils-tragend ist und direkt die Spec speist — der Opus-Boden gilt weiter), der ein Fakten-Register zurückgibt — **nicht** in N serielle Main-Bash-Calls/Reads. Jeder einzelne mag unter dem Größen-Backstop liegen und „nur ein Bash-Call" scheinen; *seriell* sind sie aber genau die N Main-Turns, die die quadratische `cache_read`-Kurve treibt — teuer ist ihre serielle **Zahl**, nicht der Einzel-Read.
 - **Diskriminator = erhebende Sondierung, nicht Read-Zahl.** Bloßes Zählen macht nicht offload-pflichtig: der **Boden** bleibt (triviale Einzel-Lookups bleiben inline, auch zu mehreren), und die **gezielte Direkt-Verifikation** gelieferter Subagent-Behauptungen (Quell-Verankerungs-Wand, oben) bleibt im Main — auch zu mehreren Fakten: das ist Verdikt gegen `datei:zeile`, nicht Sondierung, **unabhängig von der Read-Zahl**. Die Bündel-Regel zielt nur auf die *erhebende* Sondierung mehrerer Sonden zu einer Frage, nie auf das Verdikt darüber und nie auf Trivial-Lookups.
 
-**Die Kosten-Begründung (knapp, belegt — der Turn-Kanal führt).** Der größte Kosten-Hebel ist `cache_read` (~48 % der $, **quadratisch mit der Lauf-Länge**). Offload greift ihn **primär über den Turn-Kanal** an: ein ausgelagerter N-Turn-Block kollabiert im Main auf ~1 Dispatch-Turn — jeder entfernte Turn entfernt ein Re-Read des *ganzen* wachsenden Kontexts, greift also plausibel den quadratischen Term selbst. **Ehrlich: diese Magnitude ist nicht separat vermessen** (PLAT-149 maß sie nicht) — die Mess-Methode steht in der Beleg-Notiz, die Senkung selbst ist Wochen-Wirkung über künftige Läufe. Der **Größen-Kanal** (ein großer Read fällt nie in den Main, wird nie re-ge-cacht) wirkt **zusätzlich**, ist aber der **kleinere** — er ist Mitnahme, nicht der Haupt-Hebel. **Tiefen-Skalierung:** der Offload-Wert wächst mit der Lauf-Tiefe (ein Read bei Turn 180 spart ein Re-Read über 180 Turns) — deshalb ist Offload *das* Werkzeug für lange Läufe. Beleg + Zahlen: [`Plattform/Systemzustand/Effizienz/offload-disziplin-hundefutter-2026-06-28.md`](../../Plattform/Systemzustand/Effizienz/offload-disziplin-hundefutter-2026-06-28.md).
+**Kosten-Begründung (knapp).** Größter Kosten-Hebel ist `cache_read` (~48 % der $, quadratisch mit der Lauf-Länge); Offload greift primär über den Turn-Kanal (ein ausgelagerter N-Turn-Block kollabiert im Main auf ~1 Dispatch-Turn). Der Größen-Kanal wirkt zusätzlich, ist aber der kleinere (§3-Bezug: PLAT-149 maß nur diesen, nicht den Turn-Kanal — kein Widerspruch, andere Kostenstelle). Beleg: [`Plattform/Systemzustand/Effizienz/offload-disziplin-hundefutter-2026-06-28.md`](../../Plattform/Systemzustand/Effizienz/offload-disziplin-hundefutter-2026-06-28.md). **Durchsetzung** ist reine Agent-Doktrin, kein Hook (PLAT-149: „Sicht statt Zwang"). **Autonom-Variante:** „Main = Urteil" + die Verfassung-07-Checkpoints genügen, kein neuer Apparat — geschnitten wird ein Lauf nur bei echter Wohin-Gabelung oder wenn der Auftrag separierbar ist; Offload ersetzt nie das Splitten.
 
-**§3-Brücke (Scheinwiderspruch auflösen).** Der PLAT-149-Maßnahmen-Plan (Sektion „Spike-Verursacher") schreibt: *„der ‚read-heavy → Subagent'-Hebel ist der kleinste (0,3–5 %)"* — und **das stimmt** für den Größen-Kanal. Es ist trotzdem **kein** Widerspruch: §3 maß den *einmaligen* `tool_result`-`cache_write`-**Spike** eines Reads, der in den Main fällt (klein), **nicht** den Turn-Kanal — das `cache_read`-Wachstum unter der separaten Kategorie „Session-Länge" (die großen ~48 %). Der Haupt-Hebel dieser Disziplin ist der Turn-Kanal, eine von §3 nicht vermessene Kostenstelle. Den kleinen Größen-Kanal nimmt PLAT-152 mit, behauptet ihn aber nicht als den großen.
-
-**Durchsetzung: reine Doktrin, kein Hook.** Offload ist *Agent*-Selbstdisziplin (was lagere ich aus) — eine andere Oberfläche als die Statusline, die *Mensch*-Sicht ist (wann schneidet Korbinian den Chat). Kein Nudge-Hook, keine Statusline-Änderung — konsistent mit der bewussten H1-Nudge-Hook-Ablehnung (PLAT-149: „Sicht statt Zwang").
-
-**Autonom-Variante (unbeaufsichtigte lange Läufe).** Es reicht „Main = Urteil" + die bestehenden Verfassung-07-Checkpoints — **kein** neuer Apparat. Geschnitten / gecheckpointet wird ein Lauf nur, wenn (a) das Wohin echt gabelt (Mensch nötig) oder (b) der Auftrag separierbar ist (dann war es nie *ein* Auftrag). **Klarstellung gegen Maskierung:** Offload ersetzt **nicht** das Splitten — ein separierbarer Auftrag wird weiter geschnitten, egal wie schlank der Main ist. Der schlanke Main verbilligt nur den *legitim langen* Ein-Auftrag-Lauf; er macht aus zwei Aufträgen keinen.
-
-**Worked Example (illustrativ — zeigt die Schwelle an konkreten Fällen).** Fünf Fälle (1–4 aus der Hundefutter-Analyse des PLAT-149-Bau-Chats, 5 aus der PRIS-120/PLAT-146-Session):
-
-| # | Fall | Urteil | Warum |
-|---|---|---|---|
-| 1 | 58-KB-Doku (~1090 Z.) per WebFetch, nur ~10 Schema-Felder gebraucht | **raus** | `recherche`-Subagent liefert 10-Zeilen-Digest; die 58 KB fallen nie in den Main, kein Re-Read über alle Folge-Turns. |
-| 2 | Einzel-Fakt-Lookup (ein Pfad, eine Zeile) | **bleibt inline** | Boden: der Dispatch-+-Digest-Roundtrip kostet mehr als die Inline-Arbeit. Die Regel produziert *nicht* „alles raus". |
-| 3 | 6-Turn-Mess-Block (11-MB-Transkript finden, Marker finden, Analyzer schreiben/iterieren) | **raus** | Ein Subagent („miss Korrelation X in Session Y, gib Verdikt + Zahlen"); das 11-MB-Transkript berührt den Main nie. |
-| 4 | **Kollisionsfall:** großer Read (> 150 Z.), der aber **Urteils-Anker** ist (der auslösende Seed, die Spec, das Kern-Dokument, gegen das du urteilst) | **bleibt im Main** trotz Größe | Die Urteils-Anker-Klausel schlägt den Größen-Backstop — du musst direkt am Original urteilen, ein Digest würde den Anker verfälschen. |
-| 5 | **Bündel-Fall:** mehrere read-heavy Sonden, die *eine* Recon für einen Bau / eine Entscheidung erheben (Test-Bühnen-Verdrahtung + Env-Handling zweier Container + Logik-Lokalisierung in einer Datei + das tragende 354-Z.-Skript lesen), seriell im Main gefahren | **raus, als *ein* `erhebung`-Dispatch** | Turn-Kanal: die N seriellen Main-Sondier-Turns kollabieren in einen Dispatch mit Fakten-Register. Nicht der Einzel-Read ist teuer, ihre serielle *Zahl* ist es. (Anlass: PRIS-120/PLAT-146-Session 2026-06-28.) |
+**Worked Example (illustrativ, Details: Skill [`gated-execution`](../../.claude/skills/gated-execution/SKILL.md)).** Kurzform der Schwelle: großer Einzel-Read ohne Urteils-Anker → Subagent (raus); Einzel-Fakt-Lookup → inline; Urteils-Anker (Seed/Spec/Kern-Dokument) → bleibt im Main trotz Größe; mehrere read-heavy Sonden zu *einer* Frage → ein `erhebung`-Dispatch statt N serielle Main-Turns.
 
 **Mechanik für „Urteil bleibt, Ausführung geht".** Mechanische Ausführung mit deterministischem Korrektheits-Anteil (CLAUDE.md-Chirurgie, Massen-Refactor nach fixer Regel, Block-für-Block-Schnitt) läuft über das Muster im Skill [`gated-execution`](../../.claude/skills/gated-execution/SKILL.md): Disposition + deterministischen Verifizierer im Main bauen → Worker führt aus + liefert mechanische Evidenz → **das Verifikations-Verdikt rendert der Main**. Worker-allein-durch-Byte-Diff-gaten ist unsicher (siehe Skill).
-
----
 
 ## Akt 2 — Festlegung (im Chat, stufenabhängig)
 
@@ -183,9 +148,7 @@ Bevor der Mensch eine **Spur**-Spec freigibt, legt der **Architekt** die Zusamme
 - **Ein Bild** — Diagramm/Skizze, die zeigt, *wie die Teile zusammenhängen* (was hängt an was, was ändert sich wo). **Live gerendert, nicht versioniert** — es muss nicht ins Repo, es muss verstanden werden.
 - **Klartext-Erklärung** — in einfachen Worten, was die Spec real bewirkt und warum die Teile so zusammenspielen. Fachbegriff nur mit Halbsatz-Erklärung.
 
-Erst **nach** dieser Vorlage entscheidet der Mensch. Der Freigabe-**Akt** selbst (Ja/Veto) bleibt eine Mensch-Zeile; die **Vorlage davor ist Pflicht**. Damit ist die visuelle Aufbereitung von „auf Abruf" auf **Pflicht-Schritt der Spur-Freigabe** gehoben (Auslöser: der Mensch verstand technisch-komplexe Specs am Freigabe-Tor wiederholt nicht). **Konsequenz, bewusst akzeptiert:** Eine Spur kann nicht mehr rein im Terminal durchgewunken werden — die Vorlage läuft über den Architekten-Chat.
-
-*Gilt nur für **Spur**. Sprung und Schritt bleiben unberührt: dort schreibt Claude Code die Spec selbst und berät nach dem Beratungs-Rhythmus, ohne erzwungene visuelle Vorlage.*
+Erst **nach** dieser Vorlage entscheidet der Mensch — der Freigabe-**Akt** bleibt eine Mensch-Zeile, die **Vorlage davor ist Pflicht** (Auslöser: der Mensch verstand technisch-komplexe Specs am Tor wiederholt nicht; Konsequenz: eine Spur läuft nicht mehr rein im Terminal durch). *Gilt nur für **Spur** — Sprung/Schritt bleiben ohne erzwungene visuelle Vorlage.*
 
 ### Eine Spec-Fassung, kein Ping-Pong
 
@@ -193,13 +156,11 @@ Die Spec sitzt auf der bereits erhobenen Sondierung. Es gibt **keine** nachgelag
 
 **Spec-Freigabe ist der erste der zwei zwingenden Stopps.** Hier steckt der Gesamtüberblick des Menschen.
 
----
-
 ## Akt 3 — Ausführung & Verankerung (Claude Code, am echten System)
 
 Nach Spec-Freigabe arbeitet Claude Code **autonom im Korridor**, dessen Wände die Freigabe gezogen hat. Verlässt er den Korridor, stoppt er.
 
-**Bau = Worker (Rollen-Grenze an der Akt-2→Akt-3-Schwelle).** Akt 2 schreibt der Architekt selbst (Spec, auf `main`). Mit der Spec-Freigabe **kippt die Rolle**: substantiellen Akt-3-Bau (Code schreiben, Features implementieren, mehrteilige Umbauten) delegiert der Architekt an einen **Worker-Subagenten** (`worker`, prove-then-merge im Worktree) — er ist Architekt, nicht Arbeitstier. **Carve-out — Einmal-Schnitt vs. Schleife (PLAT-160):** Direkt in der Hand baut der Architekt den *Einmal-Schnitt*: trivialen/reversiblen/isolierten Stufe-Schritt, einen klar umrissenen Einmal-Fix, Doku-Updates, Config-Edits und Urteils-Anker-Reads (kein Worker-Overhead für Kleinkram). Ein **mehrschrittiger Bogen** dagegen — die lesen→fix→bauen→prüfen-Schleife, UI-Feintuning, Merge-/Promote-Untersuchung, Debug-Iteration, *auch ohne Spec* — geht als **ganzer Bogen an einen Schleifen-Worker**; der Architekt orchestriert, urteilt und hält das Mensch-Tor, statt den Bogen mit eigener Hand zu leben. Grund ist messbar Geld: die teuersten Architekt-Sessions waren genau solche per-Hand gelebten Bögen (PLAT-160-Telemetrie: zwei Läufe mit 939/824 Zeilen, Reads je ~5% — der Kostentreiber ist nicht das Lesen der Wahrheit, sondern das Hand-Bauen im quadratisch wachsenden Main-Kontext). **Laufzeit-Stolperdraht:** schlägt eine per-Hand begonnene Fix-Arbeit nach der **zweiten** Bauen-Prüf-Runde fehl oder ist eine **dritte** absehbar, übergibt der Architekt den Rest-Bogen an einen Schleifen-Worker (mit dem erarbeiteten Stand — `datei:zeile` + bisherige Fixe — als Briefing); ≤2 Runden bleiben in der Hand (kein Übergabe-Thrashing für Klein-Bögen).
+**Bau = Worker (Rollen-Grenze an der Akt-2→Akt-3-Schwelle).** Akt 2 schreibt der Architekt selbst (Spec, auf `main`). Mit der Spec-Freigabe **kippt die Rolle**: substantiellen Akt-3-Bau delegiert der Architekt an einen **Worker-Subagenten** (`worker`; Selbsttest im Worktree vor dem Merge, kalte Prüfung + Promote nach dem Merge — merge-then-prove, Verfassung 08) — er ist Architekt, nicht Arbeitstier. **Carve-out — Einmal-Schnitt vs. Schleife (PLAT-160):** Direkt in der Hand baut der Architekt nur den *Einmal-Schnitt* (trivialer/reversibler/isolierter Stufe-Schritt, klar umrissener Einmal-Fix, Doku-/Config-Edits, Urteils-Anker-Reads). Ein **mehrschrittiger Bogen** (lesen→fix→bauen→prüfen-Schleife, UI-Feintuning, Merge-/Promote-Untersuchung, Debug-Iteration, *auch ohne Spec*) geht als **ganzer Bogen an einen Schleifen-Worker** — der Architekt orchestriert/urteilt/hält das Mensch-Tor, statt ihn selbst zu leben (messbar Geld: PLAT-160-Telemetrie, Hand-Bauen im quadratisch wachsenden Main-Kontext ist der Kostentreiber). **Laufzeit-Stolperdraht:** scheitert eine per-Hand begonnene Fix-Arbeit nach der **zweiten** Bauen-Prüf-Runde oder ist eine **dritte** absehbar, übergibt der Architekt den Rest-Bogen an einen Schleifen-Worker (Briefing: `datei:zeile` + bisherige Fixe); ≤2 Runden bleiben in der Hand.
 
 **Orchester-Rhythmus für den (nicht-spec-)Bogen.** Der Architekt *sequenziert* die Phasen selbst — ein Worker kann keinen weiteren Subagenten spawnen (Harness-Nesting-Cap, eine Ebene):
 
@@ -211,7 +172,7 @@ Nach Spec-Freigabe arbeitet Claude Code **autonom im Korridor**, dessen Wände d
 ④ dispatch Promote-Worker   → :test→:latest (Gating s. Verfassung 08; läuft aus main, nicht Worktree)
 ```
 
-Architekt = ①–④ dispatchen + Verdikt + ③. Er **baut den Bogen nicht mit eigener Hand**. ② erbt das Hybrid-Tor (ist nicht unbedingt) — sonst feuert der teuerste Subagent auf jeden Klein-Bogen und arbeitet gegen das Spar-Ziel. Der Promote ist ein Einmal-Schnitt und würde nach dem Carve-out in der Hand bleiben — er wird **als benannter Mensch-Wohin-Override** delegiert (Promote-Debugging kann ballonieren), läuft aber aus dem **main-Checkout** (Deploy-Tools sind auf main gepinnt, nie Worktree). Der Auslöser dieser Grenze: das „ich baue"-Momentum aus der Spec-Phase darf nicht über die Schwelle mitgenommen werden (PLAT-138). **Es ist auch messbar Geld:** Datei-Mutation im Hauptkontext erzeugt file-history-snapshots (~8–13 % der gemessenen Session-Kosten, PLAT-147-Spike-Analyse) — der Worker baut in eigenem Kontext, main sieht nur den Beweis-Report. *Dies ist der **Akt-3-Spezialfall** der run-übergreifenden Offload-Disziplin — Main = Urteils-Faden (PLAT-152, oben); siehe dort.* **Mechanisch + Korrektheits-Urteil:** ist die Ausführung mechanisch, trägt aber einen deterministischen Korrektheits-Anteil (CLAUDE.md-Chirurgie, Massen-Refactor nach fixer Regel), läuft sie über den Skill [`gated-execution`](../../.claude/skills/gated-execution/SKILL.md) — Verifizierer im Main, Ausführung am Worker, Verdikt bleibt im Main. **Laufzeit-Test-Ausführung (Rolle B, PLAT-157):** Playwright-Läufe, pw_smoke-Runs, E2E- und Capture-/Smoke-Skripte delegiert der Architekt immer an Worker oder Prüfer — auch wenn das `playwright`-Binary am Host verfügbar ist. Der Architekt liest die Artefakte (Screenshots, Traces, Asserts, Prüfer-Report) und urteilt die Soll-Treue.
+Architekt = ①–④ dispatchen + Verdikt + ③, **baut den Bogen nicht mit eigener Hand**. ② erbt das Hybrid-Tor (nicht unbedingt) — sonst feuert der teuerste Subagent auf jeden Klein-Bogen. Der Promote läuft aus dem **main-Checkout** (Deploy-Tools nie Worktree), als benannter Mensch-Wohin-Override. Grund: das „ich baue"-Momentum darf nicht über die Schwelle mitgenommen werden (PLAT-138) — auch messbar Geld (file-history-snapshots im Hauptkontext, PLAT-147). *Akt-3-Spezialfall der Offload-Disziplin (oben).* **Mechanisch + Korrektheits-Urteil:** Skill [`gated-execution`](../../.claude/skills/gated-execution/SKILL.md) — Verifizierer im Main, Ausführung am Worker. **Laufzeit-Test-Ausführung (Rolle B, PLAT-157):** Playwright-/pw_smoke-/E2E-Läufe delegiert der Architekt immer an Worker oder Prüfer, auch wenn das Binary am Host verfügbar ist — er liest die Artefakte und urteilt die Soll-Treue.
 
 ### Leitprinzip — Wohin / Wie (das Herz der Autonomie)
 
@@ -260,13 +221,9 @@ Grundregel: Stopp nur, wenn eine Entscheidung **strategisch UND schwer reversibe
 
 **Risikoklasse ist kein Stopp-Auslöser.** `kritisch` löst keinen Stopp aus Prinzip aus — es verpflichtet zu Vorsichtsmaßnahmen während der Ausführung (Backup vorher, tiefe Verifikation, dokumentierter Restore-Pfad) und läuft dann autonom durch. Synchron gestoppt wird nur bei Auslöser 1–4 oder Fall C. Ausnahme: `sicherheitskritisch-akut` behält einen unbedingten Vor-Stopp.
 
-### Vorgezogene Mensch-Handlungen
+**Vorgezogene Mensch-Handlungen.** Stopps des Typs „Mensch muss physisch handeln" (Auslöser 4) werden in Akt 1 gesammelt und **an den Anfang der Ausführung gelegt** — als eine Liste „dafür brauche ich dich, bevor ich loslaufe" (inkl. etwaiger Pauschal-Freigaben + fertiger Skripte). Der Mensch arbeitet sie in einem Rutsch ab, dann läuft Claude Code autonom durch. Erst im Lauf entdeckt → **bricht die Stille sofort, wird gemeldet** — nie still weggesteckt.
 
-Stopps des Typs „Mensch muss physisch handeln" (Auslöser 4) werden in Akt 1 gesammelt und **an den Anfang der Ausführung gelegt** — als eine Liste „dafür brauche ich dich, bevor ich loslaufe" (inkl. etwaiger Pauschal-Freigaben + fertiger Skripte). Der Mensch arbeitet sie in einem Rutsch ab, dann läuft Claude Code autonom durch. Erst im Lauf entdeckt → **bricht die Stille sofort, wird gemeldet** — nie still weggesteckt.
-
-### Serien (gleichartige Operation auf mehreren Instanzen)
-
-Sind N Bündel dieselbe Operation auf N Instanzen (z. B. 5× Agent umschalten), fasst Claude Code sie in Akt 1 zu einer **Serie** zusammen statt zu N Einzelbündeln. Eine Serie hat: einen **Vor-Stopp** am Anfang (trägt alle vorgezogenen Mensch-Handlungen und — falls `sicherheitskritisch-akut` — die akut-Freigabe), einen **autonomen Durchlauf**, und **einen** Bericht am Ende.
+**Serien (gleichartige Operation auf mehreren Instanzen).** Sind N Bündel dieselbe Operation auf N Instanzen (z. B. 5× Agent umschalten), fasst Claude Code sie in Akt 1 zu einer **Serie** zusammen statt zu N Einzelbündeln. Eine Serie hat: einen **Vor-Stopp** am Anfang (trägt alle vorgezogenen Mensch-Handlungen und — falls `sicherheitskritisch-akut` — die akut-Freigabe), einen **autonomen Durchlauf**, und **einen** Bericht am Ende.
 
 ### Korridor-Wand: Spec-Treue (Fall A/B/C)
 
@@ -288,8 +245,7 @@ Wiederkehrende, pro-Vorkommen-freigabepflichtige Operationen können am Anfang *
 
 Dazwischen kein synchroner Stopp **und keine Wie-Rückfragen im Chat**. Akt-interne Übergänge und Folge-Aufräumschritte (Archivierung, Status-Update, abhängige Schritt-Log-Einträge) gehören in den Korridor — werden durchgezogen, nicht erneut angefragt.
 
-### Stufen-Staffelung der Autonomie
-
+**Stufen-Staffelung der Autonomie:**
 - **Schritt:** autonom komplett (war nie Freigabe-Thema).
 - **Sprung:** Spec-Freigabe vorne (bzw. autonom, wenn Claude Code die Spec selbst schreibt und keine Gabelung auftritt), durchziehen, Entscheidungs-Protokoll hinten.
 - **Spur:** autonom durch `sicher`- UND `kritisch`-Bündel (`kritisch` = mit Vorsichtsmaßnahmen, kein Stopp aus Prinzip); synchroner Vor-Stopp nur an `sicherheitskritisch-akut`-Bündeln sowie bei Stopp-Auslöser 1–4 / Fall C.
@@ -306,20 +262,18 @@ Das Protokoll beginnt mit dem **Wirkungs-Block** (Format in `01_Spec-Format.md`)
 3. **Was du wissen solltest** — Information, kein Veto nötig.
 4. **Wo ich unsicher war** — der eigentliche Review-Fokus (darf leer sein).
 
-**Friktion ist legitimer Inhalt von Punkt 3/4 — als Beobachtung, nicht als Verdikt.** Eine konkrete Prozess-/Framework-Friktion, die in diesem Zyklus echt auftrat (z. B. „dieselbe Touch-Geste brauchte vier Geräte-Runden", „der dev-Zugang war unklar"), gehört als beobachtete Tatsache nach Punkt 3 bzw. 4 — Information für den Menschen, **keine** Seed-Pflicht. **Grenze (dieselbe Anti-Reflex-Latte):** Du meldest die *Beobachtung*, nicht das Selbst-Verdikt „Framework-Loch vs. eigene schlechte Wahl" — das fällt der gescheiterte Agent an der Quelle am schlechtesten ([[reference_verifikation_oracle_typ_grenze]]: Musterkennung über mehrere Tasks bleibt Mensch-Sache). Kein neues „lief was schlecht?"-Ritual, kein Hook, kein Reflex-Seed; im Zweifel nichts. (Abzugrenzen vom Skill-Seed-Loop-Detektor unten — der erkennt *wiederholte technische Schleifen*, nicht Prozess-Friktion.)
+**Friktion ist legitimer Inhalt von Punkt 3/4 — als Beobachtung, nicht als Verdikt.** Eine echte Prozess-/Framework-Friktion gehört als beobachtete Tatsache nach Punkt 3/4 — Information, **keine** Seed-Pflicht. Gemeldet wird die *Beobachtung*, nicht das Selbst-Verdikt „Framework-Loch vs. eigene Wahl" (Musterkennung bleibt Mensch-Sache, [[reference_verifikation_oracle_typ_grenze]]). Kein neues Ritual, kein Hook, kein Reflex-Seed; im Zweifel nichts.
 
-**Inhaltlich, nicht referenzierend.** Direkt im Output ausgeschrieben — **keine „siehe Spec / siehe File"-Verweise.** Belegmaterial (Akzeptanzkriterien-Häkchen, Diffs, Hash-Listen, „was ich geprüft habe") bleibt in der Datei, NICHT im Review-Anker. Ausnahme nur für rein deskriptive Verweise („Details siehe `<Datei>` Z. 42–60") — auch dort nicht ohne kurze Vorab-Substanz.
-
-**Eine Gestalt, nicht zwei.** Die vier Punkte oben sind die **Mindest-Substanz** des Reviews; die **Gestalt** des Outputs richtet sich nach dem **Abschluss-Report nach Größenordnung (CEO-Sicht)** im [`Dispositions-Governor.md`](../Dispositions-Governor.md) — Ergebnis zuerst, pro Soll-Punkt ✅/↪️/❌, skaliert Schritt/Sprung/Spur/Projekt. Die Punkte 0+2 (Gesetzt ohne Rückfrage / Entscheidungen) sind im Soll-Status und unter „was dich braucht" aufgehoben, Punkt 4 (Unsicher) am Schluss. Das „ausschließlich" oben grenzt gegen Datei-Verweise und Maschinenraum ab — es schreibt keine zweite, konkurrierende Form vor.
-
----
+**Inhaltlich, nicht referenzierend:** ausgeschrieben, keine „siehe Spec/File"-Verweise; Belegmaterial bleibt in der Datei. **Eine Gestalt, nicht zwei:** die vier Punkte sind die Mindest-Substanz; die Gestalt des Outputs folgt dem **Abschluss-Report nach Größenordnung (CEO-Sicht)** im [`Dispositions-Governor.md`](../Dispositions-Governor.md).
 
 ## Verankerung beim Abschluss (Teil von Akt 3)
 
 Von Claude Code vorgeschlagen, vom Menschen freigegeben:
 
+**Evolutions-Methode (kalte Diagnose, Default Vereinfachen).** Lief im Zyklus etwas schlecht, geht die Diagnose an eine **kalte Instanz** (frische Session, nur die Artefakte — nie der gescheiterte Agent selbst). Default-Antwort ist **Vereinfachen/Streichen**, nicht eine neue Regel.
+
 - Dauerhaft Gültiges wird in **Systemzustand** bzw. **Verfassung eingearbeitet** (eingearbeitet, nicht kopiert — bleibt EINE Quelle).
-- **Vorwärts-Ernte in den Standards-Kanon (Pflicht-Triage).** Deckt ein Zyklus einen **fehlenden oder zu schwachen Standard** auf — durch kalten Audit/Sondierung (als `## Kanon-Saat`, siehe Templates), durch einen **belegten Defekt in der Test-Abnahme** (Verfassung 08) oder **beim Akt-3-Abschluss einer normalen Spec** — MUSS der Befund in [`03a_Standards-Kanon.md`](03a_Standards-Kanon.md) **triagiert** werden: entweder als neuer Eintrag `K-NN` **aufgenommen** (Vorwärts-Ernte, Format + belegte Herkunft wie in 03a) **oder** mit einem Satz Grund **verworfen**. Das Triage-Ergebnis (`aufgenommen K-NN` / `verworfen + Grund`) steht in der Abschluss-Doku (Sektion „Wissens-Einarbeitung"), bei Sondierungen in der `## Kanon-Saat`-Sektion. **Kein stilles Übergehen:** ein Zyklus, der einen belegten Standard-Mangel aufdeckt und ihn nicht triagiert, gilt als **nicht abgeschlossen** (Korridor-Wand, wie Logbuch/Doku-Synchronität). Das ist die **Vorwärts-Schleife** des Kanons (die Rückwärts-Ernte war PLAT-109/110; hier landen die *künftigen* Befunde). **Maßstab „Standard-würdig"** (gegen den zahnlosen Verwerfen-Default): der Befund ist **wiederholbar** — er könnte in einem anderen Zyklus/Dienst erneut auftreten (= Kandidat); eine reine Einmal-Eigenheit ohne Wiederholungsgefahr ist keiner (Triage dann `verworfen: nicht wiederholbar`). „Zu schwach" heißt: ein Standard existiert, deckt den belegten Fall aber nicht ab. **Träger ist diese Verfassungs-Regel selbst** (Pflichtlektüre der Worker/Subagenten) — bewusst **kein** zusätzlicher Hook/Drift-Report/Apparat (Über-Mechanisierung unerwünscht; die gelebte Verfassung ist hier das Enforcement). *(PLAT-112.)*
+- **Vorwärts-Ernte in den Standards-Kanon (Pflicht-Triage).** Deckt ein Zyklus einen **fehlenden oder zu schwachen Standard** auf (kalter Audit, belegter Defekt in der Test-Abnahme, oder Akt-3-Abschluss), MUSS der Befund in [`03a_Standards-Kanon.md`](03a_Standards-Kanon.md) **triagiert** werden: neuer Eintrag `K-NN` **aufgenommen** oder mit Grund **verworfen** — Ergebnis in der Abschluss-Doku. **Kein stilles Übergehen:** ein nicht-triagierter belegter Standard-Mangel gilt als **nicht abgeschlossen** (Korridor-Wand). Maßstab „Standard-würdig": der Befund ist **wiederholbar** (sonst `verworfen: nicht wiederholbar`). Träger ist diese Regel selbst, bewusst kein zusätzlicher Hook/Apparat. *(PLAT-112.)*
 - Das „Warum" wird als **Logbuch-Eintrag** verewigt, zentral in `_Betrieb/Logbuch/` (E24).
 - Der Rest (Specs, Sondierungen, Deviation-Logs) wandert ins **Archiv**.
 - Hatte der Zyklus einen **Backlog-Seed als Auslöser**, wird sein `status:` auf `abgeschlossen` gezogen (im selben Commit). Ketten-Kehraus beim letzten Glied — Mechanik unverändert (`01_Spec-Format.md`, „Autonome Halde"); das Kehraus-Tool `scripts/backlog/phase9_seed_archive.py` ist allein zuständig. Das Tool greift auch bei Specs ohne Seed-Backreference oder mit bereits archiviertem Seed — dann archiviert es nur den Zyklus-Satz (PLAT-047 B047-1).
@@ -330,25 +284,16 @@ Von Claude Code vorgeschlagen, vom Menschen freigegeben:
   git mv <Bereich>/Arbeitsgedaechtnis/<ID>_* <Bereich>/Archiv/<ID>/
   ```
   Analog zur Backlog-Pflege und Doku-Synchronität: ein abgeschlossener Zyklus mit Rückständen im Arbeitsgedächtnis gilt als **nicht abgeschlossen**.
-- **Eigencheck-Pflicht am Akt-3-Ende (PLAT-047/PLAT-077).** Vor dem finalen Abschluss-Commit ruft Claude Code `akt3_abschluss.py <spec_id>` auf — das ruft `check_akt3_residuen.py` (Exit 0 = sauber) und `phase9_seed_archive.py` auf und generiert ein `*_ABSCHLUSS_STATEMENT.md`-Artefakt. **Exit 0 + Statement sind Voraussetzung für den Abschluss-Commit** — das Tor ist werkzeuggestützt erzwungen: Block (6) im pre-commit-Hook (aktiv seit PLAT-077 A3, 2026-06-15) blockiert jeden Commit, der eine SPEC auf `status: abgeschlossen` setzt, ohne (a) sauberen Residuen-Check und (b) staged Statement. Nightly-Kehraus-Sweep (`nightly_kehraus_sweep.py`, Crontab 04:55): läuft im Modus `--report-only` (Mensch-Tor läuft, ≥3 saubere Nächte post-PLAT-077-A1-Fix nötig für --sharp-Freigabe).
+- **Eigencheck-Pflicht am Akt-3-Ende (PLAT-047/PLAT-077).** Vor dem finalen Abschluss-Commit ruft Claude Code `akt3_abschluss.py <spec_id>` auf (`check_akt3_residuen.py` Exit 0 + `phase9_seed_archive.py` + `*_ABSCHLUSS_STATEMENT.md`). Werkzeuggestützt erzwungen: pre-commit Block (6) blockiert einen `status: abgeschlossen`-Commit ohne sauberen Residuen-Check + staged Statement. Nightly-Kehraus-Sweep läuft `--report-only`.
 - **Kontext-Hygiene:** Ist der Zyklus sauber geschlossen, schlägt Claude Code dem Architekten `/clear` vor und legt es in der CLI-Eingabe vor — Ausführung beim Menschen. Bei offenem Zustand (Stopp/Fall C/unbeantwortete Frage) NICHT.
 
 Beim **Sprung** schlanker: Abschluss-Notiz ins Archiv, Logbuch-Eintrag nur bei einer bewussten Entscheidung mit Warum. Beim **Schritt** entfällt der Abschluss ganz — Schritt-Log-Zeile + Commit sind der Abschluss.
 
----
-
-## Pflicht-Tor: Doku-Synchronität am Systemzustand (eigener, sichtbarer Punkt)
-
-**Das ist die häufigste vergessene Pflicht — deshalb steht sie jetzt als eigener Akt-3-Abschnitt, nicht als Unterpunkt.**
+## Pflicht-Tor: Doku-Synchronität am Systemzustand (häufigste vergessene Pflicht, eigener Punkt)
 
 Wenn ein Zyklus den **realen Systemzustand** eines Bereichs ändert — Container kommt/geht/wechselt Image, Skript, `docker-compose.yml`, Auth-/Netz-Topologie, Agent-Pipeline, neue Komponente — ODER bestehende Detail-Doku unterhalb `<Bereich>/Systemzustand/**` (außerhalb `00_Uebersicht/`) umarbeitet, MUSS **vor dem Abschluss-Commit**:
 
-**(a)** die betroffene **Detail-Doku** im `Systemzustand/` auf den neuen Ist-Stand gebracht werden (SSOT zuerst), **und**
-**(b)** die abgeleitete **`00_Uebersicht/00_Bereich.md`** (ggf. thematische Sub-Übersicht inkl. SVG) nachgezogen werden.
-
-Beide Ebenen sind Korridor-Wand: fehlt (a) oder (b) beim Abschluss = **Fall C = synchroner Stopp**. Begründete Ausnahme (Bereich bewusst undokumentiert) gehört in die Abschluss-Doku.
-
-*(Gilt für Spur, Sprung UND Schritt — sobald der reale Systemzustand berührt wird. Nur rein doku-interne Trivialitäten ohne System-Bezug, z. B. Typo-Fix, sind ausgenommen.)*
+**(a)** die betroffene **Detail-Doku** auf den neuen Ist-Stand (SSOT zuerst), **und** **(b)** die abgeleitete **`00_Uebersicht/00_Bereich.md`** (ggf. SVG) nachgezogen werden. Beide Ebenen sind Korridor-Wand: fehlt (a) oder (b) = **Fall C**. *(Gilt für Spur/Sprung/Schritt, sobald der reale Systemzustand berührt wird — reine Typo-Fixes ausgenommen.)*
 
 | Reale Änderung im Bereich | Pflicht-Update Detail-Doku | Pflicht-Update Übersicht |
 |---|---|---|
@@ -359,13 +304,7 @@ Beide Ebenen sind Korridor-Wand: fehlt (a) oder (b) beim Abschluss = **Fall C = 
 | Doku-Datei in `Systemzustand/<Topik>/` neu/gelöscht/umbenannt | (die Änderung selbst) | `00_Bereich.md` Detail-Quellen-Tabelle |
 | Reines Wording/Typo in Detail-Datei | (kein) | **kein** Pflicht-Update |
 
----
-
-## Skill-Kandidat-Erkennung (Teil von Akt 3, Abschluss)
-
-Trat im Zyklus eine wiederholte Schleife auf (mehrfaches Raten-Scheitern-Neuversuchen an demselben technischen Verfahren), die ein fixiertes Verfahren verhindert hätte, schlägt Claude Code einen **Skill-Seed** vor (`klasse: prozess`, Kandidat benannt, Schleife dokumentiert). **Erkennung + Vorschlag** automatisch; die **Anlage** nie selbsttätig — durch Architekten-Freigabe, über die E4-Schreibrichtung (Chat entwirft, Claude Code schreibt). Steht im Entscheidungs-Protokoll, nicht in einem separaten Kanal.
-
----
+**Skill-Kandidat-Erkennung (Teil von Akt 3, Abschluss).** Trat im Zyklus eine wiederholte Schleife auf (mehrfaches Raten-Scheitern-Neuversuchen an demselben technischen Verfahren), die ein fixiertes Verfahren verhindert hätte, schlägt Claude Code einen **Skill-Seed** vor (`klasse: prozess`, Kandidat benannt, Schleife dokumentiert). **Erkennung + Vorschlag** automatisch; die **Anlage** nie selbsttätig — durch Architekten-Freigabe, über die E4-Schreibrichtung (Chat entwirft, Claude Code schreibt). Steht im Entscheidungs-Protokoll, nicht in einem separaten Kanal.
 
 ## Pflicht-Tore (Strenge mit Notausgang)
 
@@ -374,35 +313,21 @@ Trat im Zyklus eine wiederholte Schleife auf (mehrfaches Raten-Scheitern-Neuvers
 - **Autonomie-Klappe:** Stoppt Claude Code im Korridor an einem der vier Auslöser, ist das kein Abbruch, sondern Korridor-Funktion. Er legt das Entscheidungs-Protokoll des bis dahin Gelaufenen vor und benennt die offene Wohin-/Kritikalitäts-Frage. Nach Mensch-Entscheidung läuft der Korridor weiter.
 - **Doku-Synchronität:** siehe eigener Abschnitt oben — Korridor-Wand, Fall C bei Fehlen.
 
----
-
-## Abgrenzung zu E3 (nicht selbstoptimierend)
-
-Die Autonomie weicht E3 NICHT auf. E3 verbietet, dass das System sich selbst verändert (Regeln/Verfassung) ohne Freigabe — das bleibt. **Autonom ist nur die Ausführung freigegebener Arbeit innerhalb vom Menschen gezogener Grenzen, nie das Ziehen der Grenzen.** Die Verfassung und Claude Codes Leitplanken ändert weiterhin nur der Mensch per Freigabe.
-
----
+**Abgrenzung zu E3 (nicht selbstoptimierend).** Die Autonomie weicht E3 NICHT auf. E3 verbietet, dass das System sich selbst verändert (Regeln/Verfassung) ohne Freigabe — das bleibt. **Autonom ist nur die Ausführung freigegebener Arbeit innerhalb vom Menschen gezogener Grenzen, nie das Ziehen der Grenzen.** Die Verfassung und Claude Codes Leitplanken ändert weiterhin nur der Mensch per Freigabe.
 
 ## Backlog-Pflege
 
-### Nordstern-Regel
+**Nordstern-Regel.** Genau **eine** aktive Mission trägt `nordstern: ja` (in `_Betrieb/Missionen/00_aktive-missionen.md`, mit Ein-Satz-Definition des Zielzustands). Seeds außerhalb der Nordstern-Mission werden nicht gezogen, außer: (a) `klasse: security` mit `zugkraft: jetzt`, (b) ein Betriebs-Queue-Eintrag eskaliert nachweislich zu einem Blocker, (c) explizite Mensch-Anweisung. Neue Seeds ohne Nordstern-Bezug erhalten bei Anlage `status: eisbox` (Vorschlag durch den anlegenden Agenten, Mensch-Veto über Digest). Wechsel des Nordsterns ist Mensch-Entscheidung.
 
-**Genau eine aktive Mission trägt `nordstern: ja`** (in `_Betrieb/Missionen/00_aktive-missionen.md`, mit Ein-Satz-Definition des Zielzustands). Seeds außerhalb der Nordstern-Mission werden nicht gezogen, außer: (a) `klasse: security` mit `zugkraft: jetzt`, (b) ein Betriebs-Queue-Eintrag eskaliert nachweislich zu einem Blocker, (c) explizite Mensch-Anweisung. Neue Seeds ohne Nordstern-Bezug erhalten bei Anlage `status: eisbox` (Vorschlag durch den anlegenden Agenten, Mensch-Veto über Digest). Wechsel des Nordsterns ist Mensch-Entscheidung.
+**Harte Security-Regel.** `security`-Seeds rutschen nicht ab. Ein offener `security`-Seed ist per Definition mindestens `bald` — nie `irgendwann`. `wartung`-Seeds sind nie `jetzt`, außer sie blockieren nachweislich etwas. Beide als **Default mit Begründungszwang**: Wer abweicht, schreibt eine Zeile ins Seed.
 
-### Harte Security-Regel
-
-**`security`-Seeds rutschen nicht ab.** Ein offener `security`-Seed ist per Definition mindestens `bald` — nie `irgendwann`. `wartung`-Seeds sind nie `jetzt`, außer sie blockieren nachweislich etwas. Beide als **Default mit Begründungszwang**: Wer abweicht, schreibt eine Zeile ins Seed.
-
-### Pflege-Routine — Übersicht im selben Commit
-
-`_Betrieb/Backlog/00_UEBERSICHT.md` + `.svg` sind ein Derivat der Seeds (Verfassung 03 SSOT), erzeugt von `scripts/backlog/generate_uebersicht.py` (Repo `prisment-platform`).
+**Pflege-Routine — Übersicht im selben Commit.** `_Betrieb/Backlog/00_UEBERSICHT.md` + `.svg` sind ein Derivat der Seeds (Verfassung 03 SSOT), erzeugt von `scripts/backlog/generate_uebersicht.py` (Repo `prisment-platform`).
 
 **Mutations-Punkte (Pflicht-Tor):** Legt Claude Code einen Seed **an** oder **archiviert** einen, läuft das Skript im **selben Commit** mit. Damit kann die Übersicht strukturell nicht veralten. Gleiches Muster wie Doku-Synchronität oben.
 
 Hot-Files werden handgepflegt in `_Betrieb/Backlog/00_HOT-FILES.md` — getrennt von der generierten Übersicht.
 
-### Seed-Status & Mission (laufende Pflege, Claude-Code-Hand)
-
-Unter `_Betrieb/Missionen/` lebt ein Kanban über die Seeds. Es zeigt nur den echten Stand, wenn `status:` und `mission:` der Seeds **laufend** gepflegt werden — nicht erst beim Abschluss. **Einzige Schreibhand ist Claude Code** (E4); der Mensch übersteuert nie per Datei, sondern weist Claude Code an.
+**Seed-Status & Mission (laufende Pflege, Claude-Code-Hand).** Unter `_Betrieb/Missionen/` lebt ein Kanban über die Seeds. Es zeigt nur den echten Stand, wenn `status:` und `mission:` der Seeds **laufend** gepflegt werden — nicht erst beim Abschluss. **Einzige Schreibhand ist Claude Code** (E4); der Mensch übersteuert nie per Datei, sondern weist Claude Code an.
 
 **`status:`-Werte und ihre Akt-Kopplung** (Claude Code schreibt sie automatisch, Silent-Whitelist — er erkennt nur den Akt-Zustand, urteilt nicht):
 
@@ -419,8 +344,6 @@ Unter `_Betrieb/Missionen/` lebt ein Kanban über die Seeds. Es zeigt nur den ec
 **`mission:`** ordnet den Seed einer laufenden missionalen Klammer zu (Kebab-case-Slug, z. B. `live-gang`; Definition + Vergabe-Mechanik in `01_Spec-Format.md`). Claude Code setzt/ändert sie nach derselben Vorschlag-Mechanik wie `klasse`/`zugkraft` — schlägt vor, Mensch revidiert, Claude Code schreibt. Hat **keinen** Einfluss auf den Prozess, dient nur Filter/Bündelung im Kanban.
 
 Die `## 📝 Eigene Notizen`-Sektion des Seeds bleibt Mensch-Sperrzone (`01_Spec-Format.md`) — Status-/Mission-Fortschreibung lässt sie byte-identisch.
-
----
 
 ## Zwischenprojekte (Abzweigungen)
 

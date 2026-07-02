@@ -17,7 +17,6 @@ Konsequenz: `.py`-Dateien, n8n-Workflow-JSONs, Shell-Skripte und Ähnliches werd
 
 Jede Information existiert genau einmal. Ansichten (SVG-Übersichten, Zusammenfassungen) werden aus der einen Quelle ABGELEITET, nie als zweite Quelle gepflegt. Eine veraltete Doku ist schlimmer als keine, weil man ihr vertraut.
 
-
 ## Standards-Platzhalter (wachsen mit der Arbeit)
 
 Konkrete Code-Vorgaben (Test-Strategie, CI/CD, Data-Integrity, Tenant-Isolation) werden aus den realen Zyklen heraus eingearbeitet — beginnend mit dem Security-Refactor (RLS + Tenant-Isolation) und der Data-Integrity-Pipeline. Bis dahin gilt diese Datei als Platzhalter, der nach jedem relevanten Zyklus über Phase 9 wächst (nie nach unten).
@@ -92,58 +91,37 @@ Verfassungs-Anker für die Risikoklasse-Wirkung: `04_Sicherheits-Prinzipien.md`,
 
 Datenpunkte, die zwischen LangGraph-Agents fließen, leben in **einer**
 Pydantic-Definition — `langgraph/shared/contracts.py`. Die Klasse `SessionData`
-ist die Quelle für die Interview→Content-Brücke (Felder gemäß PRIS-019-Spec
-A.1-Inventur); `AnalyticsPlanHints` für Analytics→Redaktionsplan;
-`AnalyticsModeLiteral` für den Analytics-`mode`-Parameter.
-
-**Verteilung der SSOT in die Agents:** Build-Contexts sind heute pro Agent
-(kein Mono-Image). Verteilung per `scripts/sync_shared_contracts.sh` —
-kopiert die kanonische Datei vor jedem Build in alle vier
-`langgraph/<agent>/app/contracts.py`. Diese Kopien sind **nicht** direkt zu
-editieren (Header trägt entsprechende Warnung). Der CI-Job
-`contracts-ssot` (`.gitea/workflows/ci.yml`) blockiert jeden Drift.
-
-**Eingangskonvertierung am SSOT, nicht im Caller:** JSONB/Array-Felder, die in
-der DB als `NULL` landen können (Migration ohne `DEFAULT`), werden über
-Pydantic-`field_validator(mode='before')` auf leere Defaults gemappt
-(`None → {}` / `None → []`). Konvertierungslogik liegt am Modell-Eingang,
-nicht in jedem `read_session`/`load_session_data`-Caller.
+ist die Quelle für die Interview→Content-Brücke, `AnalyticsPlanHints` für
+Analytics→Redaktionsplan, `AnalyticsModeLiteral` für den Analytics-`mode`-
+Parameter. Verteilt per `scripts/sync_shared_contracts.sh` in die vier
+`langgraph/<agent>/app/contracts.py`-Kopien (nicht direkt editieren — Header
+warnt; CI-Job `contracts-ssot` blockiert jeden Drift). Eingangskonvertierung
+(NULL→leere Defaults) läuft über Pydantic-`field_validator(mode='before')` am
+SSOT, nicht im Caller. Enum-artige Felder (z. B. Analytics-`mode`) sind
+`typing.Literal[...]` — ein Tippfehler schlägt als `ValidationError` fehl,
+nicht als falscher Branch.
 
 **Runtime-Gate:** Konsumenten validieren Sessions hart gegen `SessionData`
 beim Laden (`content/app/tools.py:load_session_data` raised `ValueError` bei
 Pflichtfeld-/Typ-Verstoß). Stille Mist-Generierung aus unvollständigen Daten
 ist abgeschafft — sichtbarer Abbruch zwingt Re-Run.
 
-**Mode-Felder als Literal:** Analytics-`mode` (und künftige Enum-artige Felder)
-werden als `typing.Literal[...]` typisiert. Ein Tippfehler schlägt als
-`ValidationError` fehl, nicht als falscher Branch.
+**CI-Schema-Check-Pflicht (`scripts/check_contracts.py`):** drei blockierende
+Schichten — (1) Drift zwischen `shared/contracts.py` und Agent-Kopien,
+(2) Fixture-Validation einer Beispiel-Session gegen `SessionData`, (3) AST-Walk:
+jeder `session_data.get('KEY')`/`state.session_data.get('KEY')` in den
+Agent-app/-Dirs muss zu einem Modell-Feld passen (dokumentierte Legacy-Aliase
+wie `_wip`, `created_at`, `topics`, `metadata` in
+`scripts/check_contracts.whitelist.txt` mit Begründungs-Kommentar).
 
-**CI-Schema-Check (`scripts/check_contracts.py`):** drei Schichten,
-blockierend:
-1. Drift zwischen `shared/contracts.py` und Agent-Kopien.
-2. Fixture-Validation einer Beispiel-Session gegen `SessionData`.
-3. AST-Walk: jeder `session_data.get('KEY')` und
-   `state.session_data.get('KEY')` in den Agent-app/-Dirs muss zu einem Feld
-   im Modell passen. Dokumentierte Sonderfälle (DB-Legacy-Aliase wie `_wip`,
-   `created_at`, `topics`, `metadata`) leben in
-   `scripts/check_contracts.whitelist.txt` mit Begründungs-Kommentar.
-
-**Lesepfad-Eindeutigkeit:** Eine Quelle pro Datenpunkt. VoiceDB ist heute
-Postgres-only (PRIS-019 B5 schloss die Dual-Write-Asymmetrie). Routes in
-`gitea_client.read_md_file`/`append_md_file` mit `voicedb_md`-Erkennung leiten
-direkt nach Postgres, ohne Gitea-Fallback — bei DB-Fehler bricht der Lauf ab
-statt aus möglicherweise veralteter Zweitquelle zu lesen.
-
-**Telemetrie-Pflicht für strukturelle Pfad-Gabelungen:** Wenn Code zwischen
-zwei Pfaden unterscheidet (V6 vs. Legacy, neuer vs. alter Generator), wird
-das Auswahl-Ereignis geloggt (`[…/telemetry] PRIS-XXX has_X=… session=…
-tenant=…`). Damit ist in Prod sichtbar, welcher Pfad wie oft greift —
-unsichtbare Pfade sind unwartbar.
-
-**Legacy-Erkennung-mit-Abbruch, nicht Migration:** Wenn der neue Pfad nicht
-beliefert ist (V6-Daten fehlen), wird hart abgebrochen statt aus Alt-Daten zu
-generieren. Re-Run via neuem Pfad ist sauberer Fix; Migration alter Werte ist
-Raten und damit selbst eine Bruchstelle.
+**Legacy-Abbruch, nicht Migration:** Fehlt der neue Pfad (z. B. V6-Daten), wird
+hart abgebrochen statt aus Alt-Daten zu generieren — Re-Run via neuem Pfad ist
+der saubere Fix, Migration alter Werte wäre Raten und selbst eine Bruchstelle.
+Strukturelle Pfad-Gabelungen (V6 vs. Legacy) werden telemetriert
+(`[…/telemetry] PRIS-XXX has_X=… session=… tenant=…`), damit unsichtbare Pfade
+nicht unwartbar bleiben. Lesepfad-Eindeutigkeit: VoiceDB ist Postgres-only
+(PRIS-019 B5 schloss die Dual-Write-Asymmetrie), kein Gitea-Fallback bei
+DB-Fehler.
 
 ## Dependency-Pinning & Update-Pfad
 

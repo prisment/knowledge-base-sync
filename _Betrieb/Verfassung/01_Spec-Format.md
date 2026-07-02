@@ -14,10 +14,7 @@ Die Arbeitsdokumente des Zyklus folgen einem modularen Standard: ein gemeinsamer
 - **Sprung:** kombinierte Spec (Fakten/Soll inline; **Claude Code schreibt sie selbst in Akt 1**) + kurze Abschluss-Notiz.
 - **Schritt:** kein Dokument, nur eine Zeile in `<Bereich>/Schritt-Log.md`.
 
-**Über der Spur liegt — orthogonal — die Projekt-Ebene** (`07_Projekt-Orchestrierung.md`). Sie führt zwei zusätzliche Dokument-Varianten + einen Seed-typ:
-- **Seed-typ `projekt`** — ein Seed, der als Projekt geboren wird (statt `typ: backlog_seed`). Treibt die Sondierungs-Tiefe auf **Spur** (volle Projekt-Sondierung) und löst den Orchestrator-Pfad statt der interaktiven Abarbeitung aus. Alternativ entsteht ein Projekt per Eskalation Spur→Projekt (`00_Iterationszyklus.md`).
-- **`typ: projekt-sondierung`** — die Projekt-Sondierung IST zugleich der **Abweichungs-Kontrakt** (Akt 1 + Frame in einem); vom Menschen in Akt 2 ratifiziert. Ausfüllbare Form: `_Betrieb/Templates/Dokument-Templates.md`, Abschnitt „Projekt-Sondierung / Abweichungs-Kontrakt".
-- **`typ: missions-journal`** — der kalt-lesbare, verdichtbare Zustandsspeicher des Orchestrator-Loops (der Orchestrator liest primär den „AKTUELLER STAND"-Block). Form ebd., Abschnitt „Missions-Journal".
+**Über der Spur liegt — orthogonal — die Projekt-Ebene** (`07_Projekt-Orchestrierung.md`), mit Seed-typ `projekt` (treibt Sondierungstiefe auf Spur, löst den Orchestrator-Pfad aus) + zwei Dokument-Varianten: `typ: projekt-sondierung` (= Abweichungs-Kontrakt, vom Menschen ratifiziert) und `typ: missions-journal` (Zustandsspeicher des Orchestrator-Loops). Ausfüllbare Form je: `_Betrieb/Templates/Dokument-Templates.md`.
 
 ## Verbindliche Regeln
 
@@ -43,26 +40,15 @@ Zusätzlich zu den bestehenden Feldern:
     Evaluator per Urteil — meldet [STRUKTURELL] wenn `architekt` gesetzt oder Laufzeit-Test-AK
     ohne erkennbaren Ausführer vorliegt.
 
-## ID-Schema
+**ID-Schema:** `<KÜRZEL>-<laufende Nummer>`, fortlaufend pro Geltungsbereich: `PLAT` (Plattform), `PRIS` (Prisment), `INT` (Intern). Beispiel `PRIS-014`. Schritte erhalten KEINE ID (nur `Schritt-Log.md` + Commit).
 
-`<KÜRZEL>-<laufende Nummer>`, fortlaufend pro Geltungsbereich.
-- `PLAT` — Plattform
-- `PRIS` — Prisment
-- `INT` — Intern
+**Eine ID = genau eine Spec.** Zwei unzusammenhängende Vorhaben bekommen nie dieselbe ID — sonst kollidieren ihre Zyklus-Artefakte auf dem Dateinamen und der Evaluator-Pass des einen überschreibt den des anderen (Präzedenz PRIS-094). Vor jeder neuen Spec gilt der `next-spec-id`-Skill als Pflicht — nie raten.
 
-Beispiel: `PRIS-014`, `PLAT-003`. Schritte erhalten KEINE ID (sie leben nur in `Schritt-Log.md` + Commit).
-
-**Eine ID = genau eine Spec.** Zwei unzusammenhängende Vorhaben bekommen nie dieselbe ID. Sonst kollidieren ihre Zyklus-Artefakte auf dem Dateinamen — `<ID>_EVAL_<n>.md`, `<ID>_RECHECK.md`, Abschluss-Doku — und der Evaluator-Pass des einen überschreibt den des anderen. (Präzedenz PRIS-094: zwei Specs unter einer ID → die EVAL-Datei der Analytics-Spec verdrängte die der Fokus-First-Spec, deren kalter Pass damit faktisch nie lief.) Folgt aus „ein Behälter = genau ein Wohin" (`00_Iterationszyklus.md`). Vor jeder neuen Spec gilt der `next-spec-id`-Skill als Pflicht — nie raten.
-
-## Akzeptanzkriterien skalieren mit Risikoklasse
-
-Kriterien sind prüfbare Zustände, keine Tätigkeiten. WIE geprüft wird, ist Claude Codes operative Sache.
+**Akzeptanzkriterien skalieren mit Risikoklasse.** Kriterien sind prüfbare Zustände, keine Tätigkeiten. WIE geprüft wird, ist Claude Codes operative Sache.
 - **sicher:** knapp, z. B. „Dienst läuft (Health-Check grün)".
 - **kritisch:** vollständige Liste, z. B. „DNS vollständig migriert / alter Anbieter nicht mehr autoritativ / Config gesichert / Routen X, Y, Z getestet".
 
-## Risikoklasse `kritisch` — Definition und Sparsamkeit
-
-Risikoklasse-Werte: `sicher` / `kritisch` / `sicherheitskritisch-akut`. Andere Werte (`niedrig`, `mittel`, `hoch` etc.) sind **nicht im Wertebereich** — sind sie irgendwo erfasst, ist das ein Bestands-Drift und gehört korrigiert.
+**Risikoklasse `kritisch` — Definition und Sparsamkeit.** Werte: `sicher` / `kritisch` / `sicherheitskritisch-akut` (andere Werte = Bestands-Drift, gehört korrigiert).
 
 ### Drei Aspekte — `kritisch` nur, wenn mindestens einer erfüllt ist
 
@@ -70,40 +56,21 @@ Risikoklasse-Werte: `sicher` / `kritisch` / `sicherheitskritisch-akut`. Andere W
 2. **Akut bewiesener Schmerz mit Außenwirkung:** es gibt einen realen Incident, nicht nur ein theoretisches Risiko. CVE-Vorfall mit dokumentierter Ausnutzung = ja. „Könnte mal CVE geben" = nein.
 3. **Branch-/Tree-/Auth-Topologie:** der Zyklus ändert die Mechanik, mit der zukünftige Zyklen überhaupt sicher laufen können. Worktree-Mengen-Regel, PreToolUse-Hook scharf geschaltet, Tenant-Isolation mit fail-closed, eigenes Sicherheitsmodell für einen handelnden Agent.
 
-### Negativ-Beispiele — was NICHT kritisch ist, auch wenn es so anfühlt
+**Negativ-Beispiele — was NICHT kritisch ist:** Architektur-Größe allein (eine Spur kann groß und trotzdem `sicher` sein); Komplexität (schwer zu bauen ≠ schwer zu reverten); „berührt sensible Daten", wenn sauber gekapselt (PII-Layer additiv vor LLM-Calls); externe Service-Anbindung, wenn additiv mit Rollback-Pfad; Doku-/Kategorisierungs-Arbeit.
 
-- **Architektur-Größe allein** ist nicht kritisch. Eine Spur kann groß sein und trotzdem `sicher` (z.B. Datenpunkt-Mechanik über mehrere Agents — Architektur-groß, aber rollback-fähig pro Bug).
-- **Komplexität** ist nicht kritisch. Schwer zu bauen ≠ schwer zu reverten.
-- **„Berührt sensible Daten"** ist nicht kritisch, wenn die Berührung sauber gekapselt ist. PII-Anonymisierungs-Layer ist additiv vor LLM-Calls; ein Bug ist Schicht-Bug, kein dauerhafter Datenverlust.
-- **Externe Service-Anbindung** ist nicht kritisch, wenn sie additiv ist und ein Rollback-Pfad existiert (Token weglassen → Stub-Pfad wieder). Sie wird kritisch, sobald Endkunden-PII das System verlässt und nicht zurückholbar ist.
-- **Doku-/Kategorisierungs-Arbeit** ist nie kritisch, auch wenn sie den Bestand stark verändert.
+**Sparsamkeits-Klausel.** Kritisch ist die Ausnahme, nicht die Norm. **Wenn mehr als die Hälfte des aktiven Backlogs `kritisch` ist, stimmt die Definition/Einstufung nicht** — Schärfung pflichtgemäß (Backlog `seed-kritisch-schaerfen`). Inflation entwertet das Steuer-Signal: kein Korridor, keine Parallelität, nur Bürokratie.
 
-### Sparsamkeits-Klausel
-
-Kritisch ist die Ausnahme, nicht die Norm. **Wenn mehr als die Hälfte des aktiven Backlogs `kritisch` ist, stimmt die Definition oder die Einstufung nicht — Schärfung oder Revision pflichtgemäß.** Inflation entwertet das Steuer-Signal: im Korridor-Modell (`00_Iterationszyklus.md`) bedeutet `kritisch` Pflicht-Vorsicht + autonomen Durchlauf, `sicherheitskritisch-akut` einen synchronen Vor-Stopp + harte Mengen-Regel beim Parallel-Lauf — bei Inflation der obersten Klasse kein Korridor, keine Parallelität, nur Bürokratie.
-
-Die Schärfung steht im Backlog als `seed-kritisch-schaerfen` (Sprung, jetzt) und wird wiederholt, sobald die Quote wieder kippt.
-
-### Begriffstrennung — Spec-Risikoklasse vs. Bündel-Flag
-
-- **`risikoklasse:` im Spec-Front-Matter** ist die **Obergrenze** für die Bündel-Einstufung in Akt 1. Eine `kritisch`-Spec kann und soll `sicher`-Bündel enthalten; eine `sicher`-Spec kann nie kritische Bündel haben (Stufen-Inflation-Schutz; tauchen welche auf, ist die Spec falsch eingestuft und eskaliert).
-- **Pro-Bündel-`kritisch:`-Flag in der Sondierung (Akt 1)** ist die operative Wand, an der der Korridor synchron stoppt. Drei Werte wie die Spec-Risikoklasse.
+**Begriffstrennung — Spec-Risikoklasse vs. Bündel-Flag:** `risikoklasse:` im Spec-Front-Matter ist die **Obergrenze** für die Bündel-Einstufung (eine `sicher`-Spec kann nie kritische Bündel haben — sonst eskaliert); das Pro-Bündel-`kritisch:`-Flag in der Sondierung ist die operative Wand, an der der Korridor synchron stoppt.
 
 ## Kritikalität pro Bündel (steuert Autonomie in Akt 3)
 
-Damit Akt 3 autonom laufen kann (`00_Iterationszyklus.md`, Abschnitt „Akt 3 — Ausführung & Verankerung"), **setzt Claude Code in Akt 1 (Sondierung) pro Bündel verbindlich ein `kritisch:`-Flag** mit einem der drei Werte `sicher` / `kritisch` / `sicherheitskritisch-akut` — geprüft gegen die feste Liste unten.
-
-Die drei Werte steuern Autonomie und Vorsicht, nicht mehr „Stopp ja/nein aus Prinzip":
+Damit Akt 3 autonom laufen kann, **setzt Claude Code in Akt 1 pro Bündel verbindlich ein `kritisch:`-Flag** — geprüft gegen die feste Liste unten. Die drei Werte steuern Autonomie und Vorsicht, nicht „Stopp ja/nein aus Prinzip":
 
 - **`sicher`** — autonom, Standard-Verifikation, Auto-Rollback-Pfad.
 - **`kritisch`** — autonom **mit Pflicht-Vorsicht**: Backup vor der Aktion, tiefe Verifikation, dokumentierter Restore-Pfad. **Kein Stopp aus Prinzip.** Synchron gestoppt wird nur bei Stopp-Auslöser 1–4 oder Fall C (siehe `00_Iterationszyklus.md`).
 - **`sicherheitskritisch-akut`** — **unbedingter Vor-Stopp** („Architekt sitzt daneben"). Hierhin gehört alles, wo das Versagen schon im **Verifikationsfenster** (zwischen Ausführung und Prüfung) live wirkt, oder was von Natur aus irreversibel ist.
 
-Die Spec-weite `risikoklasse:` ist **Obergrenze**, nicht Ersatz: eine `kritisch`-Spec kann und soll `sicher`-Bündel enthalten — nicht jede Aufgabe innerhalb einer kritischen Spec ist selbst kritisch. Eine `sicher`-Spec hingegen kann nie kritische Bündel haben (Stufen-Inflation-Schutz: würde so etwas auftauchen, ist die Spec falsch eingestuft und gehört eskaliert, siehe `00_Iterationszyklus.md` „Eskalation").
-
-**Feste Liste — Claude Code erkennt nur, ob berührt; schätzt hier nicht ein.**
-
-Test für die oberste Stufe: *Wirkt das Versagen schon im Verifikationsfenster live, oder ist es von Natur aus irreversibel?* Ja → `sicherheitskritisch-akut`. Nein, aber sensibel → `kritisch` (Vorsicht).
+Die Spec-weite `risikoklasse:` ist **Obergrenze**, nicht Ersatz (Stufen-Inflation-Schutz: eine `sicher`-Spec kann nie kritische Bündel haben — sonst eskaliert). **Feste Liste** (Claude Code erkennt nur Berührung, schätzt nicht ein): *Wirkt das Versagen schon im Verifikationsfenster live, oder ist es von Natur aus irreversibel?* Ja → `sicherheitskritisch-akut`. Nein, aber sensibel → `kritisch`.
 
 **`sicherheitskritisch-akut` (Vor-Stopp):**
 - Tenant-Isolation / RLS (ein falscher Stand leakt live Mandantendaten).
@@ -201,11 +168,9 @@ Fachbegriffe nur, wenn die Entscheidung an ihnen hängt — dann mit Halbsatz-Er
 
 ### Einwände & Behandlung (`## Einwände & Behandlung`)
 
-Nach jedem Evaluator-Pass ist **`## Einwände & Behandlung`** Pflichtsektion in Spec und kombinierter Spec. Format: Tabelle mit Spalten Einwand | eingearbeitet/verworfen | ein Satz Begründung. Kein Evaluator-Pass gelaufen → Sektion entfällt (aber erst nach abgeschlossenem Pass eintragen, nicht weglassen). Ein unbehandelter Evaluator-Einwand ohne Tabelleneintrag ist ein unvollständiges Dokument.
+Nach jedem Evaluator-Pass Pflichtsektion in Spec und kombinierter Spec: Tabelle Einwand | eingearbeitet/verworfen | ein Satz Begründung. Kein Pass gelaufen → Sektion entfällt. Ein unbehandelter Einwand ohne Tabelleneintrag ist ein unvollständiges Dokument.
 
-## Bündelung gehört NICHT in die Spec
-
-Die Spec definiert das WAS (Ziel, Soll-Zustand, Akzeptanzkriterien). Die Bündelung/Arbeitsliste erarbeitet sich Claude Code selbst in der Sondierung (Akt 1) — er kann Abhängigkeiten am echten System besser einschätzen. *(Beim Sprung: inline in der kombinierten Spec, knapp.)*
+**Bündelung gehört NICHT in die Spec.** Die Spec definiert das WAS; die Bündelung/Arbeitsliste erarbeitet sich Claude Code selbst in der Sondierung (Akt 1) — er kann Abhängigkeiten am echten System besser einschätzen. *(Beim Sprung: inline in der kombinierten Spec, knapp.)*
 
 ## Backlog-Felder (Seeds)
 
@@ -251,12 +216,10 @@ Seeds in `_Betrieb/Backlog/seeds/` führen zusätzlich zu den allgemeinen Front-
 
 **Querverweis:** Das `kritisch`-Flag pro Bündel (für autonome Korridor-Ausführung) folgt derselben Vergabe-Mechanik wie `klasse`/`zugkraft`. Definition siehe Abschnitt „Kritikalität pro Bündel" oben.
 
-## Schritt-Log (Stufe Schritt)
-
-Jeder Geltungsbereich hat eine Datei `<Bereich>/Schritt-Log.md`. Claude Code hängt **automatisch, ohne Nachfrage** pro ausgeführtem Schritt eine Zeile an:
+**Schritt-Log (Stufe Schritt).** Jeder Geltungsbereich hat eine Datei `<Bereich>/Schritt-Log.md`. Claude Code hängt **automatisch, ohne Nachfrage** pro ausgeführtem Schritt eine Zeile an:
 
 ```
 | 2026-05-24 | <was, ein Satz> | <commit-hash> |
 ```
 
-Das ist das Sicherheitsnetz gegen „verschwunden in der Git-Historie": ein Schritt ist über Obsidian auffindbar, ohne dass er ein eigenes Arbeitsdokument oder einen Archiv-Eintrag erzeugt. Kein Logbuch, kein Abschluss, keine Verankerung.
+Sicherheitsnetz gegen „verschwunden in der Git-Historie" — ohne eigenes Arbeitsdokument, Archiv-Eintrag, Logbuch oder Verankerung.

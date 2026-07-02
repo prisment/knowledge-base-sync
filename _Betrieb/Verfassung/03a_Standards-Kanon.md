@@ -21,19 +21,14 @@ verhindert.
 
 ## Woher neue Einträge kommen (Rückwärts- UND Vorwärts-Ernte)
 
-Das Register wächst aus zwei Quellen — „nur nach oben, über Phase 9":
-
-- **Rückwärts-Ernte:** ein kalter Audit/eine Sondierung erntet bestehende belegte Mängel als
-  Kandidaten (so entstanden K-01…K-08 aus PLAT-109). Pflicht-Ausgabe-Sektion `## Kanon-Saat`
-  im Sondierungs-Template.
-- **Vorwärts-Ernte (laufende Zyklen):** Deckt **irgendein** Zyklus künftig einen fehlenden
-  oder zu schwachen Standard auf — per Audit/Sondierung, per belegtem Test-Abnahme-Defekt
-  (Verfassung 08) oder beim Akt-3-Abschluss einer normalen Spec — ist die **Triage in dieses
-  Register Pflicht**: aufgenommen als `K-NN` **oder** mit Grund verworfen, **kein stilles
-  Übergehen**. Maßstab „Standard-würdig": der Befund ist *wiederholbar*.
-
-Die verbindliche Regel dazu lebt in **Verfassung 00**, Abschnitt „Vorwärts-Ernte in den
-Standards-Kanon" (SSOT — hier nur der Verweis). *(Schleife verankert mit PLAT-112.)*
+Das Register wächst aus zwei Quellen — „nur nach oben, über Phase 9": **Rückwärts-Ernte**
+(ein kalter Audit/eine Sondierung erntet bestehende belegte Mängel, Pflicht-Ausgabe-Sektion
+`## Kanon-Saat` im Sondierungs-Template — so entstanden K-01…K-08 aus PLAT-109) und
+**Vorwärts-Ernte** (deckt irgendein Zyklus künftig einen fehlenden/zu schwachen Standard auf
+— Audit, belegter Test-Abnahme-Defekt Verf. 08, Akt-3-Abschluss —, ist Triage Pflicht: `K-NN`
+aufgenommen oder mit Grund verworfen, kein stilles Übergehen; Maßstab „Standard-würdig" =
+*wiederholbar*). Verbindliche Regel: **Verfassung 00**, Abschnitt „Vorwärts-Ernte in den
+Standards-Kanon" (SSOT, hier nur Verweis; Schleife verankert mit PLAT-112).
 
 ## Eintrags-Format (verbindlich)
 

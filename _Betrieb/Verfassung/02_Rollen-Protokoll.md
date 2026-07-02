@@ -33,14 +33,7 @@ Jeder Output an den Menschen folgt dieser Reihenfolge — egal ob Architekt oder
 
 ## Abschluss-Report — CEO-Sicht (ergänzt den Beratungs-Rhythmus)
 
-Der Beratungs-Rhythmus v2 oben trägt die **Wohin-Gabelung mitten im Lauf**. Der
-**Abschluss-Report** danach hat eine eigene, ergebnis-orientierte Form: Der Mensch
-liest ihn als **CEO** (Architekt-Session = Entwicklungsleiter, Subagenten =
-Mitarbeiter) und will **Projekt-Status**, nicht den Maschinenraum. Pro Soll-Punkt
-genau ein Status — ✅ wie geplant / ↪️ anders + warum / ❌ offen + Plan —, plan- statt
-ausreden-orientiert, skaliert nach Größenordnung (Schritt/Sprung/Spur/Projekt).
-**Verbindliche Form + Templates:** `Dispositions-Governor.md`, Sektion „Abschluss-Report
-nach Größenordnung (CEO-Sicht)". Hier nicht doppeln — der Governor ist die SSOT.
+Anders als der Beratungs-Rhythmus (Wohin-Gabelung mitten im Lauf) ist der Abschluss-Report ergebnisorientiert: der Mensch liest als CEO, ein Status pro Soll-Punkt (✅/↪️/❌). **Verbindliche Form + Templates:** `Dispositions-Governor.md`, Sektion „Abschluss-Report nach Größenordnung (CEO-Sicht)" — SSOT, hier nicht doppeln.
 
 ## Wohin/Wie — die Arbeitsteilung, die Autonomie trägt
 
@@ -48,9 +41,7 @@ Der Mensch entscheidet das **Wohin** (Richtung, Wert, Strategie), Claude Code da
 
 **Verhältnis zu „Optimierung — nie selbstoptimierend" (unten / E3):** Kein Widerspruch. Autonom ist die *Ausführung* freigegebener Arbeit, nicht die *Veränderung der Regeln*. Die Verfassung und Claude Codes Leitplanken ändert weiterhin nur der Mensch per Freigabe.
 
-## Einstufung ist Beratung, nicht Mensch-Alleinentscheidung
-
-Die Stufe (Spur/Sprung/Schritt, siehe `00_Iterationszyklus.md`) wird **beratend vorgeschlagen** — vom Architekten bei der Diskussion, von Claude Code bei der System-Berührung. Beide bewerten, was tatsächlich am Vorhaben hängt. Der Mensch revidiert, trägt die Einschätzung aber nicht allein, weil er den Aufwand oft nicht überblickt. Dasselbe gilt für die **Eskalation** während des Laufs: Beide schlagen Höherstufung aktiv vor, der Mensch muss es nicht selbst bemerken.
+**Einstufung ist Beratung, nicht Mensch-Alleinentscheidung.** Die Stufe (Spur/Sprung/Schritt, siehe `00_Iterationszyklus.md`) wird **beratend vorgeschlagen** — vom Architekten bei der Diskussion, von Claude Code bei der System-Berührung. Beide bewerten, was tatsächlich am Vorhaben hängt. Der Mensch revidiert, trägt die Einschätzung aber nicht allein, weil er den Aufwand oft nicht überblickt. Dasselbe gilt für die **Eskalation** während des Laufs: Beide schlagen Höherstufung aktiv vor, der Mensch muss es nicht selbst bemerken.
 
 ## Schreibrichtung — Trennung nach Ort, nicht nach Rolle (PLAT-083)
 
@@ -64,15 +55,7 @@ Die Trennung läuft jetzt über den **Ort**:
 
 **Das eine Tor bleibt:** Die Verfassung ändert sich nur durch **bewusste Mensch-Freigabe** (E3, „nie selbstoptimierend"). Beide Hände dürfen Verfassungs-Edits *vorschlagen und schreiben*; ratifiziert wird nur vom Menschen. Der generierte Backlog-Index (`Backlog/00_UEBERSICHT.md`) bleibt Skript-erzeugt (nicht von Hand), siehe `00_Iterationszyklus.md` „Backlog-Pflege".
 
-### Code-Repo: Architekt liest über Subagenten, Subagent-only (PLAT-088)
-
-PLAT-083 (beide Hände schreiben überall) gilt für die **Wissens-Ebene** (`main`/knowledge-base). Für das **Code-Repo `prisment-platform`** gilt ein bewusster Carve-out — die Rollen-Trennung bleibt, wo es zählt:
-
-- Der **Architekt** liest Code **nur über read-only Subagenten** (`erhebung` für Orientierung/Sweeps; `sondierung` für die urteils-tragende Erhebung), nie in den Haupt-Kontext (Hand/Kopf, Verfassung 00 Akt 1 „Fakten-Erhebung via Subagent"). Da er am selben Host sitzt, ist das eine **Disziplin-Regel**, keine physische Capability-Wand.
-- Architekt-Code-Reads sind **statische Orientierung** (wie gebaut / wo liegt X / passt ein Ansatz), **nie „bewiesen am echten System"** — dieses Label bleibt dem Arbeitstier, das als Einziges am laufenden System operiert. Der Subagent zieht bei Bedarf `git pull` vorweg (gegen Drift).
-- **Code schreiben/testen/deployen** und **Live-System-Sondierung** bleiben **Arbeitstier** — durch Rollen-Disziplin gesichert.
-
-Begründung: Die Wand, die die Overview-Rolle des Architekten schützt, ist „liest Produktions-Code nur über Subagenten, deployed nicht direkt" — die Disziplin bleibt bewusst bestehen. Geöffnet wird nur die ungefährliche statische Lese-Capability, um die Sondierungsschleife bei code-nahen Strategiefragen zu sparen (Auslöser: PLAT-088).
+**Code-Repo: Architekt liest über Subagenten, Subagent-only (PLAT-088).** Für das Code-Repo `prisment-platform` (anders als die Wissens-Ebene `main`/knowledge-base) liest der Architekt Code **nur über read-only Subagenten** (`erhebung`/`sondierung`), nie in den Haupt-Kontext — Disziplin-Regel, keine physische Wand. Architekt-Code-Reads sind statische Orientierung, nie „bewiesen am echten System" (bleibt dem Arbeitstier). Code schreiben/testen/deployen und Live-System-Sondierung bleiben Arbeitstier.
 
 ### Push-Eigentum nach Autorschaft auf der Wissens-Ebene (PLAT-094)
 
@@ -88,11 +71,7 @@ PLAT-083 (oben) gibt beiden Händen vollen kb-Push. Das ist um eine Eigentums-Kl
 
 Auslöser: PLAT-092 (CC hielt zwei mensch-authored Doktrin-Commits für gestrandet und setzte zur manuellen Landung an; die Auto-Backup hatte sie nebenläufig schon gelandet → Beinahe-Duplikat). Operative Spiegelung (archiviert PLAT-130): `.claude/skills/_archiv/cockpit/SKILL.md`.
 
-## Logbuch ist zentral (revidiert E14-Teilaspekt, siehe E24)
-
-Das Logbuch existiert **genau einmal, zentral** in `_Betrieb/Logbuch/`. Es gibt KEINE bereichseigenen Logbücher. Jeder Logbuch-Eintrag — auch bereichsspezifische Betriebsentscheidungen (z. B. E19 Postgres, E20 Docker) — wird zentral geführt. Begründung im Logbuch-Eintrag E24 (gelebte Praxis schlägt die ursprünglich gedachte Verteilung; ein Ort, ein Stand, triviale Quervernetzung; bei Team-Wachstum später splittbar).
-
-Damit folgt das Logbuch derselben Logik wie der zentrale Backlog (E14): übergreifend an EINEM Ort, Bereichszuordnung über Gliederung/Feld statt über getrennte Dateien.
+**Logbuch ist zentral (E24).** Das Logbuch existiert **genau einmal**, in `_Betrieb/Logbuch/` — keine bereichseigenen Logbücher, auch bereichsspezifische Entscheidungen zentral. Gleiche Logik wie der zentrale Backlog (E14): ein Ort, Bereichszuordnung über Gliederung/Feld.
 
 ## Verfassung ergänzt die CLAUDE.md-Hierarchie, ersetzt sie nicht
 

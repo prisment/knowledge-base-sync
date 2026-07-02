@@ -68,6 +68,8 @@ Cron startet als `claude-deploy` zur definierten Zeit einen **headless, nicht-in
 
 **Fail-closed-Marker im Snapshot.** Pseudonymisierte Snapshots tragen `-- PSEUDONYMIZED <YYYY-MM-DD>` als erste oder zweite Header-Zeile. Das **Hochfahr-Skript der Bühne** (z.B. `dev-start.sh`, `build_voicedb_snapshot.py`) prüft den Marker hart und **verweigert den Container-Start ohne Marker**. PreCheck-Wand früher als der Container-Lauf — nicht erst beim Selbsttest.
 
+**Test-/Dev-Bühnen nie als öffentlicher Traefik-Router ohne Auth-Tor (PLAT-043).** Eine Test-Umgebung, die öffentlich geroutet wird, trägt immer ein vorgeschaltetes Auth-Tor (heute: dev hinter NextAuth); neue öffentliche Test-Router ohne Auth-Tor sind verboten.
+
 **Werkzeug und Verfahren.** Skill `test-data-pseudonymize` (`.claude/skills/test-data-pseudonymize/SKILL.md`) trägt das How: vier-Schritte-Verfahren, sieben Pattern-Lehren aus PLAT-043 B-PSEUDO, Referenzen auf die Pattern-Skripte in `prisment-platform/scripts/fixtures/`. Mapping-Tabelle ist Architekten-Hand-Schlüssel und lebt außerhalb des Repos (auch außerhalb des knowledge-base-Vaults).
 
 ## Betriebs-Queue (Monitoring-Befunde sind keine Seeds)
