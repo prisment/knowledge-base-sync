@@ -23,7 +23,7 @@ Claude Code liest CVE-Feeds, Logs, Webinhalte, Issue-Texte. All das kann INFORMI
 
 - Tagsüber unter Aufsicht: Claude Code darf sein Tool-Set adaptiv anpassen.
 - Unbeaufsichtigt: NICHT. Eingefrorenes, minimales Tool-Set. „Adaptiv neue Tools laden" ist sonst der Hebel einer Injection.
-- **Reales Objekt (Stand 2026-07):** der einzige unbeaufsichtigte LLM-Lauf ist der wöchentliche Richtungs-Review (`_Betrieb/Skripte/nightly/run_richtungs_review.sh`: `claude --print` mit dem root-owned `/etc/claude/nightly-settings.json` = der eingefrorene Tool-Satz). Die nächtliche Routine selbst ist seit PLAT-151 deterministisches Bash ohne LLM (Verfassung 04); kommt je wieder ein unbeaufsichtigter LLM-Lauf hinzu, gilt dieser Freeze für ihn unverändert.
+- **Reales Objekt (Stand 2026-07, aktualisiert PLAT-170):** die unbeaufsichtigten LLM-Läufe sind (a) die beiden assistent-Reflexions-Crons (`run_reflexion_naechtlich.sh` / `run_reflexion_woechentlich.sh`: `claude --print` mit dem root-owned `/etc/claude/assistent-reflexion-settings.json` = eingefrorener Tool-Satz + fail-closed Guard-Hooks) und (b) die dauerhaft laufende, eingesperrte assistent-RC-Session (eigener Unix-User, root-owned `settings.json`/Hooks, gefilterter Checkout — Dossier `Plattform/Systemzustand/Sicherheit/assistent-rc.md`). Der frühere wöchentliche Richtungs-Review wurde seit PLAT-170 durch die Wochen-Reflexion abgelöst (archiviert unter `_Betrieb/Archiv/richtungs-review-abgeschafft-PLAT-170/`); sein `/etc/claude/nightly-settings.json`-Freeze lebt im assistent-Reflexions-Settings weiter. Die nächtliche Routine `run_nightly.sh` bleibt seit PLAT-151 deterministisches Bash ohne LLM (Verfassung 04); jeder unbeaufsichtigte LLM-Lauf erbt diesen Freeze unverändert.
 
 ## Integrität der Steuer-Dateien
 
