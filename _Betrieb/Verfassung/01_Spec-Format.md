@@ -14,8 +14,6 @@ Die Arbeitsdokumente des Zyklus folgen einem modularen Standard: ein gemeinsamer
 - **Sprung:** kombinierte Spec (Fakten/Soll inline; **Claude Code schreibt sie selbst in Akt 1**) + kurze Abschluss-Notiz.
 - **Schritt:** kein Dokument, nur eine Zeile in `<Bereich>/Schritt-Log.md`.
 
-**Über der Spur liegt — orthogonal — die Projekt-Ebene** (`07_Projekt-Orchestrierung.md`), mit Seed-typ `projekt` (treibt Sondierungstiefe auf Spur, löst den Orchestrator-Pfad aus) + zwei Dokument-Varianten: `typ: projekt-sondierung` (= Abweichungs-Kontrakt, vom Menschen ratifiziert) und `typ: missions-journal` (Zustandsspeicher des Orchestrator-Loops). Ausfüllbare Form je: `_Betrieb/Templates/Dokument-Templates.md`.
-
 ## Verbindliche Regeln
 
 1. **Eine Wahrheit, Zusammenfassung ist nur Ansicht.** Die Zusammenfassung am Dokumentanfang verdichtet, was darunter steht — sie ergänzt NIE Inhalt, der unten fehlt.
@@ -114,7 +112,7 @@ Drei Ausgabe-Klassen: ✓ `disjunkt` / ✗ `Schnittmenge zwischen Spuren` / ✗ 
 
 ### Bündel-Parallelität innerhalb eines Auftrags (Mensch-Freigabe 2026-07-02)
 
-Der Abschnitt oben regelt parallele **Spuren** (mehrere Specs/Sessions). Zusätzlich gilt **innerhalb** eines Auftrags — Scope: die **interaktive Architekt-Session**; der autonome Orchestrator-Loop bleibt single-threaded (Verfassung 07 „Single-threaded-`main`-Garantie"):
+Der Abschnitt oben regelt parallele **Spuren** (mehrere Specs/Sessions). Zusätzlich gilt **innerhalb** eines Auftrags — Scope: die **interaktive Architekt-Session**:
 
 - **`abhaengig_von:`-Vermerk pro Bündel (Pflicht, Akt 1).** Neben dem `kritisch:`-Flag setzt Claude Code in der Sondierung pro Bündel verbindlich `abhaengig_von: <Bündel-IDs>` oder `abhaengig_von: —` (gleiche Schreibweise wie das Seed-Feld, aber anderer Scope: zeigt auf Bündel-IDs **desselben** Auftrags, nie auf Seed-IDs; entfällt bei Ein-Bündel-Aufträgen). Der Vermerk macht Unabhängigkeit **explizit lesbar**, statt sie dem Akt-3-Ausführenden zur Laufzeit zu überlassen — Modelle, die Unabhängigkeit schwächer selbst erkennen, lesen sie hier ab statt zu raten. Maßstab beim Setzen: braucht B das *Ergebnis* von A (Daten, Dateien, Reihenfolge, geteilter Zustand)? Im Zweifel konservativ setzen — seriell ist der sichere Default, Parallelität die belegte Ausnahme. **Fehlt der Vermerk** (Alt-Sondierung von vor dieser Regel): als „unbekannt" lesen → seriell, nie als „keine Abhängigkeit".
 - **Nutzung in Akt 3:** Bündel ohne gegenseitige Abhängigkeit UND mit disjunkten Datei-Scopes soll der Architekt **parallel an Worker dispatchen** — in einem Turn, im Vordergrund (Mechanik + Zuverlässigkeits-Rahmen: CLAUDE-global, Sektion „Subagenten", Absatz „Parallel-Dispatch unabhängiger Subagenten"). Maßstab für „disjunkt" ist `check_parallel.py` (✓ disjunkt, kein Hot-File-Treffer, Werkzeug s. o.); logische Kopplung (gemeinsamer Import, geteilte Config) zählt als nicht disjunkt. Schreibende Parallel-Worker arbeiten in eigenen Worktrees (Kollisions-Schutz oben).
@@ -203,8 +201,6 @@ Seeds in `_Betrieb/Backlog/seeds/` führen zusätzlich zu den allgemeinen Front-
 - **`autonom_ziehbar:`** — `ja` | `nein`. **Default `nein`** (Feld darf weggelassen werden). **Abgeleiteter Zustand, kein eigenes Urteil**: `ja` gdw. (a) eine freigegebene Spec für den Seed existiert UND (b) diese Spec `risikoklasse: sicher` trägt. Die Mensch-Hoheit sitzt an diesen zwei Vorbedingungen, nicht am Feld selbst. Bedeutung, Zeitpunkt und Halde-Regeln im Abschnitt „Autonome Halde" unten.
 
 - **`mission:`** — Kebab-case-Slug, der den Seed einer aktuell laufenden, missionalen Klammer zuordnet (z. B. `live-gang`, `kunde-2`, `framework`). Genau eine Mission pro Seed; leerer Wert (oder weggelassen) heißt „keine Mission". Wird im Obsidian-Dashboard zum Filtern und Bündeln genutzt; hat KEINEN Einfluss auf den Prozess. Liste der aktuell aktiven Missions-Slugs liegt in `_Betrieb/Missionen/00_aktive-missionen.md` (handgepflegt).
-
-- **`projekt:`** — Kebab-case-Slug (bzw. `projekt_id`-Kürzel), der den Seed einem laufenden **Projekt** zuordnet (`07_Projekt-Orchestrierung.md`). Anders als `mission:` ist das **prozess-tragend**: ein `projekt:`-getaggter Seed gehört in das Seed-Set genau eines Projekts, dient dessen einem fixen Wohin, und wird vom Orchestrator-Loop gezogen/priorisiert (nicht von einer interaktiven Session). Emergente Seeds, die ein Worker im Projekt-Lauf anlegt, tragen dieses Feld. Leer/weggelassen = kein Projekt. Unterschied zu `mission:`: Mission ist ein loser Filter ohne Prozess-Wirkung, Projekt ist ein Ein-Ziel-Behälter mit Orchestrator-Mechanik.
 
 - **`spec_id:`** — Backreference auf die zugehörige Spec, sobald sie existiert (gesetzt in Akt 2, wenn der Seed in `in_arbeit` geht). **Format: Obsidian-Wikilink auf die Spec-Datei**, nicht nur die nackte ID — `spec_id: "[[Plattform/Arbeitsgedaechtnis/PLAT-046_SPEC]]"` (PLAT) bzw. `spec_id: "[[Prisment/Arbeitsgedaechtnis/PRIS-046_SPEC]]"` (PRIS). Begründung: ein Klick im Editor springt direkt zur Spec; die nackte ID zwingt zur manuellen Suche. Wert weggelassen, solange noch keine Spec existiert (Seed im Backlog ungezogen).
 

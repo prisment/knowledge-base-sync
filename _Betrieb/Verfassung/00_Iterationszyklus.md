@@ -39,8 +39,6 @@ Nicht jedes Vorhaben braucht denselben Prozess-Umfang. Drei Stufen, getrennt nac
 
 **Keine Planungs-Ebene über der Spur (PLAT-022, E36).** Es gibt genau drei Stufen. **Eine Spur IST das große Vorhaben.** Folge-Arbeit wird als Seed abgezweigt, nie als übergeordnetes Schirm-Dokument geführt. Der Begriff „Roadmap" ist als Framework-Artefakt abgeschafft. Strategie-/Produkt-Dokumente, die das Wort inhaltlich verwenden (z. B. `Prisment/Systemzustand/Strategie/prisment_roadmap_businessplan.md`), sind ausgenommen — nicht Framework-Ebene.
 
-**Die einzige erlaubte Ebene über der Spur ist das Projekt** (`07_Projekt-Orchestrierung.md`) — und das bleibt mit der Roadmap-Abschaffung vereinbar: Eine Roadmap bündelte *mehrere unabhängige Wohins* (verboten); ein Projekt hat **genau ein** maschinell prüfbares Akzeptanzkriterium, dem alle seine Seeds dienen. Ein-Ziel-Behälter erlaubt, Mehr-Ziel-Schirm nicht. Das Projekt ist zudem keine Stufe, sondern eine orthogonale Ebene — die „genau drei Stufen" gelten unverändert.
-
 **Harte Regel gegen Stufen-Inflation:**
 - **Risikoklasse `kritisch` und `sicherheitskritisch-akut` erzwingen immer Spur.** Beide können nie als Sprung oder Schritt gefahren werden — schützt davor, Gefährliches aus Bequemlichkeit klein zu fahren. (PLAT-012, aufgedeckt bei der Backlog-Migration über `seed-os-patching-broken`.)
 - Die Versuchung, sich alles als „Schritt" schönzureden, ist genau die menschliche Trägheit, vor der dieses Framework warnt. Ehrliche Einstufung ist Disziplin, kein Formalismus.
@@ -52,7 +50,7 @@ Nicht jedes Vorhaben braucht denselben Prozess-Umfang. Drei Stufen, getrennt nac
 - Das ist kein Scheitern, sondern das System, das funktioniert.
 - **Herunterstufung gibt es nicht automatisch.** Wer einmal als Spur erkannt wurde, bleibt Spur.
 
-**Eskalations-Kette vollständig:** Schritt → Sprung → Spur → **Projekt**. Die letzte Stufe der Kette — Spur → Projekt — ist **keine vierte Stufe**, sondern der Übertritt auf die Projekt-**Ebene** (orthogonal zur Stufen-Achse): ein Vorhaben entpuppt sich als emergent-mehrspurig mit *einem fixen, maschinell prüfbaren Wohin*, das ein menschlich ratifizierter Abweichungs-Kontrakt + ein autonomer Orchestrator-Loop abwickelt. Mechanik, Kontrakt und Freigabe-Vollmacht: **`07_Projekt-Orchestrierung.md`**. Auch hier gilt nur-nach-oben.
+**Eskalations-Kette vollständig:** Schritt → Sprung → Spur. Auch hier gilt nur-nach-oben.
 
 ## Akt 1 — Sondierung (Claude Code, am echten System)
 
