@@ -22,7 +22,8 @@ Claude Code liest CVE-Feeds, Logs, Webinhalte, Issue-Texte. All das kann INFORMI
 ## Tool-Freeze im unbeaufsichtigten Lauf
 
 - Tagsüber unter Aufsicht: Claude Code darf sein Tool-Set adaptiv anpassen.
-- Nachts/unbeaufsichtigt: NICHT. Eingefrorenes, minimales Tool-Set. „Adaptiv neue Tools laden" ist sonst der Hebel einer Injection.
+- Unbeaufsichtigt: NICHT. Eingefrorenes, minimales Tool-Set. „Adaptiv neue Tools laden" ist sonst der Hebel einer Injection.
+- **Reales Objekt (Stand 2026-07):** der einzige unbeaufsichtigte LLM-Lauf ist der wöchentliche Richtungs-Review (`_Betrieb/Skripte/nightly/run_richtungs_review.sh`: `claude --print` mit dem root-owned `/etc/claude/nightly-settings.json` = der eingefrorene Tool-Satz). Die nächtliche Routine selbst ist seit PLAT-151 deterministisches Bash ohne LLM (Verfassung 04); kommt je wieder ein unbeaufsichtigter LLM-Lauf hinzu, gilt dieser Freeze für ihn unverändert.
 
 ## Integrität der Steuer-Dateien
 

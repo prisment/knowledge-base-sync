@@ -32,25 +32,18 @@ aenderung: "nur nach oben, nur durch bewusste Freigabe"
 
 Die kritische Grenze sitzt im Betriebssystem, nicht im Prompt: `claude-deploy` hat KEIN root, KEINEN Foundation-Layer-Zugriff. Diese Rechtegrenze umgeht kein Gedankengang. Sie schützt doppelt — gegen einen Fehler des Agenten UND gegen einen gekaperten Account.
 
-## Nächtliche Routine — Ablauf
+## Nächtliche Routine — Ablauf (real, Stand PLAT-151)
 
-Cron startet als `claude-deploy` zur definierten Zeit einen **headless, nicht-interaktiven** Lauf (eigene Instanz, NICHT die menschliche tmux-Session). Einstiegsprompt konstant: „Lies `_Betrieb/Verfassung/04_Sicherheits-Prinzipien.md` und `Plattform/Systemzustand/Sicherheit/nacht-aufgaben.md`. Arbeite die Aufgaben nach den dort definierten Regeln ab. Schreib den Morgen-Report."
+Cron startet 04:00 als `claude-deploy` das **deterministische Bash-Skript** `_Betrieb/Skripte/nightly/run_nightly.sh` — **kein LLM-Aufruf, keine headless-Claude-Instanz** (PLAT-151 B2.1; der frühere headless-Claude-Ablauf mit 10-Schritt-Schleife + Morgen-Report ist abgelöst). Ablauf:
 
-**Ort der Steuer-Datei:** `Plattform/Systemzustand/Sicherheit/nacht-aufgaben.md` — dauerhafte operative Sicherheits-Konfiguration (gespiegelt, integritätsgeprüft, langlebig). Nur der jeweilige Morgen-Report ist flüchtig und liegt in `Plattform/Arbeitsgedaechtnis/`.
+1. **Selbst-Heil-Preflight:** `core.hooksPath` gegen den Sollpfad prüfen; Drift → Queue-Meldung + Heilung via `install-git-hooks.sh` (PLAT-091 B0).
+2. **Integritäts-Tor:** sha256-Prüfung der Steuerdatei `Plattform/Systemzustand/Sicherheit/nacht-aufgaben.md` gegen ihre `.sha256`-Datei. Mismatch → Abbruch + Alarm-Mail, kein Lauf.
+3. **Deterministischer Digest** (`nightly_digest.sh`): liest die Anomalie-Datei von `collect-anomalie-input.sh` (Cron 03:55) und emittiert Betriebs-Queue-Einträge (`NIGHTLY_QUEUE_ONLY=1`). Kein Report-Artefakt.
+4. **Infrastruktur-Tail** (unconditional, je non-fatal): Archiv-Tor-Sweep Layer 2, Trace-Retention, env_a-Worktree-Sweep, Host-Verdrahtungs-Drift-Check, Effizienz-Telemetrie, quartalsweise Tor-Gesundheits-Metrik, Residuen-Commit, Docker-Builder-Prune, CC-Update.
 
-**Repo definiert AUSWAHL, nicht FÄHIGKEIT.** Die `nacht-aufgaben.md` enthält NIE frei interpretierbare Befehle. Erlaubte Aktionen sind als feste, versionierte, eng umrissene Skripte auf OS-Ebene verankert (Allowlist). Die Aufgabe wählt per `routine:`-Feld nur DARAUS aus und parametrisiert. Eine eingeschmuggelte Aufgabe ohne passende Allowlist-Routine läuft ins Leere.
+**Repo definiert AUSWAHL, nicht FÄHIGKEIT** bleibt das tragende Prinzip — heute in der Form: nachts läuft ausschließlich, was als festes, versioniertes Skript in der Crontab verankert ist; die integritätsgeprüfte `nacht-aufgaben.md` bleibt die dauerhafte operative Sicherheits-Konfiguration (gespiegelt, langlebig), und ihr Hash-Tor gated den Lauf. Weitere nächtliche Cron-Skripte (Renovate, apply-*, Watchdogs, Richtungs-Review) folgen derselben Regel: feste Skripte, keine frei interpretierbaren Befehle aus dem Repo.
 
-**Abarbeitungs-Schleife pro Aufgabe:**
-1. Integrität von `nacht-aufgaben.md` prüfen (Hash/signierter Commit gegen letzte Freigabe). Unerwartet verändert? → Abbruch + Alarm.
-2. `routine` zeigt auf eine erlaubte Allowlist-Routine? Wenn nein → überspringen, im Report markieren.
-3. Risikoklasse `kritisch`? → NICHT ausführen, nur reporten.
-4. Erfolgskriterium + Rollback-Pfad vorhanden? Wenn nein → überspringen, markieren.
-5. Snapshot/Sicherung anlegen.
-6. Ausführen (nur die parametrisierte Allowlist-Routine).
-7. Health-Check als Beweis.
-8. Rot → Auto-Rollback → im Report „brauchte Rollback".
-9. Grün → weiter.
-10. Am Ende: Morgen-Report als Datei `Plattform/Arbeitsgedaechtnis/nacht-report-<datum>.md`.
+Käme je wieder ein **ausführender** unbeaufsichtigter LLM-Lauf hinzu, gilt zusätzlich zum Tool-Freeze (Verfassung 05) die frühere Ausführungs-Schleife unverändert als Pflicht: Risikoklasse `kritisch` → nicht ausführen, Erfolgskriterium + Rollback-Pfad vorab, Snapshot, Health-Check als Beweis, Rot → Auto-Rollback (s. „Pflicht-Mechanismen" oben).
 
 ## Cloudflare-Anomalie-Trigger (alarmieren, nicht eingreifen)
 
