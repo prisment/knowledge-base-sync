@@ -25,8 +25,8 @@ aenderung: "nur nach oben, nur durch bewusste Freigabe"
 
 - Erfolgskriterium UND Rollback-Pfad sind VORAB definiert.
 - Health-Check beweist Erfolg (nicht die Abwesenheit einer Fehlermeldung). „OK" trotz nicht startendem Dienst = Fehlschlag.
-- Bei rotem Health-Check: automatischer Rollback + alarmierender Morgen-Report.
-- Morgen-Report unterscheidet: „alles glatt" / „brauchte Rollback / Aufmerksamkeit" / „Notbremse-Alarm liegt bereit".
+- Bei rotem Health-Check: automatischer Rollback + Alarm an den Menschen (Betriebs-Queue-Eintrag; kritische Pfade zusätzlich Mail — `handlungsbedarf-mail.py` 05:00 bündelt den Handlungsbedarf täglich).
+- Das Ergebnis jeder Aktion ist unterscheidbar festgehalten (Queue/Log): „alles glatt" / „brauchte Rollback / Aufmerksamkeit" / „Alarm liegt beim Menschen". *(Der frühere Morgen-Report als Datei ist seit PLAT-151 abgelöst — Queue + Mail sind der Kanal.)*
 
 ## Harte Grenze im OS
 
@@ -71,7 +71,7 @@ Befunde aus Monitoring, Nightly-Läufen und CI (Image-Update verfügbar, Build r
 
 **Dedupe-Pflicht** über Fingerprint (Quelle + Objekt): wiederholte Befunde aktualisieren den bestehenden Eintrag (Zähler + letztes Datum), statt neue Einträge zu erzeugen. Default-Einstufung von Queue-Arbeit: `sicher`/Routine — die Allowlist-Routinen aus diesem Modul bleiben der Ausführungsweg.
 
-**Eskalation Queue → Seed** nur durch Mensch oder CC-Vorschlag, wenn echte gestaltende Arbeit dahintersteht (dann ein Sammel-Seed pro Root-Cause, nicht ein Seed pro Symptom). Der Nightly-Lauf schreibt ausschließlich in die Queue + Morgen-Report — legt nie selbst Seeds an.
+**Eskalation Queue → Seed** nur durch Mensch oder CC-Vorschlag, wenn echte gestaltende Arbeit dahintersteht (dann ein Sammel-Seed pro Root-Cause, nicht ein Seed pro Symptom). Der Nightly-Lauf schreibt ausschließlich in die Betriebs-Queue — legt nie selbst Seeds an.
 
 ## Kontextbindung
 
