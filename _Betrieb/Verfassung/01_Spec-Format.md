@@ -38,7 +38,7 @@ Zusätzlich zu den bestehenden Feldern:
     Evaluator per Urteil — meldet [STRUKTURELL] wenn `architekt` gesetzt oder Laufzeit-Test-AK
     ohne erkennbaren Ausführer vorliegt.
 
-**ID-Schema:** `<KÜRZEL>-<laufende Nummer>`, fortlaufend pro Geltungsbereich: `PLAT` (Plattform), `PRIS` (Prisment), `INT` (Intern). Beispiel `PRIS-014`. Schritte erhalten KEINE ID (nur `Schritt-Log.md` + Commit).
+**ID-Schema:** `<KÜRZEL>-<laufende Nummer>`, fortlaufend pro Geltungsbereich: `PLAT` (Plattform), `PRIS` (Prisment), `INT` (Intern), `GESCH` (Geschäft). Beispiel `PRIS-014`. Schritte erhalten KEINE ID (nur `Schritt-Log.md` + Commit).
 
 **Eine ID = genau eine Spec.** Zwei unzusammenhängende Vorhaben bekommen nie dieselbe ID — sonst kollidieren ihre Zyklus-Artefakte auf dem Dateinamen und der Evaluator-Pass des einen überschreibt den des anderen (Präzedenz PRIS-094). Vor jeder neuen Spec gilt der `next-spec-id`-Skill als Pflicht — nie raten.
 
