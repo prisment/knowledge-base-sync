@@ -160,6 +160,14 @@ Descendant der Live-Revision, nicht zwingend main-HEAD (Ancestor-/Revert-Guards 
 wartet. **Tor-Gesundheits-Regel:** die Umgehungsquote jedes Tors wird quartalsweise gemessen
 (`tor_gesundheit.py`); überschreitet sie **>20 %**, wird das Tor redesignt/abgeschafft.
 
+**Bühnen-Belegung (PLAT-164 → PLAT-176):** Die eine `:test`-Bühne wird über den Bühnen-Lock
+(`scripts/buehne_lock.sh`, env_a) **pro Image** belegt — zwei Spuren an verschiedenen Diensten
+bauen/testen parallel, gleiche-Image-Zyklen bleiben exklusiv (Refusal frisch / laute Übernahme
+stale >180 min). Ganz-Bühnen-Operationen (`dev-start.sh`, test_db-Drop) nehmen den Exklusiv-Lock
+(`--all`) und blocken alles. Die per-Image-Parallelität ist erst aktiv, wenn der Live-`cd-docker`
+Einzel-Recreate kann (Capability-Probe, fail-open); vorher verhält sich der Lock global-seriell.
+Mechanik-SSOT: `Plattform/Systemzustand/Geteilte-Dienste/test-buehne.md`, Abschnitt „Bühnen-Lock".
+
 ## Vor-Promote-Stop-Tor (PLAT-144, in-session Erzwingung)
 
 **Schichten-Modell:** (1) **Stop-Tor (in-session)** — eine Session mit kundensichtbarem (`cv`)
