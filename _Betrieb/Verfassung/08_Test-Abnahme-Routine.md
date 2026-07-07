@@ -43,6 +43,10 @@ FB-Cross-Post-Hälfte (prüfte nur Vorhandenes) + ein Zweit-Thema, das erst nach
 - **Soll-getrieben:** Eingang jeder Agent-Abnahme ist das Feature-Soll-Inventar
   (`Prisment/Systemzustand/Test/Agent-Test_A-Feature-Inventar.md`); ein Flow ohne Soll-Eintrag
   ist „nicht abgedeckt", nie grün. Strategie-Satz: `Agent-Test_A..D` ebd.
+- **Helpdesk-Wissen reist mit (PRIS-143):** Applikabilitäts-Heuristik — neue/geänderte
+  kundensichtbare Begriffe, Preise, Abläufe oder Screens ⇒ `helpdesk_knowledge/*.md` prüfen und
+  ggf. im selben Bündel nachziehen (der Nightly-Index-Wächter zieht den Index automatisch nach,
+  nicht den Korpus-Inhalt selbst).
 
 ## Das Prüf-Instrument passt sich dem Feature-Typ an
 
