@@ -56,6 +56,21 @@ Nicht jedes Vorhaben braucht denselben Prozess-Umfang. Drei Stufen, getrennt nac
 
 **Auslöser:** eine Idee, ein Problem, geplante Produktarbeit — oder ein **Backlog-Seed**, der gezogen wird.
 
+### Erarbeitungs-Gespräch — Standard-Einstieg bei offenem Soll (Korbinian-Ruling 2026-07-12)
+
+**Wann (Default):** Trägt der Auftrag offenen Gestaltungsraum — neues Feature, Richtungsfrage, ein „ich hätte gerne …", dessen Soll noch nicht scharf ist —, beginnt Akt 1 als **iteratives Gespräch**, nicht als Sondierungs-Monolog: Der Mensch fragt, Claude stellt die **eine** präzise, richtungsweisende Gegenfrage; Antwort → nächste Frage, eine Ebene tiefer — so viele Züge wie nötig, bis die Richtung steht. **Erst dann** Mockup/Spec/Entscheidungsvorlage (die dadurch beim ersten Wurf sitzt). Der Zweck ist doppelt: implizite Präferenzen heben, **und** den Menschen, der zwischen parallelen Themen (Code, Legal, Marketing) springt, in genau dieses Thema **hineinziehen** — einmal tief erarbeiten statt mehrfach oberflächlich.
+
+**Wann nicht (selbst erkennen):** Klar umrissener Bau-/Routine-Auftrag (beauftragter Bugfix, „schau die Seeds an", mechanischer Auftrag mit fixem Soll) → kein Gespräch, loslegen. Ebenso wenn der Mensch es explizit abbestellt. **Nichts künstlich erzwingen:** gefragt wird nur, wenn es wirklich etwas zu fragen gibt. Im Zweifel → fragen; der Mensch darf jederzeit abkürzen („mach einfach"), dann läuft ab dort der normale Weg.
+
+**Handwerksregeln (was das Gespräch von Frage-Theater trennt):**
+- **Eine Frage pro Zug**, kein Fragenkatalog — Gespräch, nicht Formular.
+- **Größter Hebel zuerst:** die erste Frage ist die, deren Antwort am meisten Richtung/Architektur dreht; keine Aufwärmfragen.
+- **Jede Frage trägt 1–2 Sätze Andock-Kontext** — der Mensch kommt oft aus einem anderen Thema; die Frage holt ihn hinein.
+- **Jede Frage muss das Ergebnis drehen können.** Würde die nächste Antwort Mockup/Spec nicht mehr ändern → „Richtung steht" sagen, Gespräch beenden, Vorlage bauen. Die Karten-Regel (keine Schein-Optionen) gilt pro Frage unverändert.
+- **Spielzüge nach Bedarf:** **Blind-Spot-Pass** zwischen den Antworten (kurzer Territorium-Check „was am System würde dieses Soll kippen?" — ein Fund wird zur nächsten Frage); **Varianten-Fächer** als Frageform bei Gestalt-/Geschmacksfragen (3–4 bewusst verschiedene Entwürfe zeigen, reagieren statt beschreiben — als Artefakt/HTML, wo das Bild mehr sagt als die Frage); wachsende Skizze als Stand-Bild.
+
+**Grenze:** Das Gespräch endet an der Akt-2-Grenze. Ab Freigabe läuft Akt 3 unverändert autonom durch — das Erarbeitungs-Gespräch ist **keine** Lizenz für Rückfragen im Bau. Die „ohne Nachfrage"-Messlatte der Entscheidungsvorlage (Dispositions-Governor) gilt weiter für die **fertige Vorlage**; neu ist nur, dass ihr bei offenem Soll das Gespräch **vorausgeht**.
+
 Claude Code erhebt in **einem** Durchgang am echten System und schreibt das Ergebnis in **ein** Dokument:
 
 - **Ist-Fakten** — bewiesen, nicht angenommen; jeder Fakt nennt seine Quelle (Befehl/Datei/Pfad).
