@@ -164,6 +164,46 @@ Zwei Teile:
 
 Fachbegriffe nur, wenn die Entscheidung an ihnen hängt — dann mit Halbsatz-Erklärung. **Korridor-Wand: Fehlt der Block, ist das Dokument nicht freigabefähig (Fall C).**
 
+### Ablösung (`## Ablösung`) — bei jedem Ersetzen eines lebenden Pfads *(PLAT-177)*
+
+**Bedingte Pflicht-Sektion** in jeder Spur-Spec und kombinierten Sprung-Spec, deren Bau
+einen bestehenden, erreichbaren Pfad (UI-Fluss, API-Route, Datenformat, Laufzeit-Prozess/
+-Mechanik — nicht Verfassungs-/Regel-Text) funktional **ersetzt**, nicht nur ergänzt.
+Ein echter Pfad-Wechsel ist nie Stufe Schritt.
+Liegt keine Ablösung vor, entfällt die Sektion (nicht leer mitführen). Herkunft: Ablösungen
+ließen Alt-Code systematisch liegen — tote Pfade erzeugen unsichtbare Features und teure
+Fehldiagnosen (Chat-First-Reste; Monatszettel PRIS-148 sendete in nicht mehr gerenderten
+Chat). Kanon-Anker: K-18 in `03a_Standards-Kanon.md`.
+
+Drei Pflicht-Teile:
+
+1. **Reste-Inventar** — die Stellen, die den alten Pfad tragen (Code, Config, Daten-Writer),
+   datei-belegt, erhoben in Akt 1 (Sondierung). Ein leeres Inventar ist ein Befund
+   („keine Reste, weil …"), kein Weglassen.
+2. **Abbau-Entscheid pro Rest** — genau einer von drei; **Default ist `im Zyklus abbauen`**,
+   jede Abweichung trägt eine Begründung und ist damit für den Menschen bei der Freigabe
+   als Abweichung sichtbar:
+   - `im Zyklus abbauen` (Default),
+   - `Abbau-Folge-Seed [[wikilink]]` — der Folge-Seed trägt `zugkraft:` mindestens `bald`
+     (ein `irgendwann`-Abbau-Seed ist das alte Liegenlassen mit anderem Namen),
+   - `begründet stehen lassen` + Grund + Re-Check-Anker (wann/wodurch wird neu entschieden).
+   Kein Rest ohne Entscheid.
+3. **Pflicht-AK „kein unentschiedener Alt-Pfad-Rest"** — Akt 3 belegt pro Rest den
+   **Vollzug seines Entscheids** (die drei Zweige aus Teil 2, deckungsgleich mit dem
+   Verankerungs-Tor in Verfassung 00):
+   - `im Zyklus abbauen` → Abbau-Diff;
+   - `Abbau-Folge-Seed` → Seed existiert, ist verlinkt, `zugkraft:` mindestens `bald`;
+   - `begründet stehen lassen` → Totheits-Beleg (kein lebender Aufruf-/Renderpfad —
+     grep/Trace/Renderpfad-Nachweis, nie bloße Behauptung) ODER benannter Lebens-Grund
+     (z. B. Rollback-Fallback) + Re-Check-Anker in der Abschluss-Doku.
+   Ein Rest, der weiter schreibt/sendet, während ihn niemand mehr liest/rendert, ist
+   NICHT tot — er ist das Schadensmuster und darf nie „stehen gelassen" werden.
+
+**Korridor-Wand:** Löst eine Spec einen lebenden Pfad ab und fehlt die Sektion — oder steht
+ein Rest ohne Entscheid —, ist sie nicht freigabefähig (Fall C). Der Evaluator prüft den
+Trigger („ersetzt der Bau einen erreichbaren Pfad?") und meldet Fehlen/Lücken als
+[STRUKTURELL].
+
 ### Einwände & Behandlung (`## Einwände & Behandlung`)
 
 Nach jedem Evaluator-Pass Pflichtsektion in Spec und kombinierter Spec: Tabelle Einwand | eingearbeitet/verworfen | ein Satz Begründung. Kein Pass gelaufen → Sektion entfällt. Ein unbehandelter Einwand ohne Tabelleneintrag ist ein unvollständiges Dokument.

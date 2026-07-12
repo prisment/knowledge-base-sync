@@ -272,6 +272,12 @@ Von Claude Code vorgeschlagen, vom Menschen freigegeben:
 
 - Dauerhaft Gültiges wird in **Systemzustand** bzw. **Verfassung eingearbeitet** (eingearbeitet, nicht kopiert — bleibt EINE Quelle).
 - **Vorwärts-Ernte in den Standards-Kanon (Pflicht-Triage).** Deckt ein Zyklus einen **fehlenden oder zu schwachen Standard** auf (kalter Audit, belegter Defekt in der Test-Abnahme, oder Akt-3-Abschluss), MUSS der Befund in [`03a_Standards-Kanon.md`](03a_Standards-Kanon.md) **triagiert** werden: neuer Eintrag `K-NN` **aufgenommen** oder mit Grund **verworfen** — Ergebnis in der Abschluss-Doku. **Kein stilles Übergehen:** ein nicht-triagierter belegter Standard-Mangel gilt als **nicht abgeschlossen** (Korridor-Wand). Maßstab „Standard-würdig": der Befund ist **wiederholbar** (sonst `verworfen: nicht wiederholbar`). Träger ist diese Regel selbst, bewusst kein zusätzlicher Hook/Apparat. *(PLAT-112.)*
+- **Ablösungs-Nachweis (PLAT-177).** Hat der Zyklus einen lebenden Pfad ersetzt (Spec trägt
+  `## Ablösung`), gehört zum Abschluss der **Vollzugs-Beleg pro Rest gemäß Entscheid**:
+  abgebaut (Diff) ODER Abbau-Folge-Seed angelegt (verlinkt, `zugkraft:` mind. `bald`) ODER
+  begründet stehen gelassen (Totheits-Beleg bzw. Lebens-Grund + Re-Check-Anker) —
+  Regel-SSOT: `01_Spec-Format.md`, Abschnitt „Ablösung"; Kanon-Anker K-18. Ein Zyklus mit
+  unentschiedenem oder unbelegtem Alt-Pfad-Rest gilt als nicht abgeschlossen (Korridor-Wand).
 - Das „Warum" wird als **Logbuch-Eintrag** verewigt, zentral in `_Betrieb/Logbuch/` (E24).
 - Der Rest (Specs, Sondierungen, Deviation-Logs) wandert ins **Archiv**.
 - Hatte der Zyklus einen **Backlog-Seed als Auslöser**, wird sein `status:` auf `abgeschlossen` gezogen (im selben Commit). Ketten-Kehraus beim letzten Glied — Mechanik unverändert (`01_Spec-Format.md`, „Autonome Halde"); das Kehraus-Tool `scripts/backlog/phase9_seed_archive.py` ist allein zuständig. Das Tool greift auch bei Specs ohne Seed-Backreference oder mit bereits archiviertem Seed — dann archiviert es nur den Zyklus-Satz (PLAT-047 B047-1).
