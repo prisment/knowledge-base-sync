@@ -94,12 +94,15 @@ nicht die Tore. Ein kundensichtbarer Promote braucht weiterhin mindestens **eine
 Runde (Stufe 1)** mit Zwei-Belegen + Vollständigkeit/Frische (PRIS-114) und das
 Vor-Promote-Stop-Tor unverändert — Stufe 0 allein promotet nie.
 
-**Mechanik vs. Disziplin (ehrlich):** Mechanisiert ist nur die **Revisions-Kappe als
+**Mechanik vs. Disziplin (ehrlich):** Mechanisiert sind die **Revisions-Kappe als
 Suite-Default** (SSOT: `langgraph/content/tests/conftest.py`, env_a — autouse-Fixture
-`stufe1_default` + `stufe2`-Fixture — und `nodes.py`, `SMOKE_SENTINEL`). Die drei Regeln
-selbst sind Disziplin: Einzel-Szenario-Selektion hat noch kein Werkzeug (`cd-docker
-test-exec` fährt immer die ganze Suite, reicht keine pytest-Selektion durch), die
-Grund-Nennung ist Docstring-Konvention.
+`stufe1_default` + `stufe2`-Fixture — und `nodes.py`, `SMOKE_SENTINEL`) und seit
+PLAT-179 die **Einzel-Szenario-Selektion**: `cd-docker test-exec <svc>
+--expect-revision <sha> --select <token>` (validiertes `-k`-Token, alle 6
+Test-Services; lauter TEIL-LAUF-Banner — ein Selektions-Ergebnis ist nie ein
+Voll-Suite-/Abnahme-Beleg; Sicherheitsrationale:
+`Plattform/Systemzustand/Sicherheit/cd-docker-test-exec-verb.md`). Disziplin bleiben:
+die Stufen-Wahl selbst und die Grund-Nennung (Docstring-Konvention).
 
 **Geteilter Sentinel (PLAT-063-Erbe):** `/tmp/smoke_mode` ist zugleich das
 Live-Smoke-Gate aus PLAT-063 (`deploy_smoke.sh` setzt/räumt ihn via docker exec auf den
