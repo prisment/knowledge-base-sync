@@ -1,9 +1,9 @@
 ---
 typ: verfassung
 titel: "Test-Abnahme-Routine — das Tor vor dem Kunden"
-stand: 2026-06-24
+stand: 2026-07-13
 aenderung: "nur nach oben, nur durch bewusste Freigabe"
-quelle: "[[PLAT-090]], [[PRIS-114]]"
+quelle: "[[PLAT-090]], [[PRIS-114]], [[PLAT-178]]"
 ---
 
 # 08 — Test-Abnahme-Routine
@@ -63,6 +63,51 @@ FB-Cross-Post-Hälfte (prüfte nur Vorhandenes) + ein Zweit-Thema, das erst nach
   Inhalt**, statt „Pipeline läuft durch".
 
 Das Instrument wechselt, die AK-Disziplin und das Logbuch bleiben.
+
+## Test-Stufen — LLM-Budget-Disziplin auf der dev-Bühne (PLAT-178)
+
+Echte LLM-Calls sind der teuerste Betriebsstoff der dev-Bühne (Kosten-Forensik
+11.–13.07.2026: ~90 % von 92 € Testkosten waren wiederholte Voll-Plan-Generierungen als
+bloße Kulisse für reine Funktions-Checks — kein einziger Lauf hatte Textqualität als
+Prüfziel). Darum benennt jeder Testlauf **vor dem Start sein Prüfziel** — das Prüfziel
+bestimmt die Stufe:
+
+| Stufe | Prüfziel | Instrument | echte LLM-Calls |
+|---|---|---|---|
+| **0 — Mock** | Logik, Zustand, Format, Routing, Rendering | gebackene pytest-Suite (gemockt), `cd-docker test-exec` | keine |
+| **1 — eine echte Runde** | Verhalten gegen reale LLM-Ausgabe, Pipeline-Integration end-to-end | Revisions-Schleife gekappt (`/tmp/smoke_mode`-Sentinel → `_vc_max=1`); **Suite-Default seit PLAT-178** | reduziert (1 Revision/Post statt bis zu 5) |
+| **2 — volle Schleife** | **Textqualität ist selbst das Prüfziel** (Markenstimme, Abnahme) | `stufe2`-Fixture pro Test (Grund im Docstring Pflicht) bzw. bewusster Voll-Plan-Lauf — **Pflicht-Vorschritt beim non-pytest Voll-Plan-Lauf: Sentinel explizit räumen** (Test-Container recreaten räumt `/tmp`), sonst läuft der Qualitäts-Lauf still auf 1 Runde gekappt | voll |
+
+Drei Regeln:
+
+1. **Fix-Iterationen steigen nie über Stufe 1** — und fahren das minimale betroffene
+   Einzel-Szenario, nie den Voll-Plan. Stochastisches Verhalten → N Wiederholungen des
+   Einzel-Szenarios, nicht N Voll-Läufe.
+2. **Stufe 2 braucht einen ausgesprochenen Grund** („Prüfziel ist Textqualität, weil …").
+   Ohne Grund gilt sie als versehentliche Brechstange. Ein Voll-Plan-Lauf ist ein bewusster
+   Schluss-Schritt am Bogen-Ende (Kandidat-Abnahme), maximal einer pro Fix-Bogen.
+3. **Der kalte Prüfer unterliegt denselben Stufen** — adversariale Szenarien brauchen selten
+   Stufe 2; sein Report benennt die gefahrene Stufe.
+
+**Abgrenzung (kein stiller cv-Downgrade):** Die Stufen entlasten den **Iterations-Weg**,
+nicht die Tore. Ein kundensichtbarer Promote braucht weiterhin mindestens **eine echte
+Runde (Stufe 1)** mit Zwei-Belegen + Vollständigkeit/Frische (PRIS-114) und das
+Vor-Promote-Stop-Tor unverändert — Stufe 0 allein promotet nie.
+
+**Mechanik vs. Disziplin (ehrlich):** Mechanisiert ist nur die **Revisions-Kappe als
+Suite-Default** (SSOT: `langgraph/content/tests/conftest.py`, env_a — autouse-Fixture
+`stufe1_default` + `stufe2`-Fixture — und `nodes.py`, `SMOKE_SENTINEL`). Die drei Regeln
+selbst sind Disziplin: Einzel-Szenario-Selektion hat noch kein Werkzeug (`cd-docker
+test-exec` fährt immer die ganze Suite, reicht keine pytest-Selektion durch), die
+Grund-Nennung ist Docstring-Konvention.
+
+**Geteilter Sentinel (PLAT-063-Erbe):** `/tmp/smoke_mode` ist zugleich das
+Live-Smoke-Gate aus PLAT-063 (`deploy_smoke.sh` setzt/räumt ihn via docker exec auf den
+**Live**-Containern). Ein dort liegen gebliebener Rest kappt echte Kunden-Posts still auf
+1 Revision — geerbtes PLAT-063-Risiko, kein PLAT-178-Delta, aber hier offengelegt. Auf dem
+**Test**-Container failt ein Crash-Rest für Funktions-Prüfziele in die billige Richtung
+(Stufe 1); für ein **Qualitäts**-Prüfziel wäre er eine stille Kappung — darum der
+Räum-Vorschritt in der Matrix (Stufe 2).
 
 ## Zwei Bühnen
 
