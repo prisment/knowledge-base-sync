@@ -204,6 +204,24 @@ ein Rest ohne Entscheid —, ist sie nicht freigabefähig (Fall C). Der Evaluato
 Trigger („ersetzt der Bau einen erreichbaren Pfad?") und meldet Fehlen/Lücken als
 [STRUKTURELL].
 
+### Kosten-Zeile (`Kosten:`) — bei wiederkehrendem Ressourcen-Verbrauch *(Ruling 2026-07-14)*
+
+**Bedingte Pflicht-Zeile** in jeder Spec und Sondierung, deren Bau etwas erschafft oder ändert,
+das **wiederkehrend Ressourcen verbraucht** (LLM-Calls in Tests/Pipelines, Cron-Läufe, Loops —
+€-metrierter Verbrauch, keine Ritual-Zeile für jede Config): eine Zeile
+`Kosten: ~X €/Lauf × Y Läufe/Tag ≈ Z €/Tag` — **gemessen**
+(z. B. llm_usage) oder **begründet geschätzt** (Schätzbasis nennen). Der Worker spiegelt die
+Zahl im Beweis-Bericht (`kosten`-Feld), gemessen, sobald messbar. Liegt kein wiederkehrender
+Verbrauch vor, entfällt die Zeile (nicht leer mitführen).
+
+Herkunft: PLAT-178 sah die ungekappte Revisionsschleifen-Lücke und stufte sie **ohne Zahl** als
+unwichtig ein („bewusst kein Seed") — die Messung einen Tag später (12 Voll-Plan-Läufe ≈ 44 €
+an einem Tag) widerlegte das Urteil (PLAT-181). Urteil ohne Verbrauchszahl ist bei
+Wiederkehrendem kein Pragmatismus, sondern Blindflug.
+
+Der Evaluator prüft den Trigger („erschafft der Bau wiederkehrenden Verbrauch?") und meldet
+eine fehlende Kosten-Zeile als [STRUKTURELL].
+
 ### Einwände & Behandlung (`## Einwände & Behandlung`)
 
 Nach jedem Evaluator-Pass Pflichtsektion in Spec und kombinierter Spec: Tabelle Einwand | eingearbeitet/verworfen | ein Satz Begründung. Kein Pass gelaufen → Sektion entfällt. Ein unbehandelter Einwand ohne Tabelleneintrag ist ein unvollständiges Dokument.
