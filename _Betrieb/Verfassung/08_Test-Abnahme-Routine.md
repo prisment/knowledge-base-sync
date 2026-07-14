@@ -76,7 +76,7 @@ bestimmt die Stufe:
 |---|---|---|---|
 | **0 — Mock** | Logik, Zustand, Format, Routing, Rendering | gebackene pytest-Suite (gemockt), `cd-docker test-exec` | keine |
 | **1 — eine echte Runde** | Verhalten gegen reale LLM-Ausgabe, Pipeline-Integration end-to-end | Revisions-Schleife gekappt (`/tmp/smoke_mode`-Sentinel → `_vc_max=1`); **Suite-Default seit PLAT-178** | reduziert (1 Revision/Post statt bis zu 5) |
-| **2 — volle Schleife** | **Textqualität ist selbst das Prüfziel** (Markenstimme, Abnahme) | `stufe2`-Fixture pro Test (Grund im Docstring Pflicht) bzw. bewusster Voll-Plan-Lauf — **Pflicht-Vorschritt beim non-pytest Voll-Plan-Lauf: Sentinel explizit räumen** (Test-Container recreaten räumt `/tmp`), sonst läuft der Qualitäts-Lauf still auf 1 Runde gekappt | voll |
+| **2 — volle Schleife** | **Textqualität ist selbst das Prüfziel** (Markenstimme, Abnahme) | `stufe2`-Fixture pro Test (Grund im Docstring Pflicht) bzw. bewusster Voll-Plan-Lauf via **`/run` mit `stufe: 2`** (PLAT-181; nur auf der Test-Bühne wirksam, lauter Log-Beleg `[stufen] STUFE 2 EXPLIZIT ANGEFORDERT`). Ein liegender Sentinel `/tmp/smoke_mode` schlägt auch eine Stufe-2-Anforderung (Smoke-Gate gewinnt immer — die `[stufen]`-Log-Zeile zeigt die Ursache) | voll |
 
 Drei Regeln:
 
@@ -101,16 +101,24 @@ PLAT-179 die **Einzel-Szenario-Selektion**: `cd-docker test-exec <svc>
 --expect-revision <sha> --select <token>` (validiertes `-k`-Token, alle 6
 Test-Services; lauter TEIL-LAUF-Banner — ein Selektions-Ergebnis ist nie ein
 Voll-Suite-/Abnahme-Beleg; Sicherheitsrationale:
-`Plattform/Systemzustand/Sicherheit/cd-docker-test-exec-verb.md`). Disziplin bleiben:
-die Stufen-Wahl selbst und die Grund-Nennung (Docstring-Konvention).
+`Plattform/Systemzustand/Sicherheit/cd-docker-test-exec-verb.md`). Seit **PLAT-181**
+zusätzlich die **non-pytest-Default-Kappung**: der content-Test-Container läuft mit
+`VC_STUFE_DEFAULT=1` (docker-compose.test.yml) — jeder Lauf über `/run` (Playwright,
+`test-content-run`, curl) ist default auf `_vc_max=1` gekappt; die volle Schleife gibt
+es nur per explizitem `stufe: 2` im `/run`-Request (Live bleibt unberührt: kein Env
+gesetzt, Verhalten unverändert). Disziplin bleiben: die Stufen-Wahl selbst und die
+Grund-Nennung (Docstring-Konvention bzw. Grund im Beweis-Bericht) — beide Regeln stehen
+seit PLAT-181 auch in `.claude/agents/worker.md`/`pruefer.md`.
 
 **Geteilter Sentinel (PLAT-063-Erbe):** `/tmp/smoke_mode` ist zugleich das
 Live-Smoke-Gate aus PLAT-063 (`deploy_smoke.sh` setzt/räumt ihn via docker exec auf den
 **Live**-Containern). Ein dort liegen gebliebener Rest kappt echte Kunden-Posts still auf
 1 Revision — geerbtes PLAT-063-Risiko, kein PLAT-178-Delta, aber hier offengelegt. Auf dem
 **Test**-Container failt ein Crash-Rest für Funktions-Prüfziele in die billige Richtung
-(Stufe 1); für ein **Qualitäts**-Prüfziel wäre er eine stille Kappung — darum der
-Räum-Vorschritt in der Matrix (Stufe 2).
+(Stufe 1); für ein **Qualitäts**-Prüfziel wäre er eine stille Kappung — seit PLAT-181
+braucht Stufe 2 keinen Räum-Vorschritt mehr (Schalter ist `stufe: 2` im Request), aber
+ein Sentinel-Rest gewinnt weiterhin gegen jede Anforderung; die `[stufen]`-Log-Zeile
+macht das laut sichtbar.
 
 ## Zwei Bühnen
 
