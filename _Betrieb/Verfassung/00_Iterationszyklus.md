@@ -175,7 +175,7 @@ Nach Spec-Freigabe arbeitet Claude Code **autonom im Korridor**, dessen Wände d
 
 **Bau = Worker (Rollen-Grenze an der Akt-2→Akt-3-Schwelle).** Akt 2 schreibt der Architekt selbst (Spec, auf `main`). Mit der Spec-Freigabe **kippt die Rolle**: substantiellen Akt-3-Bau delegiert der Architekt an einen **Worker-Subagenten** (`worker`; Selbsttest im Worktree vor dem Merge, kalte Prüfung + Promote nach dem Merge — merge-then-prove, Verfassung 08) — er ist Architekt, nicht Arbeitstier. **Carve-out — Einmal-Schnitt vs. Schleife (PLAT-160):** Direkt in der Hand baut der Architekt nur den *Einmal-Schnitt* (trivialer/reversibler/isolierter Stufe-Schritt, klar umrissener Einmal-Fix, Doku-/Config-Edits, Urteils-Anker-Reads). Ein **mehrschrittiger Bogen** (lesen→fix→bauen→prüfen-Schleife, UI-Feintuning, Merge-/Promote-Untersuchung, Debug-Iteration, *auch ohne Spec*) geht als **ganzer Bogen an einen Schleifen-Worker** — der Architekt orchestriert/urteilt/hält das Mensch-Tor, statt ihn selbst zu leben (messbar Geld: PLAT-160-Telemetrie, Hand-Bauen im quadratisch wachsenden Main-Kontext ist der Kostentreiber). **Laufzeit-Stolperdraht:** scheitert eine per-Hand begonnene Fix-Arbeit nach der **zweiten** Bauen-Prüf-Runde oder ist eine **dritte** absehbar, übergibt der Architekt den Rest-Bogen an einen Schleifen-Worker (Briefing: `datei:zeile` + bisherige Fixe); ≤2 Runden bleiben in der Hand.
 
-**Orchester-Rhythmus für den (nicht-spec-)Bogen.** Der Architekt *sequenziert* die Phasen selbst — ein Worker kann keinen weiteren Subagenten spawnen (Harness-Nesting-Cap, eine Ebene):
+**Orchester-Rhythmus für den (nicht-spec-)Bogen.** Der Architekt *sequenziert* die Phasen selbst — ein Worker spawnt keinen weiteren Subagenten. Das ist **Endstufen-Doktrin, keine Harness-Sperre**: das Harness capt Nesting nachweislich NICHT (empirisch belegt 18.07.2026, PLAT-182 — Subagent spawnte Sub-Subagent in eigenem Worktree, sauberer Rückkanal). **Die Wand bist du; das Harness fängt dich nicht.** Genau deshalb bleibt die Regel scharf (Vorfall 2026-07-02: Worker spawnte Sub-Worker und entschied ein Wohin selbst); die einzige geregelte Ausnahme ist die Master-Orchestrierung unten:
 
 ```
 ① dispatch Schleifen-Worker → bauen + Selbst-Test-Loop; sammelt Nur-Mensch-Items; kompakter Beweis-Report
@@ -186,6 +186,28 @@ Nach Spec-Freigabe arbeitet Claude Code **autonom im Korridor**, dessen Wände d
 ```
 
 Architekt = ①–④ dispatchen + Verdikt + ③, **baut den Bogen nicht mit eigener Hand**. ② erbt das Hybrid-Tor (nicht unbedingt) — sonst feuert der teuerste Subagent auf jeden Klein-Bogen. Der Promote läuft aus dem **main-Checkout** (Deploy-Tools nie Worktree), als benannter Mensch-Wohin-Override. Grund: das „ich baue"-Momentum darf nicht über die Schwelle mitgenommen werden (PLAT-138) — auch messbar Geld (file-history-snapshots im Hauptkontext, PLAT-147). *Akt-3-Spezialfall der Offload-Disziplin (oben).* **Mechanisch + Korrektheits-Urteil:** Skill [`gated-execution`](../../.claude/skills/gated-execution/SKILL.md) — Verifizierer im Main, Ausführung am Worker. **Laufzeit-Test-Ausführung (Rolle B, PLAT-157):** Playwright-/pw_smoke-/E2E-Läufe delegiert der Architekt immer an Worker oder Prüfer, auch wenn das Binary am Host verfügbar ist — er liest die Artefakte und urteilt die Soll-Treue.
+
+### Master-Orchestrierung (PLAT-182) — die eine erlaubte zweite Ebene
+
+Für **Phase-2-Projekte** (Stränge gebündelt, Zyklen-Schnitt steht, Wohins geklärt) darf eine Mensch-Session als **Master** pro Bau-Zyklus einen `architekt`-Subagenten spawnen (Opus/high, background, eigener Worktree), der den Zyklus mit den Endstufen-Agenten fährt. Verfahren-SSOT: Skill `zyklus-master`; Rollen-Korsett: `.claude/agents/architekt.md`.
+
+```
+Ebene 0  Mensch-Session (Master-Chat ODER klassischer Einzel-Auftrag-Chat)
+         — Urteils-Faden, jedes Wohin-Tor zum Menschen, Artefakt, Ledger,
+           Promote-Hand (Deploy-Tools nie aus Worktree/Subagent)
+   │ spawnt (nur im Master-Betrieb):
+Ebene 1  architekt-Subagent — EINER pro Bau-Zyklus; fährt Sondierung→Bau→
+         kalte Prüfung; gibt EIN kompaktes Verdikt (Worker-Schema +
+         wohin_offen + verdikt: gruen/gelb/rot/mensch-offen) zurück
+   │ spawnt:
+Ebene 2  Endstufe: erhebung/sondierung/recherche/worker/evaluator/pruefer
+         — spawnen NIE (unverändert; von wem auch immer gespawnt)
+```
+
+- **Erlaubnis, nicht Fähigkeit.** Technisch erben alle Agent-Typen ohne `tools:`-Feld das Agent-Tool — die Endstufen-Regel ist Prompt-Korsett + Doktrin, keine Harness-Sperre. `architekt` ist der **einzige** Typ mit Spawn-*Erlaubnis*; er spawnt nie selbst einen `architekt` (maximale Tiefe: Master → architekt → Endstufe). **Endstufe ist eine Rollen-Eigenschaft, keine Ebenen-Nummer** — der klassische Ebene-0-Betrieb (Session dispatcht Endstufen direkt) bleibt vollständig gültig.
+- **Wohin-Zwischenstopp (Live-Fall Z3, 18.07.2026).** Bei jedem Stopp-Auslöser mitten im Zyklus endet der `architekt` mit `verdikt: mensch-offen` + Entscheidungsvorlage im Report (Problem-Bild, Optionen, EINE Empfehlung). Der Master hebt das Wohin **sofort** zum Menschen (nicht erst zur Zyklus-Grenze) und setzt nach dessen Wort **denselben** Agenten per Nachricht fort — der Kontext bleibt intakt (Resume-Beleg 18.07.2026: Runde-1-Erinnerung exakt, erneuter Spawn nach Resume erfolgreich).
+- **Unverändert gelten:** Wohin=Mensch an jeder Zyklus-Grenze (Warte-Tor — kein Folge-Zyklus ohne Mensch-Wort), Rolle B (Laufzeit-Tests nur worker/pruefer; für `architekt` mechanisch mit-erzwungen via `runtime-test-confinement.py`, bewusst NICHT allowlisted), Promote-/Publish-Grenzen (Verfassung 08; `architekt` promotet nie), WIP-Regel (PLAT-165), alle Stop-Tore. Ein gearmter cv-Kandidat ohne Stamp hält die Master-Session am Stop-Tor — Nacharbeit oder lauter Skip, nie stilles Schließen.
+- **Nesting-/Resume-Belege:** Logbuch-Eintrag zu PLAT-182 (drei Testverläufe vom 18.07.2026).
 
 ### Leitprinzip — Wohin / Wie (das Herz der Autonomie)
 
