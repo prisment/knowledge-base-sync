@@ -163,6 +163,12 @@ Prüfer** (`pruefer`, Opus/high) auf — er teilt den Denkrahmen des Bauenden **
 - **Konfidenz-klassifiziert:** jeder Fund `sicherer-bug`/`fragwürdig`/`scope-frage`; gegen ein
   sauberes Feature null `sicherer-bug`. **Prisment-Linse:** liest `Urteil`-Einträge des
   Standards-Kanons (03a), leitet Angriffs-Fragen ab — schreibt selbst nicht in 03a.
+- **Tenant-Zustands-Vorbedingung ist Pflicht-Dispatch-Angabe (PLAT-186):** jeder Prüfer-Dispatch
+  benennt den Tenant-Zustand der dev-Bühne (Onboarding-Stand — für Faden-/Steady-State-Prüfungen
+  **past-onboarding** Pflicht: `onboarded_at NOT NULL`, `current_phase` ≠ `onboarding_*`; Meta
+  verbunden; ≥1 FB-Post + ≥1 Karussell-Post). Fehlt sie, maskiert ein frischer Onboarding-Tenant die
+  Faden-Flächen und der Prüfer meldet „sauber", ohne das Feature je erreicht zu haben (Herkunft:
+  22.07.2026, zwei kalte Pässe gegen frischen Onboarding-Tenant). SSOT der Regel: `.claude/agents/pruefer.md`.
 - **Write-confined:** nur **Report, keine Commits** (`.claude/hooks/pruefer-confinement.py`).
   **Salvage-Report (PLAT-161), fail-closed:** append-only auf stabilem Pfad, endet exakt auf
   `STATUS: ABGESCHLOSSEN` — `pruefer_stamp.py gruen` verlangt genau diese Zeile, ein Teil-Report
