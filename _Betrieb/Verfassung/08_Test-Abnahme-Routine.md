@@ -218,17 +218,38 @@ Delta laut an). Fällt er NACH dem Merge rot aus, ist der Rückweg der **Revert-
 auf main** — billig, denn `main` ≠ `live`; `promote_image.sh` verlangt einen main-SHA als
 Descendant der Live-Revision, nicht zwingend main-HEAD (Ancestor-/Revert-Guards im Skript-Header).
 
-**WIP (max. 2 cv-Spuren):** höchstens zwei kundensichtbare Bau-Spuren laufen parallel, eine dritte
-wartet. **Tor-Gesundheits-Regel:** die Umgehungsquote jedes Tors wird quartalsweise gemessen
+**WIP (max. 3 cv-Spuren — PLAT-165 → PLAT-189, Korbinian-GO 2026-07-28):** höchstens drei
+kundensichtbare Bau-Spuren parallel (ab Bühnen-Pool live; davor zwei) — nur bei service-/
+dateidisjunkten Scopes; gekoppelte Arbeit bleibt seriell, auch innerhalb einer Mission;
+End-Abnahmen am Sync-Punkt bündeln, ein main-Kandidat trägt alle Spuren. Bündeln heißt nie
+blockierend auf Korbinian warten — offene Mensch-Abnahmen parken die Spur, nie den CoS.
+**Tor-Gesundheits-Regel:** die Umgehungsquote jedes Tors wird quartalsweise gemessen
 (`tor_gesundheit.py`); überschreitet sie **>20 %**, wird das Tor redesignt/abgeschafft.
 
-**Bühnen-Belegung (PLAT-164 → PLAT-176):** Die eine `:test`-Bühne wird über den Bühnen-Lock
-(`scripts/buehne_lock.sh`, env_a) **pro Image** belegt — zwei Spuren an verschiedenen Diensten
-bauen/testen parallel, gleiche-Image-Zyklen bleiben exklusiv (Refusal frisch / laute Übernahme
-stale >180 min). Ganz-Bühnen-Operationen (`dev-start.sh`, test_db-Drop) nehmen den Exklusiv-Lock
-(`--all`) und blocken alles. Die per-Image-Parallelität ist erst aktiv, wenn der Live-`cd-docker`
-Einzel-Recreate kann (Capability-Probe, fail-open); vorher verhält sich der Lock global-seriell.
-Mechanik-SSOT: `Plattform/Systemzustand/Geteilte-Dienste/test-buehne.md`, Abschnitt „Bühnen-Lock".
+**Bühnen-Belegung (PLAT-164 → PLAT-176 → PLAT-189 Pool):** Es gibt **drei** Test-Bühnen (Slots).
+Ein Zyklus **least eine ganze Bühne** statt einzelner Images:
+`buehne_lock.sh slot-acquire <zweck>` druckt `SLOT=<N>` + einen **Token**; `slot-refresh`/
+`slot-release` verlangen genau diesen Token. Ist kein Slot frei, gibt es **laute Ablehnung mit
+Halter-Anzeige** (exit 1) — kein stilles Warten. Der Token als Halter-Identität ersetzt die alte
+Session-ID-Identität, die zwischen Geschwister-Subagenten derselben Session wirkungslos war.
+
+- **Slot 1** = die bisherige Bühne, unverändert: `dev.${DOMAIN}`, `test_db`, `*_test`,
+  Image-Tag `:test`. **Kundensichtbare Kandidat-Builds laufen auf Slot 1** — `promote_image.sh`
+  liest `:test`, damit ist nur Slot 1 promote-fähig. Das ist gewollt.
+- **Slots 2/3** sind additiv und **nicht extern erreichbar** (kein DNS-Record, kein
+  `certresolver`, host-lokal): `test_db_<N>`, `*_test_<N>`, Image-Tag `:test-s<N>`,
+  Compose-Projekt `environment_a_t<N>`, `restart: "no"` (ein nicht geleaster Slot bleibt
+  gestoppt — das hält die Kosten mechanisch, nicht per Doku-Bitte).
+- **Per-Slot-Image-Tags** sind der Kern: ohne sie serialisiert der geteilte `:test`-Tag den Pool
+  weiter, und der Pool wäre eine Fassade. `build_image.sh --slot N` taggt `:test-s<N>`; ohne
+  `--slot` ist das Verhalten byte-gleich zum Bestand.
+- Der **per-Image-Lock** (`acquire <image>`) bleibt für Slot 1 bestehen und wird nicht
+  abgeräumt, solange er dort der einzige Schutz ist (Ablöse-Anker: der erste Zyklus, der
+  nachweislich auf Slot 2 läuft).
+- `sudo cd-docker recreate-test --slot N` prüft die Lease des Slots (Bühnen-Guard, Token-Weg).
+
+Mechanik-SSOT: `Plattform/Systemzustand/Geteilte-Dienste/test-buehne.md`, Abschnitt
+„Bühnen-Pool"; Topologie-SSOT: `Plattform/Systemzustand/Infrastruktur/buehnen-bild.md`.
 
 ## Vor-Promote-Stop-Tor (PLAT-144, in-session Erzwingung)
 
