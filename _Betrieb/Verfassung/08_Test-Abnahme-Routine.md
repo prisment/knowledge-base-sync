@@ -267,8 +267,8 @@ cv-`:test`-Zustand sichtbar beim nächsten Start. **Cv-Ausloeser (PLAT-165: nur 
 armt):** der Stop-Hook erkennt `build_image.sh --kandidat` **und** ein cv-Image (SSOT
 `_Betrieb/Skripte/pruefer-gate/cv_images.json`); ein gewöhnlicher Iterations-Build im Worktree
 armt **nicht**. **Disarm:** `pruefer_stamp.py <img> <rev> gruen --report <pfad>` ODER `... skip
---grund '<text>'`. **Fail-open:** interne Gate-Fehler geben `allow`, schreiben aber eine Zeile in
-`Prisment/Systemzustand/Test/pruefer-gate.log`.
+--grund '<text>'` ODER `... gelb --grund '<text>'`. **Fail-open:** interne Gate-Fehler geben
+`allow`, schreiben aber eine Zeile in `Prisment/Systemzustand/Test/pruefer-gate.log`.
 
 ## Maschinelles Tor (nicht disziplinabhaengig)
 
@@ -278,9 +278,16 @@ Das Tor wird **erzwungen**, nicht der Disziplin ueberlassen: ein **Promote-Hook*
 **Pruefer-Tor (parallel, PLAT-142 + PLAT-144):** Pflicht, wenn Feature-/Spec-Frontmatter
 `risikoklasse: kritisch` **oder** `kundensichtbar: true` traegt — **oder** das Image in der
 cv-Allowlist steht (`_Betrieb/Skripte/pruefer-gate/cv_images.json`). Run-Log-Feld
-**`pruefer_pass`** (`gruen` / `skip:<grund>`); Umgehung nur laut+auditierbar via
+**`pruefer_pass`** (`gruen` / `skip:<grund>` / `gelb:<grund>`); Umgehung nur laut+auditierbar via
 `PROMOTE_SKIP_PRUEFER=1 + PROMOTE_SKIP_PRUEFER_GRUND`. Unterhalb der Flags/cv-Allowlist bleibt
 der Pruefer-Pass ehrlich **Architekt-Ermessen** (Disziplin, kein Tor).
+
+**Drei Verdikte, zwei Toren (PRIS-190-Plattform-Befund, 29.07.):** `gruen` und `skip:<grund>`
+("Pass nicht anwendbar", bewusster Verzicht) disarmen **beide** Tore (Stop-Tor + dieses
+Promote-Prüfer-Tor). `gelb:<grund>` ("Pass **lief**, war nicht grün") disarmt **nur** das
+in-session Stop-Tor — das Promote-Prüfer-Tor bleibt für `gelb:` bewusst bewaffnet, damit ein
+laut übersprungener, nicht-grüner Befund nie unbemerkt Kunden-fähig wird. Details + Tabelle:
+`Plattform/Systemzustand/Test/pruefer-gate.md`.
 
 ## Verfahren & Artefakte
 
