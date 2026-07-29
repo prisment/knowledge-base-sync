@@ -247,6 +247,12 @@ Session-ID-Identität, die zwischen Geschwister-Subagenten derselben Session wir
   abgeräumt, solange er dort der einzige Schutz ist (Ablöse-Anker: der erste Zyklus, der
   nachweislich auf Slot 2 läuft).
 - `sudo cd-docker recreate-test --slot N` prüft die Lease des Slots (Bühnen-Guard, Token-Weg).
+- **Merge mit `scripts/`-Delta braucht einen Deploy-Schritt (End-Prüfer-Blocker 2026-07-29):**
+  anders als bei Image-Deltas (`build_image.sh` → `:test` → `promote_image.sh`) gibt es für
+  Änderungen an `scripts/*` am geteilten Checkout `/opt/infrastructure/environment_a` keinen
+  eigenen benannten Schritt — nach jedem env_a-Merge mit `scripts/`-Delta gehört
+  `git -C /opt/infrastructure/environment_a pull --ff-only` **zum Merge-Schritt selbst**, sonst
+  bleibt der Checkout still zurück und Fix-Orakel messen den alten Skript-Stand.
 
 Mechanik-SSOT: `Plattform/Systemzustand/Geteilte-Dienste/test-buehne.md`, Abschnitt
 „Bühnen-Pool"; Topologie-SSOT: `Plattform/Systemzustand/Infrastruktur/buehnen-bild.md`.
