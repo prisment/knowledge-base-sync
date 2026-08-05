@@ -61,6 +61,10 @@ FB-Cross-Post-Hälfte (prüfte nur Vorhandenes) + ein Zweit-Thema, das erst nach
 - **Nicht-UI** (Backend/Pipeline/Agent/Config) → Backend-Belege, z. B. bei einer
   Agent-Pipeline **DB-Row** (psql) + **Trace/Log ohne Error** + **API-Antwort mit erwartetem
   Inhalt**, statt „Pipeline läuft durch".
+- **Admin-/CF-Access-geschützte Flächen** (Cockpit, Kundenakte) → **maschinell prüfbar, kein
+  Mensch-Tor**: Prüfpfad-Rezept `Plattform/Systemzustand/Test/admin-pruefpfad-cf-access.md`
+  (SSOT). Die Signaturprüfung bleibt überall scharf — nur die Schlüsselquelle wechselt, und
+  ausschließlich auf Bühnen ohne echte CF-Secrets (seit PLAT-192 auch maschinell erzwungen).
 
 Das Instrument wechselt, die AK-Disziplin und das Logbuch bleiben.
 
