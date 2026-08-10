@@ -108,7 +108,7 @@ python3 /opt/infrastructure/environment_a/scripts/backlog/check_parallel.py <pfa
 ```
 Drei Ausgabe-Klassen: ✓ `disjunkt` / ✗ `Schnittmenge zwischen Spuren` / ✗ `Hot-File-Treffer`. Bleibt als interaktives Werkzeug nützlich; den **harten** Kollisions-Schutz trägt jetzt die strukturelle Worktree-Isolation + git-non-ff-Ablehnung (`parallel-agent-schutz.md`), nicht mehr ein Claim-acquire.
 
-**`10_Kunden/`-Schutz bleibt technische Wand:** Der pre-commit-Hook im knowledge-base-Repo lehnt jeden Commit auf einem `wt/*`-Branch ab, der Dateien unter `10_Kunden/` berührt. Mandantendaten gehören nur auf `main`. Override `--no-verify` nur in begründeten Ausnahmen + Logbuch-Notiz. Begründung: das ist Datenschutz/Datenintegrität, nicht Mengen-Steuerung — bleibt deshalb hart.
+**`Kunden/`-Schutz bleibt technische Wand:** Der pre-commit-Hook im knowledge-base-Repo lehnt jeden Commit auf einem `wt/*`-Branch ab, der Dateien unter `Kunden/` berührt (prüft zusätzlich den Altstand-Namen `10_Kunden/`, PLAT-170 D20). Mandantendaten gehören nur auf `main`. Override `--no-verify` nur in begründeten Ausnahmen + Logbuch-Notiz. Begründung: das ist Datenschutz/Datenintegrität, nicht Mengen-Steuerung — bleibt deshalb hart.
 
 ### Bündel-Parallelität innerhalb eines Auftrags (Mensch-Freigabe 2026-07-02)
 
