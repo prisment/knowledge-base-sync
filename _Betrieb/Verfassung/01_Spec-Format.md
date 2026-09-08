@@ -38,7 +38,7 @@ Zusätzlich zu den bestehenden Feldern:
     Evaluator per Urteil — meldet [STRUKTURELL] wenn `architekt` gesetzt oder Laufzeit-Test-AK
     ohne erkennbaren Ausführer vorliegt.
 
-**ID-Schema:** `<KÜRZEL>-<laufende Nummer>`, fortlaufend pro Geltungsbereich: `PLAT` (Plattform), `PRIS` (Prisment), `INT` (Intern), `GESCH` (Geschäft). Beispiel `PRIS-014`. Schritte erhalten KEINE ID (nur `Schritt-Log.md` + Commit).
+**ID-Schema:** `<KÜRZEL>-<laufende Nummer>`, fortlaufend pro Geltungsbereich: `PLAT` (Plattform), `INT` (Intern), `GESCH` (Geschäft). Beispiel `PLAT-014`. Schritte erhalten KEINE ID (nur `Schritt-Log.md` + Commit).
 
 **Eine ID = genau eine Spec.** Zwei unzusammenhängende Vorhaben bekommen nie dieselbe ID — sonst kollidieren ihre Zyklus-Artefakte auf dem Dateinamen und der Evaluator-Pass des einen überschreibt den des anderen (Präzedenz PRIS-094). Vor jeder neuen Spec gilt der `next-spec-id`-Skill als Pflicht — nie raten.
 
@@ -71,7 +71,7 @@ Damit Akt 3 autonom laufen kann, **setzt Claude Code in Akt 1 pro Bündel verbin
 Die Spec-weite `risikoklasse:` ist **Obergrenze**, nicht Ersatz (Stufen-Inflation-Schutz: eine `sicher`-Spec kann nie kritische Bündel haben — sonst eskaliert). **Feste Liste** (Claude Code erkennt nur Berührung, schätzt nicht ein): *Wirkt das Versagen schon im Verifikationsfenster live, oder ist es von Natur aus irreversibel?* Ja → `sicherheitskritisch-akut`. Nein, aber sensibel → `kritisch`.
 
 **`sicherheitskritisch-akut` (Vor-Stopp):**
-- Tenant-Isolation / RLS (ein falscher Stand leakt live Mandantendaten).
+- Datentrennung / Zugriffsschutz (ein falscher Stand leakt live Mandanten-/Nutzerdaten).
 - Auth in Produktion live (Login/Session/Token live umstellen).
 - Kundendaten ändern/löschen; zentrale Datenpunkt-Definition.
 - Irreversible DB-Schema-Migrationen.
@@ -104,7 +104,7 @@ Mehrere Spec-Zyklen können gleichzeitig laufen — in eigenen Git-Worktrees, je
 
 **Werkzeug zur freiwilligen Selbst-Prüfung (Mensch-Hand):**
 ```
-python3 /opt/infrastructure/environment_a/scripts/backlog/check_parallel.py <pfad1> <pfad2> [<pfad3> ...]
+python3 <infrastruktur-repo>/scripts/backlog/check_parallel.py <pfad1> <pfad2> [<pfad3> ...]
 ```
 Drei Ausgabe-Klassen: ✓ `disjunkt` / ✗ `Schnittmenge zwischen Spuren` / ✗ `Hot-File-Treffer`. Bleibt als interaktives Werkzeug nützlich; den **harten** Kollisions-Schutz trägt jetzt die strukturelle Worktree-Isolation + git-non-ff-Ablehnung (`parallel-agent-schutz.md`), nicht mehr ein Claim-acquire.
 
@@ -244,7 +244,7 @@ Seeds in `_Betrieb/Backlog/seeds/` führen zusätzlich zu den allgemeinen Front-
   - `bald` — absehbar gebraucht, kein Blocker.
   - `irgendwann` — sinnvoll, kein Datum.
 
-- **`beruehrt:`** — Liste der Pfade/Ordner, die der Seed bei Umsetzung anfasst. **Ordner-Ebene** (z. B. `langgraph/`, `pwa/`) — gröber, robuster, weniger Pflege als datei-genau. Bei unklarem Footprint leer/grob, wird beim Spec-Start präzisiert.
+- **`beruehrt:`** — Liste der Pfade/Ordner, die der Seed bei Umsetzung anfasst. **Ordner-Ebene** (z. B. `scripts/`, `services/`) — gröber, robuster, weniger Pflege als datei-genau. Bei unklarem Footprint leer/grob, wird beim Spec-Start präzisiert.
 
 - **`status:`** — `offen` | `eisbox` | `in_arbeit` | `blockiert` | `review` | `abgeschlossen`. **Pflichtfeld.** Default `offen` bei Anlage. **Abgeleitet aus dem Akt-Zustand, nicht frei geurteilt** — Claude Code schreibt automatisch (Silent-Whitelist; Akt-Kopplung siehe `00_Iterationszyklus.md` Abschnitt „Seed-Status & Mission"). Werte:
   - `offen` — Seed liegt im Backlog, ungezogen.
@@ -260,9 +260,9 @@ Seeds in `_Betrieb/Backlog/seeds/` führen zusätzlich zu den allgemeinen Front-
 
 - **`mission:`** — Kebab-case-Slug, der den Seed einer aktuell laufenden, missionalen Klammer zuordnet (z. B. `live-gang`, `kunde-2`, `framework`). Genau eine Mission pro Seed; leerer Wert (oder weggelassen) heißt „keine Mission". Wird im Obsidian-Dashboard zum Filtern und Bündeln genutzt; hat KEINEN Einfluss auf den Prozess. Liste der aktuell aktiven Missions-Slugs liegt in `_Betrieb/Missionen/00_aktive-missionen.md` (handgepflegt).
 
-- **`spec_id:`** — Backreference auf die zugehörige Spec, sobald sie existiert (gesetzt in Akt 2, wenn der Seed in `in_arbeit` geht). **Format: Obsidian-Wikilink auf die Spec-Datei**, nicht nur die nackte ID — `spec_id: "[[Plattform/Arbeitsgedaechtnis/PLAT-046_SPEC]]"` (PLAT) bzw. `spec_id: "[[Prisment/Arbeitsgedaechtnis/PRIS-046_SPEC]]"` (PRIS). Begründung: ein Klick im Editor springt direkt zur Spec; die nackte ID zwingt zur manuellen Suche. Wert weggelassen, solange noch keine Spec existiert (Seed im Backlog ungezogen).
+- **`spec_id:`** — Backreference auf die zugehörige Spec, sobald sie existiert (gesetzt in Akt 2, wenn der Seed in `in_arbeit` geht). **Format: Obsidian-Wikilink auf die Spec-Datei**, nicht nur die nackte ID — `spec_id: "[[Plattform/Arbeitsgedaechtnis/PLAT-046_SPEC]]"` (PLAT) bzw. `spec_id: "[[Intern/Arbeitsgedaechtnis/INT-046_SPEC]]"` (INT). Begründung: ein Klick im Editor springt direkt zur Spec; die nackte ID zwingt zur manuellen Suche. Wert weggelassen, solange noch keine Spec existiert (Seed im Backlog ungezogen).
 
-  **Pfad-Konvention für Spec-Dateien:** Specs landen immer als flache Dateien im Arbeitsgedächtnis des zuständigen Bereichs — NIEMALS in einem eigenen Unterordner im Bereichs-Root. Korrekt: `Plattform/Arbeitsgedaechtnis/PLAT-NNN_SPEC_*.md` bzw. `Prisment/Arbeitsgedaechtnis/PRIS-NNN_SPEC_*.md`. Falsch: `Prisment/PRIS-NNN/PRIS-NNN_SPEC.md`. Unterordner im Bereichs-Root sind ausschließlich dem Archiv (`Plattform/Archiv/PLAT-NNN/`) vorbehalten.
+  **Pfad-Konvention für Spec-Dateien:** Specs landen immer als flache Dateien im Arbeitsgedächtnis des zuständigen Bereichs — NIEMALS in einem eigenen Unterordner im Bereichs-Root. Korrekt: `Plattform/Arbeitsgedaechtnis/PLAT-NNN_SPEC_*.md` bzw. `Intern/Arbeitsgedaechtnis/INT-NNN_SPEC_*.md`. Falsch: `Intern/INT-NNN/INT-NNN_SPEC.md`. Unterordner im Bereichs-Root sind ausschließlich dem Archiv (`Plattform/Archiv/PLAT-NNN/`) vorbehalten.
 
 **Vergabe-Mechanik** (für `klasse` / `zugkraft` / `beruehrt` / `mission`, analog `stufe`): Architekt/Claude Code schlägt mit Begründung vor, Mensch revidiert/gibt frei. Niemals vom Menschen allein geraten. (`status` und `autonom_ziehbar` fallen nicht hierunter — sie werden abgeleitet/fortgeschrieben, nicht beraten-vergeben.)
 

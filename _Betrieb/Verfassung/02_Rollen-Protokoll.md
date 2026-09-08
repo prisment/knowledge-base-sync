@@ -52,7 +52,7 @@ Die Trennung läuft jetzt über den **Ort**:
 
 **Das eine Tor bleibt:** Die Verfassung ändert sich nur durch **bewusste Mensch-Freigabe** (E3, „nie selbstoptimierend"). Beide Hände dürfen Verfassungs-Edits *vorschlagen und schreiben*; ratifiziert wird nur vom Menschen. Der generierte Backlog-Index (`Backlog/00_UEBERSICHT.md`) bleibt Skript-erzeugt (nicht von Hand), siehe `00_Iterationszyklus.md` „Backlog-Pflege".
 
-**Code-Repo: Architekt liest über Subagenten, Subagent-only (PLAT-088).** Für das Code-Repo `prisment-platform` (anders als die Wissens-Ebene `main`/knowledge-base) liest der Architekt Code **nur über read-only Subagenten** (`erhebung`/`sondierung`), nie in den Haupt-Kontext — Disziplin-Regel, keine physische Wand. Architekt-Code-Reads sind statische Orientierung, nie „bewiesen am echten System" (bleibt dem Arbeitstier). Code schreiben/testen/deployen und Live-System-Sondierung bleiben Arbeitstier.
+**Fremde Code-Repos: Architekt liest über Subagenten, Subagent-only (PLAT-088).** Für ein fremdes Code-Repo (anders als die Wissens-Ebene `main`/knowledge-base) liest der Architekt Code **nur über read-only Subagenten** (`erhebung`/`sondierung`), nie in den Haupt-Kontext — Disziplin-Regel, keine physische Wand. Architekt-Code-Reads sind statische Orientierung, nie „bewiesen am echten System" (bleibt dem Arbeitstier). Code schreiben/testen/deployen und Live-System-Sondierung bleiben Arbeitstier.
 
 ### Push-Eigentum nach Autorschaft auf der Wissens-Ebene (PLAT-094)
 
@@ -66,7 +66,7 @@ PLAT-083 (oben) gibt beiden Händen vollen kb-Push. Das ist um eine Eigentums-Kl
 
 **Wenn der fremde Inhalt nicht erscheint (Abbruch-/Eskalations-Kante).** Kommt der fremde Inhalt trotz `git pull` und angemessener Wartezeit nicht auf origin an und scheint genuin gestrandet (authorende Hand offline / Mensch pusht tagelang nicht), wird er **an den Menschen gemeldet** (Chat / `status: review`) — **niemals** selbst gelandet. Das nimmt die „gestrandet oder transient?"-Diskretion heraus, an der PLAT-092 hing.
 
-Auslöser: PLAT-092 (CC hielt zwei mensch-authored Doktrin-Commits für gestrandet und setzte zur manuellen Landung an; die Auto-Backup hatte sie nebenläufig schon gelandet → Beinahe-Duplikat). Operative Spiegelung (archiviert PLAT-130): `.claude/skills/_archiv/cockpit/SKILL.md`.
+Auslöser: PLAT-092 (CC hielt zwei mensch-authored Doktrin-Commits für gestrandet und setzte zur manuellen Landung an; die Auto-Backup hatte sie nebenläufig schon gelandet → Beinahe-Duplikat). Operative Spiegelung (archiviert PLAT-130): `_Archiv/prisment-social-media-tool/.claude/skills/cockpit/SKILL.md`.
 
 **Logbuch ist zentral (E24).** Das Logbuch existiert **genau einmal**, in `_Betrieb/Logbuch/` — keine bereichseigenen Logbücher, auch bereichsspezifische Entscheidungen zentral. Gleiche Logik wie der zentrale Backlog (E14): ein Ort, Bereichszuordnung über Gliederung/Feld.
 

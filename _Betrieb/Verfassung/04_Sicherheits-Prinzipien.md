@@ -57,13 +57,13 @@ Käme je wieder ein **ausführender** unbeaufsichtigter LLM-Lauf hinzu, gilt zus
 
 **Echtdaten-Klon hebt die Risikoklasse.** Trägt eine Bühne Echtdaten-Klone — auch als Snapshot, auch nach Migration aus Live, auch hinter einem Auth-Tor — ist die Spec-Risikoklasse **mindestens `sicherheitskritisch-akut`**, bis Pseudonymisierung als Pflicht-Tor abgeschlossen ist. Kein Spielraum nach unten.
 
-**Erreichbarkeits-Ausweitung ist verboten vor abgeschlossenem Pseudonymisierungs-Pass.** Auth-Tor lockern, neue öffentliche Endpoints, zusätzliche Hostnamen — solange un-pseudonymisierte Echtdaten in der Bühne liegen, bleibt jede solche Änderung gesperrt. Eine Pseudonymisierung selbst hebt die Sperre nur unter Restrisiko-Bewertung (siehe Skill, Pattern (g)) — Branchen-Vokabular und strukturell re-identifizierbare Restdaten können die Erreichbarkeits-Ausweitung weiter blockieren.
+**Erreichbarkeits-Ausweitung ist verboten vor abgeschlossenem Pseudonymisierungs-Pass.** Auth-Tor lockern, neue öffentliche Endpoints, zusätzliche Hostnamen — solange un-pseudonymisierte Echtdaten in der Bühne liegen, bleibt jede solche Änderung gesperrt. Eine Pseudonymisierung selbst hebt die Sperre nur unter Restrisiko-Bewertung — Branchen-Vokabular und strukturell re-identifizierbare Restdaten können die Erreichbarkeits-Ausweitung weiter blockieren.
 
-**Fail-closed-Marker im Snapshot.** Pseudonymisierte Snapshots tragen `-- PSEUDONYMIZED <YYYY-MM-DD>` als erste oder zweite Header-Zeile. Das **Hochfahr-Skript der Bühne** (z.B. `dev-start.sh`, `build_voicedb_snapshot.py`) prüft den Marker hart und **verweigert den Container-Start ohne Marker**. PreCheck-Wand früher als der Container-Lauf — nicht erst beim Selbsttest.
+**Fail-closed-Marker im Snapshot.** Pseudonymisierte Snapshots tragen `-- PSEUDONYMIZED <YYYY-MM-DD>` als erste oder zweite Header-Zeile. Das **Hochfahr-Skript der Bühne** prüft den Marker hart und **verweigert den Start ohne Marker**. PreCheck-Wand früher als der Lauf — nicht erst beim Selbsttest.
 
-**Test-/Dev-Bühnen nie als öffentlicher Traefik-Router ohne Auth-Tor (PLAT-043).** Eine Test-Umgebung, die öffentlich geroutet wird, trägt immer ein vorgeschaltetes Auth-Tor (heute: dev hinter NextAuth); neue öffentliche Test-Router ohne Auth-Tor sind verboten.
+**Test-/Dev-Bühnen nie als öffentlicher Router ohne Auth-Tor (PLAT-043).** Eine Test-Umgebung, die öffentlich geroutet wird, trägt immer ein vorgeschaltetes Auth-Tor; neue öffentliche Test-Router ohne Auth-Tor sind verboten.
 
-**Werkzeug und Verfahren.** Skill `test-data-pseudonymize` (`.claude/skills/test-data-pseudonymize/SKILL.md`) trägt das How: vier-Schritte-Verfahren, sieben Pattern-Lehren aus PLAT-043 B-PSEUDO, Referenzen auf die Pattern-Skripte in `prisment-platform/scripts/fixtures/`. Mapping-Tabelle ist Architekten-Hand-Schlüssel und lebt außerhalb des Repos (auch außerhalb des knowledge-base-Vaults).
+**Werkzeug und Verfahren.** Skill `test-data-pseudonymize` trägt das How (Vier-Schritte-Verfahren, Pattern-Lehren). Die Mapping-Tabelle ist Architekten-Hand-Schlüssel und lebt außerhalb des Repos.
 
 ## Betriebs-Queue (Monitoring-Befunde sind keine Seeds)
 
@@ -75,4 +75,4 @@ Befunde aus Monitoring, Nightly-Läufen und CI (Image-Update verfügbar, Build r
 
 ## Kontextbindung
 
-Diese Abwägungen gelten für den aktuellen Kontext (Solo-Gründer, Zeit als Engpass, keine/wenige zahlende Produktivkunden). Sobald Prisment zahlende Kunden mit SLA hat, sind nächtliche Autonomie und Alarm-/Eingriffsschwellen NEU zu bewerten.
+Diese Abwägungen gelten für den aktuellen Kontext (Solo-Gründer, Zeit als Engpass, keine/wenige zahlende Produktivkunden). Sobald ein Produkt zahlende Kunden mit SLA hat, sind nächtliche Autonomie und Alarm-/Eingriffsschwellen NEU zu bewerten.
